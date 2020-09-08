@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/colorWindowBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/dp_40"
+            android:text="收支金额"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/dp_40"
+            android:text="状态"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/dp_40"
+            android:text="收支类型"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/dp_40"
+            android:text="变更时间"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h5"
+            />
+    </LinearLayout>

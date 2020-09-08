@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.xsd.jx">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_worker_head"
+        android:label="@string/app_name"
+        android:maxAspectRatio="2.4"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_worker_head"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:targetApi="o">
+        <activity android:name=".manager.WagePayActivity"></activity>
+        <activity android:name=".manager.WorkerSignInfoActivity" />
+        <activity android:name=".manager.WorkerSignListActivity" />
+        <activity android:name=".manager.WorkerSignActivity" />
+        <activity android:name=".manager.TogetherCommentActivity" />
+        <activity android:name=".manager.SingleCommentActivity" />
+        <activity android:name=".manager.PushGetWorkersActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".manager.WorkerResumeActivity" />
+        <activity android:name=".manager.GetWorkersInfoActivity" />
+        <activity android:name=".manager.GetWorkersAllActivity" />
+        <activity android:name=".manager.GetWorkersWaitCommentActivity" />
+        <activity android:name=".manager.GetWorkersActivity" />
+        <activity android:name=".manager.MyGetWorkersActivity" />
+        <activity android:name=".mine.CommentActivity" />
+        <activity android:name=".mine.SetLocaPayActivity" />
+        <activity android:name=".mine.SetBankcardActivity" />
+        <activity android:name=".mine.SetAlipayActivity" />
+        <activity android:name=".order.OrderInfoActivity" />
+        <activity android:name=".order.OrderAllActivity" />
+        <activity android:name=".order.OrderWaitCommentActivity" />
+        <activity android:name=".mine.MessageActivity" />
+        <activity android:name=".mine.FeedbackActivity" />
+        <activity android:name=".mine.EditIntroActivity" />
+        <activity android:name=".mine.InviteListActivity" />
+        <activity android:name=".mine.PartnerActivity" />
+        <activity android:name=".mine.SetActivity" />
+        <activity android:name=".mine.AwardActivity" />
+        <activity android:name=".mine.PaymentsListActivity" />
+        <activity android:name=".mine.CollectedWorksActivity" />
+        <activity android:name=".mine.ResumeActivity" />
+        <activity android:name=".mine.HelpRegistListActivity" />
+        <activity android:name=".mine.HelpRegistActivity" />
+        <activity android:name=".mine.WalletActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".job.SelectTypeWorkActivity" />
+        <activity android:name=".job.JobInfoActivity" />
+        <activity android:name=".job.SignListActivity" />
+        <activity android:name=".job.SignActivity" />
+        <activity android:name=".mine.RealNameAuthActivity" />
+        <activity android:name=".job.PermanentWorkerActivity" />
+        <activity android:name=".job.JobPriceInquireActivity" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepath_data" />
+        </provider>
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+    </application>
+
+</manifest>

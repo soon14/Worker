@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View style="@style/h_line"/>
+    <TextView
+        android:id="@+id/tv_default"
+        android:paddingBottom="@dimen/dp_26"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="默认"
+        android:textColor="@color/tv_blue"
+        android:textSize="@dimen/h4"
+        />
+    <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+    <TextView
+        android:id="@+id/tv_age"
+        android:paddingBottom="@dimen/dp_26"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="年龄从小到大"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h4"
+        />
+    <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+    <TextView
+        android:id="@+id/tv_experience"
+        android:paddingBottom="@dimen/dp_26"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="经验从高到低"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h4"
+        />
+    <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+    <TextView
+        android:id="@+id/tv_loca"
+        android:paddingBottom="@dimen/dp_26"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="距离从近到远"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h4"
+        />
+
+</LinearLayout>

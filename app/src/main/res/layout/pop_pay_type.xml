@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@drawable/round6_white_bg"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_title"
+        android:padding="@dimen/dp_16"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h3"
+        android:drawableRight="@mipmap/ic_black_close"
+        android:gravity="center"
+        android:text="选择支付方式"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_marginRight="@dimen/dp_16"
+        android:id="@+id/checkbox_wx"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:checked="true"
+        android:drawableLeft="@mipmap/ic_wx_pay"
+        android:drawablePadding="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl"
+        android:padding="@dimen/dp_16"
+        android:text="微信支付"
+        android:textColor="@color/checkbox_text_gray_black_selecter"
+        android:textSize="@dimen/h3" />
+
+    <View style="@style/h_line" android:layout_margin="@dimen/dp_8"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_marginRight="@dimen/dp_16"
+        android:padding="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layoutDirection="rtl"
+        android:drawablePadding="@dimen/dp_16"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:drawableLeft="@mipmap/ic_alipay_pay"
+        android:id="@+id/checkbox_alipay"
+        android:textColor="@color/checkbox_text_gray_black_selecter"
+        android:textSize="@dimen/h3"
+        android:text="支付宝支付"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View style="@style/h_line" android:layout_margin="@dimen/dp_8"/>
+    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_confirm" android:layout_margin="@dimen/dp_16" android:layout_gravity="center" android:text="确定"/>
+</LinearLayout>

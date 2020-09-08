@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_root"
+        android:background="@drawable/round6_white_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:background="@drawable/round6_graytop_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                android:padding="@dimen/dp_16"
+                android:layout_centerVertical="true"
+                android:text="关闭"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="@dimen/h5"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@mipmap/ic_black_share"
+                android:textColor="@color/tv_black"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dp_16"
+                android:layout_centerVertical="true"
+                android:text="分享"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <ScrollView
+            android:layout_gravity="center_horizontal"
+
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:padding="@dimen/dp_16"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="木工"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/h3" />
+
+                    <TextView
+                        style="@style/TextPriceStyle"
+                        android:gravity="right"
+                        android:text="350元/天" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextWelfareTagStyle"
+                        android:text="日结" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/dp_6"
+                        style="@style/TextWelfareTagStyle"
+                        android:text="已付定金" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/dp_6"
+                        style="@style/TextWelfareTagStyle"
+                        android:text="购买保险" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工期"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4" />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2020-07-29至2020-08-29(共30天)"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4" />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上工地点"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4" />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="武汉市青山区建设一路31号武汉宝业中心A座"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4" />
+
+                <TextView
+                    android:drawablePadding="@dimen/dp_6"
+                    android:drawableLeft="@mipmap/ic_gray_loca"
+                    android:id="@+id/tv_addr"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="距您1.0km"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/h4" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="岗位说明"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4" />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本工地大量招收木工师傅，做包工、点工都可以，价格挺不错，活可以做一年，学徒、突击队勿扰，地点在湖北范围内。"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4" />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/dp_8"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:drawableRight="@mipmap/ic_orange_arrow_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="更多详细信息"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h5"
+                    />
+
+
+
+
+            </LinearLayout>
+        </ScrollView>
+        <RelativeLayout
+            android:paddingRight="@dimen/dp_8"
+            android:paddingLeft="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_collect"
+                android:drawablePadding="@dimen/dp_8"
+                android:padding="@dimen/dp_8"
+                android:layout_centerVertical="true"
+                android:drawableTop="@mipmap/ic_black_star"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                android:text="收藏"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_centerInParent="true"
+                android:id="@+id/tv_apply"
+                style="@style/DefaultBtnStyle"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="报名上工" />
+            <TextView
+                android:id="@+id/tv_next"
+                android:drawablePadding="@dimen/dp_8"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dp_8"
+                android:layout_centerVertical="true"
+                android:drawableTop="@mipmap/ic_black_goto"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                android:text="下一个"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/dp_8"
+            android:drawablePadding="@dimen/dp_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="不看推荐，我自己找"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5" />
+
+    </LinearLayout>
+</layout>

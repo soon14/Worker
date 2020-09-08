@@ -1,0 +1,222 @@
+package com.xsd.jx.job;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.view.View;
+
+import androidx.core.content.FileProvider;
+
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+import com.lxj.xpopup.XPopup;
+import com.xsd.jx.R;
+import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.custom.SignPop;
+import com.xsd.jx.databinding.ActivitySignBinding;
+import com.xsd.jx.listener.OnSignTackPicListener;
+import com.xsd.jx.utils.DataBindingAdapter;
+import com.xsd.jx.utils.FileNameUtils;
+import com.xsd.utils.FileUtils;
+import com.xsd.utils.L;
+import com.xsd.utils.SpannableStringUtils;
+import com.xsd.utils.TimeUtils;
+import com.xsd.utils.ToastUtil;
+
+import java.io.File;
+import java.util.List;
+
+public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
+
+    private boolean isUpWork=true;//是否应该上工打卡
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_sign;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+        onEvent();
+    }
+
+    private void initView() {
+        tvTitle.setText("考勤签到");
+        tvRight.setText("考勤记录");
+        mHandler.sendEmptyMessage(0);
+
+    }
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            setTime();
+            mHandler.sendEmptyMessageDelayed(0,1000);
+            return false;
+        }
+    });
+
+    private void setTime() {
+        String time = TimeUtils.getTime("HH:mm:ss");
+        SpannableStringBuilder spanStrUp = SpannableStringUtils.getBuilder(isUpWork?"上工打卡\n":"下工打卡\n").setProportion(1.125f).setBold().setForegroundColor(Color.parseColor("#ffffff"))
+                .append(time).create();
+        if (isUpWork)db.tvSignUp.setText(spanStrUp);
+        else db.tvSignDown.setText(spanStrUp);
+    }
+
+    private void onEvent() {
+        db.setClicklistener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.tv_sign_up://上工打卡
+                        isUpWork=true;
+                        signUp();
+                        break;
+                    case R.id.tv_sign_down://下工打卡
+                        isUpWork=false;
+                        signUp();
+                        break;
+                    case R.id.tv_contact://联系管理员
+                        break;
+                }
+            }
+        });
+        tvRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goActivity(SignListActivity.class);
+            }
+        });
+    }
+    private SignPop signPop;
+    private void signUp() {
+        if (signPop==null){
+            signPop = new SignPop(this, new OnSignTackPicListener() {
+                @Override
+                public void tackPicComplete(String content) {
+                    signUpSubmit(content);
+                }
+                @Override
+                public void tackPic() {
+                    getPermissionOfTakePhoto();
+                }
+            },isUpWork);
+            new XPopup.Builder(this)
+                    .asCustom(signPop)
+                    .show();
+        }else {
+            signPop.show();
+        }
+    }
+
+    private void signUpSubmit(String content) {
+        if (isUpWork){
+            db.radarViewUp.setVisibility(View.GONE);
+            db.radarViewDown.setVisibility(View.VISIBLE);
+            db.ivUpPic.setVisibility(View.VISIBLE);
+            db.tvUpDesc.setVisibility(View.VISIBLE);
+            db.viewUpPot.setBackgroundResource(R.drawable.circular_gray);
+            db.viewDownPot.setBackgroundResource(R.drawable.pot_green);
+            //设置上工的头像和备注信息
+            if (!TextUtils.isEmpty(content)){
+                db.tvUpDesc.setText(content);
+            }
+            DataBindingAdapter.bindImageRoundUrl(db.ivUpPic, headFile,6);
+            if (signPop!=null) signPop=null;
+            isUpWork=false;
+        }else {
+            db.radarViewUp.setVisibility(View.GONE);
+            db.radarViewDown.setVisibility(View.GONE);
+            db.ivUpPic.setVisibility(View.VISIBLE);
+            db.tvUpDesc.setVisibility(View.VISIBLE);
+            db.viewUpPot.setBackgroundResource(R.drawable.circular_gray);
+            db.viewDownPot.setBackgroundResource(R.drawable.circular_gray);
+            db.ivDownPic.setVisibility(View.VISIBLE);
+            db.tvDownDesc.setVisibility(View.VISIBLE);
+            //设置上工的头像和备注信息
+            if (!TextUtils.isEmpty(content)){
+                db.tvDownDesc.setText(content);
+            }
+            DataBindingAdapter.bindImageRoundUrl(db.ivDownPic, headFile,6);
+            isUpWork=true;
+        }
+
+
+
+    }
+
+    private void getPermissionOfTakePhoto() {
+        XXPermissions.with(this)
+                .permission(Permission.CAMERA)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean all) {
+                        if (all) {
+                            tackPhoto();
+                        } else {
+                            ToastUtil.showLong("获取权限成功，部分权限未正常授予");
+                        }
+                    }
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        if (quick) {
+                            ToastUtil.showLong("被永久拒绝授权，请手动授予拍照权限");
+                            // 如果是被永久拒绝就跳转到应用权限系统设置页面
+                            XXPermissions.startPermissionActivity(SignActivity.this, denied);
+                        } else {
+                            ToastUtil.showLong("获取拍照权限失败");
+                        }
+                    }
+                });
+    }
+
+    private static final int OPEN_CAMERA = 0X008;
+    private String  headFile;
+    public void tackPhoto() {
+        headFile = FileNameUtils.getFileName();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", new File(headFile));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
+        }else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(headFile)));
+        }
+        startActivityForResult(intent, OPEN_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        L.e("回调==requestCode=="+requestCode);
+        if (requestCode == OPEN_CAMERA && resultCode == RESULT_OK) {
+            // 获取相机返回的数据，并转换为图片格式
+            L.e("保存的pic路径=="+headFile);
+            if (signPop!=null)signPop.setIvTackPic(headFile);
+
+            long fileSize = FileUtils.getFileSize(new File(headFile));
+            L.e("fileSize=="+(fileSize/(1024))+"kb");
+        }
+    }
+
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHandler!=null){
+            mHandler.removeMessages(0);
+            mHandler=null;
+        }
+    }
+}

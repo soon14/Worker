@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.WorkerResponse" />
+    </data>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@drawable/round6_white_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="木工"
+                android:textColor="@color/black"
+                android:textSize="@dimen/h3" />
+
+            <TextView
+                style="@style/TextPriceStyle"
+                android:gravity="right"
+                android:text="350元/天" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/TextWelfareTagStyle"
+                android:text="已付1000元" />
+            <TextView
+                android:layout_marginLeft="@dimen/dp_6"
+                style="@style/TextWelfareTagStyle"
+                android:text="购买保险" />
+        </LinearLayout>
+
+
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工期：2020-07-29至2020-08-29(共30天)"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:id="@+id/tv_addr"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+        <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>
+
+        <LinearLayout
+            android:padding="@dimen/dp_13"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginRight="@dimen/dp_16"
+                android:gravity="center|left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_34"
+                android:text="工期内"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h5"
+                />
+            <TextView
+                android:gravity="center"
+                android:background="@drawable/round_blue_bg"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:text="结算工资"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h5"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_root"
+        android:background="@drawable/round6_white_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="center"
+            android:background="@drawable/round6_bluetop_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/h4"
+            android:layout_centerVertical="true"
+            android:text="以下3位雇主正邀请您上工，点击接受直接上工"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"/>
+        <ScrollView
+            android:layout_gravity="center_horizontal"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:id="@+id/layout_content"
+                android:padding="@dimen/dp_16"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:gravity="center"
+            android:background="@drawable/round6_graybottom_bg"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:gravity="center"
+                android:drawableRight="@mipmap/ic_gray_goto"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/dp_8"
+                android:drawablePadding="@dimen/dp_14"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="先看看其他的"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="horizontal"
+    android:background="@mipmap/bg_orange_top"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:lineSpacingExtra="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_14"
+        android:id="@+id/tv_desc"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/h6"
+        android:textColor="@color/white"
+        android:text="3位工友共帮您赚了485.52元\n工友越多收益越快，赶紧把身边的工友邀请到匠心吧~"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+     <ImageView
+         android:layout_marginTop="@dimen/dp_8"
+         android:id="@+id/iv_invite"
+         android:layout_gravity="right|bottom"
+         android:src="@mipmap/ic_btn_invite"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+    </LinearLayout>

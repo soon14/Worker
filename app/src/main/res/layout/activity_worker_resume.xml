@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context="com.xsd.jx.mine.ResumeActivity">
+
+        <include layout="@layout/action_common_bar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{clicklistener}">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginTop="@dimen/dp_29"
+                        android:text="徐某某"
+                        android:textColor="@color/tv_black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginTop="@dimen/dp_17"
+                        android:layout_marginBottom="@dimen/dp_24"
+                        android:text="男 · 汉族 · 重庆 · 30岁 · 工作5~10年"
+                        android:textColor="#ff666666"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_head"
+                        android:layout_width="@dimen/dp_67"
+                        android:layout_height="@dimen/dp_67"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:layout_marginRight="@dimen/dp_25"
+                        android:src="@mipmap/ic_worker_head" />
+
+                </RelativeLayout>
+
+                <View style="@style/h_space_line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="工种"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_types_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <View style="@style/h_space_line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_16">
+
+                    <TextView
+                        android:id="@+id/tv_intro_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="自我介绍"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_intro_tag"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:text="已有10年工作经验，主要从事木工/混凝土工，为人稳重，认真负责，做事高效施工质量有保障。"
+                        android:textColor="#ff343434"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <View style="@style/h_space_line" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/dp_16"
+                    android:text="工作经历"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h3"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/layout_works"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWindowBackground"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_invite"
+                style="@style/DefaultBtnStyle"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_16"
+                android:text="邀请上工"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_refuse"
+                style="@style/DefaultBtnStyle"
+                android:layout_width="@dimen/dp_150"
+                android:layout_margin="@dimen/dp_16"
+                android:background="@drawable/round6_silver_bg"
+                android:text="婉拒"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_hire"
+                style="@style/DefaultBtnStyle"
+                android:layout_width="@dimen/dp_150"
+                android:layout_margin="@dimen/dp_16"
+                android:layout_marginLeft="@dimen/dp_24"
+                android:text="雇佣"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

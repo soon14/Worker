@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.mine.SetAlipayActivity">
+
+        <include layout="@layout/action_common_bar" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp_16"
+                android:textSize="@dimen/h4"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="支付宝账号"
+                android:textColor="@color/tv_black" />
+
+            <EditText
+                android:padding="@dimen/dp_16"
+                android:textSize="@dimen/h4"
+                android:background="@color/transparent"
+                android:hint="请输入您的支付宝账号"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            style="@style/h_line"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp_16"
+                android:textSize="@dimen/h4"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="姓名"
+                android:textColor="@color/tv_black" />
+
+            <EditText
+                android:padding="@dimen/dp_16"
+                android:textSize="@dimen/h4"
+                android:background="@color/transparent"
+                android:hint="请输入您的姓名"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            style="@style/h_line"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16" />
+
+        <TextView
+            style="@style/DefaultBtnStyle"
+            android:id="@+id/tv_confirm"
+            android:text="确认"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_32" />
+
+
+    </LinearLayout>
+</layout>

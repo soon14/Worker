@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.manager.WagePayActivity">
+
+        <include layout="@layout/action_common_bar" />
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recycler_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="0dp" />-->
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:id="@+id/layout_content"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60">
+
+            <CheckBox
+                android:layout_marginLeft="@dimen/dp_8"
+                android:id="@+id/cb_select_all"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:text="全选合计: 9652元"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tv_payed_all"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/round20_blue_bg"
+                style="@style/DefaultBtnStyle"
+                android:text="一键结算(5)" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_56">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="5元"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="邀请奖励"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="张三"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="2020-08-18"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
+            />
+
+    </LinearLayout>
+    <View style="@style/h_line" android:layout_alignParentBottom="true" android:layout_marginRight="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_16"/>
+
+</RelativeLayout>

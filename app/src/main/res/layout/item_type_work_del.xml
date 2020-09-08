@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingRight="@dimen/dp_16"
+    android:paddingLeft="@dimen/dp_16"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h4"
+        android:text="木工"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"/>
+    <ImageView
+        android:id="@+id/iv_del"
+        android:padding="@dimen/dp_18"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/ic_gray_close"
+        android:layout_width="@dimen/dp_56"
+        android:layout_height="@dimen/dp_56"/>
+    <View style="@style/h_line" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

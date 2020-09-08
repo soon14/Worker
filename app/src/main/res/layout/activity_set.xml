@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.mine.SetActivity">
+        <include layout="@layout/action_common_bar" />
+        <TextView
+            android:textSize="@dimen/h4"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:gravity="center_vertical"
+            android:textColor="@color/tv_black"
+            android:text="平台协议"
+            android:drawableRight="@mipmap/ic_gray_arrow_right"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_54"/>
+        <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+        <TextView
+            android:textSize="@dimen/h4"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:gravity="center_vertical"
+            android:textColor="@color/tv_black"
+            android:text="关于我们"
+            android:drawableRight="@mipmap/ic_gray_arrow_right"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_54"/>
+        <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+        <TextView android:layout_gravity="center" android:layout_margin="@dimen/dp_24" style="@style/DefaultBtnStyle" android:text="退出登录" android:textColor="@color/tv_gray" android:background="@drawable/round6_gray_bg"/>
+    </LinearLayout>
+</layout>

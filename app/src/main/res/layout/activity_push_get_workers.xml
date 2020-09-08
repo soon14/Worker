@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.manager.PushGetWorkersActivity">
+        <include layout="@layout/action_common_bar"/>
+        <ScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_96"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="工种"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView1" />
+
+                    <TextView
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="请选择所需工种"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView1"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="@dimen/dp_48"
+                        android:layout_height="@dimen/dp_56"
+                        android:padding="@dimen/dp_16"
+                        android:src="@mipmap/ic_gray_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view1"
+                        style="@style/h_line"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:onClick="@{clicklistener}"
+                    android:id="@+id/layout_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_96"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="在哪儿上工"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+                    <TextView
+                        android:id="@+id/tv_addr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="湖北省xxxx人民大道111号"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/dp_48"
+                        android:layout_height="@dimen/dp_56"
+                        android:padding="@dimen/dp_16"
+                        android:src="@mipmap/ic_gray_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view2"
+                        style="@style/h_line"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_96"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="工期"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+                    <TextView
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="请选择工人需要做多久"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="@dimen/dp_48"
+                        android:layout_height="@dimen/dp_56"
+                        android:padding="@dimen/dp_16"
+                        android:src="@mipmap/ic_gray_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view3"
+                        style="@style/h_line"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_96"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:text="工价"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                    <TextView
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="请填写合理的工价"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="@dimen/dp_48"
+                        android:layout_height="@dimen/dp_56"
+                        android:padding="@dimen/dp_16"
+                        android:src="@mipmap/ic_gray_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view4"
+                        style="@style/h_line"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_96"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:text="您需要的工人数量 (点击可修改)"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:maxLength="6"
+                        android:inputType="number"
+                        android:padding="@dimen/dp_16"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:text="1"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h3"
+                        app:layout_constraintBottom_toTopOf="@+id/view5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <View
+                        android:id="@+id/view5"
+                        style="@style/h_line"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="结算方式"
+                    android:textColor="@color/tv_gray"
+                    android:textSize="@dimen/h5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioGroup
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_day_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginBottom="16dp"
+                        android:text="日结"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_finish_pay"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="做完再结"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                </RadioGroup>
+                <View style="@style/h_line"/>
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:padding="@dimen/dp_16"
+                        android:background="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="对岗位的说明 (点击可修改，200字以内)"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        />
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/dp_16"
+                        android:background="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 0/200"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5"
+                        />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/et_desc"
+                    android:maxLength="200"
+                    android:padding="@dimen/dp_8"
+                    android:gravity="top"
+                    android:text="招工人师傅，要求踏实肯干，有意者直接报名"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:background="@drawable/round3_windowcolor_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_marginLeft="@dimen/dp_12"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我已阅读并同意签署"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                     />
+                    <TextView
+                        android:id="@+id/tv_agreement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="《用工协议》"
+                        android:textColor="@color/tv_blue"
+                        android:textSize="@dimen/h4"
+                        />
+                </LinearLayout>
+                <View style="@style/h_space_line"/>
+
+                <TextView
+                    android:padding="@dimen/dp_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="是否为工人购买保险"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <RadioGroup
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_buy_safe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginBottom="16dp"
+                        android:text="是(2元/人/天)"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_no_safe"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="否"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                </RadioGroup>
+                <View style="@style/h_line"/>
+
+                <TextView
+                    android:padding="@dimen/dp_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="预付款(全款优先推荐，更易获得工人信任，取消可退)"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <RadioGroup
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_pay_2cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginBottom="16dp"
+                        android:text="2成/200元"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_pay_all"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="全额/1000元"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_nopay"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="不预付"
+                        android:textColor="@color/checkbox_text_gray_black_selecter"
+                        android:textSize="@dimen/h4" />
+                </RadioGroup>
+                <View style="@style/h_line" android:layout_margin="@dimen/dp_16"/>
+
+                <View style="@style/h_space_line"/>
+
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_margin="@dimen/dp_10"
+                style="@style/DefaultBtnStyle"
+                android:text="发布(支付200元)"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

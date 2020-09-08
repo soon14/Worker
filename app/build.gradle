@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+def keystoreFilepath = ''
+def keystorePSW = ''
+def keystoreAlias = ''
+def keystoreAliasPSW = ''
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+keystoreFilepath = properties.getProperty("keystore.path")
+def keyfile = ''
+if (keystoreFilepath) {
+    keystorePSW = properties.getProperty("keystore.password")
+    keystoreAlias = properties.getProperty("keystore.alias")
+    keystoreAliasPSW = properties.getProperty("keystore.alias_password")
+    keyfile = file(keystoreFilepath)
+}
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmmss")
+}
+android {
+    signingConfigs {
+        release {
+            keyAlias keystoreAlias
+            keyPassword keystoreAliasPSW
+            storeFile keyfile
+            storePassword keystorePSW
+        }
+    }
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        applicationId "com.xsd.worker"
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+//            zipAlignEnabled true
+//            shrinkResources true//只有在开启混淆的前提下，压缩资源才会生效
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding{
+        enabled = true
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all{
+            outputFileName  = "${applicationId.subSequence(applicationId.lastIndexOf(".")+1,applicationId.length())}_v${versionName}_${releaseTime()}_${baseName}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation project(path: ':SmallUtils')
+    implementation project(path: ':SmallOkHttp')
+    //方法数过多支持
+    implementation 'androidx.multidex:multidex:2.0.1'
+    //沉浸式基础依赖包，必须要依赖
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //依赖注入框架
+    implementation 'com.google.dagger:dagger:2.17'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.17"
+    //Apollo的核心库,事件通知
+    implementation 'com.github.lsxiao.Apollo:core:1.0.2'
+    annotationProcessor "com.github.lsxiao.Apollo:processor:1.0.2"
+    //数据库
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    implementation 'org.greenrobot:greendao-generator:3.2.2'
+    //JSON
+    implementation 'com.alibaba:fastjson:1.1.70.android'
+    //Glide图片加载
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    //鲁班压缩，压缩图片
+    implementation 'top.zibin:Luban:1.1.8'
+    //RecyclerView适配器
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    //指示器
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    //pop弹框
+    implementation 'com.lxj:xpopup:2.0.8'
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
+    //zxing二维码生成扫描，API14+
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    //注释类权限
+    implementation 'org.permissionsdispatcher:permissionsdispatcher:4.7.0'
+    annotationProcessor 'org.permissionsdispatcher:permissionsdispatcher-processor:4.7.0'
+    //日历控件
+    implementation 'com.haibin:calendarview:3.6.9'
+    //滚轮控件
+    implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.3'
+    //星星控件
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.0'
+    //权限申请
+    implementation 'com.hjq:xxpermissions:8.2'
+
+
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@drawable/_xpopup_round3_top_bg"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:padding="16dp"
+        android:gravity="center"
+        android:textColor="@color/tv_black"
+        android:textSize="18sp"
+        android:text="民族选择"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View style="@style/h_line"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.xsd.utils.custom.RadioGroupEx
+        android:id="@+id/layout_nations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:tag="layout/fragment_order_0"
+        android:orientation="vertical">
+
+
+        -
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="@dimen/dp_80"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:id="@+id/action_bar_root">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="订单"
+                android:layout_marginTop="24.0dip"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="24.0sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_order_comment"
+                app:layout_constraintTop_toTopOf="@+id/tv_title"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                android:text="待评价"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                app:layout_constraintEnd_toStartOf="@+id/tv_order_all"
+                android:drawablePadding="5.0dip"
+                android:layout_marginRight="16.0dip"
+                android:padding="@dimen/dp_8" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_order_all"
+                app:layout_constraintTop_toTopOf="@+id/tv_title"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                android:text="全部订单"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                android:drawablePadding="5.0dip"
+                android:layout_marginRight="16.0dip"
+                android:padding="@dimen/dp_8"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <View
+                android:id="@+id/view_bar_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/h_line" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:layout_height="@dimen/home_tab_height"
+            android:layout_width="fill_parent"
+            android:id="@+id/tab_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:id="@+id/recycler_view" />
+
+    </LinearLayout>
+</layout>

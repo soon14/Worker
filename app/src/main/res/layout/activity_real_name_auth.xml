@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xsd.jx.mine.RealNameAuthActivity">
+
+        <include layout="@layout/action_common_bar" />
+
+        <ScrollView
+            android:id="@+id/layout_infos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_16">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="郑重承诺：你的真实身份信息只用于实名认证，平台不会进行其他作用。实名信息一旦确认将无法变更，为了保障你的利益与安全，请务必填写真实信息。"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h6" />
+
+                <ImageView
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:onClick="@{clicklistener}"
+                    android:id="@+id/iv_head"
+                    android:layout_width="@dimen/dp_144"
+                    android:layout_height="@dimen/dp_144"
+                    android:src="@mipmap/ic_tack_photo" />
+
+
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="真实姓名"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:singleLine="true"
+                    android:maxLength="19"
+                    android:id="@+id/et_name"
+                    android:paddingLeft="@dimen/dp_13"
+                    android:paddingRight="@dimen/dp_13"
+                    android:background="@drawable/round6_gray_bg"
+                    android:hint="请输入您的真实姓名"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"/>
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="身份证号"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:singleLine="true"
+                    android:digits="1234567890xX"
+                    android:maxLength="19"
+                    android:id="@+id/et_card_number"
+                    android:paddingLeft="@dimen/dp_13"
+                    android:paddingRight="@dimen/dp_13"
+                    android:background="@drawable/round6_gray_bg"
+                    android:hint="请输入您的身份证号"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"/>
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="您所属民族（点击可修改）"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:gravity="center_vertical"
+                    android:id="@+id/tv_nation"
+                    android:paddingLeft="@dimen/dp_13"
+                    android:paddingRight="@dimen/dp_13"
+                    android:background="@drawable/round6_gray_bg"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="汉族"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"/>
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="您工作多少年了（点击可修改）"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:gravity="center_vertical"
+                    android:id="@+id/tv_work_experience"
+                    android:paddingLeft="@dimen/dp_13"
+                    android:paddingRight="@dimen/dp_13"
+                    android:background="@drawable/round6_gray_bg"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    android:text="10-15年"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"/>
+                <TextView
+                    android:onClick="@{clicklistener}"
+                    android:id="@+id/tv_submit"
+                    android:layout_marginTop="@dimen/dp_28"
+                    android:text="提交认证"
+                    style="@style/DefaultBtnStyle"/>
+
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:id="@+id/layout_is_auth"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_marginTop="@dimen/dp_132"
+                android:src="@mipmap/ic_green_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="恭喜，您已通过实名认证"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h4"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

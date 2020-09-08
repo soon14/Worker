@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center"
+            android:padding="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2020-08-10 17:26"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@drawable/round6_white_bg"
+            android:padding="@dimen/dp_16"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="欢迎您加入匠心大家庭！"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                />
+            <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginBottom="@dimen/dp_16"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="岁月不居，年华更迭。来不及回首间，所有的已知，便都化作故旧曾经，消失不见了，一切如同未出现过般，变得淹没无痕，无处可寻。"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

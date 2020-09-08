@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#F9F9F9"
+        android:padding="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="当前只开通湖北地区，其他地区即将开放..."
+        android:textColor="#ff999999"
+        android:textSize="@dimen/h6"/>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_get_workers" android:text="主动招人"/>
+    <TextView
+        android:layout_marginBottom="@dimen/dp_150"
+        android:padding="@dimen/dp_16"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="还没有工人报名，您可以主动招工人"
+        android:textColor="@color/tv_gray"
+        android:textSize="@dimen/h4"
+        />
+</LinearLayout>

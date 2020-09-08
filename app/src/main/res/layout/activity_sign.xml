@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xsd.jx.job.SignActivity">
+
+        <include layout="@layout/action_common_bar" android:id="@+id/view_top" />
+
+        <ScrollView
+            android:layout_below="@+id/view_top"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_16"
+                    android:background="@drawable/round6_white_bg"
+                    android:padding="@dimen/dp_16">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="徐冬冬"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="2020-08-02"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/sp_14" />
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16">
+
+                    <View
+                        android:id="@+id/view_up_pot"
+                        android:layout_width="@dimen/dp_8"
+                        android:layout_height="@dimen/dp_8"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/pot_green"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_up_work"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="上工考勤"
+                        android:textColor="@color/tv_black"
+                        app:layout_constraintBottom_toBottomOf="@+id/view_up_pot"
+                        app:layout_constraintStart_toEndOf="@+id/view_up_pot"
+                        app:layout_constraintTop_toTopOf="@+id/view_up_pot" />
+
+                    <View
+                        android:id="@+id/view_time_line"
+                        style="@style/v_line"
+                        android:layout_height="@dimen/dp_186"
+                        android:background="#DEDEDE"
+                        app:layout_constraintEnd_toEndOf="@+id/view_up_pot"
+                        app:layout_constraintStart_toStartOf="@+id/view_up_pot"
+                        app:layout_constraintTop_toBottomOf="@+id/view_up_pot" />
+
+                    <View
+                        android:id="@+id/view_down_pot"
+                        android:layout_width="@dimen/dp_8"
+                        android:layout_height="@dimen/dp_8"
+                        android:background="@drawable/circular_gray"
+                        app:layout_constraintEnd_toEndOf="@+id/view_time_line"
+                        app:layout_constraintStart_toStartOf="@+id/view_time_line"
+                        app:layout_constraintTop_toBottomOf="@+id/view_time_line" />
+
+                    <TextView
+                        android:id="@+id/tv_down_work"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="下工考勤"
+                        android:textColor="@color/tv_black"
+                        app:layout_constraintBottom_toBottomOf="@+id/view_down_pot"
+                        app:layout_constraintStart_toEndOf="@+id/view_down_pot"
+                        app:layout_constraintTop_toTopOf="@+id/view_down_pot" />
+
+
+                    <com.xsd.utils.custom.RadarView
+                        android:id="@+id/radar_view_up"
+                        android:layout_width="@dimen/dp_180"
+                        android:layout_height="@dimen/dp_180"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_down_work"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_up_work"
+                        app:rb_color="#008AE8"
+                        app:rb_duration="2000"
+                        app:rb_radius="80"
+                        app:rb_rippleAmount="1"
+                        app:rb_scale="3"
+                        app:rb_type="0">
+
+                        <TextView
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/tv_sign_up"
+                            android:layout_width="@dimen/dp_140"
+                            android:layout_height="@dimen/dp_140"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/pot_gradual_blue_bg"
+                            android:gravity="center"
+                            android:lineSpacingExtra="@dimen/dp_6"
+                            android:outlineSpotShadowColor="@color/tv_black"
+                            android:text="上工打卡"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="@dimen/h3" />
+                    </com.xsd.utils.custom.RadarView>
+
+
+                    <com.xsd.utils.custom.RadarView
+                        android:id="@+id/radar_view_down"
+                        android:layout_width="@dimen/dp_180"
+                        android:layout_height="@dimen/dp_180"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_down_work"
+                        app:rb_color="#008AE8"
+                        app:rb_duration="2000"
+                        app:rb_radius="80"
+                        app:rb_rippleAmount="1"
+                        app:rb_scale="3"
+                        app:rb_type="0">
+
+                        <TextView
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/tv_sign_down"
+                            android:layout_width="@dimen/dp_140"
+                            android:layout_height="@dimen/dp_140"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/pot_gradual_blue_bg"
+                            android:gravity="center"
+                            android:lineSpacingExtra="@dimen/dp_6"
+                            android:outlineSpotShadowColor="@color/tv_black"
+                            android:text="下工打卡"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="@dimen/h3" />
+                    </com.xsd.utils.custom.RadarView>
+
+                    <ImageView
+                        android:src="@mipmap/ic_worker_head"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:id="@+id/iv_up_pic"
+                        android:layout_width="@dimen/dp_66"
+                        android:layout_height="@dimen/dp_66"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_up_work"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_up_work"
+                        tools:srcCompat="@mipmap/ic_site" />
+
+                    <TextView
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:id="@+id/tv_up_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="今早大雨，现在开始上工"
+                        android:textColor="@color/tv_gray"
+                        app:layout_constraintStart_toStartOf="@+id/iv_up_pic"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_up_pic" />
+
+                    <ImageView
+                        android:src="@mipmap/ic_worker_head"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:id="@+id/iv_down_pic"
+                        android:layout_width="@dimen/dp_66"
+                        android:layout_height="@dimen/dp_66"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_down_work"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_down_work"
+                        tools:srcCompat="@mipmap/ic_site" />
+
+                    <TextView
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:id="@+id/tv_down_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="下班了哦"
+                        android:textColor="@color/tv_gray"
+                        app:layout_constraintStart_toStartOf="@+id/iv_down_pic"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_down_pic" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:layout_marginBottom="@dimen/dp_80"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round6_white_bg"
+                    android:padding="@dimen/dp_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工作天数"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5" />
+
+                    <TextView
+                        android:id="@+id/tv_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="3天"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h5" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        style="@style/h_line"
+                        android:layout_below="@+id/tv_day"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:layout_marginBottom="@dimen/dp_16" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line"
+                        android:text="平均工时"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h5" />
+
+                    <TextView
+                        android:id="@+id/tv_hour_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line"
+                        android:layout_alignParentRight="true"
+                        android:text="8小时/天"
+                        android:textColor="@color/tv_black"
+                        android:textSize="@dimen/h5" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_contact"
+            android:onClick="@{clicklistener}"
+            style="@style/DefaultBtnStyle"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:text="联系企业管理员" />
+    </RelativeLayout>
+</layout>

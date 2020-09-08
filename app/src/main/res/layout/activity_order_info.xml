@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="192dp">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/layout_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:toolbarId="@+id/toolbar">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:id="@+id/tv_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="进行中"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:alpha="0.8"
+                            android:id="@+id/tv_desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_status"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:gravity="center"
+                            android:text="请按要求完成工作后才能结算工资"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/h4" />
+                    </LinearLayout>
+
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_80"
+                        app:subtitle="请按要求完成工作后才能结算工资"
+                        app:subtitleTextColor="@color/white"
+                        app:titleTextColor="@color/white"/>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:behavior_overlapTop="@dimen/dp_16"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/round10_white_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_16">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="钢筋工"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/h3"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_work_price"
+                                style="@style/TextPriceStyle"
+                                android:gravity="right"
+                                android:text="350元/天" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_payed_scale"
+                                style="@style/TextWelfareTagStyle"
+                                android:text="已付2成" />
+
+                            <TextView
+                                android:id="@+id/tv_buy_safe"
+                                style="@style/TextWelfareTagStyle"
+                                android:layout_marginLeft="@dimen/dp_6"
+                                android:text="购买保险" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="工期：2020-07-29至2020-08-29(共30天)"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/h4"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_addr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:drawableRight="@mipmap/ic_gray_arrow_right"
+                            android:drawablePadding="@dimen/dp_6"
+                            android:padding="@dimen/dp_8"
+                            android:text="更多详细信息"
+                            android:textColor="@color/tv_gray"
+                            android:textSize="@dimen/h5" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/round10_white_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_16">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="保险情况"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="未投保/保障中"
+                                android:textColor="@color/tv_darkgray"
+                                android:textSize="@dimen/h4" />
+                        </RelativeLayout>
+
+                        <View
+                            style="@style/h_line"
+                            android:layout_marginTop="@dimen/dp_16" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已上工天数"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="2天"
+                                android:textColor="@color/tv_darkgray"
+                                android:textSize="@dimen/h4" />
+                        </RelativeLayout>
+
+                        <View
+                            style="@style/h_line"
+                            android:layout_marginTop="@dimen/dp_16" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="赚得收入"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="700元"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/h4" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round10_white_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_16">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="订单编号:\t\t\t947498545995856"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h5" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="复制"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/h5" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="报名时间:\t\t\t2020-08-10 17:17"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h5" />
+
+                        <TextView
+                            android:id="@+id/tv_confirm_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="确认时间:\t\t\t2020-08-11 09:15"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h5" />
+                        <TextView
+                            tools:visibility="visible"
+                            android:visibility="gone"
+                            android:id="@+id/tv_payed_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="结算时间:\t\t\t2020-08-11 09:15"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h5" />
+                        <TextView
+                            tools:visibility="visible"
+                            android:visibility="gone"
+                            android:id="@+id/tv_cancel_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="取消时间:\t\t\t2020-08-11 09:15"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h5" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <ImageView
+            android:layout_marginTop="@dimen/dp_24"
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_16"
+            android:src="@mipmap/ic_back_white" />
+
+        <LinearLayout
+            android:id="@+id/layout_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_13">
+
+            <TextView
+                android:id="@+id/tv_contact_platform"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/round20_grayrim_bg"
+                android:gravity="center"
+                android:text="联系平台"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h5" />
+            <TextView
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:id="@+id/tv_cancel_apply"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/round20_grayrim_bg"
+                android:gravity="center"
+                android:text="取消报名"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h5" />
+
+            <TextView
+                android:id="@+id/tv_contact_manager"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:background="@drawable/round20_blue_bg"
+                android:gravity="center"
+                android:text="联系雇主"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h5" />
+            <TextView
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:id="@+id/tv_comment_manager"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:background="@drawable/round20_blue_bg"
+                android:gravity="center"
+                android:text="评价雇主"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h5" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

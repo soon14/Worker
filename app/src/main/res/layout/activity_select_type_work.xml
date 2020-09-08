@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context="com.xsd.jx.job.SelectTypeWorkActivity">
+
+        <include
+            android:id="@+id/view_top"
+            layout="@layout/action_common_bar" />
+
+        <TextView
+            android:id="@+id/tv_desc1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_top"
+            android:layout_marginTop="@dimen/dp_24"
+            android:gravity="center"
+            android:text="请选择您的工种并设置工价（可多选）"
+            android:textColor="@color/tv_darkgray"
+            android:textSize="@dimen/h4" />
+
+        <TextView
+            android:id="@+id/tv_desc2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_desc1"
+            android:layout_marginTop="@dimen/dp_8"
+            android:gravity="center"
+            android:text="点击选中，再次点击取消"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5" />
+
+        <ScrollView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_desc2">
+            <com.xsd.utils.custom.AutoNewLineLayout
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="64dp"
+                android:id="@+id/layout_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:horizontalSpace="16dp"
+                app:vertivalSpace="16dp" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_search_job"
+            style="@style/DefaultBtnStyle"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:text="开始找工作" />
+    </RelativeLayout>
+</layout>

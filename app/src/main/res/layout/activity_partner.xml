@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.mine.HelpRegistActivity">
+        <include layout="@layout/action_common_bar" android:id="@+id/view_top"/>
+        <ScrollView
+            android:layout_below="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:padding="@dimen/dp_16"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_126"
+                    android:src="@mipmap/bg_partner_top"
+                    />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="您的姓名"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <EditText
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:maxLength="11"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="请输入您的姓名"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="您的联系方式"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <EditText
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:maxLength="11"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="请输入您的联系方式"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="您的身份"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:id="@+id/tv_type_work"
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:maxLength="18"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="请选择您的身份"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="合作意向"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:id="@+id/tv_purpose"
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:layout_marginBottom="@dimen/dp_80"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:maxLength="18"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="请选择合作意向"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+
+
+
+            </LinearLayout>
+        </ScrollView>
+        <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_confirm"  android:onClick="@{clicklistener}" android:text="提交合作意向" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="@dimen/dp_16"/>
+    </RelativeLayout>
+</layout>

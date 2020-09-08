@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.JobBean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_8">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cb_select"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tv_invite_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="还差1人招满"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4" />
+
+                <TextView
+                    style="@style/TextPriceStyle"
+                    android:gravity="right"
+                    android:text="350元/天"
+                    android:textColor="@color/tv_gray"
+                    android:textSize="@dimen/h4"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="工期：2020-07-29至2020-08-29(共30天)"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h4" />
+
+            <TextView
+                android:layout_marginBottom="@dimen/dp_16"
+                android:id="@+id/tv_addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h4" />
+        </LinearLayout>
+
+        <View style="@style/h_space_line" />
+    </LinearLayout>
+</layout>
