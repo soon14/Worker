@@ -17,7 +17,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/h4"
             android:layout_centerVertical="true"
-            android:text="以下3位雇主正邀请您上工，点击接受直接上工"
+            android:text="以下雇主正邀请您上工，点击接受直接上工"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"/>
         <ScrollView
@@ -27,8 +27,8 @@
             android:layout_weight="1"
             android:layout_height="0dp">
             <LinearLayout
+                android:background="@color/colorWindowBackground"
                 android:id="@+id/layout_content"
-                android:padding="@dimen/dp_16"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -36,12 +36,14 @@
             </LinearLayout>
         </ScrollView>
         <LinearLayout
+            android:id="@+id/layout_look_other"
             android:gravity="center"
             android:background="@drawable/round6_graybottom_bg"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50">
             <TextView
+                android:layout_marginBottom="@dimen/dp_10"
                 android:gravity="center"
                 android:drawableRight="@mipmap/ic_gray_goto"
                 android:layout_gravity="center_horizontal"

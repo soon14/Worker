@@ -1,15 +1,26 @@
 package com.xsd.jx.custom;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.databinding.ItemJobBinding;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.ToastUtil;
+
+import java.util.List;
 
 /**
  * Date: 2020/8/21
@@ -17,8 +28,12 @@ import com.xsd.jx.R;
  * 邀请得工作
  */
 public class InviteJobPop extends CenterPopupView {
-    public InviteJobPop(@NonNull Context context) {
+    private List<JobBean> data;
+    private BaseActivity activity;
+    public InviteJobPop(@NonNull BaseActivity context, List<JobBean> data) {
         super(context);
+        this.data=data;
+        this.activity=context;
     }
 
     @Override
@@ -33,10 +48,36 @@ public class InviteJobPop extends CenterPopupView {
 
     private void initView() {
         LinearLayout layoutContent = findViewById(R.id.layout_content);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < data.size(); i++) {
+            JobBean jobBean = data.get(i);
+            boolean isJoin = jobBean.isIsJoin();//是否已经报名
             View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job, null);
+            ItemJobBinding bind = DataBindingUtil.bind(viewChild);
+            bind.tvApply.setText(isJoin?"已接受邀请":"接受上工邀请");
+            bind.tvApply.setBackgroundResource(isJoin?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
+            bind.setItem(jobBean);
             layoutContent.addView(viewChild);
+            //点击事件
+            bind.tvApply.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.getDataProvider().work.acceptInvite(jobBean.getId())
+                            .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(activity.getDialog()) {
+                                @Override
+                                protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                    ToastUtil.showLong(baseResponse.getData().getMessage());
+                                    bind.tvApply.setText("已接受邀请");
+                                    bind.tvApply.setBackgroundResource(R.drawable.round6_gray_bg);
+                                    delayDismiss(800);
+                                    Apollo.emit(EventStr.UPDATE_INVITE_LIST);
+                                }
+                            });
+
+
+                }
+            });
         }
+        findViewById(R.id.layout_look_other).setOnClickListener(view -> dismiss());
 
     }
 

@@ -10,12 +10,17 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginBottom="@dimen/dp_16"
-        android:background="@color/white"
-        android:padding="@dimen/dp_16"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:background="@color/white"
+            android:padding="@dimen/dp_16"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
 
         <LinearLayout
             android:gravity="center_vertical"
@@ -94,6 +99,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_16"
             android:text="报名上工" />
+        </LinearLayout>
+        <View style="@style/h_space_line"/>
 
 
     </LinearLayout>

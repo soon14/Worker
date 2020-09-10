@@ -2,7 +2,6 @@ package com.xsd.jx.custom;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -13,25 +12,39 @@ import androidx.annotation.NonNull;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.WorkRecommendResponse;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.ToastUtil;
+
+import java.util.List;
 
 /**
  * Date: 2020/8/21
  * author: SmallCake
  */
 public class PushJobPop extends CenterPopupView {
-    public PushJobPop(@NonNull Context context) {
+
+    private List<JobBean> items;
+    private TextView tvName;
+    private int index;//获取数据位置
+    private BaseActivity activity;
+    private int page=1;
+    public PushJobPop(@NonNull BaseActivity context) {
         super(context);
+        this.activity = context;
     }
 
     @Override
     protected int getImplLayoutId() {
         return R.layout.pop_push_job;
     }
-    TextView tvName;
     @Override
     protected void onCreate() {
         super.onCreate();
-         tvName = findViewById(R.id.tv_name);
+        tvName = findViewById(R.id.tv_name);
         View layoutRoot = findViewById(R.id.layout_root);
         findViewById(R.id.tv_next).setOnClickListener(new OnClickListener() {
             @Override
@@ -39,9 +52,51 @@ public class PushJobPop extends CenterPopupView {
                 animRota(layoutRoot);
             }
         });
-
+        getRecommend();
 
     }
+
+    //登录用户推荐工作
+    private void getRecommend() {
+        activity.getDataProvider().work.recommend(page)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkRecommendResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkRecommendResponse> baseResponse) {
+                        WorkRecommendResponse data = baseResponse.getData();
+                        List<JobBean> dataItems = data.getItems();
+                        //如果有数据，弹框显示推荐的工作
+                        if (dataItems!=null&&dataItems.size()>0){
+                            items = dataItems;
+                            index=0;
+                            setData();
+                        }else {
+                            ToastUtil.showLong("没有更多数据了！");
+                            dismiss();
+                        }
+                    }
+                });
+    }
+
+    private void setData() {
+        if (items!=null&&items.size()>0){
+            if (index<items.size()){
+                JobBean jobBean = items.get(index);
+                tvName.setText(jobBean.getTypeTitle());
+                index++;
+            }else {
+                //加载更多
+                page++;
+                getRecommend();
+            }
+        }
+
+    }
+
+    @Override
+    protected void initPopupContent() {
+        super.initPopupContent();
+    }
+
     private void animRota(View view){
         PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f,0f,1f);
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
@@ -54,8 +109,7 @@ public class PushJobPop extends CenterPopupView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String s = tvName.getText().toString();
-                tvName.setText(s.equals("木工")?"电工":"木工");
+                setData();
 
             }
         },400);

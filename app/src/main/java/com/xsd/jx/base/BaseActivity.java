@@ -27,6 +27,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected DataProvider dataProvider;
     @Inject
     protected LoadDialog dialog;
+
+    public DataProvider getDataProvider() {
+        return dataProvider;
+    }
+
+    public LoadDialog getDialog() {
+        return dialog;
+    }
+
     protected abstract int getLayoutId();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

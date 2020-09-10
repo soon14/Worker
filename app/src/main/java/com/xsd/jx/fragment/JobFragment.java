@@ -13,11 +13,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.LoginActivity;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.JobAdapter;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.WorkListResponse;
@@ -51,7 +55,13 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
     @Override
     protected void onBindView(View view, ViewGroup container, Bundle savedInstanceState) {
+        Apollo.bind(this);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
     }
 
     @Override
@@ -59,7 +69,28 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         initView();
         onEvent();
         loadData();
+        getInviteList();
     }
+    //被邀请上工信息列表
+    @Receive(EventStr.UPDATE_INVITE_LIST)
+    public void getInviteList() {
+        dataProvider.work.inviteList()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<List<JobBean>>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<List<JobBean>> baseResponse) {
+                        List<JobBean> data = baseResponse.getData();
+                        if (data!=null&&data.size()>0){
+                            db.radarView.setVisibility(View.VISIBLE);
+                            db.tvInvite.setText(data.size()+"个\n邀请");
+                            db.tvInvite.setOnClickListener(v ->{
+                                showInviteJob(data);
+                            } );
+                        }
+                    }
+                });
+
+    }
+
 
     private void initView() {
         //轮播图片
@@ -71,16 +102,9 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         BannerUtils.initBanner(db.banner,imgs);
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         db.recyclerView.setAdapter(mAdapter);
-
         //添加头部提示
         TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
         mAdapter.addHeaderView(tvNotice);
-
-//        List<JobBean> datas = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            datas.add(new JobBean());
-//        }
-//        mAdapter.setList(datas);
     }
     //网络请求
     private void loadData() {
@@ -142,12 +166,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                 goActivity(JobInfoActivity.class);
             }
         });
-        db.tvInvite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showInviteJob();
-            }
-        });
+
 
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -164,9 +183,9 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                 .asCustom(new BottomSharePop(this.getActivity()))
                 .show();
     }
-    private void showInviteJob() {
+    private void showInviteJob(List<JobBean> data) {
         new XPopup.Builder(this.getActivity())
-                .asCustom(new InviteJobPop(this.getActivity()))
+                .asCustom(new InviteJobPop((BaseActivity) this.getActivity(),data))
                 .show();
     }
 

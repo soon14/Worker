@@ -1,9 +1,11 @@
 package com.xsd.jx.api;
 
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
+import com.xsd.jx.bean.WorkRecommendResponse;
 import com.xsd.jx.bean.WorkTypeResponse;
 
 import java.util.List;
@@ -28,13 +30,19 @@ public interface WorkApi {
     Observable<BaseResponse<MessageBean>> workTypeSubmitChoice(@Query("ids")String ids);
     //登录用户推荐工作
     @GET("work/recommend")
-    Observable<BaseResponse<MessageBean>> recommend();
+    Observable<BaseResponse<WorkRecommendResponse>> recommend(@Query("page")Integer page);
+    //被邀请上工信息列表
+    @GET("work/invited-list")
+    Observable<BaseResponse<List<JobBean>>> inviteList();
     //招工信息列表 type integer招工类型 0:不限 1:短期工 2：长期工
     @GET("work/list")
     Observable<BaseResponse<WorkListResponse>> list(@Query("page")Integer page,@Query("type")Integer type);
     //查工价
     @GET("work/price")
     Observable<BaseResponse<List<JobSearchBean>>> price(@Query("areaId")Integer areaId, @Query("keywords")String keywords);
+    //接受上工邀请 workId 招工信息ID
+    @GET("work/accept-invite")
+    Observable<BaseResponse<MessageBean>> acceptInvite(@Query("workId")Integer workId);
 
 
 }
