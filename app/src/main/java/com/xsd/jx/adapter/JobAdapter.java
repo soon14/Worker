@@ -24,12 +24,6 @@ public class JobAdapter extends BaseQuickAdapter<JobBean, BaseDataBindingHolder<
     protected void convert(@NotNull BaseDataBindingHolder<ItemJobBinding> helper, JobBean jobBean) {
         ItemJobBinding dataBinding = helper.getDataBinding();
         dataBinding.setItem(jobBean);
-//        SpannableStringBuilder spanStr = SpannableStringUtils.getBuilder("上工地点：武汉市青山区建设一路31号武汉宝业中心A座\n")
-//                .append("  位置")
-//                .setResourceId(R.mipmap.ic_gray_loca).append("距您1.0KM").create();
-//            dataBinding.tvAddr.setText(spanStr);
-        helper.setText(R.id.tv_price,jobBean.getPrice()+"元/天");
-
     }
 
 

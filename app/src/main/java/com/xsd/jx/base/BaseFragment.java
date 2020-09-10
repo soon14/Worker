@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.inject.DaggerCommonComponent;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.inject.NetWorkMoudle;
+import com.xsd.jx.job.JobInfoActivity;
 
 import javax.inject.Inject;
 
@@ -78,6 +80,11 @@ public abstract class BaseFragment extends Fragment {
     public void goActivity(Class<?> clz,int type){
         Intent intent = new Intent(this.getActivity(), clz);
         intent.putExtra("type",type);
+        startActivity(intent);
+    }
+    public void goJobInfoActivity(JobBean jobBean){
+        Intent intent = new Intent(this.getActivity(), JobInfoActivity.class);
+        intent.putExtra("JobBean",jobBean);
         startActivity(intent);
     }
 

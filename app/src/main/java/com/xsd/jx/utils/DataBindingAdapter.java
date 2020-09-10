@@ -84,8 +84,24 @@ public class DataBindingAdapter {
     public static void workDay(TextView tv, JobBean item){
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
+    //工种类型：木工（共需3人）
+    @BindingAdapter("workType")
+    public static void workType(TextView tv, JobBean item){
+        tv.setText(item.getTypeTitle()+"（共需"+item.getNum()+"人）");
+    }
+
+    @BindingAdapter("workDayInfo")
+    public static void workDayInfo(TextView tv, JobBean item){
+        tv.setText(item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
     @BindingAdapter("price")
     public static void price(TextView tv, String price){
         tv.setText(price+"元/天");
+    }
+
+    @BindingAdapter("isJoin")
+    public static void isJoin(TextView tv, boolean isJoin){
+        tv.setText(isJoin?"已报名":"报名上工");
+        tv.setBackgroundResource(isJoin?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
     }
 }

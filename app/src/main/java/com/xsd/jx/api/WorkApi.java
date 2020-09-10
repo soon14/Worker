@@ -43,6 +43,9 @@ public interface WorkApi {
     //接受上工邀请 workId 招工信息ID
     @GET("work/accept-invite")
     Observable<BaseResponse<MessageBean>> acceptInvite(@Query("workId")Integer workId);
+    //报名上工 workId 招工信息ID
+    @GET("work/join")
+    Observable<BaseResponse<MessageBean>> join(@Query("workId")Integer workId);
 
 
 }

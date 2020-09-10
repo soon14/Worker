@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.databinding.ActivityJobInfoBinding;
 
 /**
@@ -23,5 +24,8 @@ public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding>
     }
 
     private void initView() {
+        JobBean item = (JobBean) getIntent().getSerializableExtra("JobBean");
+        db.setItem(item);
+
     }
 }

@@ -5,9 +5,9 @@ import android.animation.PropertyValuesHolder;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
@@ -16,6 +16,7 @@ import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.WorkRecommendResponse;
+import com.xsd.jx.databinding.PopPushJobBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.ToastUtil;
 
@@ -27,10 +28,10 @@ import java.util.List;
  */
 public class PushJobPop extends CenterPopupView {
 
-    private List<JobBean> items;
-    private TextView tvName;
-    private int index;//获取数据位置
     private BaseActivity activity;
+    private List<JobBean> items;
+    private int index;//获取数据位置
+    private PopPushJobBinding db;
     private int page=1;
     public PushJobPop(@NonNull BaseActivity context) {
         super(context);
@@ -44,17 +45,11 @@ public class PushJobPop extends CenterPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
-        tvName = findViewById(R.id.tv_name);
-        View layoutRoot = findViewById(R.id.layout_root);
-        findViewById(R.id.tv_next).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animRota(layoutRoot);
-            }
-        });
+        db = DataBindingUtil.bind(getPopupImplView());
+        db.tvNext.setOnClickListener(v -> animRota(db.layoutRoot));
         getRecommend();
-
     }
+
 
     //登录用户推荐工作
     private void getRecommend() {
@@ -81,7 +76,7 @@ public class PushJobPop extends CenterPopupView {
         if (items!=null&&items.size()>0){
             if (index<items.size()){
                 JobBean jobBean = items.get(index);
-                tvName.setText(jobBean.getTypeTitle());
+                db.setItem(jobBean);
                 index++;
             }else {
                 //加载更多
@@ -92,11 +87,10 @@ public class PushJobPop extends CenterPopupView {
 
     }
 
-    @Override
-    protected void initPopupContent() {
-        super.initPopupContent();
-    }
 
+    /**
+     * 中心放大效果
+     */
     private void animRota(View view){
         PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f,0f,1f);
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
@@ -104,21 +98,13 @@ public class PushJobPop extends CenterPopupView {
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, alpha, scaleX,scaleY);
         animator.setRepeatMode(ObjectAnimator.RESTART);
         animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(800);
+        animator.setDuration(600);
         animator.start();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setData();
-
-            }
-        },400);
+        new Handler().postDelayed(() -> setData(),300);
     }
 
     /**
      * 卡片翻转效果
-     * @param view
-     * @return
      */
     public static ObjectAnimator rotateAnim(View view) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotationY",0,360f);

@@ -94,11 +94,13 @@
             android:textSize="@dimen/h4" />
 
         <TextView
-            android:id="@+id/tv_apply"
+            isJoin="@{item.isJoin}"
+            android:id="@+id/tv_join"
             style="@style/DefaultBtnStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_16"
-            android:text="报名上工" />
+            android:text="报名上工"
+            />
         </LinearLayout>
         <View style="@style/h_space_line"/>
 

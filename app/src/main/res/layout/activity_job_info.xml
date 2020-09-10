@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.JobBean" />
+        <import type="android.view.View"/>
     </data>
 
     <RelativeLayout
@@ -119,18 +122,19 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_name"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="木工"
+                        tools:text="木工"
+                        android:text="@{item.typeTitle}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/h3" />
 
                     <TextView
+                        price="@{item.price}"
                         style="@style/TextPriceStyle"
                         android:gravity="right"
-                        android:text="350元/天" />
+                        tools:text="350元/天" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,17 +145,23 @@
 
                     <TextView
                         style="@style/TextWelfareTagStyle"
-                        android:text="日结" />
+                        tools:text="日结"
+                        android:text="@{item.settleType==1?`日结`:`做完再结`}"
+                        />
+
+                    <TextView
+                        advanceType="@{item.advanceType}"
+                        android:layout_marginLeft="@dimen/dp_6"
+                        style="@style/TextWelfareTagStyle"
+                        tools:text="已付定金"
+                        />
 
                     <TextView
                         android:layout_marginLeft="@dimen/dp_6"
                         style="@style/TextWelfareTagStyle"
-                        android:text="已付定金" />
-
-                    <TextView
-                        android:layout_marginLeft="@dimen/dp_6"
-                        style="@style/TextWelfareTagStyle"
-                        android:text="购买保险" />
+                        android:text="购买保险"
+                        android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
+                        />
                 </LinearLayout>
 
                 <TextView
@@ -163,11 +173,12 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
+                    workDayInfo="@{item}"
                     android:layout_marginTop="@dimen/dp_16"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2020-07-29至2020-08-29(共30天)"
+                    tools:text="2020-07-29至2020-08-29(共30天)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
@@ -182,20 +193,11 @@
                     android:layout_marginTop="@dimen/dp_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="武汉市青山区建设一路31号武汉宝业中心A座"
+                    tools:text="武汉市青山区建设一路31号武汉宝业中心A座"
+                    android:text="@{item.address}"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4" />
 
-                <TextView
-                    android:drawablePadding="@dimen/dp_6"
-                    android:drawableLeft="@mipmap/ic_gray_loca"
-                    android:id="@+id/tv_addr"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="距您1.0km"
-                    android:textColor="@color/dimgray"
-                    android:textSize="@dimen/h4" />
 
                 <TextView
                     android:layout_marginTop="@dimen/dp_16"
@@ -209,7 +211,8 @@
                     android:layout_marginTop="@dimen/dp_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本工地大量招收木工师傅，做包工、点工都可以，价格挺不错，活可以做一年，学徒、突击队勿扰，地点在湖北范围内。"
+                    tools:text="本工地大量招收木工师傅，做包工、点工都可以，价格挺不错，活可以做一年，学徒、突击队勿扰，地点在湖北范围内。"
+                    android:text="@{item.desc}"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4" />
 
@@ -232,11 +235,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        workType="@{item}"
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_24"
-                        android:text="木工（共需3人）"
+                        tools:text="木工（共需3人）"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/h5"
                         app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -269,6 +273,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        tools:text="武汉先华匠心集团"
                         android:text="武汉先华匠心集团"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/h5"
@@ -280,7 +285,8 @@
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="武汉事业部"
+                        tools:text="武汉事业部"
+                        android:text="@{item.division}"
                         android:textColor="#ff333333"
                         android:textSize="@dimen/h5"
                         app:layout_constraintBottom_toBottomOf="@+id/textView5"
@@ -321,6 +327,7 @@
             </LinearLayout>
         </ScrollView>
         <TextView
+            isJoin="@{item.isJoin}"
             android:layout_marginBottom="@dimen/dp_16"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

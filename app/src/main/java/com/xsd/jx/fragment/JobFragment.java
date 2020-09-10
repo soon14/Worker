@@ -16,7 +16,6 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
-import com.xsd.jx.LoginActivity;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseActivity;
@@ -24,11 +23,11 @@ import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.databinding.FragmentJobBinding;
-import com.xsd.jx.job.JobInfoActivity;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.SignActivity;
@@ -146,24 +145,29 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                         goActivity(SignActivity.class);
                         break;
                     case 4:
-                        goActivity(LoginActivity.class);
-//                        showShare();
+//                        goActivity(LoginActivity.class);
+                        showShare();
                         break;
                 }
             });
         }
-        mAdapter.addChildClickViewIds(R.id.tv_apply);
+        mAdapter.addChildClickViewIds(R.id.tv_join);
         mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                showRealNameAuth(view);
-//                showTips(view);
+                JobBean item = (JobBean) adapter.getItem(position);
+                switch (view.getId()){
+                    case R.id.tv_join:
+                        join(item.getId(),position);
+                        break;
+                }
             }
         });
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                goActivity(JobInfoActivity.class);
+                JobBean item = (JobBean) adapter.getItem(position);
+                goJobInfoActivity(item);
             }
         });
 
@@ -176,6 +180,17 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             }
         });
 
+    }
+
+    private void join(int id,int position) {
+        dataProvider.work.join(id)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        mAdapter.getData().get(position).setIsJoin(true);
+                        mAdapter.notifyItemChanged(position);
+                    }
+                });
     }
 
     private void showShare() {
