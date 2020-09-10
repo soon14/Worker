@@ -6,4 +6,4 @@
         android:layout_height="wrap_content"
         android:text="当前只开通湖北地区，其他地区即将开放..."
         android:textColor="#ff999999"
-        android:textSize="@dimen/h6"/>
+        android:textSize="@dimen/h5"/>

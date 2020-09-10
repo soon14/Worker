@@ -52,70 +52,70 @@
                         android:textSize="@dimen/h5"
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:padding="8.0dip"
-                        android:layout_width="0.0dip"
+                        android:padding="8dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="查工价"
                         android:drawableTop="@mipmap/ic_main_tab1"
-                        android:drawablePadding="8.0dip"
-                        android:layout_weight="1.0" />
+                        android:drawablePadding="8dp"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:textSize="@dimen/h5"
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:padding="8.0dip"
-                        android:layout_width="0.0dip"
+                        android:padding="8dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="突击工"
                         android:drawableTop="@mipmap/ic_main_tab2"
-                        android:drawablePadding="8.0dip"
-                        android:layout_weight="1.0" />
+                        android:drawablePadding="8dp"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:textSize="@dimen/h5"
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:padding="8.0dip"
-                        android:layout_width="0.0dip"
+                        android:padding="8dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="长期工"
                         android:drawableTop="@mipmap/ic_main_tab3"
-                        android:drawablePadding="8.0dip"
-                        android:layout_weight="1.0" />
+                        android:drawablePadding="8dp"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:textSize="@dimen/h5"
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:padding="8.0dip"
-                        android:layout_width="0.0dip"
+                        android:padding="8dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="考勤打卡"
                         android:drawableTop="@mipmap/ic_main_tab4"
-                        android:drawablePadding="8.0dip"
-                        android:layout_weight="1.0" />
+                        android:drawablePadding="8dp"
+                        android:layout_weight="1" />
 
                     <RelativeLayout
-                        android:layout_width="0.0dip"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0">
+                        android:layout_weight="1">
 
                         <TextView
                             android:textSize="@dimen/h5"
                             android:textColor="@color/black"
                             android:gravity="center"
-                            android:padding="8.0dip"
+                            android:padding="8dp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_8"
                             android:text="推荐领钱"
                             android:drawableTop="@mipmap/ic_main_tab5"
-                            android:drawablePadding="8.0dip" />
+                            android:drawablePadding="8dp" />
 
                         <ImageView
                             android:layout_width="wrap_content"

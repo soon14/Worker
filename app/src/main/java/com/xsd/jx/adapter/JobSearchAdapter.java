@@ -20,6 +20,7 @@ public class JobSearchAdapter extends BaseQuickAdapter<JobSearchBean, BaseDataBi
     @Override
     protected void convert(@NotNull BaseDataBindingHolder<ItemJobSearchBinding> holder, JobSearchBean searchJobBean) {
         ItemJobSearchBinding dataBinding = holder.getDataBinding();
+        dataBinding.setItem(searchJobBean);
 
     }
 }

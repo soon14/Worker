@@ -6,13 +6,10 @@ import android.text.TextUtils;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.load.HttpException;
-import com.google.gson.internal.LinkedTreeMap;
+import com.xsd.jx.bean.BaseResponse;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
-import com.xsd.jx.bean.BaseErrResponse;
-import com.xsd.jx.bean.BaseResponse;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -63,46 +60,15 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
     @Override
     public void onNext(T t) {
         dismissLoading();
-        if (t instanceof String) {
-            JSONObject object = JSONObject.parseObject((String) t);
-            if (object.containsKey("success")) {
-                boolean success = object.getBoolean("success");
-                if (success) {
-                    onSuccess(t);
-                } else {
-                    BaseErrResponse errResponse = AppJsonUtil.getObject((String) t, BaseErrResponse.class);
-                    onErr(errResponse);
-                }
+        try {
+            BaseResponse baseResponse = (BaseResponse) t;
+            if (baseResponse.getCode()==0){
+                onSuccess(t);
+            }else {
+                onErr(baseResponse.getMessage());
             }
-        } else {
-
-            try {
-                BaseResponse baseResponse = (BaseResponse) t;
-                if (baseResponse.getSuccess()) {
-                    onSuccess(t);
-                } else {
-                    Object dataErr = baseResponse.getData();
-                    BaseErrResponse errResponse = null;
-                    if (dataErr instanceof BaseErrResponse) {
-                        errResponse = (BaseErrResponse) dataErr;
-                    } else if (dataErr instanceof LinkedTreeMap) {
-                        LinkedTreeMap data = (LinkedTreeMap) dataErr;
-                        String codeStr = data.get("code").toString();
-                        String statusStr = data.get("status").toString();
-                        String code = codeStr.substring(0, codeStr.indexOf("."));
-                        String status = statusStr.substring(0, statusStr.indexOf("."));
-                        errResponse = new BaseErrResponse.Builder()
-                                .name((String) data.get("name"))
-                                .message((String) data.get("message"))
-                                .code(Integer.parseInt(code))
-                                .status(Integer.parseInt(status)).build();
-                    }
-                    L.e(TAG,"错误==" + errResponse.toString());
-                    onErr(errResponse);
-                }
-            } catch (Exception e) {
-                onError(e);
-            }
+        } catch (Exception e) {
+            onError(e);
         }
     }
 
@@ -132,16 +98,9 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
 
     protected abstract void onSuccess(T t);
 
-    protected void onErr(BaseErrResponse err) {
+    protected void onErr(String err) {
+        ToastUtil.showLong(err);
         L.e(TAG,"网络数据异常：" + err.toString());
-        switch (err.getStatus()) {
-            case 401://跳登录
-                break;
-            default:
-                ToastUtil.showLong(err.getMessage());
-                break;
-        }
-
     }
 }
 

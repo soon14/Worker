@@ -33,8 +33,7 @@ public class LogHeaderInterceptor implements Interceptor {
             Request request = chain.request();
 
             //如果用户已经登录，头部加入auth
-//            String auth = UserUtils.getAuth();
-            String auth = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODI2ODY4MTMsInVpZCI6MX0.CwNrfzcWR9_UqWQ7ff9eEPtdzgSk1ZuHrWkjDAFZUs8";
+            String auth = "Bearer "+UserUtils.getToken();
             if (!TextUtils.isEmpty(auth)){
                 Request.Builder requestBuilder = request.newBuilder();
                 request = requestBuilder.addHeader("Authorization", auth).build();

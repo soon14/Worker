@@ -12,11 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.lxj.xpopup.XPopup;
+import com.xsd.jx.LoginActivity;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseBindFragment;
+import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.WorkListResponse;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.databinding.FragmentJobBinding;
@@ -26,7 +30,7 @@ import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.SignActivity;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BannerUtils;
-import com.xsd.utils.L;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,7 @@ import java.util.List;
 public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     private static final String TAG = "JobFragment";
     private JobAdapter mAdapter = new JobAdapter();
+    int page;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_job;
@@ -46,13 +51,11 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
     @Override
     protected void onBindView(View view, ViewGroup container, Bundle savedInstanceState) {
-        L.e(TAG,"onBindView");
 
     }
 
     @Override
     protected void onLazyLoad() {
-        L.e(TAG,"onLazyLoad");
         initView();
         onEvent();
         loadData();
@@ -73,15 +76,32 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
         mAdapter.addHeaderView(tvNotice);
 
-        List<JobBean> datas = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            datas.add(new JobBean());
-        }
-        mAdapter.setList(datas);
+//        List<JobBean> datas = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            datas.add(new JobBean());
+//        }
+//        mAdapter.setList(datas);
     }
     //网络请求
     private void loadData() {
+        dataProvider.work.list(page,0)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkListResponse> baseResponse) {
+                        WorkListResponse data = baseResponse.getData();
+                        List<JobBean> items = data.getItems();
+                        if (items!=null&&items.size()>0){
+                            if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+                            mAdapter.getLoadMoreModule().loadMoreComplete();
+                        }else {
+                            mAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
+                    }
+                });
     }
+
+
+
 
     private void onEvent() {
         int childCount = db.layoutTab.getChildCount();
@@ -102,8 +122,8 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                         goActivity(SignActivity.class);
                         break;
                     case 4:
-//                        goActivity(LoginActivity.class);
-                        showShare();
+                        goActivity(LoginActivity.class);
+//                        showShare();
                         break;
                 }
             });
@@ -126,6 +146,14 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             @Override
             public void onClick(View v) {
                 showInviteJob();
+            }
+        });
+
+        mAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                page++;
+                loadData();
             }
         });
 

@@ -21,6 +21,15 @@ public class AddrBean {
     private String center;
     private int parent_id;
 
+    private AddrBean(Builder builder) {
+        setId(builder.id);
+        setName(builder.name);
+        setLevel(builder.level);
+        setCenter(builder.center);
+        setParent_id(builder.parent_id);
+    }
+
+
     @Override
     public String toString() {
         return "AddrBean{" +
@@ -70,5 +79,45 @@ public class AddrBean {
 
     public void setParent_id(int parent_id) {
         this.parent_id = parent_id;
+    }
+
+    public static final class Builder {
+        private int id;
+        private String name;
+        private int level;
+        private String center;
+        private int parent_id;
+
+        public Builder() {
+        }
+
+        public Builder id(int val) {
+            id = val;
+            return this;
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder level(int val) {
+            level = val;
+            return this;
+        }
+
+        public Builder center(String val) {
+            center = val;
+            return this;
+        }
+
+        public Builder parent_id(int val) {
+            parent_id = val;
+            return this;
+        }
+
+        public AddrBean build() {
+            return new AddrBean(this);
+        }
     }
 }

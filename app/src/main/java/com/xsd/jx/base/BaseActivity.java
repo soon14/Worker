@@ -10,6 +10,7 @@ import com.xsd.jx.inject.DaggerCommonComponent;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.inject.NetWorkMoudle;
 import com.xsd.utils.ActivityCollector;
+import com.xsd.utils.dialog.LoadDialog;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,8 @@ import javax.inject.Inject;
 public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     protected DataProvider dataProvider;
+    @Inject
+    protected LoadDialog dialog;
     protected abstract int getLayoutId();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

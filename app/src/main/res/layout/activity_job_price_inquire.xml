@@ -15,6 +15,7 @@
         tools:context="com.xsd.jx.job.JobPriceInquireActivity">
         <include layout="@layout/action_common_bar"/>
         <LinearLayout
+            android:id="@+id/layout_search"
             android:gravity="center_vertical"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
@@ -24,12 +25,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44">
             <TextView
+                android:id="@+id/tv_addr"
                 android:textSize="@dimen/h5"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:drawablePadding="@dimen/dp_4"
                 android:drawableRight="@mipmap/ic_black_arrow_down"
                 android:textColor="@color/black"
-                android:text="重庆"
+                android:text="武汉市"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <View style="@style/v_line" android:layout_margin="@dimen/dp_8"/>

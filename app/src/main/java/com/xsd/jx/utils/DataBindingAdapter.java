@@ -1,6 +1,7 @@
 package com.xsd.jx.utils;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
@@ -9,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.xsd.jx.R;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.SmallUtils;
 
@@ -61,5 +63,29 @@ public class DataBindingAdapter {
         CornerTransform transformation = new CornerTransform(SmallUtils.getApp(), DpPxUtils.dp2pxFloat(roundingRadius==0?9:roundingRadius));
         transformation.setExceptCorner(true, true, false, false);
         Glide.with(SmallUtils.getApp()).load(imageRoundUrl).apply(new RequestOptions().transform(transformation)).into(view);
+    }
+    //付款多少
+    @BindingAdapter("advanceType")
+    public static void advanceType(TextView tv, int type){
+        switch (type){
+            case 1:
+                tv.setText("两成");
+                break;
+            case 2:
+                tv.setText("全款");
+                break;
+            case 3:
+                tv.setText("未预付");
+                break;
+        }
+    }
+    //工期：2020-07-29至2020-08-29(共30天)
+    @BindingAdapter("workDay")
+    public static void workDay(TextView tv, JobBean item){
+        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
+    @BindingAdapter("price")
+    public static void price(TextView tv, String price){
+        tv.setText(price+"元/天");
     }
 }
