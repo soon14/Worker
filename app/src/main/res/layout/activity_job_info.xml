@@ -8,6 +8,9 @@
             name="item"
             type="com.xsd.jx.bean.JobBean" />
         <import type="android.view.View"/>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <RelativeLayout
@@ -73,6 +76,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
+                android:onClick="@{clicklistener}"
                 android:drawablePadding="@dimen/dp_4"
                 android:layout_marginRight="@dimen/dp_8"
                 android:id="@+id/tv_share"
@@ -88,9 +92,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_back" />
             <TextView
+                isFav="@{item.isFav}"
+                android:onClick="@{clicklistener}"
                 android:drawablePadding="@dimen/dp_4"
                 android:layout_marginRight="@dimen/dp_24"
-                android:id="@+id/tv_collect"
+                android:id="@+id/tv_fav"
                 android:textSize="@dimen/h6"
                 android:textColor="@color/tv_black"
                 android:paddingRight="8dp"
@@ -327,11 +333,13 @@
             </LinearLayout>
         </ScrollView>
         <TextView
+            android:onClick="@{clicklistener}"
+            android:enabled="@{!item.isJoin}"
             isJoin="@{item.isJoin}"
             android:layout_marginBottom="@dimen/dp_16"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:id="@+id/tv_apply"
+            android:id="@+id/tv_join"
             style="@style/DefaultBtnStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_16"

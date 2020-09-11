@@ -7,6 +7,9 @@
             name="item"
             type="com.xsd.jx.bean.JobBean" />
         <import type="android.view.View"/>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -20,6 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50">
             <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_close"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h5"
                 android:padding="@dimen/dp_16"
@@ -28,6 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/tv_share"
+                android:onClick="@{clicklistener}"
                 android:textSize="@dimen/h5"
                 android:drawablePadding="4dp"
                 android:drawableLeft="@mipmap/ic_black_share"
@@ -110,11 +117,12 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
+                    workDayInfo="@{item}"
                     android:layout_marginTop="@dimen/dp_16"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2020-07-29至2020-08-29(共30天)"
+                    tools:text="2020-07-29至2020-08-29(共30天)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
@@ -129,20 +137,11 @@
                     android:layout_marginTop="@dimen/dp_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="武汉市青山区建设一路31号武汉宝业中心A座"
+                    tools:text="武汉市青山区建设一路31号武汉宝业中心A座"
+                    android:text="@{item.address}"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4" />
 
-                <TextView
-                    android:drawablePadding="@dimen/dp_6"
-                    android:drawableLeft="@mipmap/ic_gray_loca"
-                    android:id="@+id/tv_addr"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="距您1.0km"
-                    android:textColor="@color/dimgray"
-                    android:textSize="@dimen/h4" />
 
                 <TextView
                     android:layout_marginTop="@dimen/dp_16"
@@ -156,10 +155,13 @@
                     android:layout_marginTop="@dimen/dp_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本工地大量招收木工师傅，做包工、点工都可以，价格挺不错，活可以做一年，学徒、突击队勿扰，地点在湖北范围内。"
+                    tools:text="本工地大量招收木工师傅，做包工、点工都可以，价格挺不错，活可以做一年，学徒、突击队勿扰，地点在湖北范围内。"
+                    android:text="@{item.desc}"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4" />
                 <TextView
+                    android:id="@+id/tv_look_more"
+                    android:onClick="@{clicklistener}"
                     android:layout_marginTop="@dimen/dp_16"
                     android:layout_gravity="center_horizontal"
                     android:padding="@dimen/dp_8"
@@ -183,7 +185,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tv_collect"
+                isFav="@{item.isFav}"
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_fav"
                 android:drawablePadding="@dimen/dp_8"
                 android:padding="@dimen/dp_8"
                 android:layout_centerVertical="true"
@@ -194,13 +198,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                isJoin="@{item.isJoin}"
                 android:layout_centerInParent="true"
-                android:id="@+id/tv_apply"
+                android:id="@+id/tv_join"
                 style="@style/DefaultBtnStyle"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_16"
                 android:text="报名上工" />
             <TextView
+                android:onClick="@{clicklistener}"
                 android:id="@+id/tv_next"
                 android:drawablePadding="@dimen/dp_8"
                 android:layout_alignParentRight="true"
@@ -214,6 +220,8 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
         <TextView
+            android:id="@+id/tv_ignore"
+            android:onClick="@{clicklistener}"
             android:layout_marginBottom="@dimen/dp_8"
             android:layout_gravity="center_horizontal"
             android:padding="@dimen/dp_8"

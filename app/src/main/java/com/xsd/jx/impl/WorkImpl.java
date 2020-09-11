@@ -2,7 +2,7 @@ package com.xsd.jx.impl;
 
 import com.xsd.jx.api.WorkApi;
 import com.xsd.jx.bean.BaseResponse;
-import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
@@ -44,7 +44,7 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<List<JobBean>>> inviteList() {
+    public Observable<BaseResponse<InviteListResponse>> inviteList() {
         return bindIoUI(api.inviteList());
     }
 
@@ -66,5 +66,10 @@ public class WorkImpl implements WorkApi {
     @Override
     public Observable<BaseResponse<MessageBean>> join(Integer workId) {
         return bindIoUI(api.join(workId));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> fav(Integer workId) {
+        return bindIoUI(api.fav(workId));
     }
 }

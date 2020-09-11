@@ -3,6 +3,7 @@ package com.xsd.jx.utils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
@@ -92,6 +93,7 @@ public class DataBindingAdapter {
 
     @BindingAdapter("workDayInfo")
     public static void workDayInfo(TextView tv, JobBean item){
+        if (item==null)return;
         tv.setText(item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("price")
@@ -103,5 +105,12 @@ public class DataBindingAdapter {
     public static void isJoin(TextView tv, boolean isJoin){
         tv.setText(isJoin?"已报名":"报名上工");
         tv.setBackgroundResource(isJoin?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
+    }
+    @BindingAdapter("isFav")
+    public static void isFav(TextView tv, boolean isFav){
+        tv.setText(isFav?"已收藏":"收藏");
+        tv.setTextColor(ContextCompat.getColor(tv.getContext(),isFav?R.color.colorAccent:R.color.tv_black));
+        TextViewUtils.setTopIcon(isFav?R.mipmap.ic_collected:R.mipmap.ic_uncollected,tv);
+        AnimUtils.tabSelect(tv);
     }
 }

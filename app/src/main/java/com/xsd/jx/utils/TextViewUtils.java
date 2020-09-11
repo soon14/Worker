@@ -26,6 +26,15 @@ public class TextViewUtils {
         iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
         textView.setCompoundDrawables(iconDrawable, null, null, null);
     }
+    public static void setTopIcon(int resId, TextView textView) {
+        if (resId==0){
+            textView.setCompoundDrawables(null, null, null, null);
+            return;
+        }
+        Drawable iconDrawable = textView.getResources().getDrawable(resId);
+        iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());
+        textView.setCompoundDrawables(null, iconDrawable, null, null);
+    }
     public static void setRightIcon(int resId, TextView textView) {
         Drawable iconDrawable = textView.getResources().getDrawable(resId);
         iconDrawable.setBounds(0, 0, iconDrawable.getMinimumWidth(), iconDrawable.getMinimumHeight());

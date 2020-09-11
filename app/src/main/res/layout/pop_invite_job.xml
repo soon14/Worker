@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/tv_title"
             android:gravity="center"
             android:background="@drawable/round6_bluetop_bg"
             android:textColor="@color/white"

@@ -126,12 +126,16 @@
                     </RelativeLayout>
                 </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>
-
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.xsd.utils.custom.RadarView

@@ -18,7 +18,6 @@ import com.xsd.jx.job.SelectTypeWorkActivity;
 import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.L;
 
 /**
  * 主要包含：
@@ -46,9 +45,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
-
-        L.e("token=="+ UserUtils.getToken());
-        if (UserUtils.isLogin())PopShowUtils.showPushJob(this);
+        if (UserUtils.isLogin())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
         if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
     }
 
@@ -59,13 +56,11 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             public int getCount() {
                 return fragments.length;
             }
-
             @NonNull
             @Override
             public Fragment getItem(int i) {
                 return fragments[i];
             }
-
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
@@ -77,6 +72,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, null);
 
     }
+
 
 
 }

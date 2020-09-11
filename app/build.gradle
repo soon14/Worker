@@ -38,9 +38,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-//            zipAlignEnabled true
-//            shrinkResources true//只有在开启混淆的前提下，压缩资源才会生效
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true//只有在开启混淆的前提下，压缩资源才会生效
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

@@ -3,6 +3,7 @@ package com.xsd.jx.custom;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -78,6 +79,8 @@ public class InviteJobPop extends CenterPopupView {
             });
         }
         findViewById(R.id.layout_look_other).setOnClickListener(view -> dismiss());
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText("以下"+data.size()+"位雇主正邀请您上工，点击接受直接上工");
 
     }
 

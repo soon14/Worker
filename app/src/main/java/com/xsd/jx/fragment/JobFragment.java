@@ -12,28 +12,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
-import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
-import com.xsd.jx.custom.BottomSharePop;
-import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.databinding.FragmentJobBinding;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.SignActivity;
-import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BannerUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ import java.util.List;
 public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     private static final String TAG = "JobFragment";
     private JobAdapter mAdapter = new JobAdapter();
-    int page;
+    private int page;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_job;
@@ -66,23 +63,27 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     @Override
     protected void onLazyLoad() {
         initView();
-        onEvent();
+
         loadData();
         getInviteList();
+
+        onEvent();
     }
     //被邀请上工信息列表
     @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
         dataProvider.work.inviteList()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<List<JobBean>>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
                     @Override
-                    protected void onSuccess(BaseResponse<List<JobBean>> baseResponse) {
-                        List<JobBean> data = baseResponse.getData();
+                    protected void onSuccess(BaseResponse<InviteListResponse> baseResponse) {
+                        InviteListResponse response = baseResponse.getData();
+                        List<JobBean> data = response.getItems();
+                        int count = response.getCount();
                         if (data!=null&&data.size()>0){
                             db.radarView.setVisibility(View.VISIBLE);
-                            db.tvInvite.setText(data.size()+"个\n邀请");
+                            db.tvInvite.setText(count+"个\n邀请");
                             db.tvInvite.setOnClickListener(v ->{
-                                showInviteJob(data);
+                                PopShowUtils.showInviteJob(data, (BaseActivity) JobFragment.this.getActivity());
                             } );
                         }
                     }
@@ -108,7 +109,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     //网络请求
     private void loadData() {
         dataProvider.work.list(page,0)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<WorkListResponse> baseResponse) {
                         WorkListResponse data = baseResponse.getData();
@@ -136,17 +137,16 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                         goActivity(JobPriceInquireActivity.class);
                         break;
                     case 1://突击工
-                        goActivity(PermanentWorkerActivity.class,0);
+                        goActivity(PermanentWorkerActivity.class,1);
                         break;
                     case 2://长期工
-                        goActivity(PermanentWorkerActivity.class,1);
+                        goActivity(PermanentWorkerActivity.class,2);
                         break;
                     case 3:
                         goActivity(SignActivity.class);
                         break;
                     case 4:
-//                        goActivity(LoginActivity.class);
-                        showShare();
+                        PopShowUtils.showShare((BaseActivity) this.getActivity());
                         break;
                 }
             });
@@ -171,13 +171,16 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             }
         });
 
+        //加载更多
+        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
+            page++;
+            loadData();
+        });
 
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                loadData();
-            }
+        //下拉刷新
+        db.refreshLayout.setOnRefreshListener(() -> {
+            page=1;
+            loadData();
         });
 
     }
@@ -188,45 +191,12 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         mAdapter.getData().get(position).setIsJoin(true);
-                        mAdapter.notifyItemChanged(position);
+                        mAdapter.refreshData(position+1);
+                        PopShowUtils.showTips(db.tvInvite);
                     }
                 });
     }
 
-    private void showShare() {
-        new XPopup.Builder(this.getActivity())
-                .asCustom(new BottomSharePop(this.getActivity()))
-                .show();
-    }
-    private void showInviteJob(List<JobBean> data) {
-        new XPopup.Builder(this.getActivity())
-                .asCustom(new InviteJobPop((BaseActivity) this.getActivity(),data))
-                .show();
-    }
 
-    private void showTips(View v) {
-        new XPopup.Builder(v.getContext())
-                .asConfirm("报名上工提醒",
-                        "您已成功报名上工，请耐心等待企业确认您的上工申请，企业确认后您才可有效上工。",
-                        "取消",
-                        "知道了",
-                        null,
-                        null,
-                        true,
-                        R.layout.dialog_tips)
-                .show();
-    }
-    private void showRealNameAuth(View v) {
-        new XPopup.Builder(v.getContext())
-                .asConfirm("实名认证提醒",
-                        "根据国家政策规定，您需要先完成实名认证才可上工。",
-                        "取消",
-                        "实名认证提醒",
-                        () -> goActivity(RealNameAuthActivity.class),
-                        null,
-                        true,R.layout.dialog_tips)
-                .show();
-
-    }
 
 }
