@@ -92,6 +92,7 @@
                 android:textSize="@dimen/h5"
                 />
             <TextView
+                android:id="@+id/tv_cancel"
                 android:gravity="center"
                 android:background="@drawable/round20_grayrim_bg"
                 android:layout_width="@dimen/dp_80"

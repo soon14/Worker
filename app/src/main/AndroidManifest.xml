@@ -41,8 +41,7 @@
         <activity android:name=".mine.SetBankcardActivity" />
         <activity android:name=".mine.SetAlipayActivity" />
         <activity android:name=".order.OrderInfoActivity" />
-        <activity android:name=".order.OrderAllActivity" />
-        <activity android:name=".order.OrderWaitCommentActivity" />
+        <activity android:name=".order.OrderListActivity" />
         <activity android:name=".mine.MessageActivity" />
         <activity android:name=".mine.FeedbackActivity" />
         <activity android:name=".mine.EditIntroActivity" />

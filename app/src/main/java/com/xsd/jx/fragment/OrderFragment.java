@@ -1,28 +1,24 @@
 package com.xsd.jx.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.OrderAdapter;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.databinding.FragmentOrderBinding;
 import com.xsd.jx.listener.OnTabClickListener;
-import com.xsd.jx.mine.CommentActivity;
-import com.xsd.jx.order.OrderAllActivity;
-import com.xsd.jx.order.OrderInfoActivity;
-import com.xsd.jx.order.OrderWaitCommentActivity;
+import com.xsd.jx.order.OrderListActivity;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.OrderUtils;
 import com.xsd.jx.utils.TabUtils;
 
 import java.util.Arrays;
@@ -71,7 +67,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding>{
         });
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         db.recyclerView.setAdapter(mAdapter);
-        mAdapter.setEmptyView(LayoutInflater.from(this.getContext()).inflate(R.layout.empty_view_nodata,null));
+        AdapterUtils.setEmptyDataView(mAdapter);
 
     }
 
@@ -95,53 +91,19 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding>{
     }
 
     private void onEvent() {
-        db.tvOrderComment.setOnClickListener(view -> goActivity(OrderWaitCommentActivity.class));
-        db.tvOrderAll.setOnClickListener(view -> goActivity(OrderAllActivity.class));
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OrderBean item = (OrderBean) adapter.getItem(position);
-            int itemType = item.getItemType();
-            goActivity(OrderInfoActivity.class,itemType);
-            switch (itemType){
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-            }
-        });
-        mAdapter.addChildClickViewIds(R.id.tv_order_comment);
-        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+        db.tvOrderComment.setOnClickListener(view -> goActivity(OrderListActivity.class,7));//待评价
+        db.tvOrderAll.setOnClickListener(view -> goActivity(OrderListActivity.class,0));//0全部订单1待评价
+        OrderUtils.onAdapterEvent((BaseActivity) this.getActivity(), mAdapter, db.refreshLayout, new OrderUtils.OnAdapterListener() {
             @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                switch (view.getId()){
-                    case R.id.tv_order_comment:
-                        goActivity(CommentActivity.class);
-                        break;
-                }
+            public void loadMore() {
+                page++;
+                loadData();
             }
-        });
-
-        //加载更多
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-            page++;
-            loadData();
-        });
-
-        //下拉刷新
-        db.refreshLayout.setOnRefreshListener(() -> {
-            page=1;
-            loadData();
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
         });
     }
 

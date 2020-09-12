@@ -3,7 +3,6 @@ package com.xsd.jx.job;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.custom.ProvinceSelectPop;
 import com.xsd.jx.databinding.ActivityJobPriceInquireBinding;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.SoftInputUtils;
 import com.xsd.utils.ToastUtil;
@@ -81,8 +81,7 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
         tvTitle.setText("查工价");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
-        mAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view_nodata,null));
-
+        AdapterUtils.setEmptyDataView(mAdapter);
     }
 
     private ProvinceSelectPop provinceSelectPop;

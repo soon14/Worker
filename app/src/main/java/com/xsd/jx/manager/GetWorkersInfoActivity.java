@@ -127,12 +127,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
         View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
-        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goActivity(PushGetWorkersActivity.class);
-            }
-        });
+        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> goActivity(PushGetWorkersActivity.class));
         mAdapter.setEmptyView(emptyView);
 
         for (int i = 0; i < 8; i++) {

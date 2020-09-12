@@ -2,6 +2,7 @@ package com.xsd.jx.impl;
 
 import com.xsd.jx.api.OrderApi;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.OrderResponse;
 
 import javax.inject.Inject;
@@ -22,5 +23,10 @@ public class OrderImpl implements OrderApi {
     @Override
     public Observable<BaseResponse<OrderResponse>> list(Integer page, Integer type) {
         return bindIoUI(api.list(page,type));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> cancel(Integer id) {
+        return bindIoUI(api.cancel(id));
     }
 }

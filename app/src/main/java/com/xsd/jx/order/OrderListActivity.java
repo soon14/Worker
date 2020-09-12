@@ -1,7 +1,6 @@
 package com.xsd.jx.order;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -12,13 +11,16 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.OrderUtils;
 
 import java.util.List;
 
-public class OrderAllActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
+public class OrderListActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private OrderAdapter mAdapter = new OrderAdapter();
     private int page=1;
+    private int type;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_recyclerview;
@@ -31,8 +33,30 @@ public class OrderAllActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
         loadData();
         onEvent();
     }
+    private void initView() {
+        type = getIntent().getIntExtra("type", 0);
+        tvTitle.setText(type==0?"全部订单":"待评价");
+        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        db.recyclerView.setAdapter(mAdapter);
+        AdapterUtils.setEmptyDataView(mAdapter);
+
+    }
+    private void onEvent() {
+        OrderUtils.onAdapterEvent(this, mAdapter, db.refreshLayout, new OrderUtils.OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
+        });
+    }
     private void loadData() {
-        dataProvider.order.list(page,0)
+        dataProvider.order.list(page,type)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<OrderResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<OrderResponse> baseResponse) {
@@ -48,49 +72,5 @@ public class OrderAllActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
                         }
                     }
                 });
-    }
-    private void initView() {
-        tvTitle.setText("全部订单");
-        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        db.recyclerView.setAdapter(mAdapter);
-        mAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view_nodata,null));
-
-    }
-    private void onEvent() {
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OrderBean item = (OrderBean) adapter.getItem(position);
-            int itemType = item.getItemType();
-            goActivity(OrderInfoActivity.class,itemType);
-            switch (itemType){
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-            }
-        });
-
-        //加载更多
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-            page++;
-            loadData();
-        });
-
-        //下拉刷新
-        db.refreshLayout.setOnRefreshListener(() -> {
-            page=1;
-            loadData();
-        });
     }
 }
