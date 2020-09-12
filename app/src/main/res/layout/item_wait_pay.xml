@@ -4,7 +4,7 @@
     <data>
         <variable
             name="item"
-            type="com.xsd.jx.bean.OrderResponse" />
+            type="com.xsd.jx.bean.OrderBean" />
     </data>
 
     <LinearLayout

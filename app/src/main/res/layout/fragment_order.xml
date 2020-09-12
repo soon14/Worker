@@ -13,9 +13,6 @@
         android:tag="layout/fragment_order_0"
         android:orientation="vertical">
 
-
-        -
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="@dimen/dp_80"
             android:layout_width="fill_parent"
@@ -78,11 +75,15 @@
             android:layout_height="@dimen/home_tab_height"
             android:layout_width="fill_parent"
             android:id="@+id/tab_layout" />
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
             android:id="@+id/recycler_view" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 </layout>

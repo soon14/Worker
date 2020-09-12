@@ -33,6 +33,9 @@ public class PopShowUtils {
                 .show();
     }
 
+    /**
+     * 弹出被邀请的工作
+     */
     public static void showInviteJob(List<JobBean> data,BaseActivity activity) {
         new XPopup.Builder(activity)
                 .asCustom(new InviteJobPop(activity,data))

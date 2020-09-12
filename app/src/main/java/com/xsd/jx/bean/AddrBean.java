@@ -1,10 +1,12 @@
 package com.xsd.jx.bean;
 
+import java.io.Serializable;
+
 /**
  * Date: 2020/9/3
  * author: SmallCake
  */
-public class AddrBean {
+public class AddrBean implements Serializable {
 
 
     /**

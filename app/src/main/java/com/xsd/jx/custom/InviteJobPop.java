@@ -31,16 +31,18 @@ import java.util.List;
 public class InviteJobPop extends CenterPopupView {
     private List<JobBean> data;
     private BaseActivity activity;
+
     public InviteJobPop(@NonNull BaseActivity context, List<JobBean> data) {
         super(context);
-        this.data=data;
-        this.activity=context;
+        this.data = data;
+        this.activity = context;
     }
 
     @Override
     protected int getImplLayoutId() {
         return R.layout.pop_invite_job;
     }
+
     @Override
     protected void onCreate() {
         super.onCreate();
@@ -54,33 +56,27 @@ public class InviteJobPop extends CenterPopupView {
             boolean isJoin = jobBean.isIsJoin();//是否已经报名
             View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job, null);
             ItemJobBinding bind = DataBindingUtil.bind(viewChild);
-            bind.tvJoin.setText(isJoin?"已接受邀请":"接受上工邀请");
-            bind.tvJoin.setBackgroundResource(isJoin?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
+            bind.tvJoin.setText(isJoin ? "已接受邀请" : "接受上工邀请");
+            bind.tvJoin.setBackgroundResource(isJoin ? R.drawable.round6_gray_bg : R.drawable.round6_blue_bg);
             bind.setItem(jobBean);
             layoutContent.addView(viewChild);
             //点击事件
-            bind.tvJoin.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    activity.getDataProvider().work.acceptInvite(jobBean.getId())
-                            .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(activity.getDialog()) {
-                                @Override
-                                protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                                    ToastUtil.showLong(baseResponse.getData().getMessage());
-                                    bind.tvJoin.setText("已接受邀请");
-                                    bind.tvJoin.setBackgroundResource(R.drawable.round6_gray_bg);
-                                    delayDismiss(800);
-                                    Apollo.emit(EventStr.UPDATE_INVITE_LIST);
-                                }
-                            });
-
-
-                }
-            });
+            bind.tvJoin.setOnClickListener(view -> activity.getDataProvider().work.acceptInvite(jobBean.getId())
+                    .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(activity.getDialog()) {
+                        @Override
+                        protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                            ToastUtil.showLong(baseResponse.getData().getMessage());
+                            bind.tvJoin.setText("已接受邀请");
+                            bind.tvJoin.setBackgroundResource(R.drawable.round6_gray_bg);
+//                                    delayDismiss(800);
+                            Apollo.emit(EventStr.UPDATE_INVITE_LIST);
+                        }
+                    }));
+            viewChild.setOnClickListener(view -> activity.goJobInfoActivity(jobBean));
         }
         findViewById(R.id.layout_look_other).setOnClickListener(view -> dismiss());
         TextView tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText("以下"+data.size()+"位雇主正邀请您上工，点击接受直接上工");
+        tvTitle.setText("以下" + data.size() + "位雇主正邀请您上工，点击接受直接上工");
 
     }
 
@@ -88,6 +84,7 @@ public class InviteJobPop extends CenterPopupView {
     protected int getMaxWidth() {
         return (int) (XPopupUtils.getWindowWidth(getContext()) * 0.918f);
     }
+
     @Override
     protected int getMaxHeight() {
         return (int) (XPopupUtils.getWindowHeight(getContext()) * 0.918f);

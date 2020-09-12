@@ -63,6 +63,7 @@ public class PushJobPop extends CenterPopupView {
                     PopShowUtils.showShare(activity);
                     break;
                 case R.id.tv_look_more:
+                case R.id.layout_content:
                     activity.goJobInfoActivity(jobBean);
                     break;
                 case R.id.tv_fav:
@@ -73,6 +74,9 @@ public class PushJobPop extends CenterPopupView {
                     break;
                 case R.id.tv_next:
                     animRota(db.layoutRoot);
+                    break;
+                case R.id.tv_ignore:
+                    dismiss();
                     break;
             }
         });
@@ -93,11 +97,11 @@ public class PushJobPop extends CenterPopupView {
     public void fav(){
         if (jobBean==null)return;
         activity.getDataProvider().work.fav(jobBean.getId())
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
-                        DataBindingAdapter.isJoin(db.tvFav,true);
+                        DataBindingAdapter.isFav(db.tvFav,true);
                     }
                 });
 

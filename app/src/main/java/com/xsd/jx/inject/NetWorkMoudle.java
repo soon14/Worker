@@ -3,6 +3,7 @@ package com.xsd.jx.inject;
 import android.content.Context;
 
 import com.xsd.jx.api.AdvertApi;
+import com.xsd.jx.api.OrderApi;
 import com.xsd.jx.api.SiteApi;
 import com.xsd.jx.api.WorkApi;
 import com.xsd.okhttp.retrofit2.RetrofitHttp;
@@ -50,6 +51,12 @@ public class NetWorkMoudle {
     @Provides
     public WorkApi providerWorkApi() {
         return RetrofitHttp.create(WorkApi.class);
+    }
+
+    @Singleton
+    @Provides
+    public OrderApi providerOrderApi() {
+        return RetrofitHttp.create(OrderApi.class);
     }
 
 }

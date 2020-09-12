@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.xsd.jx.R;
 import com.xsd.jx.listener.OnBottomNavClickListener;
+import com.xsd.utils.L;
 
 /**
  * Date: 2020/8/17
@@ -58,7 +59,7 @@ public class BottomNavUtils {
             TextView tvTab = (TextView) childAt.getChildAt(1);
             tvTab.setTextColor(ContextCompat.getColor(tabLayout.getContext(), R.color.gray));
         }
-
+        L.e("选中=="+selectPosition);
         //选中项替换选中图标
         LinearLayout childAt = (LinearLayout)tabLayout.getChildAt(selectPosition);
         AnimUtils.tabSelect(childAt);

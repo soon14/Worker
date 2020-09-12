@@ -2,6 +2,7 @@ package com.xsd.jx.inject;
 
 
 import com.xsd.jx.impl.AdvertImpl;
+import com.xsd.jx.impl.OrderImpl;
 import com.xsd.jx.impl.SiteImpl;
 import com.xsd.jx.impl.WorkImpl;
 
@@ -21,5 +22,7 @@ public class DataProvider {
     public SiteImpl site;
     @Inject
     public WorkImpl work;
+    @Inject
+    public OrderImpl order;
 
 }

@@ -2,6 +2,7 @@ package com.xsd.jx;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +16,12 @@ import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
 import com.xsd.jx.fragment.OrderFragment;
 import com.xsd.jx.job.SelectTypeWorkActivity;
+import com.xsd.jx.listener.OnBottomNavClickListener;
 import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
+import com.xsd.utils.ToastUtil;
 
 /**
  * 主要包含：
@@ -45,6 +49,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
+        L.e(UserUtils.getToken());
         if (UserUtils.isLogin())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
         if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
     }
@@ -69,7 +74,21 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         };
         db.viewPager.setAdapter(fragmentPagerAdapter);
         db.viewPager.setOffscreenPageLimit(tabNames.length);
-        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, null);
+        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, new OnBottomNavClickListener() {
+            @Override
+            public void onNavClick(int index) {
+                switch (index){
+                    case 1:
+                    case 2:
+                        if (!UserUtils.isLogin()){
+                            ToastUtil.showLong("请先登录！");
+                            goActivity(LoginActivity.class);
+                            new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
+                        }
+                        break;
+                }
+            }
+        });
 
     }
 

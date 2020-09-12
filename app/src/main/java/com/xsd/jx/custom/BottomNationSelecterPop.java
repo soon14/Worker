@@ -3,7 +3,6 @@ package com.xsd.jx.custom;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -14,7 +13,6 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.xsd.jx.R;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.utils.DpPxUtils;
-import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.custom.RadioGroupEx;
 
 /**
@@ -44,8 +42,6 @@ public class BottomNationSelecterPop extends BottomPopupView {
     private void initView() {
         String[] split = nationStr.split("、");
         RadioGroupEx layoutNations = findViewById(R.id.layout_nations);
-        int width = ScreenUtils.getRealWidth()/3;
-
         int dp4 = DpPxUtils.dp2px(4);
         int dp8 = DpPxUtils.dp2px(8);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -62,13 +58,10 @@ public class BottomNationSelecterPop extends BottomPopupView {
             radioButton.setPadding(dp8,0,dp8,0);
             radioButton.setText(nationName);
             layoutNations.addView(radioButton);
-            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked){
-                        dismiss();
-                        listener.onSelect(nationName);
-                    }
+            radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked){
+                    dismiss();
+                    listener.onSelect(nationName);
                 }
             });
         }
