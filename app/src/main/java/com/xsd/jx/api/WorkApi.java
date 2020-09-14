@@ -6,7 +6,7 @@ import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
 import com.xsd.jx.bean.WorkRecommendResponse;
-import com.xsd.jx.bean.WorkTypeResponse;
+import com.xsd.jx.bean.WorkTypeBean;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public interface WorkApi {
      */
     //工种列表：用于选择工种
     @GET("work-type/list")
-    Observable<BaseResponse<List<WorkTypeResponse>>> workTypeList();
+    Observable<BaseResponse<List<WorkTypeBean>>> workTypeList();
     //登录用户推荐工作
     @GET("work/recommend")
     Observable<BaseResponse<WorkRecommendResponse>> recommend(@Query("page")Integer page);
@@ -48,7 +48,10 @@ public interface WorkApi {
     //提交选择的工种
     @GET("work-type/submit-choice")
     Observable<BaseResponse<MessageBean>> workTypeSubmitChoice(@Query("ids")String ids);
-    //接受上工邀请 workId 招工信息ID
+    //用户删除选择的某个工种 id 删除的工种ID
+    @GET("work-type/rem")
+    Observable<BaseResponse<MessageBean>> workTypeRem(@Query("id")Integer id);
+    //接受上工邀请
     @GET("work/accept-invite")
     Observable<BaseResponse<MessageBean>> acceptInvite(@Query("workId")Integer workId);
     //报名上工 workId 招工信息ID

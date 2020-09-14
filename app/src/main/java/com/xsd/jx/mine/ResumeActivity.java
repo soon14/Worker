@@ -5,17 +5,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
+
+import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.ExperienceResponse;
+import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.UserInfoResponse;
+import com.xsd.jx.bean.WorkTypeBean;
+import com.xsd.jx.custom.BottomAddWorkTypePop;
 import com.xsd.jx.databinding.ActivityResumeBinding;
+import com.xsd.jx.databinding.ItemWorkHistoryBinding;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.ScreenUtils;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 个人简历
  */
 public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
-
+    private List<WorkTypeBean> workTypes;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_resume;
@@ -25,52 +41,127 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        loadData();
+        loadExp();
     }
+    //用户详情
+    private void loadData() {
+        dataProvider.user.info()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
+                        UserInfoResponse data = baseResponse.getData();
+                        UserInfo info = data.getInfo();
+                        db.setItem(info);
+                        workTypes = data.getWorkTypes();
+                        setWorkTypes();
+                    }
+                });
+
+    }
+
+
+    private void loadExp() {
+        dataProvider.user.experience(1)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<ExperienceResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<ExperienceResponse> baseResponse) {
+                        ExperienceResponse data = baseResponse.getData();
+                        List<ExperienceResponse.ItemsBean> items = data.getItems();
+                        setExpData(items);
+                    }
+                });
+
+    }
+
 
     private void initView() {
         tvTitle.setText("个人简历");
-        for (int i = 0; i < 5; i++) {
-            View viewType = LayoutInflater.from(this).inflate(R.layout.item_type_work_del, null);
-            ImageView ivDel = viewType.findViewById(R.id.iv_del);
-            db.layoutTypesWork.addView(viewType);
-            ivDel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewType.animate()
-                            .setListener(new Animator.AnimatorListener() {
-                                @Override
-                                public void onAnimationStart(Animator animation) {
-
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    db.layoutTypesWork.removeView(viewType);
-                                }
-
-                                @Override
-                                public void onAnimationCancel(Animator animation) {
-
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animator animation) {
-
-                                }
-                            }).translationX(ScreenUtils.getRealWidth()).alpha(0f).start();
-                }
-            });
-        }
-        for (int i = 0; i < 10; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.item_work_history, null);
-            db.layoutWorks.addView(view);
-        }
         db.setClicklistener(v -> {
             switch (v.getId()){
                 case R.id.layout_edit:
                     goActivity(EditIntroActivity.class);
                     break;
+                case R.id.tv_add_work_type:
+                    new XPopup.Builder(this)
+                            .asCustom(new BottomAddWorkTypePop(this, workTypes, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
+                                @Override
+                                public void addWorkTypes(Set<WorkTypeBean> types) {
+                                    workTypes.addAll(types);
+                                    setWorkTypes();
+                                }
+                            }))
+                            .show();
+                    break;
             }
         });
+    }
+    //工种列表
+    private void setWorkTypes() {
+        db.layoutTypesWork.removeAllViews();
+        for (int i = 0; i < workTypes.size(); i++) {
+            WorkTypeBean workTypesBean = workTypes.get(i);
+            View viewType = LayoutInflater.from(this).inflate(R.layout.item_type_work_del, null);
+            ImageView ivDel = viewType.findViewById(R.id.iv_del);
+            TextView tvName = viewType.findViewById(R.id.tv_name);
+            tvName.setText(workTypesBean.getTitle());
+            db.layoutTypesWork.addView(viewType);
+            ivDel.setOnClickListener(v -> showDelPop(workTypesBean,viewType));
+        }
+    }
+    //删除工种提醒弹框
+    private void showDelPop(WorkTypeBean workTypesBean,View viewType){
+        new XPopup.Builder(this)
+                .asConfirm("提醒",
+                        "您是否确定删除该项？",
+                        "取消",
+                        "确定",
+                        () -> {
+                           dataProvider.work.workTypeRem(workTypesBean.getId())
+                                    .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                                        @Override
+                                        protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                            workTypes.remove(workTypesBean);
+                                            viewType.animate()
+                                                    .setListener(new Animator.AnimatorListener() {
+                                                        @Override
+                                                        public void onAnimationStart(Animator animation) {
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationEnd(Animator animation) {
+                                                            db.layoutTypesWork.removeView(viewType);
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationCancel(Animator animation) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationRepeat(Animator animation) {
+
+                                                        }
+                                                    })
+                                                    .translationX(ScreenUtils.getRealWidth())
+                                                    .alpha(0f)
+                                                    .start();
+                                        }
+                                    });
+                        },
+                        null,
+                        false,R.layout.dialog_tips)
+                .show();
+    }
+    //经验列表
+    private void setExpData(List<ExperienceResponse.ItemsBean> items) {
+        for (int i = 0; i < items.size(); i++) {
+            ExperienceResponse.ItemsBean item = items.get(i);
+            View view = LayoutInflater.from(this).inflate(R.layout.item_work_history, null);
+            ItemWorkHistoryBinding bind = DataBindingUtil.bind(view);
+            bind.setItem(item);
+            bind.simpleRatingBar.setRating(item.getRate());
+            db.layoutWorks.addView(view);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.xsd.jx.utils;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.OrderBean;
+import com.xsd.jx.bean.UserInfo;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.SmallUtils;
 
@@ -36,6 +38,17 @@ public class DataBindingAdapter {
         RequestOptions options = new RequestOptions()
                 .placeholder(R.mipmap.ic_site)
                 .error(R.mipmap.ic_site)
+                .circleCrop();
+        Glide.with(view)
+                .load(imageUrl)
+                .apply(options)
+                .into(view);
+    }
+    @BindingAdapter("avatar")
+    public static void avatar(ImageView view, Object imageUrl){
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.mipmap.ic_worker_head)
+                .error(R.mipmap.ic_worker_head)
                 .circleCrop();
         Glide.with(view)
                 .load(imageUrl)
@@ -117,5 +130,29 @@ public class DataBindingAdapter {
         tv.setTextColor(ContextCompat.getColor(tv.getContext(),isFav?R.color.colorAccent:R.color.tv_black));
         TextViewUtils.setTopIcon(isFav?R.mipmap.ic_collected:R.mipmap.ic_uncollected,tv);
         AnimUtils.tabSelect(tv);
+    }
+
+    @BindingAdapter("userDesc")
+    public static void userDesc(TextView tv, UserInfo info){
+        if (info==null)return;
+        int sex = info.getSex();// 1男 2女 3未知
+        String sexStr="男";
+        switch (sex){
+            case 1: sexStr="男";break;
+            case 2:sexStr="女";
+                break;
+            case 3:sexStr="未知";
+                break;
+        }
+        String workYears = info.getWorkYears();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(sexStr).append(" · ")
+                .append(info.getNation());
+        if (!TextUtils.isEmpty(workYears))
+            builder.append(" · ").append(workYears);
+
+        tv.setText(builder.toString());
+
     }
 }

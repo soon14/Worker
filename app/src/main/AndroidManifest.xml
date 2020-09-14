@@ -55,7 +55,7 @@
         <activity android:name=".mine.HelpRegistListActivity" />
         <activity android:name=".mine.HelpRegistActivity" />
         <activity android:name=".mine.WalletActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity" android:launchMode="singleTop"/>
         <activity android:name=".job.SelectTypeWorkActivity" />
         <activity android:name=".job.JobInfoActivity" />
         <activity android:name=".job.SignListActivity" />

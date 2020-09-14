@@ -28,6 +28,9 @@ public class UserUtils {
     public static UserInfo getUser() {
         return SPUtils.readObject("user");
     }
+    public static void saveUser(UserInfo user) {
+         SPUtils.saveObject("user",user);
+    }
 
     public static String getToken() {
         return (String) SPUtils.get("token", "");

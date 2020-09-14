@@ -16,6 +16,7 @@
         android:textSize="@dimen/h3"
         />
     <TextView
+        android:gravity="center"
         android:lineSpacingExtra="@dimen/dp_8"
         android:id="@+id/tv_content"
         android:layout_marginTop="@dimen/dp_36"

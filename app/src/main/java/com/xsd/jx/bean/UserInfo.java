@@ -15,7 +15,7 @@ public class UserInfo implements Serializable {
      * birthday :
      * sex : 1
      * avatar :
-     * nationId : 0
+     * nation : 汉族
      * workAreaId : 0
      * status : 1
      * wxUnionId :
@@ -39,15 +39,15 @@ public class UserInfo implements Serializable {
     private String birthday;
     private int sex;
     private String avatar;
-    private int nationId;
+    private String nation;
     private int workAreaId;
     private int status;
     private String wxUnionId;
     private String intro;
     private String idCard;
     private int isCertification;
-    private int workYears;
-    private int balance;
+    private String workYears;
+    private String balance;
     private int liveBalance;
     private int frozenBalance;
     private int withdrawTotal;
@@ -66,7 +66,7 @@ public class UserInfo implements Serializable {
                 ", birthday='" + birthday + '\'' +
                 ", sex=" + sex +
                 ", avatar='" + avatar + '\'' +
-                ", nationId=" + nationId +
+                ", nation=" + nation +
                 ", workAreaId=" + workAreaId +
                 ", status=" + status +
                 ", wxUnionId='" + wxUnionId + '\'' +
@@ -142,12 +142,12 @@ public class UserInfo implements Serializable {
         this.avatar = avatar;
     }
 
-    public int getNationId() {
-        return nationId;
+    public String getNation() {
+        return nation;
     }
 
-    public void setNationId(int nationId) {
-        this.nationId = nationId;
+    public void setNationId(String nation) {
+        this.nation = nation;
     }
 
     public int getWorkAreaId() {
@@ -198,19 +198,19 @@ public class UserInfo implements Serializable {
         this.isCertification = isCertification;
     }
 
-    public int getWorkYears() {
+    public String getWorkYears() {
         return workYears;
     }
 
-    public void setWorkYears(int workYears) {
+    public void setWorkYears(String workYears) {
         this.workYears = workYears;
     }
 
-    public int getBalance() {
+    public String getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(String balance) {
         this.balance = balance;
     }
 

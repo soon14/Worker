@@ -6,22 +6,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindFragment;
+import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.databinding.FragmentMineBinding;
 import com.xsd.jx.manager.GetWorkersActivity;
-import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.mine.CollectedWorksActivity;
 import com.xsd.jx.mine.FeedbackActivity;
 import com.xsd.jx.mine.HelpRegistActivity;
 import com.xsd.jx.mine.InviteListActivity;
 import com.xsd.jx.mine.MessageActivity;
 import com.xsd.jx.mine.PartnerActivity;
+import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.mine.ResumeActivity;
 import com.xsd.jx.mine.SetActivity;
 import com.xsd.jx.mine.WalletActivity;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 
 /**
  * Date: 2020/1/3
@@ -41,7 +47,22 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
 
     @Override
     protected void onLazyLoad() {
+        loadUserInfo();
         onEvent();
+    }
+    //用户详情
+    @Receive(EventStr.UPDATE_USER_INFO)
+    public void loadUserInfo() {
+        dataProvider.user.info()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
+                        UserInfoResponse data = baseResponse.getData();
+                        UserInfo info = data.getInfo();
+                        db.setItem(info);
+                    }
+                });
+
     }
 
     private void onEvent() {

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="item"
+            type="com.xsd.jx.bean.UserInfo" />
+        <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
     </data>
@@ -35,22 +38,25 @@
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="徐某某"
+                        tools:text="徐某某"
+                        android:text="@{item.name}"
                         android:textColor="@color/tv_black"
                         android:textSize="24sp"
                         />
 
                     <TextView
+                        userDesc="@{item}"
                         android:layout_marginLeft="@dimen/dp_16"
                         android:layout_marginTop="@dimen/dp_17"
                         android:id="@+id/tv_desc"
                         android:layout_below="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="男 · 汉族 · 重庆 · 30岁 · 工作5~10年"
+                        tools:text="男 · 汉族 · 重庆 · 30岁 · 工作5~10年"
                         android:textColor="#ff666666"
                         android:textSize="14sp" />
                     <ImageView
+                        avatar="@{item.avatar}"
                         android:layout_marginRight="@dimen/dp_25"
                         android:layout_marginTop="@dimen/dp_13"
                         android:id="@+id/iv_head"
@@ -89,6 +95,8 @@
                         android:textSize="@dimen/h3"
                         />
                     <TextView
+                        android:onClick="@{clicklistener}"
+                        android:id="@+id/tv_add_work_type"
                         android:paddingLeft="@dimen/dp_6"
                         android:drawableLeft="@mipmap/ic_orange_add"
                         android:gravity="center"

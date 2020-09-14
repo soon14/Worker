@@ -7,7 +7,7 @@ import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
 import com.xsd.jx.bean.WorkRecommendResponse;
-import com.xsd.jx.bean.WorkTypeResponse;
+import com.xsd.jx.bean.WorkTypeBean;
 
 import java.util.List;
 
@@ -29,13 +29,18 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<List<WorkTypeResponse>>> workTypeList() {
+    public Observable<BaseResponse<List<WorkTypeBean>>> workTypeList() {
         return bindIoUI(api.workTypeList());
     }
 
     @Override
     public Observable<BaseResponse<MessageBean>> workTypeSubmitChoice(String ids) {
         return bindIoUI(api.workTypeSubmitChoice(ids));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> workTypeRem(Integer id) {
+        return bindIoUI(api.workTypeRem(id));
     }
 
     @Override

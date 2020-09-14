@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.base.BaseBindActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
@@ -20,7 +23,6 @@ import com.xsd.jx.listener.OnBottomNavClickListener;
 import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 /**
@@ -47,11 +49,19 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
-        L.e(UserUtils.getToken());
         if (UserUtils.isLogin())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
-        if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+        if (UserUtils.isLogin()&&!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
     }
 
     private void initViewPager() {
@@ -92,6 +102,10 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     }
 
+    @Receive(EventStr.GO_LOGIN)
+    public void goLoginActivity(){
+        goActivity(LoginActivity.class);
+    }
 
 
 }

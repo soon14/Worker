@@ -13,9 +13,11 @@ import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.bean.WorkTypeResponse;
+import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.databinding.ActivitySelectTypeWorkBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
@@ -45,10 +47,10 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
 
     private void getWorkTypeList() {
             dataProvider.work.workTypeList()
-                    .subscribe(new OnSuccessAndFailListener<BaseResponse<List<WorkTypeResponse>>>() {
+                    .subscribe(new OnSuccessAndFailListener<BaseResponse<List<WorkTypeBean>>>() {
                         @Override
-                        protected void onSuccess(BaseResponse<List<WorkTypeResponse>> baseResponse) {
-                            List<WorkTypeResponse> datas = baseResponse.getData();
+                        protected void onSuccess(BaseResponse<List<WorkTypeBean>> baseResponse) {
+                            List<WorkTypeBean> datas = baseResponse.getData();
                             initTypeWorks(datas);
                         }
                     });
@@ -74,6 +76,9 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
                             protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                                 ToastUtil.showLong(baseResponse.getData().getMessage());
                                 finish();
+                                UserInfo user = UserUtils.getUser();
+                                user.setChooseWork(true);
+                                UserUtils.saveUser(user);
                             }
                         });
             }
@@ -84,11 +89,11 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
         tvTitle.setText("选择工种");
     }
     private Set<String> tags = new HashSet<>();//标签，所有选中的标签项
-    private void initTypeWorks( List<WorkTypeResponse> datas) {
+    private void initTypeWorks( List<WorkTypeBean> datas) {
         int width = (ScreenUtils.getRealWidth() - DpPxUtils.dp2px(64)) / 3;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width,DpPxUtils.dp2px(40));
         for (int i = 0; i < datas.size(); i++) {
-            WorkTypeResponse item = datas.get(i);
+            WorkTypeBean item = datas.get(i);
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(item.getTitle());
             checkBox.setTextColor(ContextCompat.getColorStateList(this, R.color.text_blue_black_selecter));

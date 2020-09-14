@@ -5,6 +5,7 @@ import android.content.Context;
 import com.xsd.jx.api.AdvertApi;
 import com.xsd.jx.api.OrderApi;
 import com.xsd.jx.api.SiteApi;
+import com.xsd.jx.api.UserApi;
 import com.xsd.jx.api.WorkApi;
 import com.xsd.okhttp.retrofit2.RetrofitHttp;
 import com.xsd.utils.dialog.LoadDialog;
@@ -57,6 +58,12 @@ public class NetWorkMoudle {
     @Provides
     public OrderApi providerOrderApi() {
         return RetrofitHttp.create(OrderApi.class);
+    }
+
+    @Singleton
+    @Provides
+    public UserApi providerUserApi() {
+        return RetrofitHttp.create(UserApi.class);
     }
 
 }

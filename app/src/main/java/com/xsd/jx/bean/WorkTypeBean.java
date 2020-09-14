@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Date: 2020/9/8
  * author: SmallCake
  */
-public class WorkTypeResponse implements Serializable {
+public class WorkTypeBean implements Serializable {
 
     /**
      * id : 1

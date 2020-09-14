@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.load.HttpException;
+import com.lsxiao.apollo.core.Apollo;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -65,7 +67,15 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
             if (baseResponse.getCode()==0){
                 onSuccess(t);
             }else {
-                onErr(baseResponse.getMessage());
+
+                //20103,未登录或登录过期
+                if (baseResponse.getCode()==20103){
+                    ToastUtil.showLong("请先登录！");
+                    Apollo.emit(EventStr.GO_LOGIN);
+                }else {
+                    onErr(baseResponse.getMessage());
+                }
+
             }
         } catch (Exception e) {
             onError(e);

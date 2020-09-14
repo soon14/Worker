@@ -4,6 +4,7 @@ package com.xsd.jx.inject;
 import com.xsd.jx.impl.AdvertImpl;
 import com.xsd.jx.impl.OrderImpl;
 import com.xsd.jx.impl.SiteImpl;
+import com.xsd.jx.impl.UserImpl;
 import com.xsd.jx.impl.WorkImpl;
 
 import javax.inject.Inject;
@@ -24,5 +25,7 @@ public class DataProvider {
     public WorkImpl work;
     @Inject
     public OrderImpl order;
+    @Inject
+    public UserImpl user;
 
 }

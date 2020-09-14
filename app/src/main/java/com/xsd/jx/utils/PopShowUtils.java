@@ -1,17 +1,22 @@
 package com.xsd.jx.utils;
 
+import android.animation.Animator;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.custom.PushJobPop;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.utils.SPUtils;
+import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.SmallUtils;
 
 import java.util.List;
@@ -77,8 +82,8 @@ public class PopShowUtils {
                 .show();
     }
 
-    public static void showRealNameAuth(View v,BaseActivity activity) {
-        new XPopup.Builder(v.getContext())
+    public static void showRealNameAuth(BaseActivity activity) {
+        new XPopup.Builder(activity)
                 .asConfirm("实名认证提醒",
                         "根据国家政策规定，您需要先完成实名认证才可上工。",
                         "取消",
@@ -87,6 +92,45 @@ public class PopShowUtils {
                         null,
                         true,R.layout.dialog_tips)
                 .show();
+    }
 
+    public static void showDelWorkType(BaseActivity activity, int id, LinearLayout layoutTypesWork, View viewType) {
+        new XPopup.Builder(activity)
+                .asConfirm("提醒",
+                        "您是否确定删除该项？",
+                        "取消",
+                        "确定",
+                        () -> {
+                            activity.getDataProvider().work.workTypeRem(id)
+                                    .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(activity.getDialog()) {
+                                        @Override
+                                        protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                            viewType.animate()
+                                                    .setListener(new Animator.AnimatorListener() {
+                                                        @Override
+                                                        public void onAnimationStart(Animator animation) {
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationEnd(Animator animation) {
+                                                            layoutTypesWork.removeView(viewType);
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationCancel(Animator animation) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onAnimationRepeat(Animator animation) {
+
+                                                        }
+                                                    }).translationX(ScreenUtils.getRealWidth()).alpha(0f).start();
+                                        }
+                                    });
+                        },
+                        null,
+                        false,R.layout.dialog_tips)
+                .show();
     }
 }
