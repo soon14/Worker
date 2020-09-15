@@ -23,7 +23,7 @@ import com.xsd.jx.manager.GetWorkersActivity;
 import com.xsd.jx.mine.CollectedWorksActivity;
 import com.xsd.jx.mine.FeedbackActivity;
 import com.xsd.jx.mine.HelpRegistActivity;
-import com.xsd.jx.mine.InviteListActivity;
+import com.xsd.jx.mine.RecommendListActivity;
 import com.xsd.jx.mine.MessageActivity;
 import com.xsd.jx.mine.PartnerActivity;
 import com.xsd.jx.mine.RealNameAuthActivity;
@@ -107,7 +107,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     showShare();
                     break;
                 case R.id.tab3:
-                    goActivity(InviteListActivity.class);
+                    goActivity(RecommendListActivity.class);
                     break;
                 case R.id.tab4:
                     goActivity(CollectedWorksActivity.class);

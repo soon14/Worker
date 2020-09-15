@@ -25,9 +25,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_top"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_126"
-                    android:src="@mipmap/banner_test"
+                    android:src="@mipmap/bg_partner_top"
                     />
                 <TextView
                     android:layout_marginTop="@dimen/dp_24"
@@ -38,6 +39,7 @@
                     android:textSize="@dimen/h4"
                     />
                 <EditText
+                    android:id="@+id/et_mobile"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp_8"
                     android:padding="@dimen/dp_8"
@@ -64,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_46">
                 <EditText
+                    android:id="@+id/et_code"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dp_8"
@@ -100,6 +103,7 @@
                     android:textSize="@dimen/h4"
                     />
                 <EditText
+                    android:id="@+id/et_name"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp_8"
                     android:padding="@dimen/dp_8"
@@ -121,6 +125,7 @@
                     android:textSize="@dimen/h4"
                     />
                 <EditText
+                    android:id="@+id/et_idcard"
                     android:digits="1234567890xX"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp_8"
@@ -138,12 +143,58 @@
                     android:layout_marginTop="@dimen/dp_24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="工友的工种"
+                    android:text="工友的工种（点击可修改）"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
                     />
                 <TextView
                     android:id="@+id/tv_type_work"
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="工友的工种"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="工友所属民族（点击可修改）"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:id="@+id/tv_nation"
+                    android:onClick="@{clicklistener}"
+                    android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:padding="@dimen/dp_8"
+                    android:background="@drawable/round6_gray_bg"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_46"
+                    android:hint="工友所属民族"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="工友工作年限（点击可修改）"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h4"
+                    />
+                <TextView
+                    android:id="@+id/tv_work_years"
                     android:onClick="@{clicklistener}"
                     android:drawableRight="@mipmap/ic_gray_arrow_down_big"
                     android:layout_marginBottom="@dimen/dp_80"
@@ -152,10 +203,9 @@
                     android:padding="@dimen/dp_8"
                     android:background="@drawable/round6_gray_bg"
                     android:singleLine="true"
-                    android:maxLength="18"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
-                    android:hint="工友的工种"
+                    android:hint="工友工作年限"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
                     />

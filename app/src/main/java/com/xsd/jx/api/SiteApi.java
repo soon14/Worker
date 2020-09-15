@@ -20,6 +20,7 @@ public interface SiteApi {
     @FormUrlEncoded
     @POST("site/login-by-wx")
     Observable<BaseResponse> loginByWx(@Field("unionid")String unionid,@Field("access_token")String access_token,@Field("openid")String openid,@Field("inviteCode")String inviteCode);
+    //短信15分钟内有效，每分钟只能发一条，用于登录、绑定手机等操作,type: login, bindMobile, help
     @FormUrlEncoded
     @POST("site/send-sms")
     Observable<BaseResponse<MessageBean>> sendSms(@Field("mobile")String mobile, @Field("type")String type);

@@ -146,7 +146,7 @@ public class PopShowUtils {
     public static void showWorkExp(View v, OnSelectListener listener) {
         new XPopup.Builder(v.getContext())
                 .asBottomList("工龄选择",
-                        new String[]{"1-5年", "5-10年", "10-20年"},
+                        new String[]{"1~5年", "5~10年", "10~20年"},
                         null,
                         -1,
                         false,

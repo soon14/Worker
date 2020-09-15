@@ -3,7 +3,9 @@ package com.xsd.jx.impl;
 import com.xsd.jx.api.UserApi;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
+import com.xsd.jx.bean.HelpRegResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.RecommendResponse;
 import com.xsd.jx.bean.UserInfoResponse;
 
 import java.util.Map;
@@ -38,6 +40,11 @@ public class UserImpl implements UserApi {
     }
 
     @Override
+    public Observable<BaseResponse<HelpRegResponse>> helpRegRecord(Integer page) {
+        return bindIoUI(api.helpRegRecord(page));
+    }
+
+    @Override
     public Observable<BaseResponse<MessageBean>> uploadAvatar(MultipartBody.Part body) {
         return bindIoUI(api.uploadAvatar(body));
     }
@@ -45,6 +52,16 @@ public class UserImpl implements UserApi {
     @Override
     public Observable<BaseResponse<MessageBean>> profile(Map<String, RequestBody> map) {
         return bindIoUI(api.profile(map));
+    }
+
+    @Override
+    public Observable<BaseResponse<RecommendResponse>> recommend(Integer page) {
+        return bindIoUI(api.recommend(page));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> helpReg(String mobile, String code, String name, String idCard, String wtIds) {
+        return bindIoUI(api.helpReg(mobile,code,name,idCard,wtIds));
     }
 
 

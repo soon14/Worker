@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Date: 2020/9/10
  * author: SmallCake
+ * 推荐的工种
  */
 public class WorkRecommendResponse implements Serializable {
     private int page;

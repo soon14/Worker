@@ -12,6 +12,7 @@ import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.OrderBean;
+import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.order.OrderInfoActivity;
 import com.xsd.utils.ToastUtil;
@@ -22,12 +23,7 @@ import com.xsd.utils.ToastUtil;
  */
 public class OrderUtils {
 
-
-    public interface OnAdapterListener{
-        void loadMore();
-        void onRefresh();
-    }
-    public static void onAdapterEvent(BaseActivity activity, BaseQuickAdapter mAdapter, SwipeRefreshLayout refreshLayout,OnAdapterListener listener){
+    public static void onAdapterEvent(BaseActivity activity, BaseQuickAdapter mAdapter, SwipeRefreshLayout refreshLayout, OnAdapterListener listener){
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             OrderBean item = (OrderBean) adapter.getItem(position);
             int itemType = item.getItemType();

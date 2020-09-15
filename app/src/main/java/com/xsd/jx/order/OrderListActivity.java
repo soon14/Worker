@@ -11,6 +11,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
+import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.OrderUtils;
@@ -42,7 +43,7 @@ public class OrderListActivity extends BaseBindBarActivity<ActivityRecyclerviewB
 
     }
     private void onEvent() {
-        OrderUtils.onAdapterEvent(this, mAdapter, db.refreshLayout, new OrderUtils.OnAdapterListener() {
+        OrderUtils.onAdapterEvent(this, mAdapter, db.refreshLayout, new OnAdapterListener() {
             @Override
             public void loadMore() {
                 page++;

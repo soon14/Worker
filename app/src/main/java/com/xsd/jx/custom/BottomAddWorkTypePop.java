@@ -1,7 +1,6 @@
 package com.xsd.jx.custom;
 
 import android.view.Gravity;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
@@ -33,22 +32,30 @@ import java.util.Set;
 public class BottomAddWorkTypePop extends BottomPopupView {
     private List<WorkTypeBean> items;//已经有的工种
     private BaseActivity activity;
-
+    private OnAddWorkTypesListener listener;
+    private boolean needSubmit=true;//是否需要提交
     public interface OnAddWorkTypesListener {
         void addWorkTypes(Set<WorkTypeBean> types);
     }
-    OnAddWorkTypesListener listener;
+
     public BottomAddWorkTypePop(@NonNull BaseActivity context, List<WorkTypeBean> items,OnAddWorkTypesListener listener) {
         super(context);
         this.activity = context;
         this.items = items;
         this.listener = listener;
     }
+    public BottomAddWorkTypePop(@NonNull BaseActivity context, List<WorkTypeBean> items,OnAddWorkTypesListener listener,boolean needSubmit) {
+        super(context);
+        this.activity = context;
+        this.items = items;
+        this.listener = listener;
+        this.needSubmit = needSubmit;
+    }
 
 
     @Override
     protected int getPopupHeight() {
-        return (int) (ScreenUtils.getRealHight()*0.86f);
+        return (int) (ScreenUtils.getRealHight()*0.96f);
     }
 
     @Override
@@ -61,14 +68,15 @@ public class BottomAddWorkTypePop extends BottomPopupView {
         super.onCreate();
         layoutContent = findViewById(R.id.layout_content);
         getWorkTypeList();
-        findViewById(R.id.tv_confirm).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tags.size()==0){
-                    dismiss();
-                    return;
-                }
+        findViewById(R.id.tv_confirm).setOnClickListener(view -> {
+            dismiss();
+            if (tags.size()==0){
+                return;
+            }
+            if (needSubmit){
                 submit();
+            }else {
+                listener.addWorkTypes(tags);
             }
         });
     }
@@ -88,7 +96,6 @@ public class BottomAddWorkTypePop extends BottomPopupView {
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         listener.addWorkTypes(tags);
-                        dismiss();
                     }
                 });
     }

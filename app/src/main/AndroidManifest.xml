@@ -45,7 +45,7 @@
         <activity android:name=".mine.MessageActivity" />
         <activity android:name=".mine.FeedbackActivity" />
         <activity android:name=".mine.EditIntroActivity" />
-        <activity android:name=".mine.InviteListActivity" />
+        <activity android:name=".mine.RecommendListActivity" />
         <activity android:name=".mine.PartnerActivity" />
         <activity android:name=".mine.SetActivity" />
         <activity android:name=".mine.AwardActivity" />

@@ -14,6 +14,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.databinding.FragmentOrderBinding;
+import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.listener.OnTabClickListener;
 import com.xsd.jx.order.OrderListActivity;
 import com.xsd.jx.utils.AdapterUtils;
@@ -93,7 +94,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding>{
     private void onEvent() {
         db.tvOrderComment.setOnClickListener(view -> goActivity(OrderListActivity.class,7));//待评价
         db.tvOrderAll.setOnClickListener(view -> goActivity(OrderListActivity.class,0));//0全部订单1待评价
-        OrderUtils.onAdapterEvent((BaseActivity) this.getActivity(), mAdapter, db.refreshLayout, new OrderUtils.OnAdapterListener() {
+        OrderUtils.onAdapterEvent((BaseActivity) this.getActivity(), mAdapter, db.refreshLayout, new OnAdapterListener() {
             @Override
             public void loadMore() {
                 page++;

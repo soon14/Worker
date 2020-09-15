@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:background="@color/white"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_56">
-    <LinearLayout
-        android:orientation="horizontal"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.HelpRegResponse.ItemsBean" />
+    </data>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="张三"
-            android:textColor="@color/tv_gray"
-            android:textSize="@dimen/h5"
-            />
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="138****9856"
-            android:textColor="@color/tv_gray"
-            android:textSize="@dimen/h5"
-            />
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="2020-08-14"
-            android:textColor="@color/tv_gray"
-            android:textSize="@dimen/h5"
-            />
+        android:layout_height="@dimen/dp_56">
 
-    </LinearLayout>
-    <View style="@style/h_line" android:layout_alignParentBottom="true" android:layout_marginRight="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_16"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</RelativeLayout>
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                tools:text="张三"
+                android:text="@{item.name}"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                tools:text="138****9856"
+                android:text="@{item.mobile}"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                tools:text="2020-08-14"
+                android:text="@{item.createdAt}"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5" />
+
+        </LinearLayout>
+
+        <View
+            style="@style/h_line"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/dp_16" />
+
+    </RelativeLayout>
+</layout>
