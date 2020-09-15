@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class MobileUtils {
     /**
-     * TODO 1.获取手机制造商名称
+     * 1.获取手机制造商名称
      *
      * @return
      */
@@ -32,7 +32,7 @@ public class MobileUtils {
     }
 
     /**
-     * TODO 2.手机的可见名称
+     * 2.手机的可见名称
      *
      * @return
      */
@@ -41,7 +41,7 @@ public class MobileUtils {
     }
 
     /**
-     * TODO 3.获取手机唯一标识码
+     *  3.获取手机唯一标识码
      * get phone unique
      *<uses-permission android:name="android.permission.READ_PHONE_STATE" />
      * @param context
@@ -96,7 +96,7 @@ public class MobileUtils {
 
 
     /**
-     * TODO 4.获取设备的【WLAN】的MAC地址
+     * 4.获取设备的【WLAN】的MAC地址
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>}</p>
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.INTERNET"/>}</p>
      *

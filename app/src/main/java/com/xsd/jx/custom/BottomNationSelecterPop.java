@@ -2,7 +2,6 @@ package com.xsd.jx.custom;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -13,6 +12,7 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.xsd.jx.R;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.utils.DpPxUtils;
+import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.custom.RadioGroupEx;
 
 /**
@@ -44,8 +44,10 @@ public class BottomNationSelecterPop extends BottomPopupView {
         RadioGroupEx layoutNations = findViewById(R.id.layout_nations);
         int dp4 = DpPxUtils.dp2px(4);
         int dp8 = DpPxUtils.dp2px(8);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(dp4,dp4,dp4,dp4);
+        int width = (ScreenUtils.getRealWidth() - dp8 * 6) / 4;
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, dp8*5);
+        layoutParams.setMargins(dp4,0,dp4,dp8);
         for (int i = 0; i < split.length; i++) {
             String nationName = split[i];
             RadioButton radioButton = new RadioButton(this.getContext());
@@ -55,7 +57,6 @@ public class BottomNationSelecterPop extends BottomPopupView {
             radioButton.setButtonDrawable(0);
             radioButton.setGravity(Gravity.CENTER);
             radioButton.setLayoutParams(layoutParams);
-            radioButton.setPadding(dp8,0,dp8,0);
             radioButton.setText(nationName);
             layoutNations.addView(radioButton);
             radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -65,8 +66,5 @@ public class BottomNationSelecterPop extends BottomPopupView {
                 }
             });
         }
-        RadioButton radioButton0 = (RadioButton) layoutNations.getChildAt(0);
-        radioButton0.setChecked(true);
-
     }
 }

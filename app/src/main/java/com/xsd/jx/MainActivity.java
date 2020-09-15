@@ -23,6 +23,7 @@ import com.xsd.jx.listener.OnBottomNavClickListener;
 import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 /**
@@ -52,8 +53,12 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         Apollo.bind(this);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
-        if (UserUtils.isLogin())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
-        if (UserUtils.isLogin()&&!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+
+        if (UserUtils.isLogin()){
+            L.e("token=="+UserUtils.getToken());
+            PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+            if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+        }
 
 
     }
@@ -65,7 +70,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     }
 
     private void initViewPager() {
-        final Fragment[] fragments = new Fragment[]{new JobFragment(), new OrderFragment(), new MineFragment()};
+        Fragment[] fragments = new Fragment[]{new JobFragment(), new OrderFragment(), new MineFragment()};
         final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager(), 0) {
             @Override
             public int getCount() {

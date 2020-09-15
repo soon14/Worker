@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
+import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
@@ -28,6 +31,7 @@ import com.xsd.jx.mine.ResumeActivity;
 import com.xsd.jx.mine.SetActivity;
 import com.xsd.jx.mine.WalletActivity;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.UserUtils;
 
 /**
  * Date: 2020/1/3
@@ -59,10 +63,22 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
                         UserInfoResponse data = baseResponse.getData();
                         UserInfo info = data.getInfo();
+                        UserUtils.saveUser(info);
                         db.setItem(info);
                     }
                 });
+    }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Apollo.bind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
     }
 
     private void onEvent() {
@@ -74,6 +90,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                 case R.id.iv_head:
                 case R.id.tv_name:
                 case R.id.tv_click_edit:
+                case R.id.layout_head:
                     goActivity(ResumeActivity.class);
                     break;
                 case R.id.tv_top_recruit:

@@ -80,7 +80,7 @@ public class BitmapUtils {
     }
 
     /**
-     * TODO 1 质量压缩 ,bitmap所占内存大小是不会变的,返回字节数组
+     * 1 质量压缩 ,bitmap所占内存大小是不会变的,返回字节数组
      * 不会减少图片的像素，保持像素的前提下改变图片的位深及透明度等
      *
      * 但是我们看到bytes.length是随着quality变小而变小的。
@@ -99,7 +99,7 @@ public class BitmapUtils {
     }
 
     /**
-     * TODO 2.采样率压缩,bitmap所占内存根据inSampleSize变小
+     * 2.采样率压缩,bitmap所占内存根据inSampleSize变小
      * @param context
      * @param res
      * @param inSampleSize 传入2，就压缩为原来的 1/2
@@ -122,7 +122,7 @@ public class BitmapUtils {
     }
 
     /**
-     * TODO 3.缩放法压缩（Matrix矩阵），bitmap所占内存根据matrix缩放比例变小,比采样率压缩更小
+     * 3.缩放法压缩（Matrix矩阵），bitmap所占内存根据matrix缩放比例变小,比采样率压缩更小
      * @param context
      * @param res
      * @param sx
@@ -144,7 +144,7 @@ public class BitmapUtils {
     }
 
     /**
-     * TODO 4.把图片设置为RGB_565，相比argb_8888减少了一半的内存开销，且长度和宽度不变
+     * 4.把图片设置为RGB_565，相比argb_8888减少了一半的内存开销，且长度和宽度不变
      * @param context
      * @param res
      */
@@ -161,7 +161,7 @@ public class BitmapUtils {
 
 
     /**
-     * TODO 5.压缩成用户希望的宽高
+     * 5.压缩成用户希望的宽高
      * 首先把图片设置为RGB_565来减小大小
      * @param context
      * @param res

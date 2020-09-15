@@ -22,10 +22,17 @@ import com.xsd.jx.custom.BottomAddWorkTypePop;
 import com.xsd.jx.databinding.ActivityResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.ScreenUtils;
+import com.xsd.utils.ToastUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 个人简历
@@ -41,17 +48,17 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        loadData();
         loadExp();
     }
     //用户详情
-    private void loadData() {
+    private void loadUserInfo() {
         dataProvider.user.info()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
                         UserInfoResponse data = baseResponse.getData();
                         UserInfo info = data.getInfo();
+                        UserUtils.saveUser(info);
                         db.setItem(info);
                         workTypes = data.getWorkTypes();
                         setWorkTypes();
@@ -60,6 +67,11 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
 
     private void loadExp() {
         dataProvider.user.experience(1)
@@ -92,6 +104,10 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
                                 }
                             }))
                             .show();
+                    break;
+                case R.id.tv_edit_intro:
+                    new XPopup.Builder(this)
+                            .asInputConfirm("请输入自我介绍", "", text -> editUserInfo(text)).show();
                     break;
             }
         });
@@ -163,5 +179,18 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
             bind.simpleRatingBar.setRating(item.getRate());
             db.layoutWorks.addView(view);
         }
+    }
+    //编辑用户信息
+    private void editUserInfo(String intro){
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("intro", RequestBody.create(MediaType.parse("text/plain"), intro));
+        dataProvider.user.profile(map)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        db.tvIntro.setText(intro);
+                    }
+                });
     }
 }

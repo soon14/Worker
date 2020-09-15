@@ -155,4 +155,21 @@ public class DataBindingAdapter {
         tv.setText(builder.toString());
 
     }
+    @BindingAdapter("sex")// 1男 2女 3未知
+    public static void sex(TextView tv, int sex){
+        String sexStr="男";
+        switch (sex){
+            case 1: sexStr="男";break;
+            case 2:sexStr="女";
+                break;
+            case 3:sexStr="未知";
+                break;
+        }
+        tv.setText(sexStr);
+
+    }
+    @BindingAdapter("intro")
+    public static void isJoin(TextView tv, String intro){
+        tv.setText(TextUtils.isEmpty(intro)?"很懒~！什么都没写。":intro);
+    }
 }

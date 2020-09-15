@@ -113,6 +113,8 @@ dependencies {
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.0'
     //权限申请
     implementation 'com.hjq:xxpermissions:8.2'
+    //资源图片，视频选择器
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
 
 
 }

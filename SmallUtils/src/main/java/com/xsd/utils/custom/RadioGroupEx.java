@@ -1,19 +1,10 @@
 package com.xsd.utils.custom;
 
-/**
- * Date: 2020/8/19
- * author: SmallCake
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
-
-/**
- * 流式布局的RadioGroup
- */
 
 /**
  * Created by mjc on 2016/1/20.

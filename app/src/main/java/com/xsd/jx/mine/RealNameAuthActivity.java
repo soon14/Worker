@@ -15,13 +15,13 @@ import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.databinding.ActivityRealNameAuthBinding;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.FileNameUtils;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.FileUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -57,7 +57,12 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                     showNationList();
                     break;
                 case R.id.tv_work_experience:
-                    showWorkExperList();
+                    PopShowUtils.showWorkExp(db.tvWorkExperience, new OnSelectListener() {
+                        @Override
+                        public void onSelect(int position, String text) {
+                            db.tvWorkExperience.setText(text);
+                        }
+                    });
                     break;
             }
         });
@@ -122,45 +127,17 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
     private void showNationList() {
         if (nationPop==null){
             nationPop = new XPopup.Builder(this)
-                    .setPopupCallback(new SimpleCallback() {
-                        @Override
-                        public void onShow(BasePopupView popupView) {
-                            super.onShow(popupView);
-                            L.e("onShow");
-                        }
-                        @Override
-                        public void onCreated(BasePopupView popupView) {
-                            super.onCreated(popupView);
-                            L.e("onCreated");
-                        }
-                    })
-                    .asCustom(new BottomNationSelecterPop(this, nationName -> db.tvNation.setText(nationName))).show();
+                    .asCustom(new BottomNationSelecterPop(this, nationName -> db.tvNation.setText(nationName)))
+                    .show();
             new Handler().postDelayed(() -> {
                 if (!nationPop.isShow())
                     nationPop.show();
             },300);
-
         }else
             nationPop.show();
     }
 
-    private void showWorkExperList() {
-        new XPopup.Builder(this)
-                .atView(db.tvWorkExperience)
-                .asBottomList("工龄选择",
-                        new String[]{"1-3年", "3-5年", "5-10年", "10-15年","15-20年","20-30年"},
-                        null,
-                        -1,
-                        false,
-                        new OnSelectListener() {
-                            @Override
-                            public void onSelect(int position, String text) {
-                                db.tvWorkExperience.setText(text);
-                            }
-                        },
-                        0,
-                        0).show();
-    }
+
 
 
 

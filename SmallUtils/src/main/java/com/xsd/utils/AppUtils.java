@@ -69,7 +69,7 @@ public class AppUtils {
 
 
 
-      TODO 1:create xml folder in [res] and create file_paths.xml in this xml
+      第一步： 1:create xml folder in [res] and create file_paths.xml in this xml
 
       <?xml version="1.0" encoding="utf-8"?>
         <resources>
@@ -79,7 +79,7 @@ public class AppUtils {
             </paths>
         </resources>
 
-      TODO 2: take under code into <application></application>
+      第二步: take under code into <application></application>
 
         <provider
              android:name="android.support.v4.content.FileProvider"

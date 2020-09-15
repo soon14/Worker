@@ -61,11 +61,9 @@ public class StringUtils {
 	                return false;  
 	            }  
 	        } catch (NumberFormatException e) {
-	            // TODO Auto-generated catch block  
-	            e.printStackTrace();  
+	            e.printStackTrace();
 	        } catch (ParseException e) {
-	            // TODO Auto-generated catch block  
-	            e.printStackTrace();  
+	            e.printStackTrace();
 	        }  
 	        if (Integer.parseInt(strMonth) > 12 || Integer.parseInt(strMonth) == 0) {
 	            errorInfo = "身份证月份无效";

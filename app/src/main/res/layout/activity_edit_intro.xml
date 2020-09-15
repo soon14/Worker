@@ -7,6 +7,9 @@
         <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.UserInfo" />
     </data>
 
     <LinearLayout
@@ -25,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_74">
             <ImageView
+                avatar="@{item.avatar}"
                 android:id="@+id/iv_head"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ic_worker_head"
@@ -64,13 +68,16 @@
                 android:padding="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="178****9668"
+                tools:text="178****9668"
+                android:text="@{item.mobile}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
+            android:onClick="@{clicklistener}"
+            android:id="@+id/layout_name"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="match_parent"
@@ -84,19 +91,24 @@
                 android:textSize="@dimen/h4"
                 />
             <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_name"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:drawablePadding="@dimen/dp_8"
                 android:padding="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="王志尧"
+                tools:text="王志尧"
+                android:text="@{item.name}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/layout_sex"
+            android:onClick="@{clicklistener}"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="match_parent"
@@ -110,6 +122,9 @@
                 android:textSize="@dimen/h4"
                 />
             <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_sex"
+                sex="@{item.sex}"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:drawablePadding="@dimen/dp_8"
@@ -123,6 +138,8 @@
             <View style="@style/h_line" android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/layout_birthday"
+            android:onClick="@{clicklistener}"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="match_parent"
@@ -136,19 +153,24 @@
                 android:textSize="@dimen/h4"
                 />
             <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_birthday"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:drawablePadding="@dimen/dp_8"
                 android:padding="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1986-08-02"
+                tools:text="1986-08-02"
+                android:text="@{item.birthday}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/layout_nation"
+            android:onClick="@{clicklistener}"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="match_parent"
@@ -162,19 +184,24 @@
                 android:textSize="@dimen/h4"
                 />
             <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_nation"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:drawablePadding="@dimen/dp_8"
                 android:padding="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="汉族"
+                tools:text="汉族"
+                android:text="@{item.nation}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/layout_work_exp"
+            android:onClick="@{clicklistener}"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="match_parent"
@@ -189,7 +216,7 @@
                 />
             <TextView
                 android:onClick="@{clicklistener}"
-                android:id="@+id/tv_work_experience"
+                android:id="@+id/tv_work_years"
                 android:drawableRight="@mipmap/ic_gray_arrow_right"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
@@ -197,7 +224,8 @@
                 android:padding="@dimen/dp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5~10年"
+                tools:text="5~10年"
+                android:text="@{item.workYears}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />

@@ -63,6 +63,12 @@
         <activity android:name=".mine.RealNameAuthActivity" />
         <activity android:name=".job.PermanentWorkerActivity" />
         <activity android:name=".job.JobPriceInquireActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="android.max_aspect"
@@ -84,13 +90,7 @@
                 android:resource="@xml/filepath_data" />
         </provider>
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

@@ -6,14 +6,17 @@ import android.widget.LinearLayout;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnCancelListener;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.custom.PushJobPop;
+import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
@@ -41,9 +44,9 @@ public class PopShowUtils {
     /**
      * 弹出被邀请的工作
      */
-    public static void showInviteJob(List<JobBean> data,BaseActivity activity) {
+    public static void showInviteJob(List<JobBean> data, BaseActivity activity) {
         new XPopup.Builder(activity)
-                .asCustom(new InviteJobPop(activity,data))
+                .asCustom(new InviteJobPop(activity, data))
                 .show();
     }
 
@@ -60,6 +63,7 @@ public class PopShowUtils {
     /**
      * 提示弹框
      * 如果点击不再提示，就不再弹出此窗口提示
+     *
      * @param v
      */
     public static void showTips(View v) {
@@ -74,7 +78,7 @@ public class PopShowUtils {
                         new OnCancelListener() {
                             @Override
                             public void onCancel() {
-                                SPUtils.put("no_tips_joinsuccess",true);
+                                SPUtils.put("no_tips_joinsuccess", true);
                             }
                         },
                         false,
@@ -90,7 +94,7 @@ public class PopShowUtils {
                         "实名认证提醒",
                         () -> activity.goActivity(RealNameAuthActivity.class),
                         null,
-                        true,R.layout.dialog_tips)
+                        true, R.layout.dialog_tips)
                 .show();
     }
 
@@ -130,7 +134,35 @@ public class PopShowUtils {
                                     });
                         },
                         null,
-                        false,R.layout.dialog_tips)
+                        false, R.layout.dialog_tips)
+                .show();
+    }
+
+    /**
+     * 工作经验选择
+     *
+     * @param v
+     */
+    public static void showWorkExp(View v, OnSelectListener listener) {
+        new XPopup.Builder(v.getContext())
+                .asBottomList("工龄选择",
+                        new String[]{"1-5年", "5-10年", "10-20年"},
+                        null,
+                        -1,
+                        false,
+                        listener,
+                        0,
+                        0).show();
+    }
+
+    /**
+     * 名族选择
+     * @param activity
+     * @param listener
+     */
+    public static void showNationList(BaseActivity activity, OnNationSelectListener listener) {
+        new XPopup.Builder(activity)
+                .asCustom(new BottomNationSelecterPop(activity, listener))
                 .show();
     }
 }
