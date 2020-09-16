@@ -27,6 +27,8 @@ import java.util.Set;
 public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBinding> {
     private VerifyCountTimer mTimer;
     private Set<WorkTypeBean> workTypes;//工种
+    private String nation = "汉族";
+    private String workYears = "1~5年";
     @Override
     protected int getLayoutId() {
         return R.layout.activity_help_regist;
@@ -72,6 +74,7 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
                     PopShowUtils.showNationList(this, new OnNationSelectListener() {
                         @Override
                         public void onSelect(String nationName) {
+                            nation = nationName;
                             db.tvNation.setText(nationName);
                         }
                     });
@@ -80,6 +83,7 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
                     PopShowUtils.showWorkExp(v, new OnSelectListener() {
                         @Override
                         public void onSelect(int position, String text) {
+                            workYears = text;
                             db.tvWorkYears.setText(text);
                         }
                     });
@@ -112,7 +116,7 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
         String wtIds = builder.toString();
         wtIds = wtIds.substring(0,wtIds.lastIndexOf(","));
 
-        dataProvider.user.helpReg(mobile,code,name,idCard,wtIds)
+        dataProvider.user.helpReg(mobile,code,name,idCard,wtIds,nation,workYears)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {

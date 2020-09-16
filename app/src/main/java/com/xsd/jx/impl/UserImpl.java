@@ -4,10 +4,12 @@ import com.xsd.jx.api.UserApi;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.RecommendResponse;
 import com.xsd.jx.bean.UserInfoResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -40,6 +42,11 @@ public class UserImpl implements UserApi {
     }
 
     @Override
+    public Observable<BaseResponse<List<JobBean>>> favWorks(Integer page) {
+        return bindIoUI(api.favWorks(page));
+    }
+
+    @Override
     public Observable<BaseResponse<HelpRegResponse>> helpRegRecord(Integer page) {
         return bindIoUI(api.helpRegRecord(page));
     }
@@ -60,8 +67,8 @@ public class UserImpl implements UserApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> helpReg(String mobile, String code, String name, String idCard, String wtIds) {
-        return bindIoUI(api.helpReg(mobile,code,name,idCard,wtIds));
+    public Observable<BaseResponse<MessageBean>> helpReg(String mobile, String code, String name, String idCard, String wtIds,String nation,String workYears) {
+        return bindIoUI(api.helpReg(mobile,code,name,idCard,wtIds,nation,workYears));
     }
 
 

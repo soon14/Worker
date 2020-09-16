@@ -25,9 +25,6 @@ public class JobAdapter extends BaseQuickAdapter<JobBean, BaseDataBindingHolder<
         ItemJobBinding dataBinding = helper.getDataBinding();
         dataBinding.setItem(jobBean);
     }
-    public void refreshData(int position){
-        notifyItemChanged(position);
-    }
 
 
 

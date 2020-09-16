@@ -73,7 +73,7 @@ public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermane
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         mAdapter.getData().get(position).setIsJoin(true);
-                        mAdapter.refreshData(position);
+                        mAdapter.notifyItemChanged(position);
                         PopShowUtils.showTips(tvTitle);
                     }
                 });

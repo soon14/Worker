@@ -66,10 +66,8 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     @Override
     protected void onLazyLoad() {
         initView();
-
         loadData();
         getInviteList();
-
         onEvent();
     }
     //被邀请上工信息列表
@@ -209,7 +207,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         mAdapter.getData().get(position).setIsJoin(true);
-                        mAdapter.refreshData(position+1);
+                        mAdapter.notifyItemChanged(position+1);
                         PopShowUtils.showTips(db.tvInvite);
                     }
                 });

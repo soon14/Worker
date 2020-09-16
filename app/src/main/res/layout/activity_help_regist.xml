@@ -182,6 +182,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
                     android:hint="工友所属民族"
+                    android:text="汉族"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
                     />
@@ -206,6 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
                     android:hint="工友工作年限"
+                    android:text="1~5年"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
                     />
