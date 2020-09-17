@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.MessageResponse.ItemsBean" />
     </data>
 
     <LinearLayout
@@ -15,7 +18,8 @@
             android:padding="@dimen/dp_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2020-08-10 17:26"
+            tools:text="2020-08-10 17:26"
+            android:text="@{item.createdAt}"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5" />
         <LinearLayout
@@ -29,7 +33,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="欢迎您加入匠心大家庭！"
+                tools:text="欢迎您加入匠心大家庭！"
+                android:text="@{item.title}"
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h4"
                 />
@@ -37,7 +42,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="岁月不居，年华更迭。来不及回首间，所有的已知，便都化作故旧曾经，消失不见了，一切如同未出现过般，变得淹没无痕，无处可寻。"
+                tools:text="岁月不居，年华更迭。来不及回首间，所有的已知，便都化作故旧曾经，消失不见了，一切如同未出现过般，变得淹没无痕，无处可寻。"
+                android:text="@{item.content}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h5"
                 />

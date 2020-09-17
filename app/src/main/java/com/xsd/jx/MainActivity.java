@@ -31,12 +31,24 @@ import com.xsd.utils.ToastUtil;
  * 1.找活 {@link JobFragment}
  * 2.订单 {@link OrderFragment}
  * 3.我的 {@link MineFragment}
+
+ 列表数据处理：
  if (items!=null&&items.size()>0){
  if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
  mAdapter.getLoadMoreModule().loadMoreComplete();
  }else {
  mAdapter.getLoadMoreModule().loadMoreEnd();
  }
+
+ 如果需要刷新清空数据：
+ if (items!=null&&items.size()>0){
+ if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+ mAdapter.getLoadMoreModule().loadMoreComplete();
+ }else {
+ if (page==1)mAdapter.setList(items);else
+ mAdapter.getLoadMoreModule().loadMoreEnd();
+ }
+
  */
 
 public class MainActivity extends BaseBindActivity<ActivityMainBinding> {

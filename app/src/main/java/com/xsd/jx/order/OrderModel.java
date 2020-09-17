@@ -10,6 +10,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.inject.DataProvider;
+import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 
@@ -32,21 +33,22 @@ public class OrderModel {
         this.refreshLayout = refreshLayout;
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(mAdapter);
-        AdapterUtils.setEmptyDataView(mAdapter);
         page=1;
 
     }
     public void initView(){
         loadData();
-        //加载更多
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-           page++;
-           loadData();
-        });
-        //下拉刷新
-        refreshLayout.setOnRefreshListener(() -> {
-            page=1;
-            loadData();
+        AdapterUtils.onAdapterEvent(mAdapter, refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
         });
     }
 

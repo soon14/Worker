@@ -6,6 +6,7 @@ import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.MessageResponse;
 import com.xsd.jx.bean.RecommendResponse;
 import com.xsd.jx.bean.UserInfoResponse;
 
@@ -64,6 +65,11 @@ public class UserImpl implements UserApi {
     @Override
     public Observable<BaseResponse<RecommendResponse>> recommend(Integer page) {
         return bindIoUI(api.recommend(page));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageResponse>> message(Integer type, Integer page) {
+        return bindIoUI(api.message(type,page));
     }
 
     @Override

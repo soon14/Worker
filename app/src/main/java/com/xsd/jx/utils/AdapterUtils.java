@@ -19,7 +19,7 @@ public class AdapterUtils {
     }
 
     public static void onAdapterEvent(BaseQuickAdapter mAdapter, SwipeRefreshLayout refreshLayout, OnAdapterListener listener){
-
+        setEmptyDataView(mAdapter);
         //加载更多
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
             if (listener!=null)listener.loadMore();
