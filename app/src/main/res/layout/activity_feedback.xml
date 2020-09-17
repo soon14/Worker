@@ -16,6 +16,7 @@
         tools:context="com.xsd.jx.mine.FeedbackActivity">
         <include layout="@layout/action_common_bar"/>
         <EditText
+            android:id="@+id/et_content"
             android:maxLength="300"
             android:padding="@dimen/dp_16"
             android:textSize="@dimen/h4"

@@ -20,7 +20,7 @@ public class JobInfoPresenter {
     public void fav(){
         model.fav();
     }
-    //加入
+    //报名上工
     public void join(){
         model.join();
     }

@@ -154,6 +154,34 @@ public class PopShowUtils {
                         0,
                         0).show();
     }
+    /**
+     *身份 1:建筑企业 2:劳务公司 3:个人
+     */
+    public static void showIdTypes(View v, OnSelectListener listener) {
+        new XPopup.Builder(v.getContext())
+                .asBottomList("你的身份",
+                        new String[]{"建筑企业", "劳务公司", "个人"},
+                        null,
+                        -1,
+                        false,
+                        listener,
+                        0,
+                        0).show();
+    }
+    /**
+     * 合作意向 1:项目入股 2:资源合作 3:委托招工
+     */
+    public static void showPurpose(View v, OnSelectListener listener) {
+        new XPopup.Builder(v.getContext())
+                .asBottomList("合作意向",
+                        new String[]{"项目入股", "资源合作", "委托招工"},
+                        null,
+                        -1,
+                        false,
+                        listener,
+                        0,
+                        0).show();
+    }
 
     /**
      * 名族选择

@@ -77,4 +77,21 @@ public interface UserApi {
     @FormUrlEncoded
     @POST("user/certification")
     Observable<BaseResponse<MessageBean>> certification(@Field("avatar")String avatar,@Field("name")String name,@Field("idCard")String idCard,@Field("nation")String nation,@Field("workYears")String workYears);
+
+    /**
+     * 城市合伙人意向提交
+     * @param name    姓名
+     * @param mobile  联系手机号
+     * @param idType  身份 1:建筑企业 2:劳务公司 3:个人
+     * @param purpose 合作意向 1:项目入股 2:资源合作 3:委托招工
+     * @return MessageBean
+     */
+    @FormUrlEncoded
+    @POST("user/city-partner")
+    Observable<BaseResponse<MessageBean>> cityPartner(@Field("name")String name,@Field("mobile")String mobile, @Field("idType")Integer idType,@Field("purpose")Integer purpose);
+    //用户反馈
+    @FormUrlEncoded
+    @POST("user/feedback")
+    Observable<BaseResponse<MessageBean>> feedback(@Field("content")String content,@Field("contentUrl")String contentUrl);
+
 }

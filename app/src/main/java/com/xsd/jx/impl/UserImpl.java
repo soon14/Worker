@@ -76,5 +76,15 @@ public class UserImpl implements UserApi {
         return bindIoUI(api.certification(avatar,name,idCard,nation,workYears));
     }
 
+    @Override
+    public Observable<BaseResponse<MessageBean>> cityPartner(String name, String mobile, Integer idType, Integer purpose) {
+        return bindIoUI(api.cityPartner(name,mobile,idType,purpose));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> feedback(String content, String contentUrl) {
+        return bindIoUI(api.feedback(content,contentUrl));
+    }
+
 
 }

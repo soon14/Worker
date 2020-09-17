@@ -18,9 +18,13 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.databinding.ActivityFeedbackBinding;
 import com.xsd.jx.utils.AnimUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.DpPxUtils;
+import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
@@ -38,7 +42,8 @@ import java.util.Objects;
  */
 public class FeedbackActivity extends BaseBindBarActivity<ActivityFeedbackBinding> {
     private static final String TAG = "FeedbackActivity";
-    AnimationDrawable drawableVoice;
+    private AnimationDrawable drawableVoice;//声音动画文件
+    private String contentUrl="007.mp3";//TODO 上传音频到服务器或阿里云得到地址信息
 
 
 
@@ -63,7 +68,7 @@ public class FeedbackActivity extends BaseBindBarActivity<ActivityFeedbackBindin
         db.tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                L.e("提交中...");
+               submit();
             }
         });
         db.tvRecord.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +105,20 @@ public class FeedbackActivity extends BaseBindBarActivity<ActivityFeedbackBindin
                 }
             }
         });
+    }
+
+    private void submit() {
+        if (EditTextUtils.isEmpty(db.etContent))return;
+        String content = db.etContent.getText().toString();
+        dataProvider.user.feedback(content,contentUrl)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        finish();
+                    }
+                });
+
     }
 
     @Override

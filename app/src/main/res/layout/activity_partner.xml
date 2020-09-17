@@ -39,13 +39,13 @@
                     android:textSize="@dimen/h4"
                     />
                 <EditText
+                    android:id="@+id/et_name"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp_8"
                     android:padding="@dimen/dp_8"
                     android:background="@drawable/round6_gray_bg"
                     android:singleLine="true"
                     android:maxLength="11"
-                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
                     android:hint="请输入您的姓名"
@@ -62,12 +62,14 @@
                     android:textSize="@dimen/h4"
                     />
                 <EditText
+                    android:id="@+id/et_mobile"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp_8"
                     android:padding="@dimen/dp_8"
                     android:background="@drawable/round6_gray_bg"
                     android:singleLine="true"
                     android:maxLength="11"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
                     android:hint="请输入您的联系方式"
@@ -84,7 +86,7 @@
                     android:textSize="@dimen/h4"
                     />
                 <TextView
-                    android:id="@+id/tv_type_work"
+                    android:id="@+id/tv_id_type"
                     android:onClick="@{clicklistener}"
                     android:drawableRight="@mipmap/ic_gray_arrow_down_big"
                     android:gravity="center_vertical"
