@@ -45,7 +45,7 @@ public class UserInfo implements Serializable {
     private String wxUnionId;
     private String intro;
     private String idCard;
-    private int isCertification;
+    private int isCertification;//是否实名认证 0否 1是
     private String workYears;
     private String balance;
     private int liveBalance;

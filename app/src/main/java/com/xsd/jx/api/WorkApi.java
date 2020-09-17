@@ -2,6 +2,7 @@ package com.xsd.jx.api;
 
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.InviteListResponse;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobSearchBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
@@ -60,6 +61,9 @@ public interface WorkApi {
     //收藏用工信息
     @GET("work/fav")
     Observable<BaseResponse<MessageBean>> fav(@Query("workId")Integer workId);
+    //用工详情 workId:用工信息ID
+    @GET("work/detail")
+    Observable<BaseResponse<JobBean>> detail(@Query("workId")Integer workId);
 
 
 }

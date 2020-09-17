@@ -37,6 +37,7 @@ import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -112,7 +113,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                 case R.id.layout_birthday:
                 case R.id.tv_birthday:
                     showDateDialog();
-
                     break;
                 case R.id.layout_nation:
                 case R.id.tv_nation:
@@ -150,6 +150,15 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     }
                 },
                 mYear, mMonth, mDay);
+        Calendar ca = Calendar.getInstance();
+        long maxDate = ca.getTimeInMillis();
+        int i = ca.get(Calendar.YEAR - 80);
+
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        datePicker.setMaxDate(ca.getTimeInMillis());
+        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
+        datePicker.setCalendarViewShown(true);
+        datePicker.setSpinnersShown(true);
         datePickerDialog.show();
     }
 
@@ -164,12 +173,22 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
             finish();
         });
 
-        Calendar ca = Calendar.getInstance();
-        mYear = ca.get(Calendar.YEAR);
-        mMonth = ca.get(Calendar.MONTH);
-        mDay = ca.get(Calendar.DAY_OF_MONTH);
+        Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        Calendar d = Calendar.getInstance();
+
+        //也可以用compareTo方法比较,返回一个int，之前-1，之后1，相等0
+        d.add(Calendar.YEAR,1);
+        L.e("c时间是否在d之前："+c.compareTo(d));
+
+        c.clear(Calendar.MONTH);//清除月份，并以最小月份代替
+        L.e("d时间是否在c之前："+new SimpleDateFormat("yyyy年MM月dd日").format(c.getTime()));
 
     }
+
 
     private void getPermissionOfTakePhoto() {
         XXPermissions.with(this)

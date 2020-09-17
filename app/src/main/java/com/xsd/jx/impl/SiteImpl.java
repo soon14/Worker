@@ -37,4 +37,9 @@ public class SiteImpl implements SiteApi {
     public Observable<BaseResponse<MessageBean>> sendSms(String mobile, String type) {
         return bindIoUI(api.sendSms(mobile,type));
     }
+
+    @Override
+    public Observable<BaseResponse> banner(Integer tId) {
+        return bindIoUI(api.banner(tId));
+    }
 }

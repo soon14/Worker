@@ -78,7 +78,7 @@
                 <EditText
                     android:singleLine="true"
                     android:digits="1234567890xX"
-                    android:maxLength="19"
+                    android:maxLength="18"
                     android:id="@+id/et_card_number"
                     android:paddingLeft="@dimen/dp_13"
                     android:paddingRight="@dimen/dp_13"
@@ -122,14 +122,14 @@
                     android:onClick="@{clicklistener}"
                     android:drawableRight="@mipmap/ic_gray_arrow_down_big"
                     android:gravity="center_vertical"
-                    android:id="@+id/tv_work_experience"
+                    android:id="@+id/tv_work_exp"
                     android:paddingLeft="@dimen/dp_13"
                     android:paddingRight="@dimen/dp_13"
                     android:background="@drawable/round6_gray_bg"
                     android:layout_marginTop="@dimen/dp_10"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
-                    tools:text="10-15年"
+                    android:text="1~5年"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"/>
                 <TextView

@@ -72,7 +72,7 @@ public class InviteJobPop extends CenterPopupView {
                             Apollo.emit(EventStr.UPDATE_INVITE_LIST);
                         }
                     }));
-            viewChild.setOnClickListener(view -> activity.goJobInfoActivity(jobBean));
+            viewChild.setOnClickListener(view -> activity.goJobInfoActivity(jobBean.getId()));
         }
         findViewById(R.id.layout_look_other).setOnClickListener(view -> dismiss());
         TextView tvTitle = findViewById(R.id.tv_title);

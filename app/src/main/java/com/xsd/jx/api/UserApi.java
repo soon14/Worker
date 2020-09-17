@@ -73,4 +73,8 @@ public interface UserApi {
     @POST("user/help-reg")
     Observable<BaseResponse<MessageBean>> helpReg(@Field("mobile") String mobile, @Field("code") String code, @Field("name") String name, @Field("idCard") String idCard, @Field("wtIds") String wtIds, @Field("nation") String nation, @Field("workYears") String workYears);
 
+    //实名认证
+    @FormUrlEncoded
+    @POST("user/certification")
+    Observable<BaseResponse<MessageBean>> certification(@Field("avatar")String avatar,@Field("name")String name,@Field("idCard")String idCard,@Field("nation")String nation,@Field("workYears")String workYears);
 }

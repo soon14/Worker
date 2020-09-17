@@ -56,7 +56,7 @@ public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermane
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             JobBean item = (JobBean) adapter.getItem(position);
-            goJobInfoActivity(item);
+            goJobInfoActivity(item.getId());
         });
 
         //加载更多

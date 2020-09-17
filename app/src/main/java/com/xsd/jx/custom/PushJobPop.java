@@ -64,7 +64,7 @@ public class PushJobPop extends CenterPopupView {
                     break;
                 case R.id.tv_look_more:
                 case R.id.layout_content:
-                    activity.goJobInfoActivity(jobBean);
+                    activity.goJobInfoActivity(jobBean.getId());
                     break;
                 case R.id.tv_fav:
                     fav();

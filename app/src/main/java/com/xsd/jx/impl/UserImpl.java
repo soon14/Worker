@@ -71,5 +71,10 @@ public class UserImpl implements UserApi {
         return bindIoUI(api.helpReg(mobile,code,name,idCard,wtIds,nation,workYears));
     }
 
+    @Override
+    public Observable<BaseResponse<MessageBean>> certification(String avatar, String name, String idCard, String nation, String workYears) {
+        return bindIoUI(api.certification(avatar,name,idCard,nation,workYears));
+    }
+
 
 }

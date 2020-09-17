@@ -2,10 +2,12 @@ package com.xsd.jx.mine;
 
 import android.os.Bundle;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
@@ -97,7 +99,6 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
         tvRight.setOnClickListener(v -> goActivity(HelpRegistListActivity.class));
 
     }
-    //TODO：新增民族，工作年限
     private void helpReg() {
         if (EditTextUtils.isEmpty(db.etMobile,db.etCode,db.etName,db.etIdcard))return;
         if (workTypes==null||workTypes.size()==0){
@@ -122,6 +123,7 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
+                        Apollo.emit(EventStr.UPDATE_USER_INFO);
                     }
                 });
     }

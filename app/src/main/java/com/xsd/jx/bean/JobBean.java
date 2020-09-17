@@ -49,7 +49,32 @@ public class JobBean implements Serializable {
     private boolean isJoin;
     private String publisher;
     private String division;
+    private String divisionAddr;
     private String typeTitle;
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
+    }
+
+    public boolean isJoin() {
+        return isJoin;
+    }
+
+    public void setJoin(boolean join) {
+        isJoin = join;
+    }
+
+    public String getDivisionAddr() {
+        return divisionAddr;
+    }
+
+    public void setDivisionAddr(String divisionAddr) {
+        this.divisionAddr = divisionAddr;
+    }
 
     public int getId() {
         return id;

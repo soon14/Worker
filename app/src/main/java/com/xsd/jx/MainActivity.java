@@ -3,6 +3,8 @@ package com.xsd.jx;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,6 +110,26 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     @Receive(EventStr.GO_LOGIN)
     public void goLoginActivity(){
         goActivity(LoginActivity.class);
+    }
+
+    private long firstTime = 0;
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                long secondTime = System.currentTimeMillis();
+                //如果两次按键时间间隔大于2秒，则不退出
+                if (secondTime - firstTime > 2000) {
+                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                    firstTime = secondTime;//更新firstTime
+                    return true;
+                    //两次按键小于2秒时，退出应用
+                } else {
+                    finish();
+                }
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.inject.DaggerCommonComponent;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.inject.NetWorkMoudle;
@@ -60,9 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.putExtra("type",type);
         startActivity(intent);
     }
-    public void goJobInfoActivity(JobBean jobBean){
-        Intent intent = new Intent(this, JobInfoActivity.class);
-        intent.putExtra("JobBean",jobBean);
-        startActivity(intent);
+    public void goJobInfoActivity(int workId){
+        goActivity(JobInfoActivity.class,workId);
     }
 }

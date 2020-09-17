@@ -6,22 +6,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.view.View;
 
 import androidx.core.content.FileProvider;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.databinding.ActivityRealNameAuthBinding;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.FileNameUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.FileUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -30,7 +38,9 @@ import java.io.File;
 import java.util.List;
 
 public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAuthBinding> {
-
+    String avatar ="https://upload.jianshu.io/users/upload_avatars/1503465/9d96f64dda43.png?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240";
+    private String nation = "汉族";
+    private String workYears = "1~5年";
     @Override
     protected int getLayoutId() {
         return R.layout.activity_real_name_auth;
@@ -45,6 +55,12 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
 
     private void initView() {
         tvTitle.setText("实名认证");
+        int isCertification = UserUtils.getUser().getIsCertification();//是否实名认证 0否 1是
+        if (isCertification==1){
+            db.layoutInfos.setVisibility(View.GONE);
+            db.layoutIsAuth.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void onEvent() {
@@ -56,16 +72,34 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                 case R.id.tv_nation:
                     showNationList();
                     break;
-                case R.id.tv_work_experience:
-                    PopShowUtils.showWorkExp(db.tvWorkExperience, new OnSelectListener() {
+                case R.id.tv_work_exp:
+                    PopShowUtils.showWorkExp(db.tvWorkExp, new OnSelectListener() {
                         @Override
                         public void onSelect(int position, String text) {
-                            db.tvWorkExperience.setText(text);
+                            db.tvWorkExp.setText(text);
                         }
                     });
                     break;
+                case R.id.tv_submit:
+                    submit();
+                    break;
             }
         });
+    }
+
+    private void submit() {
+        if (EditTextUtils.isEmpty(db.etName,db.etCardNumber))return;
+        String name = db.etName.getText().toString();
+        String idCard = db.etCardNumber.getText().toString();
+        dataProvider.user.certification(avatar,name,idCard,nation,workYears)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        Apollo.emit(EventStr.UPDATE_USER_INFO);
+                        finish();
+                    }
+                });
     }
 
     private void getPermissionOfTakePhoto() {

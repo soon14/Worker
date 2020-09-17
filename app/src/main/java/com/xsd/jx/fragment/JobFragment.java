@@ -70,6 +70,8 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         getInviteList();
         onEvent();
     }
+
+
     //被邀请上工信息列表
     @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
@@ -183,7 +185,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     return;
                 }
                 JobBean item = (JobBean) adapter.getItem(position);
-                goJobInfoActivity(item);
+                goJobInfoActivity(item.getId());
             }
         });
 

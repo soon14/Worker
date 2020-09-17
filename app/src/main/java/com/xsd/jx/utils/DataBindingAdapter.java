@@ -106,6 +106,7 @@ public class DataBindingAdapter {
     //工种类型：木工（共需3人）
     @BindingAdapter("workType")
     public static void workType(TextView tv, JobBean item){
+        if (item==null)return;
         tv.setText(item.getTypeTitle()+"（共需"+item.getNum()+"人）");
     }
 

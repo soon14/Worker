@@ -1,15 +1,13 @@
 package com.xsd.jx.utils;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.bean.BaseResponse;
 import com.xsd.utils.ScreenUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -44,18 +42,15 @@ public class BannerUtils {
         banner.setOnBannerListener(position -> {
         });
     }
-    //动态创建Banner
-    public static Banner createBanner(Context context, List<String> imgBeans){
-        if (imgBeans==null||imgBeans.size()==0)return null;
-        View view = LayoutInflater.from(context).inflate(R.layout.banner_layout, null);
-        Banner banner = view.findViewById(R.id.banner);
-        banner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, bannerHeight));
-        banner.setIndicatorGravity(BannerConfig.RIGHT);
-        banner.setImageLoader(new BannerImgLoader());
-        banner.setDelayTime(5000);
-        banner.setImages(imgBeans);
-        banner.start();
-        return banner;
+    public static void bindBanner(BaseActivity activity,int tId,Banner banner){
+        activity.getDataProvider().site.banner(tId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
+                    @Override
+                    protected void onSuccess(BaseResponse baseResponse) {
+
+
+                    }
+                });
     }
 
 
