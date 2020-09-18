@@ -2,7 +2,6 @@ package com.xsd.jx.inject;
 
 import android.content.Context;
 
-import com.xsd.jx.api.AdvertApi;
 import com.xsd.jx.api.OrderApi;
 import com.xsd.jx.api.SiteApi;
 import com.xsd.jx.api.UserApi;
@@ -34,12 +33,6 @@ public class NetWorkMoudle {
     @Provides
     public LoadDialog providerLoadDialog(Context context) {
         return new LoadDialog(context);
-    }
-    //广告部分
-    @Singleton
-    @Provides
-    public AdvertApi providerAdvertApi() {
-        return RetrofitHttp.create(AdvertApi.class);
     }
 
     @Singleton

@@ -3,6 +3,7 @@ package com.xsd.jx.job;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.ToastUtil;
 
@@ -11,41 +12,42 @@ import com.xsd.utils.ToastUtil;
  * author: SmallCake
  */
 public class JobInfoModel {
-    private static JobInfoView view;
     private int workId;
-
-    public JobInfoModel(JobInfoView view) {
-        this.view = view;
-        this.workId = view.getWorkId();
+    private JobInfoCallback callback;
+    private DataProvider dataProvider;
+    public JobInfoModel(JobInfoCallback callback) {
+        this.callback = callback;
+        this.workId = callback.getWorkId();
+        this.dataProvider = callback.getDataProvider();
     }
 
      void detail() {
-        view.getBaseActivity().getDataProvider().work.detail(workId)
+       dataProvider.work.detail(workId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<JobBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<JobBean> baseResponse) {
-                        view.detailCallBack(baseResponse);
+                        callback.detailCallBack(baseResponse.getData());
                     }
                 });
     }
 
      void fav(){
-        view.getBaseActivity().getDataProvider().work.fav(workId)
+         dataProvider.work.fav(workId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
-                        view.favCallBack(baseResponse);
+                        callback.favCallBack(baseResponse.getData());
                     }
                 });
 
     }
      void join() {
-        view.getBaseActivity().getDataProvider().work.join(workId)
+         dataProvider.work.join(workId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        view.joinCallBack(baseResponse);
+                        callback.joinCallBack(baseResponse.getData());
                     }
                 });
     }

@@ -5,12 +5,9 @@ package com.xsd.jx.job;
  * author: SmallCake
  */
 public class JobInfoPresenter {
-    private JobInfoView view;
     private JobInfoModel model;
-
-    public JobInfoPresenter(JobInfoView view) {
-        this.view = view;
-        model = new JobInfoModel(view);
+    public JobInfoPresenter(JobInfoCallback callback) {
+        model = new JobInfoModel(callback);
     }
     //详情
     public void detail(){

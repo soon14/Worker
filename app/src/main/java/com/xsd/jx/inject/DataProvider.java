@@ -1,7 +1,6 @@
 package com.xsd.jx.inject;
 
 
-import com.xsd.jx.impl.AdvertImpl;
 import com.xsd.jx.impl.OrderImpl;
 import com.xsd.jx.impl.SiteImpl;
 import com.xsd.jx.impl.UserImpl;
@@ -17,8 +16,6 @@ import javax.inject.Inject;
 public class DataProvider {
     @Inject
     public DataProvider(){}
-    @Inject
-    public AdvertImpl ad;
     @Inject
     public SiteImpl site;
     @Inject

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.xsd.jx.R;
-import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.databinding.FragmentOrderBinding;
 import com.xsd.jx.listener.OnTabClickListener;
@@ -43,7 +42,6 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     }
     private void initView() {
         OrderPresenter goodsPresenter = new OrderPresenter(this);
-        goodsPresenter.start();
         //类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
         TabUtils.setDefaultTab(this.getContext(), db.tabLayout,  Arrays.asList("报名中","待开工","工期中","待结算"), new OnTabClickListener() {
             @Override
@@ -54,7 +52,8 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
                     case 2: type=5;break;
                     case 3: type=6;break;
                 }
-                goodsPresenter.start();
+                goodsPresenter.setPage();
+                goodsPresenter.loadData();
             }
         });
     }
@@ -74,13 +73,10 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
         return db.refreshLayout;
     }
 
-    @Override
-    public BaseActivity getBaseActivity() {
-        return (BaseActivity) this.getActivity();
-    }
 
     @Override
     public int getType() {
         return type;
     }
+
 }

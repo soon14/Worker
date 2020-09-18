@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.xsd.jx.adapter.OrderAdapter;
-import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
@@ -25,17 +24,23 @@ public class OrderModel {
     private DataProvider dataProvider;
     private SwipeRefreshLayout refreshLayout;
     private int page=1;
-    private int type=1;
     private OrderAdapter mAdapter = new OrderAdapter();
-    public OrderModel(BaseActivity activity, int type, RecyclerView recyclerView, SwipeRefreshLayout refreshLayout) {
-        this.dataProvider = activity.getDataProvider();
-        this.type = type;
-        this.refreshLayout = refreshLayout;
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+    private OrderView view;
+    public OrderModel(OrderView view) {
+        this.view = view;
+        this.dataProvider = view.getDataProvider();
+        this.refreshLayout = view.getSwipeRefreshLayout();
+        RecyclerView recyclerView = view.getRecyclerView();
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getRecyclerView().getContext()));
         recyclerView.setAdapter(mAdapter);
         page=1;
 
     }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     public void initView(){
         loadData();
         AdapterUtils.onAdapterEvent(mAdapter, refreshLayout, new OnAdapterListener() {
@@ -52,8 +57,8 @@ public class OrderModel {
         });
     }
 
-    private void loadData() {
-        dataProvider.order.list(page,type)
+    public void loadData() {
+        dataProvider.order.list(page,view.getType())
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<OrderResponse>>(refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<OrderResponse> baseResponse) {

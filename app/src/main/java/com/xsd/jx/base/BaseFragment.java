@@ -37,6 +37,10 @@ public abstract class BaseFragment extends Fragment {
     @Inject
     protected DataProvider dataProvider;
 
+    public DataProvider getDataProvider() {
+        return dataProvider;
+    }
+
     protected abstract int getLayoutId();
     protected abstract void onBindView(View view, ViewGroup container, Bundle savedInstanceState);
     @Nullable

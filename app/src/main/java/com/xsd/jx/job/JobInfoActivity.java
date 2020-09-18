@@ -3,9 +3,7 @@ package com.xsd.jx.job;
 import android.os.Bundle;
 
 import com.xsd.jx.R;
-import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindBarActivity;
-import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.databinding.ActivityJobInfoBinding;
@@ -15,7 +13,7 @@ import com.xsd.jx.utils.PopShowUtils;
 /**
  * 详细招工信息
  */
-public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding> implements JobInfoView{
+public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding> implements JobInfoCallback {
     private int workId;
     private JobInfoPresenter presenter;
     @Override
@@ -49,14 +47,8 @@ public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding>
                     break;
             }
         });
-
     }
 
-
-    @Override
-    public BaseActivity getBaseActivity() {
-        return this;
-    }
 
     @Override
     public int getWorkId() {
@@ -64,18 +56,17 @@ public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding>
     }
 
     @Override
-    public void detailCallBack(BaseResponse<JobBean> baseResponse) {
-        JobBean data = baseResponse.getData();
+    public void detailCallBack(JobBean data) {
         db.setItem(data);
     }
 
     @Override
-    public void favCallBack(BaseResponse<MessageBean> baseResponse) {
+    public void favCallBack(MessageBean baseResponse) {
         DataBindingAdapter.isFav(db.tvFav,true);
     }
 
     @Override
-    public void joinCallBack(BaseResponse<MessageBean> baseResponse) {
+    public void joinCallBack(MessageBean baseResponse) {
         PopShowUtils.showTips(db.tvJoin);
         DataBindingAdapter.isJoin(db.tvJoin,true);
     }
