@@ -1,6 +1,5 @@
 package com.xsd.jx.mine;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lxj.xpopup.XPopup;
@@ -68,9 +68,9 @@ public class RecommendListActivity extends BaseBindBarActivity<ActivityRecyclerv
                         List<RecommendResponse.ItemsBean> items = data.getItems();
                         if (page==1){
                             SpannableStringBuilder spanStr = SpannableStringUtils.getBuilder(data.getCount()+"位工友共帮您赚了").setProportion(1.5f).setBold()
-                                    .append(data.getEarned()+"").setProportion(1.5f).setBold().setForegroundColor(Color.RED)
+                                    .append(data.getEarned()+"").setProportion(1.5f).setBold().setForegroundColor(ContextCompat.getColor(RecommendListActivity.this,R.color.colorAccent))
                                     .append("元\n").setProportion(1.5f).setBold()
-                                    .append("工友越多收益越快，赶紧把身边的工友邀请到匠心吧~")
+                                    .append("工友越多收益越快，赶紧把身边的工友邀请到匠心吧~").setForegroundColor(ContextCompat.getColor(RecommendListActivity.this,R.color.tv_gray))
                                     .create();
                             tvDesc.setText(spanStr);
                         }
@@ -88,6 +88,8 @@ public class RecommendListActivity extends BaseBindBarActivity<ActivityRecyclerv
     private TextView tvDesc;
     private void initView() {
         tvTitle.setText("我推荐的工友");
+        tvRight.setText("奖励记录");
+        tvRight.setOnClickListener(view -> goActivity(AwardActivity.class));
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
         View viewHead = LayoutInflater.from(this).inflate(R.layout.header_invite_list, null);

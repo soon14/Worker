@@ -1,5 +1,6 @@
 package com.xsd.jx.api;
 
+import com.xsd.jx.bean.BalanceLogResponse;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
@@ -8,6 +9,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
 import com.xsd.jx.bean.RecommendResponse;
 import com.xsd.jx.bean.UserInfoResponse;
+import com.xsd.jx.bean.WithdrawInfoResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,9 @@ import retrofit2.http.Query;
  * author: SmallCake
  */
 public interface UserApi {
+    //用户资金的变动记录列表
+    @GET("user/balance-log")
+    Observable<BaseResponse<BalanceLogResponse>> balanceLog(@Query("page")Integer page);
     //获取用户资料
     @GET("user/info")
     Observable<BaseResponse<UserInfoResponse>> info();
@@ -48,6 +53,31 @@ public interface UserApi {
     @Multipart
     @POST("user/upload-avatar")
     Observable<BaseResponse<MessageBean>> uploadAvatar(@Part MultipartBody.Part body);
+
+    //用户提现资料信息
+    @GET("user/withdraw-info")
+    Observable<BaseResponse<WithdrawInfoResponse>> withdrawInfo();
+
+    /**
+     * 提现申请
+     * @param amount      提现金额
+     * @param accountType 支付类型 1:支付宝 2:银行卡 3:周边事业部 4:微信
+     * @param account     账号
+     * @param name        收款人姓名
+     * @param divisionId  事业部ID
+     * @param bankName    银行名称
+     */
+    @FormUrlEncoded
+    @POST("user/withdraw")
+    Observable<BaseResponse> withdraw(
+             @Field("amount")String amount
+            ,@Field("accountType")String accountType
+            ,@Field("account")String account
+            ,@Field("name")String name
+            ,@Field("divisionId")String divisionId
+            ,@Field("bankName")String bankName
+    );
+
 
     //编辑用户资料
     @Multipart
@@ -98,5 +128,7 @@ public interface UserApi {
     @FormUrlEncoded
     @POST("user/feedback")
     Observable<BaseResponse<MessageBean>> feedback(@Field("content")String content,@Field("contentUrl")String contentUrl);
+
+
 
 }

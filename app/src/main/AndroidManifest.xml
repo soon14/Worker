@@ -49,7 +49,7 @@
         <activity android:name=".mine.PartnerActivity" />
         <activity android:name=".mine.SetActivity" />
         <activity android:name=".mine.AwardActivity" />
-        <activity android:name=".mine.PaymentsListActivity" />
+        <activity android:name=".mine.BalanceLogActivity" />
         <activity android:name=".mine.CollectedWorksActivity" />
         <activity android:name=".mine.ResumeActivity" />
         <activity android:name=".mine.HelpRegistListActivity" />

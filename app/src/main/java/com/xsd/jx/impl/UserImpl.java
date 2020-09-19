@@ -1,6 +1,7 @@
 package com.xsd.jx.impl;
 
 import com.xsd.jx.api.UserApi;
+import com.xsd.jx.bean.BalanceLogResponse;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
@@ -9,6 +10,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
 import com.xsd.jx.bean.RecommendResponse;
 import com.xsd.jx.bean.UserInfoResponse;
+import com.xsd.jx.bean.WithdrawInfoResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,12 @@ public class UserImpl implements UserApi {
     UserApi api;
     @Inject
     public UserImpl() {
+    }
+
+
+    @Override
+    public Observable<BaseResponse<BalanceLogResponse>> balanceLog(Integer page) {
+        return bindIoUI(api.balanceLog(page));
     }
 
     @Override
@@ -56,6 +64,17 @@ public class UserImpl implements UserApi {
     public Observable<BaseResponse<MessageBean>> uploadAvatar(MultipartBody.Part body) {
         return bindIoUI(api.uploadAvatar(body));
     }
+
+    @Override
+    public Observable<BaseResponse<WithdrawInfoResponse>> withdrawInfo() {
+        return bindIoUI(api.withdrawInfo());
+    }
+
+    @Override
+    public Observable<BaseResponse> withdraw(String amount, String accountType, String account, String name, String divisionId, String bankName) {
+        return bindIoUI(api.withdraw(amount,accountType,account,name,divisionId,bankName));
+    }
+
 
     @Override
     public Observable<BaseResponse<MessageBean>> profile(Map<String, RequestBody> map) {

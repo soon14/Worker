@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="horizontal"
-    android:background="@mipmap/bg_orange_top"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -11,7 +11,7 @@
         android:id="@+id/tv_desc"
         android:gravity="center_vertical"
         android:textSize="@dimen/h6"
-        android:textColor="@color/white"
+        android:textColor="@color/tv_black"
         android:text="3位工友共帮您赚了485.52元\n工友越多收益越快，赶紧把身边的工友邀请到匠心吧~"
         android:layout_weight="1"
         android:layout_width="0dp"

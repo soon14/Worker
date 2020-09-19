@@ -10,9 +10,12 @@ import com.xsd.jx.adapter.AwardAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.AwardResponse;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
+import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.utils.AdapterUtils;
 
 public class AwardActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private AwardAdapter mAdapter = new AwardAdapter();
+    private int page=1;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_recyclerview;
@@ -31,5 +34,18 @@ public class AwardActivity extends BaseBindBarActivity<ActivityRecyclerviewBindi
         for (int i = 0; i < 4; i++) {
             mAdapter.addData(new AwardResponse());
         }
+        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+
+            }
+
+            @Override
+            public void onRefresh() {
+                page=1;
+
+            }
+        });
     }
 }

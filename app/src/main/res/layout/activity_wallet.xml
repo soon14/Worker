@@ -117,6 +117,7 @@
                             />
 
                     <EditText
+                        android:id="@+id/et_amount"
                         android:textStyle="bold"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h1"
