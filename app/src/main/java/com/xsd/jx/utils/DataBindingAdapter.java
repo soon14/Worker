@@ -15,6 +15,8 @@ import com.xsd.jx.R;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.WorkerBean;
+import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.SmallUtils;
 
@@ -152,10 +154,54 @@ public class DataBindingAdapter {
                 .append(info.getNation());
         if (!TextUtils.isEmpty(workYears))
             builder.append(" · ").append(workYears);
-
         tv.setText(builder.toString());
-
     }
+    @BindingAdapter("workerDesc")
+    public static void workerDesc(TextView tv, WorkerInfoResponse info){
+        if (info==null)return;
+        int sex = info.getSex();// 1男 2女 3未知
+        String sexStr="男";
+        switch (sex){
+            case 1: sexStr="男";break;
+            case 2:sexStr="女";
+                break;
+            case 3:sexStr="未知";
+                break;
+        }
+        String workYears = info.getWorkYears();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(sexStr).append(" · ")
+                .append(info.getNation());
+        if (!TextUtils.isEmpty(workYears))
+            builder.append(" · ").append(workYears);
+        tv.setText(builder.toString());
+    }
+    //招工人：45岁 · 男 · 5~10年经验 · 已实名
+    @BindingAdapter("workerListDesc")
+    public static void workerListDesc(TextView tv, WorkerBean info){
+        if (info==null)return;
+        int sex = info.getSex();// 1男 2女 3未知
+        String sexStr="男";
+        switch (sex){
+            case 1: sexStr="男";break;
+            case 2:sexStr="女";
+                break;
+            case 3:sexStr="未知";
+                break;
+        }
+        String workYears = info.getWorkYears();
+        boolean isCertification = info.getIsCertification()==1;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(info.getAge()).append("岁")
+                .append(sexStr).append(" · ");
+        if (!TextUtils.isEmpty(workYears))
+            builder.append(" · ").append(workYears);
+        if (isCertification)builder.append(" · ").append("已实名");
+        tv.setText(builder.toString());
+    }
+
     @BindingAdapter("sex")// 1男 2女 3未知
     public static void sex(TextView tv, int sex){
         String sexStr="男";

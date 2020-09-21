@@ -30,6 +30,7 @@
                 android:textColor="@color/tv_black" />
 
             <EditText
+                android:id="@+id/et_account"
                 android:padding="@dimen/dp_16"
                 android:textSize="@dimen/h4"
                 android:background="@color/transparent"
@@ -57,6 +58,7 @@
                 android:textColor="@color/tv_black" />
 
             <EditText
+                android:id="@+id/et_name"
                 android:padding="@dimen/dp_16"
                 android:textSize="@dimen/h4"
                 android:background="@color/transparent"

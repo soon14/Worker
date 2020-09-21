@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -17,19 +18,31 @@ import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerResponse;
 import com.xsd.jx.custom.FilterPop;
 import com.xsd.jx.custom.InviteJobsPop;
 import com.xsd.jx.custom.SortPop;
 import com.xsd.jx.databinding.ActivityGetWorkersBinding;
+import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AppBarUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
+
+import java.util.List;
 
 /**
  * 招工人
+ * 对应企业端首页
  */
 public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBinding> {
     private WorkerAdapter mAdapter = new WorkerAdapter();
+    private int page=1;
+    private int wtId=1;
+    private int sortBy=1;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_get_workers;
@@ -40,6 +53,25 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+
+    private void loadData() {
+        dataProvider.server.index(page,wtId,sortBy)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkerResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkerResponse> baseResponse) {
+                        WorkerResponse data = baseResponse.getData();
+                        List<WorkerBean> items = data.getItems();
+                        if (items!=null&&items.size()>0){
+                            if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+                            mAdapter.getLoadMoreModule().loadMoreComplete();
+                        }else {
+                            if (page==1)mAdapter.setList(items);else
+                                mAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
+                    }
+                });
     }
 
     private void onEvent() {
@@ -72,7 +104,12 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                goActivity(WorkerResumeActivity.class);
+                WorkerBean item = (WorkerBean) adapter.getItem(position);
+                Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
+                intent.putExtra("type",0);
+                intent.putExtra("userId",item.getUserId());
+                startActivity(intent);
+
             }
         });
         mAdapter.addChildClickViewIds(R.id.tv_invite);
@@ -84,6 +121,19 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                         showInviteJobs();
                         break;
                 }
+            }
+        });
+        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
+
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
             }
         });
 
@@ -167,8 +217,5 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         tvTitle.setText("招工人");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
-        for (int i = 0; i < 20; i++) {
-            mAdapter.addData(new WorkerResponse(0));
-        }
     }
 }

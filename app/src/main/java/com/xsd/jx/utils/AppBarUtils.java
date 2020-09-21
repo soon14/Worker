@@ -5,14 +5,14 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.xsd.utils.L;
 
 /**
  * Date: 2020/8/31
  * author: SmallCake
  */
 public class AppBarUtils {
-    public static void setColorChange(AppBarLayout appBar,View viewTarget,String startColor,String endColor){
+    //根据appbar的滚动来逐渐改变控件颜色
+   public static void setColorChange(AppBarLayout appBar,View viewTarget,String startColor,String endColor){
         appBar.getChildAt(0).getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             //获取AppBarLayout最大滑动距离
             final int scrollRange = appBar.getTotalScrollRange();
@@ -20,7 +20,7 @@ public class AppBarUtils {
                 //获得滑动具体，计算比例
                 int scrollDistance = Math.abs(verticalOffset);
                 float scrollPercentage = (float) scrollDistance/scrollRange;
-                L.e("scrollPercentage=="+scrollPercentage);
+//                L.e("scrollPercentage=="+scrollPercentage);
 
                 ArgbEvaluator argbEvaluator = new ArgbEvaluator();//渐变色计算类
                 int currentLastColor = (int) (argbEvaluator.evaluate(scrollPercentage,

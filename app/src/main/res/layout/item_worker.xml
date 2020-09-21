@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.xsd.jx.bean.WorkerResponse" />
+            type="com.xsd.jx.bean.WorkerBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +18,7 @@
 
 
         <ImageView
+            avatar="@{item.avatar}"
             android:src="@mipmap/ic_worker_head"
             android:id="@+id/iv_head"
             android:layout_width="@dimen/dp_50"
@@ -38,50 +39,32 @@
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <TextView
-            android:textSize="@dimen/h5"
-            android:textColor="@color/tv_gray"
+            workerListDesc="@{item}"
             android:id="@+id/tv_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="45岁 · 男 · 5~10年经验 · 已实名"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
-            app:layout_constraintStart_toEndOf="@+id/iv_head" />
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-        <TextView
-            android:id="@+id/tv_type_work"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="求职工种：木工"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
-
-        <TextView
-            android:id="@+id/tv_addr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="上工地点：武汉市青山区"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_type_work" />
 
         <TextView
             android:id="@+id/tv_look"
-            android:padding="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableRight="@mipmap/ic_orange_arrow_right"
+            android:padding="@dimen/dp_16"
             android:text="查看工人简历"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_addr" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
         <TextView
             android:id="@+id/tv_invite"
             style="@style/DefaultBtnStyle"

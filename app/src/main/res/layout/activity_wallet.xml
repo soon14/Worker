@@ -47,7 +47,7 @@
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥10000"
+                            android:text="￥0"
                             android:textColor="#ffffffff"
                             android:textSize="30sp"
                             />
@@ -75,7 +75,7 @@
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥100"
+                            android:text="￥0"
                             android:textColor="#ffffffff"
                             android:textSize="30sp"
                             />
@@ -125,7 +125,6 @@
                         android:maxLength="11"
                         android:inputType="number"
                         android:hint="请输入提现金额"
-                        android:text="10000"
                         android:textColorHint="#EAEAEA"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -186,7 +185,7 @@
                             android:paddingTop="@dimen/dp_8"
                             android:drawableRight="@mipmap/ic_gray_arrow_right"
                             android:drawablePadding="@dimen/dp_8"
-                            android:text="18586987428"
+                            android:hint="去设置"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 

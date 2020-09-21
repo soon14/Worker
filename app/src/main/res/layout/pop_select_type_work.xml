@@ -17,7 +17,6 @@
             android:id="@+id/tv_desc1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view_top"
             android:layout_marginTop="@dimen/dp_24"
             android:gravity="center"
             android:text="请选择您的工种（可多选）"

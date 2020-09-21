@@ -1,9 +1,10 @@
 package com.xsd.jx.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.xsd.jx.R;
-import com.xsd.jx.bean.WorkerResponse;
+import com.xsd.jx.bean.WorkerBean;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -12,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
  * author: SmallCake
  * 招工人首页列表适配器
  */
-public class WorkerAdapter extends BaseQuickAdapter<WorkerResponse, BaseViewHolder> {
+public class WorkerAdapter extends BaseQuickAdapter<WorkerBean, BaseViewHolder> implements LoadMoreModule {
     public WorkerAdapter() {
         super(R.layout.item_worker);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, WorkerResponse workerResponse) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, WorkerBean workerResponse) {
 
     }
 }
