@@ -2,6 +2,7 @@ package com.xsd.jx.impl;
 
 import com.xsd.jx.api.ServerApi;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.bean.WorkerResponse;
 
@@ -30,5 +31,10 @@ public class ServerImpl implements ServerApi {
     @Override
     public Observable<BaseResponse<WorkerResponse>> index(Integer page, Integer wtId, Integer sortBy) {
         return bindIoUI(api.index( page,  wtId,  sortBy));
+    }
+
+    @Override
+    public Observable<BaseResponse<JobListResponse>> invite(Integer userId, Integer wtId, Integer workId) {
+        return bindIoUI(api.invite( userId,  wtId,  workId));
     }
 }

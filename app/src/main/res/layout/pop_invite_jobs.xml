@@ -42,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_confirm"
                 style="@style/DefaultBtnStyle"
                 android:text="确定邀请" />
         </LinearLayout>

@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.bean.WorkerBean;
@@ -103,6 +104,10 @@ public class DataBindingAdapter {
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, OrderBean item){
+        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
+    @BindingAdapter("workDay")
+    public static void workDay(TextView tv, JobListResponse.ItemsBean item){
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     //工种类型：木工（共需3人）

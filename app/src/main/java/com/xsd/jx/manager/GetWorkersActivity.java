@@ -20,6 +20,7 @@ import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerResponse;
@@ -34,6 +35,7 @@ import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
 import com.xsd.utils.L;
+import com.xsd.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     private int page=1;
     private int wtId=1;
     private int sortBy=1;
+    private int workId;
     private List<WorkTypeBean> workTypes;//工种筛选数据
 
     @Override
@@ -178,9 +181,11 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                WorkerBean item = (WorkerBean) adapter.getItem(position);
+
                 switch (view.getId()){
-                    case R.id.tv_invite:
-                        showInviteJobs();
+                    case R.id.tv_invite://邀请上工
+                        showInviteJobs(item,position);
                         break;
                 }
             }
@@ -198,15 +203,45 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 loadData();
             }
         });
-
-
-
     }
 
-    private void showInviteJobs() {
-        new XPopup.Builder(this)
-                .asCustom(new InviteJobsPop(this))
-                .show();
+    /**
+     * 查询当前发布者同工种有几条招工信息，如果有多条，弹出框选择上工地点
+     */
+    private void showInviteJobs(WorkerBean item, int position) {
+        int userId = item.getUserId();
+        dataProvider.server.invite(userId,wtId,workId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
+                        JobListResponse data = baseResponse.getData();
+                        List<JobListResponse.ItemsBean> items = data.getItems();
+                        if (items!=null){
+                            if (items.size()==1){
+                                 workId = items.get(0).getWorkId();
+                                 showInviteJobs(item,position);
+                            }else if (items.size()>1){
+                                InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
+                                inviteJobsPop.setListener(itemsBean -> {
+                                    workId = itemsBean.getWorkId();
+                                    showInviteJobs(item,position);
+                                });
+                                new XPopup.Builder(GetWorkersActivity.this)
+                                        .asCustom(inviteJobsPop)
+                                        .show();
+                            }
+                        }else {
+                            try {
+                                ToastUtil.showLong(baseResponse.getData().getMessage());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            mAdapter.removeAt(position);
+                        }
+                    }
+                });
+
+
     }
 
     private SortPop sortPop;

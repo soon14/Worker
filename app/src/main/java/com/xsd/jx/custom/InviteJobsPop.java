@@ -10,20 +10,35 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xsd.jx.R;
+import com.xsd.jx.bean.JobListResponse;
+import com.xsd.jx.databinding.ItemJobListBinding;
+import com.xsd.jx.listener.OnJobSelectListener;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.SpannableStringUtils;
+
+import java.util.List;
 
 /**
  * Date: 2020/9/7
  * author: SmallCake
  */
 public class InviteJobsPop extends CenterPopupView {
-    public InviteJobsPop(@NonNull Context context) {
+    private List<JobListResponse.ItemsBean> items;
+    private int selectIndex;
+    private OnJobSelectListener listener;
+
+    public void setListener(OnJobSelectListener listener) {
+        this.listener = listener;
+    }
+
+    public InviteJobsPop(@NonNull Context context, List<JobListResponse.ItemsBean> items) {
         super(context);
+        this.items=items;
     }
 
     @Override
@@ -47,32 +62,47 @@ public class InviteJobsPop extends CenterPopupView {
         super.onCreate();
         findViewById(R.id.tv_title).setOnClickListener(view -> dismiss());
         LinearLayout layoutContent = findViewById(R.id.layout_content);
-        for (int i = 0; i < 6; i++) {
-            View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_jobs, null);
+        for (int i = 0; i < items.size(); i++) {
+            JobListResponse.ItemsBean item = items.get(i);
+            View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job_list, null);
+            ItemJobListBinding bind = DataBindingUtil.bind(viewChild);
+            bind.setItem(item);
             TextView tvInviteNum = viewChild.findViewById(R.id.tv_invite_num);
             SpannableStringBuilder spannableStringBuilder = SpannableStringUtils.getBuilder("还差")
-                    .append("1").setForegroundColor(ContextCompat.getColor(getContext(),R.color.colorAccent)).setBold()
+                    .append(item.getSurplus()+"").setForegroundColor(ContextCompat.getColor(getContext(),R.color.colorAccent)).setBold()
                     .append("人招满")
                     .create();
             tvInviteNum.setText(spannableStringBuilder);
+
             layoutContent.addView(viewChild);
         }
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < items.size(); i++) {
             LinearLayout viewChild = (LinearLayout) layoutContent.getChildAt(i);
             CheckBox cbSelect = viewChild.findViewById(R.id.cb_select);
             int finalI = i;
             cbSelect.setOnCheckedChangeListener((compoundButton, b) -> {
-                if (b)clearOtherCheckBox(layoutContent, finalI);
+                if (b){
+                    selectIndex=finalI;
+                    clearOtherCheckBox(layoutContent);
+                }
             });
         }
+        findViewById(R.id.tv_confirm).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                if (listener!=null)listener.onSelect(items.get(selectIndex));
+
+            }
+        });
     }
 
-    private void clearOtherCheckBox( LinearLayout layoutContent,int index){
-        for (int i = 0; i < 6; i++) {
+    private void clearOtherCheckBox(LinearLayout layoutContent){
+        for (int i = 0; i < items.size(); i++) {
             LinearLayout viewChild = (LinearLayout) layoutContent.getChildAt(i);
             CheckBox cbSelect = viewChild.findViewById(R.id.cb_select);
             boolean checked = cbSelect.isChecked();
-            if (checked&&i!=index) cbSelect.setChecked(false);
+            if (checked&&i!=selectIndex) cbSelect.setChecked(false);
         }
     }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="item"
-            type="com.xsd.jx.bean.JobBean" />
+            type="com.xsd.jx.bean.JobListResponse.ItemsBean" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,25 +35,28 @@
                     android:id="@+id/tv_invite_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="还差1人招满"
+                    tools:text="还差1人招满"
+                    android:text="@{`还差`+item.surplus+`人招满`}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
 
                 <TextView
+                    price="@{item.price}"
                     style="@style/TextPriceStyle"
                     android:gravity="right"
-                    android:text="350元/天"
+                    tools:text="350元/天"
                     android:textColor="@color/tv_gray"
                     android:textSize="@dimen/h4"
                     android:textStyle="normal" />
             </LinearLayout>
 
             <TextView
+                workDay="@{item}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_32"
                 android:layout_marginTop="@dimen/dp_16"
-                android:text="工期：2020-07-29至2020-08-29(共30天)"
+                tools:text="工期：2020-07-29至2020-08-29(共30天)"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h4" />
 
@@ -64,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_32"
                 android:layout_marginTop="@dimen/dp_16"
-                android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                android:text="@{`上工地点：`+item.address}"
+                tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h4" />
         </LinearLayout>
