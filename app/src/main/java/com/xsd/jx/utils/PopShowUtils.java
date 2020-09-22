@@ -1,26 +1,34 @@
 package com.xsd.jx.utils;
 
 import android.animation.Animator;
+import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.custom.BottomAddrPop;
 import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.custom.BottomSharePop;
+import com.xsd.jx.custom.BottomSingleWorkTypePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.custom.PushJobPop;
+import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
+import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.SmallUtils;
+import com.xsd.utils.SoftInputUtils;
 
 import java.util.List;
 
@@ -192,5 +200,35 @@ public class PopShowUtils {
         new XPopup.Builder(activity)
                 .asCustom(new BottomNationSelecterPop(activity, listener))
                 .show();
+    }
+
+    /**
+     * 选择单个工种的底部弹框
+     */
+    public static void showWorkTypeSelect(BaseActivity baseActivity,OnWorkTypeSelectListener listener){
+        new XPopup.Builder(baseActivity)
+                .asCustom(new BottomSingleWorkTypePop(baseActivity, listener))
+                .show();
+    }
+
+    /**
+     * 省市区地址选择器
+     * 目前为湖北省下的市和区的选择
+     * @param baseActivity
+     * @param listener
+     */
+    public static void showBottomAddrSelect(BaseActivity baseActivity,OnAddrListener listener){
+        BottomAddrPop bottomAddrPop = new BottomAddrPop(baseActivity);
+            bottomAddrPop.setListener(listener);
+            new XPopup.Builder(baseActivity)
+                    .setPopupCallback(new SimpleCallback() {
+                        @Override
+                        public void onDismiss(BasePopupView popupView) {
+                            super.onDismiss(popupView);
+                            new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(baseActivity), 800);
+                        }
+                    })
+                    .asCustom(bottomAddrPop)
+                    .show();
     }
 }

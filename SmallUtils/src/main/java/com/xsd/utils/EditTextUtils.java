@@ -226,5 +226,23 @@ public class EditTextUtils {
         };
         et.setFilters(new InputFilter[]{emojiFilter});
     }
+    public interface OnTextLengthListener{
+        void onLengthChange(int length);
+    }
+
+    public static void setTextLengthChange(EditText et, final OnTextLengthListener listener){
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int length = editable.length();
+                listener.onLengthChange(length);
+            }
+        });
+    }
 
 }

@@ -3,6 +3,8 @@ package com.xsd.jx.impl;
 import com.xsd.jx.api.ServerApi;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
+import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.bean.WorkerResponse;
 
@@ -36,5 +38,15 @@ public class ServerImpl implements ServerApi {
     @Override
     public Observable<BaseResponse<JobListResponse>> invite(Integer userId, Integer wtId, Integer workId) {
         return bindIoUI(api.invite( userId,  wtId,  workId));
+    }
+
+    @Override
+    public Observable<BaseResponse<MyGetWorkersResponse>> workList(Integer page, Integer type) {
+        return bindIoUI(api.workList(page,type));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> publishWork(Integer typeId, String address, String startDate, String endDate, Integer price, String desc, Integer num, Integer isSafe, Integer settleType, Integer advanceType, String safeAmount, String advanceAmount) {
+        return bindIoUI(api.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount,advanceAmount));
     }
 }

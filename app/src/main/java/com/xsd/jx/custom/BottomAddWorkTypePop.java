@@ -33,7 +33,7 @@ public class BottomAddWorkTypePop extends BottomPopupView {
     private List<WorkTypeBean> items;//已经有的工种
     private BaseActivity activity;
     private OnAddWorkTypesListener listener;
-    private boolean needSubmit=true;//是否需要提交
+    private boolean needSubmit=true;//是否需要提交工种到接口，默认为true,个人简历需要
     public interface OnAddWorkTypesListener {
         void addWorkTypes(Set<WorkTypeBean> types);
     }

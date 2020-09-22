@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.xsd.jx.R;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.utils.SmallUtils;
@@ -20,6 +21,7 @@ public class AdapterUtils {
 
     public static void onAdapterEvent(BaseQuickAdapter mAdapter, SwipeRefreshLayout refreshLayout, OnAdapterListener listener){
         setEmptyDataView(mAdapter);
+        if (mAdapter instanceof LoadMoreModule)
         //加载更多
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
             if (listener!=null)listener.loadMore();

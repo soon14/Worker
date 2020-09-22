@@ -151,14 +151,12 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                 },
                 mYear, mMonth, mDay);
         Calendar ca = Calendar.getInstance();
-        long maxDate = ca.getTimeInMillis();
-        int i = ca.get(Calendar.YEAR - 80);
 
-        DatePicker datePicker = datePickerDialog.getDatePicker();
-        datePicker.setMaxDate(ca.getTimeInMillis());
-        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
-        datePicker.setCalendarViewShown(true);
-        datePicker.setSpinnersShown(true);
+//        DatePicker datePicker = datePickerDialog.getDatePicker();
+//        datePicker.setMaxDate(ca.getTimeInMillis());
+//        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
+//        datePicker.setCalendarViewShown(true);
+//        datePicker.setSpinnersShown(true);
         datePickerDialog.show();
     }
 

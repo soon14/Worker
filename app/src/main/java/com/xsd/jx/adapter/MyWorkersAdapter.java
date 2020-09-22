@@ -1,6 +1,7 @@
 package com.xsd.jx.adapter;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.WorkerResponse;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  * 待评价
  * 全部订单：除了上面2个还有：已完成，已取消
  */
-public class MyWorkersAdapter extends BaseMultiItemQuickAdapter<WorkerResponse, BaseDataBindingHolder> {
+public class MyWorkersAdapter extends BaseMultiItemQuickAdapter<WorkerResponse, BaseDataBindingHolder> implements LoadMoreModule {
     public MyWorkersAdapter() {
         super();
         // 绑定 layout 对应的 type
