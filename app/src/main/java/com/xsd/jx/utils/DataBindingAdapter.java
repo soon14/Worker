@@ -195,7 +195,7 @@ public class DataBindingAdapter {
 
         StringBuilder builder = new StringBuilder();
         builder.append(info.getAge()).append("岁")
-                .append(sexStr).append(" · ");
+                .append(" · ").append(sexStr);
         if (!TextUtils.isEmpty(workYears))
             builder.append(" · ").append(workYears);
         if (isCertification)builder.append(" · ").append("已实名");

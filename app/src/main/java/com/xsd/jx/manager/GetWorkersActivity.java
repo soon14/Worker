@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.android.material.tabs.TabLayout;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
@@ -19,6 +20,7 @@ import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerResponse;
 import com.xsd.jx.custom.FilterPop;
@@ -26,11 +28,14 @@ import com.xsd.jx.custom.InviteJobsPop;
 import com.xsd.jx.custom.SortPop;
 import com.xsd.jx.databinding.ActivityGetWorkersBinding;
 import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
+import com.xsd.utils.L;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +47,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     private int page=1;
     private int wtId=1;
     private int sortBy=1;
+    private List<WorkTypeBean> workTypes;//工种筛选数据
 
     @Override
     protected int getLayoutId() {
@@ -58,7 +64,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
     private void loadData() {
         dataProvider.server.index(page,wtId,sortBy)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkerResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkerResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<WorkerResponse> baseResponse) {
                         WorkerResponse data = baseResponse.getData();
@@ -70,8 +76,60 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                             if (page==1)mAdapter.setList(items);else
                                 mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
+
+                        if (page==1&&workTypes==null){
+                             workTypes = data.getWorkTypes();
+                            setTabs();
+                        }
                     }
                 });
+    }
+
+    /**
+     * 动态设置工种选项
+     */
+    private void setTabs() {
+        if (workTypes==null)return;
+        if (workTypes.size()>0){
+            db.layoutTabAll.setVisibility(View.VISIBLE);
+            List<String> tabNames = new ArrayList<>();
+            for (WorkTypeBean workType : workTypes) {
+                String title = workType.getTitle();
+                tabNames.add(title);
+                TabLayout.Tab tab = db.tabLayout.newTab();
+                tab.setText(title);
+                tab.setTag(workType.getId());
+                db.tabLayout.addTab(tab);
+            }
+           db.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+               @Override
+               public void onTabSelected(TabLayout.Tab tab) {
+                    page=1;
+                    wtId = (int) tab.getTag();
+                    loadData();
+               }
+
+               @Override
+               public void onTabUnselected(TabLayout.Tab tab) {
+
+               }
+
+               @Override
+               public void onTabReselected(TabLayout.Tab tab) {
+
+               }
+           });
+
+            if (workTypes.size()<5){
+                db.tabLayout.setTabMode(TabLayout.MODE_FIXED);
+                db.tvAll.setVisibility(View.GONE);
+            }else {
+                db.tvAll.setVisibility(View.VISIBLE);
+                db.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            }
+        }else {
+            db.layoutTabAll.setVisibility(View.GONE);
+        }
     }
 
     private void onEvent() {
@@ -98,6 +156,10 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 case R.id.tv_push:
                 case R.id.tv_push_pop:
                     goActivity(PushGetWorkersActivity.class);
+                    break;
+                case R.id.tv_all:
+                    db.appbar.setExpanded(false);
+                    showFilterPop();
                     break;
             }
         });
@@ -182,32 +244,38 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
     private FilterPop filterPop;
     private void showFilterPop() {
+        if (workTypes==null)return;
         if (filterPop==null){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    filterPop = new FilterPop(GetWorkersActivity.this);
+                    filterPop = new FilterPop(GetWorkersActivity.this,workTypes);
+                    filterPop.setListener(new OnWorkTypeSelectListener() {
+                        @Override
+                        public void onSelect(WorkTypeBean workTypeBean) {
+                            wtId = workTypeBean.getId();
+                            //比较数据，确定滚动位置
+                            int position=0;
+                            for (int i = 0; i < workTypes.size(); i++) {
+                                if (wtId==workTypes.get(i).getId()){
+                                    position=i;
+                                }
+                            }
+                            L.e("选中了=="+position);
+                            db.tabLayout.getTabAt(position).select();
+                            page=1;
+                            loadData();
+                        }
+                    });
                     new XPopup.Builder(GetWorkersActivity.this)
-                            .atView(db.tvFilter)
-                            .setPopupCallback(new SimpleCallback(){
-                                @Override
-                                public void onShow(BasePopupView popupView) {
-                                    super.onShow(popupView);
-                                    db.tvFilter.setTextColor(ContextCompat.getColor(GetWorkersActivity.this,R.color.tv_blue));
-                                    TextViewUtils.setLeftIcon(R.mipmap.ic_blue_filter,db.tvFilter);
-                                }
-
-                                @Override
-                                public void onDismiss(BasePopupView popupView) {
-                                    super.onDismiss(popupView);
-                                    db.tvFilter.setTextColor(ContextCompat.getColor(GetWorkersActivity.this,R.color.tv_darkgray));
-                                    TextViewUtils.setLeftIcon(R.mipmap.ic_gray_filter,db.tvFilter);
-                                }
-                            })
+                            .atView(db.layoutTabAll)
                             .asCustom(filterPop)
                             .show();
+
                 }
             },200);
+
+
         }else {
             filterPop.show();
         }

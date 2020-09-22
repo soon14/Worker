@@ -5,20 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View style="@style/h_line"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <com.xsd.utils.custom.AutoNewLineLayout
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
+        <com.xsd.utils.custom.RadioGroupEx
+            android:paddingBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:horizontalSpace="16dp"
-            app:vertivalSpace="16dp" />
+            android:layout_height="wrap_content"/>
     </ScrollView>
-    <TextView android:id="@+id/tv_get_workers" style="@style/DefaultBtnStyle" android:text="开始招人" android:layout_gravity="center" android:layout_margin="@dimen/dp_16"/>
 </LinearLayout>
