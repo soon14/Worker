@@ -18,6 +18,7 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 我的招工
@@ -41,10 +42,19 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
 
     private void loadData() {
         dataProvider.server.workList(page,type)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MyGetWorkersResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MyGetWorkersResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<MyGetWorkersResponse> baseResponse) {
                         MyGetWorkersResponse data = baseResponse.getData();
+                        List<MyGetWorkersResponse.ItemsBean> items = data.getItems();
+                        if (items!=null&&items.size()>0){
+                            if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+                            mAdapter.getLoadMoreModule().loadMoreComplete();
+                        }else {
+                            if (page==1)mAdapter.setList(items);else
+                                mAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
+
 
                     }
                 });

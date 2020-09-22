@@ -28,6 +28,44 @@ public class WorkerBean implements Serializable {
     private String workYears;
     private int age;
 
+    //招工多余参数
+    private String mobile;
+    private int status;
+    private int checkDay;
+    private int totalWage;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getCheckDay() {
+        return checkDay;
+    }
+
+    public void setCheckDay(int checkDay) {
+        this.checkDay = checkDay;
+    }
+
+    public int getTotalWage() {
+        return totalWage;
+    }
+
+    public void setTotalWage(int totalWage) {
+        this.totalWage = totalWage;
+    }
+
     public int getUserId() {
         return userId;
     }

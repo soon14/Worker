@@ -2,6 +2,7 @@ package com.xsd.jx.utils;
 
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -14,12 +15,15 @@ import com.bumptech.glide.request.RequestOptions;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobListResponse;
+import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.SmallUtils;
+
+import java.util.List;
 
 /**
  * Date: 2020/1/15
@@ -110,12 +114,17 @@ public class DataBindingAdapter {
     public static void workDay(TextView tv, JobListResponse.ItemsBean item){
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
+    @BindingAdapter("workDay")
+    public static void workDay(TextView tv, MyGetWorkersResponse.ItemsBean item){
+        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
     //工种类型：木工（共需3人）
     @BindingAdapter("workType")
     public static void workType(TextView tv, JobBean item){
         if (item==null)return;
         tv.setText(item.getTypeTitle()+"（共需"+item.getNum()+"人）");
     }
+
 
     @BindingAdapter("workDayInfo")
     public static void workDayInfo(TextView tv, JobBean item){
@@ -223,5 +232,25 @@ public class DataBindingAdapter {
     @BindingAdapter("intro")
     public static void isJoin(TextView tv, String intro){
         tv.setText(TextUtils.isEmpty(intro)?"很懒~！什么都没写。":intro);
+    }
+    /**
+     *  我的招工适配器，底部状态信息{@link R.layout.item_mygetworkers_geting}
+     */
+
+    @BindingAdapter("layoutWorkers")
+    public static void isJoin(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
+        List<WorkerBean> workers = itemsBean.getWorkers();
+        TextView tv0 = (TextView) layout.getChildAt(0);
+        TextView tv1 = (TextView) layout.getChildAt(1);
+        if (workers!=null&&workers.size()>0){
+            tv0.setText("有"+workers.size()+"位报名待确认工人");
+            tv1.setText("查看工人");
+        }else {
+            tv0.setText("还没有工人报名，您可以主动招工人");
+            tv1.setText("主动招人");
+        }
+
+
+
     }
 }

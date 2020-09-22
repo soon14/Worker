@@ -4,7 +4,7 @@
     <data>
         <variable
             name="item"
-            type="com.xsd.jx.bean.WorkerResponse" />
+            type="com.xsd.jx.bean.MyGetWorkersResponse.ItemsBean" />
     </data>
 
     <LinearLayout

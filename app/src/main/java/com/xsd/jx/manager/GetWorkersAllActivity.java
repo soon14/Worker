@@ -27,9 +27,6 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
         tvTitle.setText("全部订单");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
-        for (int i = 0; i < 7; i++) {
-            mAdapter.addData(new WorkerResponse(i));
-        }
     }
     private void onEvent() {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {

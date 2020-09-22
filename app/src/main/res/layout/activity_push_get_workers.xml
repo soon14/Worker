@@ -343,6 +343,7 @@
                     android:maxLength="200"
                     android:padding="@dimen/dp_8"
                     android:gravity="top"
+                    android:hint="请输入岗位说明"
                     android:text="招工人师傅，要求踏实肯干，有意者直接报名"
                     android:layout_marginRight="@dimen/dp_16"
                     android:layout_marginLeft="@dimen/dp_16"
