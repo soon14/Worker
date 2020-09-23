@@ -4,6 +4,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.bean.WorkerResponse;
 
@@ -69,5 +70,29 @@ public interface ServerApi {
             , @Field("safeAmount")String safeAmount
             , @Field("advanceAmount")String advanceAmount
     );
+
+    //取消招聘:在还没有人报名的情况下，发布者可以取消招聘
+    @GET("server/cancel-work")
+    Observable<BaseResponse<MessageBean>> cancelWork(@Query("workId")Integer workId);
+
+    /**
+     * 拒绝/雇佣报名用户
+     * @param workId 用工ID
+     * @param userId 报名用户ID
+     * @param type 类型 1:拒绝 2:雇佣
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("server/do-join-worker")
+    Observable<BaseResponse<MessageBean>> doJoinWorker(@Field("workId")Integer workId,@Field("userId")Integer userId,@Field("type")Integer type);
+
+
+    /**
+     * 工人考勤概况
+     * @param date 日期 格式 2006-01-02，可以不传，默认今日
+     * @return
+     */
+    @GET("server/work-check")
+    Observable<BaseResponse<WorkCheckResponse>> workCheck(@Query("date")String date);
 
 }

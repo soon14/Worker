@@ -1,12 +1,14 @@
 package com.xsd.jx.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
 
 /**
  * Date: 2020/9/21
  * author: SmallCake
  */
-public class WorkerBean implements Serializable {
+public class WorkerBean implements Serializable, MultiItemEntity {
 
     /**
      * userId : 1
@@ -128,5 +130,10 @@ public class WorkerBean implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public int getItemType() {
+        return status;
     }
 }

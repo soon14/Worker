@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.xsd.jx.bean.WorkerResponse" />
+            type="com.xsd.jx.bean.WorkerBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,11 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="张智尧"
+            tools:text="张智尧"
+            android:text="@{item.name}"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <TextView
+            workerListDesc="@{item}"
             android:textSize="@dimen/h5"
             android:textColor="@color/tv_gray"
             android:id="@+id/tv_desc"
@@ -53,7 +55,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="求职工种：木工"
+            tools:text="求职工种：木工"
+            android:text="@{item.name}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,12 +100,14 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_look">
 
             <TextView
+                android:id="@+id/tv_cancel"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"
                 android:background="@drawable/round6_silver_bg"
                 android:text="婉拒" />
 
             <TextView
+                android:id="@+id/tv_confirm"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"
                 android:layout_marginLeft="@dimen/dp_24"

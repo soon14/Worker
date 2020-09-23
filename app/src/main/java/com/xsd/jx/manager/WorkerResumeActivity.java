@@ -17,6 +17,13 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
  * type
  * 0如果是从推荐的工人列表进来的就显示【邀请上工】，
  * 1如果是从报名工人列表进来的就显示【婉拒和雇佣】，这两个按钮表现形式参考报名工人列表
+ *
+ WorkerBean item = (WorkerBean) adapter.getItem(position);
+ Intent intent = new Intent(this, WorkerResumeActivity.class);
+ intent.putExtra("type",0);
+ intent.putExtra("userId",item.getUserId());
+ startActivity(intent);
+
  */
 public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResumeBinding> {
     private int userId;

@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +10,6 @@ import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
-import com.xsd.jx.bean.WorkerResponse;
 import com.xsd.jx.databinding.ActivityMyGetWorkersBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.listener.OnTabClickListener;
@@ -78,25 +78,12 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
         db.tvOrderComment.setOnClickListener(view -> goActivity(GetWorkersWaitCommentActivity.class));
         db.tvOrderAll.setOnClickListener(view -> goActivity(GetWorkersAllActivity.class));
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            WorkerResponse item = (WorkerResponse) adapter.getItem(position);
-            int itemType = item.getItemType();
-            goActivity(GetWorkersInfoActivity.class,itemType);
-            switch (itemType){
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-            }
+            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
+//            int itemType = item.getItemType();
+//            goActivity(GetWorkersInfoActivity.class,itemType);
+            Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
+            intent.putExtra("item",item);
+            startActivity(intent);
         });
         AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
             @Override
@@ -104,7 +91,6 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
                 page++;
                 loadData();
             }
-
             @Override
             public void onRefresh() {
                 page=1;

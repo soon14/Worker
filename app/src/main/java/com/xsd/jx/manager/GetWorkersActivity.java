@@ -13,12 +13,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.android.material.tabs.TabLayout;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.WorkTypeBean;
@@ -62,6 +64,11 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+    @Receive(EventStr.UPDATE_GET_WORKERS)
+    public void updateGetWorkers(){
+        page=1;
         loadData();
     }
 

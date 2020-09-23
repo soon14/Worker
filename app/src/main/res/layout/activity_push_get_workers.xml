@@ -136,31 +136,40 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
+                    <View
+                        android:layout_marginBottom="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_8"
+                        style="@style/v_line"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                     <LinearLayout
                         app:layout_constraintTop_toBottomOf="@+id/tv_time_"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                         app:layout_constraintStart_toStartOf="parent"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="0dp">
                         <TextView
+                            android:gravity="center"
                             android:onClick="@{clicklistener}"
                             android:id="@+id/tv_start_time"
-                            android:layout_marginStart="@dimen/dp_20"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
                             android:hint="请选择开始时间"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                             app:layout_constraintStart_toStartOf="parent" />
-                        <View style="@style/v_line"  android:layout_marginStart="@dimen/dp_20"/>
+
                         <TextView
+                            android:gravity="center"
                             android:onClick="@{clicklistener}"
                             android:id="@+id/tv_end_time"
-                            android:layout_marginStart="@dimen/dp_20"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
                             android:hint="请选择结束时间"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
@@ -172,6 +181,7 @@
 
 
                     <ImageView
+                        android:visibility="invisible"
                         android:id="@+id/imageView3"
                         android:layout_width="@dimen/dp_48"
                         android:layout_height="@dimen/dp_56"

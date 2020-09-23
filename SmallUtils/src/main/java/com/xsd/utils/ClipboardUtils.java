@@ -15,15 +15,15 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class ClipboardUtils {
 
-    public static void copy(Context context, String msg) {
+    public static void copy(String msg) {
         if (TextUtils.isEmpty(msg)) {
-            ToastUtil.showLong(context.getString(R.string.data_is_null));
+            ToastUtil.showLong(SmallUtils.getApp().getString(R.string.data_is_null));
             return;
         }
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager cm = (ClipboardManager) SmallUtils.getApp().getSystemService(CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText(null, msg);
         cm.setPrimaryClip(clipData);
-        ToastUtil.showLong(context.getString(R.string.copy_success));
+        ToastUtil.showLong(SmallUtils.getApp().getString(R.string.copy_success));
     }
 
     public static String paste(Context context) {

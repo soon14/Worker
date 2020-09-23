@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * Date: 2020/1/15
  * author: SmallCake
- * 使用：直接在layout包裹的xml中的ImageView控件中url = "@{item.img_path}"
  */
 public class DataBindingAdapter {
 
@@ -131,6 +130,11 @@ public class DataBindingAdapter {
         if (item==null)return;
         tv.setText(item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
+    @BindingAdapter("workDayInfo")
+    public static void workDayInfo(TextView tv, MyGetWorkersResponse.ItemsBean item){
+        if (item==null)return;
+        tv.setText(item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
     @BindingAdapter("price")
     public static void price(TextView tv, String price){
         tv.setText(price+"元/天");
@@ -170,6 +174,7 @@ public class DataBindingAdapter {
             builder.append(" · ").append(workYears);
         tv.setText(builder.toString());
     }
+    //工人简约描述：
     @BindingAdapter("workerDesc")
     public static void workerDesc(TextView tv, WorkerInfoResponse info){
         if (info==null)return;
@@ -216,6 +221,7 @@ public class DataBindingAdapter {
         tv.setText(builder.toString());
     }
 
+
     @BindingAdapter("sex")// 1男 2女 3未知
     public static void sex(TextView tv, int sex){
         String sexStr="男";
@@ -249,8 +255,30 @@ public class DataBindingAdapter {
             tv0.setText("还没有工人报名，您可以主动招工人");
             tv1.setText("主动招人");
         }
+    }
 
+    /**
+     * 结款情况：2成/1200元
+     */
+    @BindingAdapter("payedStatus")
+    public static void payedStatus(TextView tv, MyGetWorkersResponse.ItemsBean itemsBean){
+        if (itemsBean==null)return;
+        int advanceType = itemsBean.getAdvanceType();//结算方式 预付款类型 1:两成 2:全款 3:不预付
+        int price = Integer.parseInt(itemsBean.getPrice());
+        int num = itemsBean.getNum();
+        int isPayedPrice=0;
 
-
+        String at = "不预付";
+        switch (advanceType){
+            case 1:
+                at="2成";
+                isPayedPrice = (int) (price*num*0.2);
+            break;
+            case 2:at="全款";
+                isPayedPrice=price*num;
+            break;
+            case 3:at="不预付";break;
+        }
+        tv.setText(at+"/"+isPayedPrice+"元");
     }
 }

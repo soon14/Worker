@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -136,7 +138,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     }
 
     private void showStartTime(boolean isStartTime) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,R.style.DialogTheme,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -147,7 +149,6 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         if (isStartTime){
                             startDate = data;
                             db.tvStartTime.setText(data);
-                            ToastUtil.showLong("请继续选择结束时间");
                             new Handler().postDelayed(() -> showStartTime(false),300);
                         }else {
                             endDate = data;
@@ -156,6 +157,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     }
                 },
                 mYear, mMonth, mDay);
+        View header = LayoutInflater.from(this).inflate(R.layout.header_date_picker_dialog, null);
+        TextView tv = header.findViewById(R.id.tv_title);
+        tv.setText(isStartTime?"开始时间":"结束时间");
+        datePickerDialog.setCustomTitle(header);
         DatePicker datePicker = datePickerDialog.getDatePicker();
         datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
         datePickerDialog.show();

@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,24 +11,36 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.GetWorkersInfoAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
-import com.xsd.jx.bean.WorkerResponse;
+import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.custom.WaitPayBillPop;
 import com.xsd.jx.databinding.ActivityGetWorkersInfoBinding;
 import com.xsd.jx.listener.OnTabClickListener;
 import com.xsd.jx.utils.AppBarUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
+import com.xsd.utils.ClipboardUtils;
+import com.xsd.utils.ToastUtil;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
- * 招工详情
+ * 招工详情:7个状态
+ * 1.正在招
+ * 2.已招满
  */
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {
     private GetWorkersInfoAdapter mAdapter = new GetWorkersInfoAdapter();
+    private int workId;//当前详情的工种ID
     @Override
     protected int getLayoutId() {
         return R.layout.activity_get_workers_info;
@@ -36,10 +49,16 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+    }
 
     private void onEvent() {
         //layoutHead为appbar中的一个控件
@@ -54,10 +73,62 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    case R.id.tv_together_comment:
                        goActivity(TogetherCommentActivity.class);
                        break;
+                   case R.id.tv_copy:
+                       String s = db.tvSn.getText().toString();
+                       ClipboardUtils.copy(s);
+                       break;
+                   case R.id.tv_cancel://取消招聘
+                       cancelInvite();
+                       break;
+               }
+           }
+       });
+       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm);
+       mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+           @Override
+           public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+               WorkerBean item = (WorkerBean) adapter.getItem(position);
+               int userId = item.getUserId();
+               switch (view.getId()){
+                   case R.id.tv_cancel://婉拒
+                       doJoinWork(userId,1,position);
+                       break;
+                   case R.id.tv_confirm://雇佣
+                       doJoinWork(userId,2,position);
+                       break;
                }
            }
        });
 
+    }
+
+    private void cancelInvite() {
+        dataProvider.server.cancelWork(workId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        finish();
+                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                    }
+                });
+    }
+
+    /**
+     * TODO 请求参数绑定错误
+     * 拒绝/雇佣报名用户
+     * @param userId 报名用户ID
+     * @param type 类型 1:拒绝 2:雇佣
+     */
+    private void doJoinWork(int userId,int type,int position){
+        dataProvider.server.doJoinWorker(workId,userId,type)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        mAdapter.removeAt(position);
+                    }
+                });
     }
 
     private void showWaitPayBill() {
@@ -69,45 +140,48 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
 
     int type;
     private void initView() {
-        type = getIntent().getIntExtra("type", 0);
+        MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
+        db.setItem(item);
+        workId = item.getId();
+        type = item.getItemType();
         switch (type){
-            case 0:
+            case 1:
                 db.tvTitle.setText("正在招");
                 break;
-            case 1:
+            case 2:
                 db.tvTitle.setText("已招满");
                 db.layoutBtns.setVisibility(View.GONE);
                 break;
-            case 2:
+            case 3:
                 db.tvTitle.setText("工期内");
                 break;
-            case 3:
+            case 4:
                 db.tvTitle.setText("待结算");
                 db.tvCancel.setVisibility(View.GONE);
                 db.tvActivGet.setVisibility(View.GONE);
                 db.layoutNeedPay.setVisibility(View.VISIBLE);
                 db.tvPay.setVisibility(View.VISIBLE);
                 break;
-            case 4:
+            case 5:
                 db.tvTitle.setText("待评价");
                 db.tvCancel.setVisibility(View.GONE);
                 db.tvActivGet.setVisibility(View.GONE);
                 db.tvTogetherComment.setVisibility(View.VISIBLE);
                 break;
-            case 5:
+            case 6:
                 db.tvTitle.setText("已完成");
                 db.layoutPayedTime.setVisibility(View.VISIBLE);
                 db.tvPayedMoney.setText("已结清（3200元）");
                 setTopColor();
                 break;
-            case 6:
+            case 7:
                 db.tvTitle.setText("已取消");
                 db.layoutCancelTime.setVisibility(View.VISIBLE);
                 db.tvPayedMoney.setText("2成/1200元(已退至您的账户钱包)");
                 setTopColor();
                 break;
         }
-        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(type==0?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
+        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList("工人列表","招工详情"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
                 switch (position){
@@ -129,19 +203,22 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
         emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> goActivity(PushGetWorkersActivity.class));
         mAdapter.setEmptyView(emptyView);
-
-        for (int i = 0; i < 8; i++) {
-            mAdapter.addData(new WorkerResponse(type));
-        }
+        //工人列表
+        List<WorkerBean> workers = item.getWorkers();
+        mAdapter.setList(workers);
 
         //查看工人详情，需要显示婉拒和雇佣
         mAdapter.addChildClickViewIds(R.id.tv_look);
         mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                WorkerBean item = (WorkerBean) adapter.getItem(position);
                 switch (view.getId()){
                     case R.id.tv_look:
-                        goActivity(WorkerResumeActivity.class,1);
+                        Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
+                        intent.putExtra("type",1);
+                        intent.putExtra("userId",item.getUserId());
+                        startActivity(intent);
                         break;
                 }
             }

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="item"
+            type="com.xsd.jx.bean.MyGetWorkersResponse.ItemsBean" />
+        <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
     </data>
@@ -56,7 +59,8 @@
                                 android:textColor="@color/tv_black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
-                                android:text="0"
+                                tools:text="0"
+                                android:text="@{(item.num-item.tobeConfirmNum)+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
@@ -77,7 +81,8 @@
                                 android:textColor="@color/tv_black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
-                                android:text="0"
+                                tools:text="0"
+                                android:text="@{item.num+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
@@ -98,7 +103,8 @@
                                 android:textColor="@color/tv_black"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
-                                android:text="0"
+                                tools:text="0"
+                                android:text="@{item.tobeConfirmNum+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
@@ -173,7 +179,8 @@
                                 android:layout_toRightOf="@+id/tv1"
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
-                                android:text="木工"
+                                tools:text="木工"
+                                android:text="@{item.typeTitle}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
 
@@ -195,7 +202,8 @@
                                 android:layout_centerVertical="true"
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
-                                android:text="重庆市渝北区人民大道11111号"
+                                tools:text="重庆市渝北区人民大道11111号"
+                                android:text="@{item.address}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -211,7 +219,7 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
-
+                                workDayInfo="@{item}"
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
                                 android:text="2020-08-21至2020-08-23（共3天）"
@@ -230,7 +238,7 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
-
+                                price="@{item.price}"
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
                                 android:text="350元/天"
@@ -249,10 +257,10 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
-
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
-                                android:text="3人"
+                                tools:text="3人"
+                                android:text="@{item.num+`人`}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -268,10 +276,10 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
-
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
-                                android:text="找工人师傅，工资日结，有意者直接报名"
+                                tools:text="找工人师傅，工资日结，有意者直接报名"
+                                android:text="@{item.desc}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -287,10 +295,10 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
-
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
-                                android:text="是"
+                                tools:text="是"
+                                android:text="@{item.isSafe==1?`是`:`否`}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -306,6 +314,7 @@
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="wrap_content"/>
                             <TextView
+                                payedStatus="@{item}"
                                 android:id="@+id/tv_payed_money"
                                 android:textSize="@dimen/h4"
                                 android:textColor="@color/tv_darkgray"
@@ -314,11 +323,6 @@
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
                     </LinearLayout>
-
-
-
-
-
 
                     <LinearLayout
                         android:background="@color/white"
@@ -335,13 +339,16 @@
                             android:layout_width="@dimen/dp_80"
                             android:layout_height="wrap_content"/>
                         <TextView
+                            android:id="@+id/tv_sn"
                             android:textSize="@dimen/h4"
                             android:textColor="@color/tv_darkgray"
-                            android:text="844599852398412"
+                            tools:text="844599852398412"
+                            android:text="@{item.sn}"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                         <TextView
+                            android:onClick="@{clicklistener}"
                             android:id="@+id/tv_copy"
                             android:gravity="center"
                             android:paddingRight="8dp"
@@ -371,7 +378,8 @@
                         <TextView
                             android:textSize="@dimen/h4"
                             android:textColor="@color/tv_darkgray"
-                            android:text="2020-08-21 10:45"
+                            tools:text="2020-08-21 10:45"
+                            android:text="@{item.created_at}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
