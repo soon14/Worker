@@ -11,9 +11,12 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerSignListAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerResponse;
 import com.xsd.jx.databinding.ActivityWorkerSignListBinding;
 import com.xsd.jx.listener.OnTabClickListener;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
 
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ import java.util.List;
  */
 public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSignListBinding> {
     private WorkerSignListAdapter mAdapter = new WorkerSignListAdapter();
+    private String date="";
+    private int workId;
+    private int status;//状态 0:全部 1：未考勤 2:已考勤
     @Override
     protected int getLayoutId() {
         return R.layout.activity_worker_sign_list;
@@ -35,6 +41,17 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+
+    private void loadData() {
+        dataProvider.server.workCheckLog(date,workId,status)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkCheckResponse> baseResponse) {
+
+                    }
+                });
     }
 
     private void onEvent() {

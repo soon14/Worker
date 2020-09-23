@@ -1,5 +1,6 @@
 package com.xsd.jx.mine;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -7,9 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.RecommendAdapter;
@@ -22,6 +25,7 @@ import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.SpannableStringUtils;
+import com.xsd.utils.ToastUtil;
 
 import java.util.List;
 
@@ -57,20 +61,34 @@ public class RecommendListActivity extends BaseBindBarActivity<ActivityRecyclerv
                 loadData();
             }
         });
+        mAdapter.addChildClickViewIds(R.id.tv_remind);
+        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.tv_remind:
+                        remind();
+                        break;
+                }
+            }
+            //TODO 提醒上工
+            private void remind() {
+                ToastUtil.showLong("提醒上工成功！");
+            }
+        });
     }
 
     private void loadData() {
         dataProvider.user.recommend(page)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<RecommendResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<RecommendResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<RecommendResponse> baseResponse) {
                         RecommendResponse data = baseResponse.getData();
                         List<RecommendResponse.ItemsBean> items = data.getItems();
                         if (page==1){
-                            SpannableStringBuilder spanStr = SpannableStringUtils.getBuilder(data.getCount()+"位工友共帮您赚了").setProportion(1.5f).setBold()
-                                    .append(data.getEarned()+"").setProportion(1.5f).setBold().setForegroundColor(ContextCompat.getColor(RecommendListActivity.this,R.color.colorAccent))
-                                    .append("元\n").setProportion(1.5f).setBold()
-                                    .append("工友越多收益越快，赶紧把身边的工友邀请到匠心吧~").setForegroundColor(ContextCompat.getColor(RecommendListActivity.this,R.color.tv_gray))
+                            SpannableStringBuilder spanStr = SpannableStringUtils.getBuilder(data.getCount()+"位工友共帮您赚了")
+                                    .append(data.getEarned()+"").setForegroundColor(Color.parseColor("#FFF000"))
+                                    .append("元")
                                     .create();
                             tvDesc.setText(spanStr);
                         }

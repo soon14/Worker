@@ -1,7 +1,6 @@
 package com.xsd.jx.manager;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -46,12 +45,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
     }
 
     private void onEvent() {
-        db.layoutSignList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goActivity(WorkerSignListActivity.class);
-            }
-        });
+        db.layoutSignList.setOnClickListener(view -> goActivity(WorkerSignListActivity.class));
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {

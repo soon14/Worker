@@ -65,4 +65,9 @@ public class ServerImpl implements ServerApi {
     public Observable<BaseResponse<WorkCheckResponse>> workCheck(String date) {
         return bindIoUI(api.workCheck(date));
     }
+
+    @Override
+    public Observable<BaseResponse<WorkCheckResponse>> workCheckLog(String date, Integer workId, Integer status) {
+        return bindIoUI(api.workCheckLog(date,workId,status));
+    }
 }

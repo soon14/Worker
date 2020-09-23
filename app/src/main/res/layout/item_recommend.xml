@@ -7,6 +7,7 @@
         <variable
             name="item"
             type="com.xsd.jx.bean.RecommendResponse.ItemsBean" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,7 +47,7 @@
             android:layout_marginEnd="16dp"
             tools:text="共帮您赚取350元"
             android:text="@{`共帮您赚取`+item.helpEarned+`元`}"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,19 +64,34 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_head" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/textView14"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            tools:text="3天后完工，您预计获得50元奖励"
             android:text="@{item.desc}"
             android:textColor="@color/tv_darkgray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_remind"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            tools:text="3天后完工，您预计获得50元奖励" />
+
+        <TextView
+            android:visibility="@{item.status==1?View.VISIBLE:View.GONE}"
+            android:id="@+id/tv_remind"
+            android:layout_width="@dimen/dp_84"
+            android:layout_height="@dimen/dp_33"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round6_bluerim_bg"
+            android:gravity="center"
+            android:text="提醒上工"
+            android:textColor="#ff3c78ff"
+            android:textSize="@dimen/h5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

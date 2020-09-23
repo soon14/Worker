@@ -61,13 +61,6 @@
                 android:layout_width="@dimen/dp_74"
                 android:layout_height="@dimen/dp_33"/>
         </LinearLayout>
-        <TextView
-            android:padding="@dimen/dp_16"
-            android:textColor="@color/tv_gray"
-            android:textSize="@dimen/h5"
-            android:text="常见工种价格"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

@@ -90,9 +90,18 @@ public interface ServerApi {
     /**
      * 工人考勤概况
      * @param date 日期 格式 2006-01-02，可以不传，默认今日
-     * @return
      */
     @GET("server/work-check")
     Observable<BaseResponse<WorkCheckResponse>> workCheck(@Query("date")String date);
+
+    /**
+     * 考勤记录
+     * 获取日期获取某个招工的所有用户的考勤信息
+     * @param date 日期 格式 2006-01-02，可以不传，默认今日
+     * @param workId 工作ID
+     * @param status 状态 0:全部 1：未考勤 2:已考勤
+     */
+    @GET("server/work-check-log")
+    Observable<BaseResponse<WorkCheckResponse>> workCheckLog(@Query("date")String date,@Query("workId")Integer workId,@Query("status")Integer status);
 
 }
