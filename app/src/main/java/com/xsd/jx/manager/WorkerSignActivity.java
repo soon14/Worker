@@ -16,6 +16,8 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
  */
 public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBinding> {
     private String date="";
+    private int workId;
+    private int userId;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_worker_sign;
@@ -26,14 +28,15 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
-        loadData();
+        loadBottomData();
     }
+
 
     /**
      * 根据日期查询当日我发布的工作考勤情况
      * 日期 格式 2006-01-02，可以不传，默认今日
      */
-    private void loadData() {
+    private void loadBottomData() {
         dataProvider.server.workCheck(date)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckResponse>>() {
                     @Override
@@ -58,7 +61,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 int month = calendar.getMonth();
                 int day = calendar.getDay();
                 date = year+"-"+month+"-"+day;
-                loadData();
+                loadBottomData();
             }
         });
     }

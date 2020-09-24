@@ -18,15 +18,16 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Date: 2020/8/26
  * author: SmallCake
- * 正在招
- * 已招满
- * 工期内
- * 待结算
- * 待评价
- * 全部订单：除了上面2个还有：已完成，已取消
- *
- * status	integer
- * 状态 -1:不展示(有预付款项未付不显示给用户) ) 1:正在招 2:已招满/待开工(所有用户已确认) 3:工期中 4:待结算 5:待评价 6:已完成 7.已取消
+ * 我的招工适配器
+ * status
+ * 状态 -1:不展示(有预付款项未付不显示给用户) )
+ * 1:正在招
+ * 2:已招满/待开工(所有用户已确认)
+ * 3:工期中
+ * 4:待结算
+ * 5:待评价
+ * 6:已完成
+ * 7.已取消
  */
 public class MyWorkersAdapter extends BaseMultiItemQuickAdapter<MyGetWorkersResponse.ItemsBean, BaseDataBindingHolder> implements LoadMoreModule {
     public MyWorkersAdapter() {

@@ -104,4 +104,33 @@ public interface ServerApi {
     @GET("server/work-check-log")
     Observable<BaseResponse<WorkCheckResponse>> workCheckLog(@Query("date")String date,@Query("workId")Integer workId,@Query("status")Integer status);
 
+    /**
+     * 确认考勤
+     * 获取日期获取某个招工的所有用户的考勤信息
+     * @param checkId 考勤ID
+     */
+    @GET("server/confirm-check-log")
+    Observable<BaseResponse<MessageBean>> confirmCheckLog(@Query("checkId")Integer checkId );
+
+    /**
+     * 获取用户整月的考勤记录
+     * 根据上工记录获取用户整月的上工记录
+     * @param workId 工作ID
+     * @param userId 用户ID
+     * @param month 月份 格式 2020-01，可以不传，默认当月
+     */
+    @GET("server/user-check-log-by-month")
+    Observable<BaseResponse> userCheckLogByMonth(@Query("workId")Integer workId,@Query("userId")Integer userId,@Query("month")String month );
+
+    /**
+     * 评价
+     * 用工方评价上工者
+     * @param workId
+     * @param data
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("server/work-comment")
+    Observable<BaseResponse<MessageBean>> workComment(@Field("workId")Integer workId,@Field("data")String data);
+
 }

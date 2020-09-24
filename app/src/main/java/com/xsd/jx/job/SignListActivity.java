@@ -32,6 +32,11 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+
+    private void loadData() {
+
     }
 
     private void onEvent() {

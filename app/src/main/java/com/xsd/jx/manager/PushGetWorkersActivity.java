@@ -3,7 +3,9 @@ package com.xsd.jx.manager;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -42,14 +44,14 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private String address;
     private String startDate;
     private String endDate;
-    private Integer price;
+    private Integer price;//工价
     private String desc;
-    private Integer num;
+    private Integer num=1;//工人数量
     private Integer isSafe;
     private Integer settleType = 1;
     private Integer advanceType = 1 ;
     private String safeAmount = "2";
-    private String advanceAmount = "40";
+    private String advanceAmount = "0";
 
 
     private int mYear, mMonth, mDay;//开始的年月日
@@ -87,9 +89,18 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         desc = db.etDesc.getText().toString();
         isSafe = db.rbBuySafe.isChecked()?1:0;
         settleType = db.rbDayPay.isChecked()?1:2;
-        if (db.rbPay2cost.isChecked())advanceType=1;
-        if (db.rbPayAll.isChecked())advanceType=2;
-        if (db.rbNoPay.isChecked())advanceType=3;
+        if (db.rbPay2cost.isChecked()){
+            advanceAmount = String.valueOf(price*num*0.2);
+            advanceType=1;
+        }
+        if (db.rbPayAll.isChecked()){
+            advanceAmount = String.valueOf(price*num);
+            advanceType=2;
+        }
+        if (db.rbNoPay.isChecked()){
+            advanceAmount="0";
+            advanceType=3;
+        }
         //TODO 还差保险金额和预付款金额
 
         //接口提交
@@ -134,7 +145,52 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                 }
             }
         });
+        //根据输入工价，动态改变预付款金额
+        db.etPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0){
+                    price = Integer.parseInt(s.toString());
+                    updateAdvanceBtn();
+                }
+            }
+        });
+        db.etNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0){
+                    num = Integer.parseInt(s.toString());
+                    updateAdvanceBtn();
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 更新预付款金额
+     */
+    private void updateAdvanceBtn() {
+        int priceAll = price * num;
+        int price2 = (int) (priceAll*0.2);
+        db.rbPay2cost.setText("2成/"+price2+"元");
+        db.rbPayAll.setText("全额/"+priceAll+"元");
     }
 
     private void showStartTime(boolean isStartTime) {

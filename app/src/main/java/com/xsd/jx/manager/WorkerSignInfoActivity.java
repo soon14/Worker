@@ -8,13 +8,19 @@ import androidx.core.content.ContextCompat;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.databinding.ActivityWorkerSignInfoBinding;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.ToastUtil;
 
 /**
  * 记录明细
+ * 根据上工记录获取用户整月的上工记录
  */
 public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSignInfoBinding> {
+    private int workId;
+    private int userId;
+    private String date="";
 
     @Override
     protected int getLayoutId() {
@@ -26,6 +32,19 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+    /**
+     * 获取用户整月的考勤记录
+     */
+    private void loadData() {
+        dataProvider.server.userCheckLogByMonth(workId,userId,date)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
+                    @Override
+                    protected void onSuccess(BaseResponse baseResponse) {
+
+                    }
+                });
     }
 
     private void onEvent() {

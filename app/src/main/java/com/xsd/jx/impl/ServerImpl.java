@@ -70,4 +70,19 @@ public class ServerImpl implements ServerApi {
     public Observable<BaseResponse<WorkCheckResponse>> workCheckLog(String date, Integer workId, Integer status) {
         return bindIoUI(api.workCheckLog(date,workId,status));
     }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> confirmCheckLog(Integer checkId) {
+        return bindIoUI(api.confirmCheckLog(checkId));
+    }
+
+    @Override
+    public Observable<BaseResponse> userCheckLogByMonth(Integer workId, Integer userId, String month) {
+        return bindIoUI(api.userCheckLogByMonth(workId,userId,month));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> workComment(Integer workId, String data) {
+        return bindIoUI(api.workComment(workId,data));
+    }
 }

@@ -79,8 +79,6 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
         db.tvOrderAll.setOnClickListener(view -> goActivity(GetWorkersAllActivity.class));
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
-//            int itemType = item.getItemType();
-//            goActivity(GetWorkersInfoActivity.class,itemType);
             Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
             intent.putExtra("item",item);
             startActivity(intent);

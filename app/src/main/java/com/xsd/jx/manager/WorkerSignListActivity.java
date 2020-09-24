@@ -44,6 +44,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         loadData();
     }
 
+
     private void loadData() {
         dataProvider.server.workCheckLog(date,workId,status)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckResponse>>() {
@@ -58,6 +59,8 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                Object item = adapter.getItem(position);
+
                 goActivity(WorkerSignInfoActivity.class);
             }
         });
