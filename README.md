@@ -57,7 +57,7 @@ addItemType(7, R.layout.item_mygetworkers_cancel);
 
 3.【招工详情】GetWorkersInfoActivity
 
-适配器`GetWorkersInfoAdapter`,适配对象`MyGetWorkersResponse.ItemsBean`里面包含多个`WorkerBean`
+适配器`GetWorkersInfoAdapter`,适配对象`WorkerBean`,它来之`MyGetWorkersResponse.ItemsBean`对象中的`WorkerBean`
 
 状态：-1:不展示(有预付款项未付不显示给用户) ) 1:正在招 2:已招满/待开工(所有用户已确认) 3:工期中 4:待结算 5:待评价 6:已完成 7.已取消
 

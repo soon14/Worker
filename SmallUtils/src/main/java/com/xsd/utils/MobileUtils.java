@@ -1,7 +1,10 @@
 package com.xsd.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -22,6 +25,18 @@ import java.util.UUID;
  */
 
 public class MobileUtils {
+
+    /**
+     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
+     *
+     * @param phoneNum 电话号码
+     */
+    public static void callPhone(Activity activity, String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        activity.startActivity(intent);
+    }
     /**
      * 1.获取手机制造商名称
      *

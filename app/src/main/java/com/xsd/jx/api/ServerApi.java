@@ -4,6 +4,8 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.bean.WorkerResponse;
@@ -102,7 +104,7 @@ public interface ServerApi {
      * @param status 状态 0:全部 1：未考勤 2:已考勤
      */
     @GET("server/work-check-log")
-    Observable<BaseResponse<WorkCheckResponse>> workCheckLog(@Query("date")String date,@Query("workId")Integer workId,@Query("status")Integer status);
+    Observable<BaseResponse<WorkCheckLogResponse>> workCheckLog(@Query("date")String date, @Query("workId")Integer workId, @Query("status")Integer status);
 
     /**
      * 确认考勤
@@ -132,5 +134,18 @@ public interface ServerApi {
     @FormUrlEncoded
     @POST("server/work-comment")
     Observable<BaseResponse<MessageBean>> workComment(@Field("workId")Integer workId,@Field("data")String data);
+
+    //工资结算:获取当前用户共待结算的招工信息列表
+    @GET("server/settle")
+    Observable<BaseResponse<ToSettleResponse>> settle();
+
+    /**
+     * 工资结算提交
+     * 提交支付用户需要结算的招工，成功后跳转支付
+     * @param ids 选择提交的结算工作ID，用英文逗号分隔 1,2,3,4
+     */
+    @GET("server/do-settle")
+    Observable<BaseResponse<MessageBean>> doSettle(@Query("ids")String ids);
+
 
 }

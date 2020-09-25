@@ -17,6 +17,7 @@ import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.OrderBean;
+import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
@@ -116,6 +117,10 @@ public class DataBindingAdapter {
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, MyGetWorkersResponse.ItemsBean item){
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
+    @BindingAdapter("workDay")
+    public static void workDay(TextView tv, ToSettleResponse.ItemsBean item){
+        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate());
     }
     //工种类型：木工（共需3人）
     @BindingAdapter("workType")

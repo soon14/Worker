@@ -35,7 +35,12 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         loadData();
     }
 
+    private void initView() {
+        tvTitle.setText("考勤记录");
+    }
+
     private void loadData() {
+
 
     }
 
@@ -138,7 +143,5 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         }
     }
 
-    private void initView() {
-        tvTitle.setText("考勤记录");
-    }
+
 }

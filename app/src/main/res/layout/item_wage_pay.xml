@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.ToSettleResponse.ItemsBean" />
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -33,7 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="木工"
+            tools:text="木工"
+            android:text="@{item.typeTitle}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h3"
             android:textStyle="bold"
@@ -45,17 +48,19 @@
             android:id="@+id/tv_tag"
             style="@style/TextWelfareTagStyle"
             android:layout_marginStart="10dp"
-            android:text="日结"
+            tools:text="日结"
+            android:text="@{item.settleType==1?`日结`:`做完再结`}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_type_work"
             app:layout_constraintStart_toEndOf="@+id/tv_type_work"
             app:layout_constraintTop_toTopOf="@+id/tv_type_work" />
 
         <TextView
+            workDay="@{item}"
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="工期：2020-08-22至2020-08-29"
+            tools:text="工期：2020-08-22至2020-08-29"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +72,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="上工地点：武汉市青山区人民大道99号"
+            tools:text="上工地点：武汉市青山区人民大道99号"
+            android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +115,8 @@
                 android:drawableRight="@mipmap/ic_gray_arrow_down_big"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="展开全部3位工人"
+                tools:text="展开全部3位工人"
+                android:text="@{`展开全部`+item.users.size()+`位工人`}"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h5"
                 />
@@ -132,7 +139,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="2340元"
+            tools:text="2340元"
+            android:text="@{item.price+`元`}"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/textView1"
@@ -153,7 +161,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="0元"
+            tools:text="0元"
+            android:text="@{item.safeAmount+`元`}"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -174,7 +183,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="540元(结算已抵扣540元)"
+            tools:text="540元(结算已抵扣540元)"
+            android:text="@{item.advanceAmount+`元`}"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
@@ -195,7 +205,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="800元"
+            tools:text="800元"
+            android:text="@{item.paidAmount+`元`}"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -217,7 +228,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="1000元"
+            tools:text="1000元"
+            android:text="@{item.needPayAmount+`元`}"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/textView5"

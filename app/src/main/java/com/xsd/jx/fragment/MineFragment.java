@@ -1,7 +1,5 @@
 package com.xsd.jx.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +21,16 @@ import com.xsd.jx.manager.GetWorkersActivity;
 import com.xsd.jx.mine.CollectedWorksActivity;
 import com.xsd.jx.mine.FeedbackActivity;
 import com.xsd.jx.mine.HelpRegistActivity;
-import com.xsd.jx.mine.RecommendListActivity;
 import com.xsd.jx.mine.MessageActivity;
 import com.xsd.jx.mine.PartnerActivity;
 import com.xsd.jx.mine.RealNameAuthActivity;
+import com.xsd.jx.mine.RecommendListActivity;
 import com.xsd.jx.mine.ResumeActivity;
 import com.xsd.jx.mine.SetActivity;
 import com.xsd.jx.mine.WalletActivity;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.MobileUtils;
 
 /**
  * Date: 2020/1/3
@@ -122,7 +121,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     goActivity(PartnerActivity.class);
                     break;
                 case R.id.tab8:
-                    callPhone("10086");
+                    MobileUtils.callPhone(this.getActivity(),"10086");
                     break;
                 case R.id.tab9:
                     goActivity(MessageActivity.class);
@@ -132,17 +131,6 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
     }
 
 
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
-    }
 
     private void showShare() {
         new XPopup.Builder(this.getActivity())

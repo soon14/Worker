@@ -8,22 +8,23 @@ import java.io.Serializable;
  */
 public class WorkCheckResponse implements Serializable {
 
+
     /**
-     * works : 0
-     * num : 0
      * notCheckNum : 0
+     * num : 0
+     * works : 0
      */
 
-    private String works;
-    private String num;
     private String notCheckNum;
+    private String num;
+    private String works;
 
-    public String getWorks() {
-        return works;
+    public String getNotCheckNum() {
+        return notCheckNum;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setNotCheckNum(String notCheckNum) {
+        this.notCheckNum = notCheckNum;
     }
 
     public String getNum() {
@@ -34,11 +35,11 @@ public class WorkCheckResponse implements Serializable {
         this.num = num;
     }
 
-    public String getNotCheckNum() {
-        return notCheckNum;
+    public String getWorks() {
+        return works;
     }
 
-    public void setNotCheckNum(String notCheckNum) {
-        this.notCheckNum = notCheckNum;
+    public void setWorks(String works) {
+        this.works = works;
     }
 }

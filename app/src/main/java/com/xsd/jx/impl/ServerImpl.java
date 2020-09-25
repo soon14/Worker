@@ -5,6 +5,8 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.bean.WorkerResponse;
@@ -67,7 +69,7 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse<WorkCheckResponse>> workCheckLog(String date, Integer workId, Integer status) {
+    public Observable<BaseResponse<WorkCheckLogResponse>> workCheckLog(String date, Integer workId, Integer status) {
         return bindIoUI(api.workCheckLog(date,workId,status));
     }
 
@@ -84,5 +86,15 @@ public class ServerImpl implements ServerApi {
     @Override
     public Observable<BaseResponse<MessageBean>> workComment(Integer workId, String data) {
         return bindIoUI(api.workComment(workId,data));
+    }
+
+    @Override
+    public Observable<BaseResponse<ToSettleResponse>> settle() {
+        return bindIoUI(api.settle());
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> doSettle(String ids) {
+        return bindIoUI(api.doSettle(ids));
     }
 }
