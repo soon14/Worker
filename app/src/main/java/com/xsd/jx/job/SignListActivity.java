@@ -1,7 +1,6 @@
 package com.xsd.jx.job;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import com.haibin.calendarview.Calendar;
@@ -9,10 +8,14 @@ import com.haibin.calendarview.CalendarView;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.CheckLogResponse;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,10 +40,35 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
 
     private void initView() {
         tvTitle.setText("考勤记录");
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        int mYear = c.get(java.util.Calendar.YEAR);
+        int mMonth = c.get(java.util.Calendar.MONTH);
+        int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
+        db.tvMonth.setText("("+(mMonth+1)+"月)");
+
     }
 
     private void loadData() {
+        dataProvider.work.checkLog()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckLogResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<CheckLogResponse> baseResponse) {
+                        CheckLogResponse data = baseResponse.getData();
+                        db.setItem(data);
+                        List<CheckLogResponse.ItemsBean> items = data.getItems();
+                        initItems(items);
+                    }
 
+                    @Override
+                    protected void onErr(String err) {
+                        super.onErr(err);
+
+                    }
+                });
+
+    }
+
+    private void initItems(List<CheckLogResponse.ItemsBean> items) {
 
     }
 
@@ -92,27 +120,9 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                 getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
         map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
                 getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议").toString(),
-                getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记").toString(),
-                getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
-        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记").toString(),
-                getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
-        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假").toString(),
-                getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
-        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记").toString(),
-                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
-        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假").toString(),
-                getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
-        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多").toString(),
-                getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
+
         //此方法在巨大的数据量上不影响遍历性能，推荐使用
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                db.calendarView.setSchemeDate(map);
-            }
-        },3000);
+        db.calendarView.setSchemeDate(map);
 
 
 
@@ -127,7 +137,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         calendar.setScheme(text);
         return calendar;
     }
-    BottomDatePickerPop bottomDatePickerPop;
+    private BottomDatePickerPop bottomDatePickerPop;
     private void showSelectYearMonth() {
         if (bottomDatePickerPop==null){
             bottomDatePickerPop = new BottomDatePickerPop(this);

@@ -4,6 +4,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
@@ -146,6 +147,15 @@ public interface ServerApi {
      */
     @GET("server/do-settle")
     Observable<BaseResponse<MessageBean>> doSettle(@Query("ids")String ids);
+
+    /**
+     * 查工价
+     * 根据地区获取最低工价，发布的工价不能低于此价格
+     * @param areaId 地区ID
+     * @param typeId 工种ID
+     */
+    @GET("server/recommend-price")
+    Observable<BaseResponse<PriceBean>> recommendPrice(@Query("areaId")Integer areaId, @Query("typeId")Integer typeId);
 
 
 }

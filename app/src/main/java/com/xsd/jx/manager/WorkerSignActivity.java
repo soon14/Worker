@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.haibin.calendarview.Calendar;
@@ -48,7 +49,12 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
     }
 
     private void onEvent() {
-        db.layoutSignList.setOnClickListener(view -> goActivity(WorkerSignListActivity.class));
+        db.layoutSignList.setOnClickListener(view -> {
+            Intent intent = new Intent(this, WorkerSignListActivity.class);
+            intent.putExtra("date",date);
+            startActivity(intent);
+        });
+        //日历点击事件
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {
@@ -64,9 +70,22 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 loadBottomData();
             }
         });
+        //日历滚动选择月份事件
+        db.calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
+            @Override
+            public void onMonthChange(int year, int month) {
+                db.tvMonth.setText("("+month+"月)");
+            }
+        });
     }
 
     private void initView() {
         tvTitle.setText("工人考勤");
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        int mYear = c.get(java.util.Calendar.YEAR);
+        int mMonth = c.get(java.util.Calendar.MONTH);
+        int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
+        date = mYear+"-"+(mMonth+1)+"-"+mDay;
+
     }
 }

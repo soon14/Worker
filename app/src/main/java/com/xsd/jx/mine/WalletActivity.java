@@ -128,25 +128,21 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data==null||data.getExtras()==null)return;
+        Bundle bundle = data.getExtras();
         switch (requestCode){
             case TO_ALIPAY:
-                Bundle bundle = data.getExtras();
-                if (bundle==null)return;
                 account = bundle.getString("account");
                 name = bundle.getString("name");
                 db.tvAlipay.setText(account);
                 break;
             case TO_DIVISION:
-                Bundle bundle2 = data.getExtras();
-                if (bundle2==null)return;
-                divisionId = bundle2.getString("divisionId");
+                divisionId = bundle.getString("divisionId");
                 break;
             case TO_BANK_CARD:
-                Bundle bundle3 = data.getExtras();
-                if (bundle3==null)return;
-                account = bundle3.getString("account");
-                name = bundle3.getString("name");
-                bankName = bundle3.getString("bankName");
+                account = bundle.getString("account");
+                name = bundle.getString("name");
+                bankName = bundle.getString("bankName");
                 db.tvBankcard.setText(name+"-"+account+"("+bankName+")");
                 break;
         }

@@ -5,6 +5,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
@@ -97,4 +98,10 @@ public class ServerImpl implements ServerApi {
     public Observable<BaseResponse<MessageBean>> doSettle(String ids) {
         return bindIoUI(api.doSettle(ids));
     }
+
+    @Override
+    public Observable<BaseResponse<PriceBean>> recommendPrice(Integer areaId, Integer typeId) {
+        return bindIoUI(api.recommendPrice(areaId,typeId));
+    }
+
 }

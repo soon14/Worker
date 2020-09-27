@@ -163,6 +163,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#fff"
+                        app:month_view_show_mode="mode_fix"
                         app:current_month_lunar_text_color="#CFCFCF"
                         app:current_month_text_color="#333333"
                         app:max_year="2020"

@@ -54,7 +54,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
         onEvent();
     }
     //用户详情
-    @Receive(EventStr.UPDATE_USER_INFO)
+    @Receive({EventStr.UPDATE_USER_INFO,EventStr.LOGIN_SUCCESS})
     public void loadUserInfo() {
         dataProvider.user.info()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
@@ -79,6 +79,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
         super.onDestroy();
         Apollo.unBind$core(this);
     }
+
 
     private void onEvent() {
         db.setClicklistener(v -> {

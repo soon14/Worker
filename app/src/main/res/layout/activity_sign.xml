@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="item"
+            type="com.xsd.jx.bean.CheckResponse" />
+        <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
     </data>
@@ -16,8 +19,29 @@
         tools:context="com.xsd.jx.job.SignActivity">
 
         <include layout="@layout/action_common_bar" android:id="@+id/view_top" />
-
+        <LinearLayout
+            android:visibility="visible"
+            android:layout_below="@+id/view_top"
+            android:id="@+id/layout_not_working"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:padding="@dimen/dp_16"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="您当前还没上工，快去找活儿赚钱吧"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                />
+            <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_go_for_work" android:onClick="@{clicklistener}"  android:text="去找活儿"/>
+        </LinearLayout>
         <ScrollView
+            android:visibility="gone"
+            android:id="@+id/layout_scroll_view"
             android:layout_below="@+id/view_top"
             android:scrollbars="none"
             android:layout_width="match_parent"
@@ -46,19 +70,21 @@
                         android:textSize="@dimen/h4" />
 
                     <TextView
+                        android:id="@+id/tv_today"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="2020-08-02"
+                        tools:text="2020-08-02"
                         android:textColor="@color/tv_gray"
                         android:textSize="@dimen/h5" />
 
                     <TextView
+                        android:id="@+id/tv_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_name"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                        android:text="上工地点：未知"
                         android:textColor="@color/tv_gray"
                         android:textSize="@dimen/sp_14" />
                 </RelativeLayout>
@@ -123,7 +149,8 @@
                         android:id="@+id/radar_view_up"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_180"
-                        android:visibility="visible"
+                        tools:visibility="visiable"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toTopOf="@+id/tv_down_work"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -255,7 +282,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="3天"
+                        tools:text="3天"
+                        android:text="@{item.day+`天`}"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5" />
 
@@ -280,7 +308,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/view_line"
                         android:layout_alignParentRight="true"
-                        android:text="8小时/天"
+                        tools:text="8小时/天"
+                        android:text="@{item.avgHour+`小时/天`}"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5" />
                 </RelativeLayout>
@@ -288,6 +317,7 @@
         </ScrollView>
 
         <TextView
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:id="@+id/tv_contact"

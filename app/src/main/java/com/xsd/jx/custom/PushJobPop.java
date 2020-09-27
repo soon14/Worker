@@ -88,7 +88,7 @@ public class PushJobPop extends CenterPopupView {
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        PopShowUtils.showTips(db.tvJoin);
+                        PopShowUtils.showTips(activity);
                         DataBindingAdapter.isFav(db.tvJoin,true);
                     }
                 });

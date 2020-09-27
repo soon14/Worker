@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindFragment;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.databinding.FragmentOrderBinding;
 import com.xsd.jx.listener.OnTabClickListener;
 import com.xsd.jx.order.OrderListActivity;
@@ -26,22 +30,34 @@ import java.util.Arrays;
 public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implements OrderView {
     private static final String TAG = "OrderFragment";
     private int type=1;//类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
+    private OrderPresenter goodsPresenter;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_order;
     }
 
     @Override
-    protected void onBindView(View view, ViewGroup container, Bundle savedInstanceState) {
-    }
-
+    protected void onBindView(View view, ViewGroup container, Bundle savedInstanceState) {}
     @Override
     protected void onLazyLoad() {
         initView();
         onEvent();
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Apollo.bind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+    }
+
     private void initView() {
-        OrderPresenter goodsPresenter = new OrderPresenter(this);
+         goodsPresenter = new OrderPresenter(this);
         //类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
         TabUtils.setDefaultTab(this.getContext(), db.tabLayout,  Arrays.asList("报名中","待开工","工期中","待结算"), new OnTabClickListener() {
             @Override
@@ -77,6 +93,12 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     @Override
     public int getType() {
         return type;
+    }
+
+    @Receive(EventStr.LOGIN_SUCCESS)
+    public void loginSuccess(){
+        goodsPresenter.setPage();
+        goodsPresenter.loadData();
     }
 
 }

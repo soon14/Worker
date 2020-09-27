@@ -17,14 +17,21 @@ import androidx.core.content.FileProvider;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.CheckResponse;
+import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.custom.SignPop;
 import com.xsd.jx.databinding.ActivitySignBinding;
 import com.xsd.jx.listener.OnSignTackPicListener;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.FileNameUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.FileUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.SpannableStringUtils;
@@ -34,6 +41,9 @@ import com.xsd.utils.ToastUtil;
 import java.io.File;
 import java.util.List;
 
+/**
+ * 如果当前不在上工期，那么显示缺省页“您当前还没上工，快去找活儿赚钱吧”，文案下面是去找活儿按钮，点击跳转首页并弹推荐工作
+ */
 public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
     private boolean isUpWork=true;//是否应该上工打卡
@@ -47,12 +57,43 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
+    }
+
+    private void loadData() {
+        dataProvider.work.check()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<CheckResponse> baseResponse) {
+                        CheckResponse data = baseResponse.getData();
+                        db.setItem(data);
+                        db.tvAddress.setText("上工地点："+data.getAddress());
+                        db.radarViewUp.setVisibility(View.VISIBLE);
+                        db.layoutNotWorking.setVisibility(View.GONE);
+                        db.tvContact.setVisibility(View.VISIBLE);
+                        db.layoutScrollView.setVisibility(View.VISIBLE);
+                        mHandler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    protected void onErr(String err) {
+                        super.onErr(err);
+                        db.layoutNotWorking.setVisibility(View.VISIBLE);
+                        db.layoutScrollView.setVisibility(View.GONE);
+                        db.tvContact.setVisibility(View.GONE);
+                    }
+                });
     }
 
     private void initView() {
         tvTitle.setText("考勤签到");
         tvRight.setText("考勤记录");
-        mHandler.sendEmptyMessage(0);
+        //姓名
+        UserInfo user = UserUtils.getUser();
+        db.tvName.setText(user.getName());
+        //今天日期
+        String todayDate = TimeUtils.getTodayDate();
+        db.tvToday.setText(todayDate);
 
     }
 
@@ -74,29 +115,26 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     }
 
     private void onEvent() {
-        db.setClicklistener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.tv_sign_up://上工打卡
-                        isUpWork=true;
-                        signUp();
-                        break;
-                    case R.id.tv_sign_down://下工打卡
-                        isUpWork=false;
-                        signUp();
-                        break;
-                    case R.id.tv_contact://联系管理员
-                        break;
-                }
+        db.setClicklistener(v -> {
+            switch (v.getId()){
+                case R.id.tv_sign_up://上工打卡
+                    isUpWork=true;
+                    signUp();
+                    break;
+                case R.id.tv_sign_down://下工打卡
+                    isUpWork=false;
+                    signUp();
+                    break;
+                case R.id.tv_contact://联系管理员
+                    ToastUtil.showLong("正在呼叫管理员...");
+                    break;
+                case R.id.tv_go_for_work://找工作,点击跳转首页并弹推荐工作
+                    finish();
+                    Apollo.emit(EventStr.SHOW_PUSH_JOB);
+                    break;
             }
         });
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goActivity(SignListActivity.class);
-            }
-        });
+        tvRight.setOnClickListener(v -> goActivity(SignListActivity.class));
     }
     private SignPop signPop;
     private void signUp() {

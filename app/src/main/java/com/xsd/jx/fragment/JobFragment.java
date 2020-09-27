@@ -210,7 +210,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         mAdapter.getData().get(position).setIsJoin(true);
                         mAdapter.notifyItemChanged(position+1);
-                        PopShowUtils.showTips(db.tvInvite);
+                        PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
                     }
                 });
     }

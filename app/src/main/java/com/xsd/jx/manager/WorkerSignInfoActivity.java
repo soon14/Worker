@@ -15,6 +15,7 @@ import com.xsd.utils.ToastUtil;
 
 /**
  * 记录明细
+ * 获取用户整月的考勤记录
  * 根据上工记录获取用户整月的上工记录
  */
 public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSignInfoBinding> {
@@ -33,6 +34,11 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         initView();
         onEvent();
         loadData();
+    }
+    private void initView() {
+        tvTitle.setText("记录明细");
+        userId = getIntent().getIntExtra("userId", 0);
+
     }
     /**
      * 获取用户整月的考勤记录
@@ -61,10 +67,7 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
 
     }
 
-    private void initView() {
-        tvTitle.setText("记录明细");
 
-    }
 
     private void showConfrimSign() {
         new XPopup.Builder(this)

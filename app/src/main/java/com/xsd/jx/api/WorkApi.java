@@ -1,6 +1,8 @@
 package com.xsd.jx.api;
 
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.CheckLogResponse;
+import com.xsd.jx.bean.CheckResponse;
 import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobSearchBean;
@@ -12,7 +14,10 @@ import com.xsd.jx.bean.WorkTypeBean;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -64,6 +69,24 @@ public interface WorkApi {
     //用工详情 workId:用工信息ID
     @GET("work/detail")
     Observable<BaseResponse<JobBean>> detail(@Query("workId")Integer workId);
+    //考勤签到信息:用户考勤主界面信息
+    @GET("work/check")
+    Observable<BaseResponse<CheckResponse>> check();
+
+
+    /**
+     * 考勤打卡提交
+     * @param workId 招工信息ID
+     * @param pic    照片地址
+     * @param desc   备注信息
+     * @return MessageBean
+     */
+    @FormUrlEncoded
+    @POST("work/do-check")
+    Observable<BaseResponse<MessageBean>> doCheck(@Field("workId")Integer workId,@Field("pic")String pic,@Field("desc")String desc);
+    //用户查看自己整月的考勤记录
+    @GET("work/check-log")
+    Observable<BaseResponse<CheckLogResponse>> checkLog();
 
 
 }

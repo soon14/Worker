@@ -6,7 +6,6 @@ import android.graphics.Paint;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
-import com.xsd.utils.TimeUtils;
 
 /**
  * Date: 2020/8/21
@@ -99,6 +98,8 @@ public class MeiZuMonthView extends MonthView {
 
         canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
+        int schemeColor = calendar.getSchemeColor();
+
         canvas.drawText(calendar.getScheme(),
                 x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
                 y + mPadding + mSchemeBaseLine, mTextPaint);
@@ -126,26 +127,25 @@ public class MeiZuMonthView extends MonthView {
 
         boolean isInRange = isInRange(calendar);//日期是否在范围内，超出范围的可以置灰
         boolean isEnable = !onCalendarIntercept(calendar);//日期是否可用，没有被拦截，被拦截的可以置灰
-
+//
         if (isSelected) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     mSelectTextPaint);
-            int time = TimeUtils.getTime();
-
-            canvas.drawText("未上", cx, mTextBaseLine + y + mItemHeight / 10, mSelectedLunarTextPaint);
+//            canvas.drawText("未上", cx, mTextBaseLine + y + mItemHeight / 10, mSelectedLunarTextPaint);
 
         } else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentMonth() && isInRange ? mSchemeTextPaint : mOtherMonthTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
+//            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
        } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurMonthTextPaint :
                             calendar.isCurrentMonth() && isInRange ? mCurMonthTextPaint : mOtherMonthTextPaint);
-            canvas.drawText("未上", cx, mTextBaseLine + y + mItemHeight / 10,
-                    calendar.isCurrentDay() && isInRange ? mCurMonthLunarTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
+
+//            canvas.drawText("未上", cx, mTextBaseLine + y + mItemHeight / 10,
+//                    calendar.isCurrentDay() && isInRange ? mCurMonthLunarTextPaint :
+//                            calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }
 

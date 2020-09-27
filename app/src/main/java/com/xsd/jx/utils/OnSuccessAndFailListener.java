@@ -72,6 +72,9 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
                 if (baseResponse.getCode()==20103){
                     ToastUtil.showLong("请先登录！");
                     Apollo.emit(EventStr.GO_LOGIN);
+                }else if (baseResponse.getCode()==20105){
+                    ToastUtil.showLong("请先实名认证！");
+                    Apollo.emit(EventStr.GO_AUTH);
                 }else {
                     onErr(baseResponse.getMessage());
                 }

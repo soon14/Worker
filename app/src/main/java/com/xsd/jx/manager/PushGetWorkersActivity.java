@@ -3,9 +3,7 @@ package com.xsd.jx.manager;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -15,6 +13,7 @@ import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -25,7 +24,7 @@ import com.xsd.utils.ToastUtil;
 import java.util.Calendar;
 
 /**
- * 发布招工
+ *  [发布招工]
  *  typeId        工种ID
  *  address       上工地点
  *  startDate     开始日期
@@ -41,6 +40,7 @@ import java.util.Calendar;
  */
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
     private Integer typeId;
+    private Integer areaId;//地区ID,用于查询工价
     private String address;
     private String startDate;
     private String endDate;
@@ -115,71 +115,73 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     }
 
     private void onEvent() {
-        EditTextUtils.setTextLengthChange(db.etDesc, length -> db.tvNum.setText(length+"/200"));
-        db.setClicklistener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.layout_work_type:
-                        PopShowUtils.showWorkTypeSelect(PushGetWorkersActivity.this, workTypeBean -> {
-                            typeId = workTypeBean.getId();
-                            db.tvWorkType.setText(workTypeBean.getTitle());
-                        });
-                        break;
-                    case R.id.layout_addr:
-                        PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (city, district, desc) -> {
-                            address = "湖北省" + city.getName() + (district == null ? "" : district.getName()) + (TextUtils.isEmpty(desc) ? "" : desc);
-                            db.tvAddr.setText(address);
-                            new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(PushGetWorkersActivity.this),800);
-                        });
-                        break;
-                    case R.id.tv_start_time:
-                        showStartTime(true);
-                        break;
-                    case R.id.tv_end_time:
-                        showStartTime(false);
-                        break;
-                    case R.id.tv_push:
-                        push();
-                        break;
-                }
+        EditTextUtils.setTextLengthChange(db.etDesc, editable -> db.tvNum.setText(editable.length()+"/200"));
+        db.setClicklistener(view -> {
+            switch (view.getId()){
+                case R.id.layout_work_type:
+                    PopShowUtils.showWorkTypeSelect(PushGetWorkersActivity.this, workTypeBean -> {
+                        typeId = workTypeBean.getId();
+                        db.tvWorkType.setText(workTypeBean.getTitle());
+                        //如果地址已经选择了，就查询推荐的工种价格
+                        if (!TextUtils.isEmpty(address)){
+                            searchWorkPrice();
+                        }
+                    });
+                    break;
+                case R.id.layout_addr:
+                    PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (city, district, desc) -> {
+                        address = "湖北省" + city.getName() + (district == null ? "" : district.getName()) + (TextUtils.isEmpty(desc) ? "" : desc);
+                        db.tvAddr.setText(address);
+                        areaId = city.getId();
+                        new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(PushGetWorkersActivity.this),800);
+                        //如果已经选择了工种，就查询推荐的工种价格
+                        if (typeId>0){
+                            searchWorkPrice();
+                        }
+                    });
+                    break;
+                case R.id.tv_start_time:
+                    showStartTime(true);
+                    break;
+                case R.id.tv_end_time:
+                    showStartTime(false);
+                    break;
+                case R.id.tv_push:
+                    push();
+                    break;
             }
         });
         //根据输入工价，动态改变预付款金额
-        db.etPrice.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length()>0){
-                    price = Integer.parseInt(s.toString());
-                    updateAdvanceBtn();
-                }
+        EditTextUtils.setTextLengthChange(db.etPrice, s -> {
+            if (s.length()>0){
+                price = Integer.parseInt(s.toString());
+                updateAdvanceBtn();
             }
         });
-        db.etNum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length()>0){
-                    num = Integer.parseInt(s.toString());
-                    updateAdvanceBtn();
-                }
+        EditTextUtils.setTextLengthChange(db.etNum, s -> {
+            if (s.length()>0){
+                num = Integer.parseInt(s.toString());
+                updateAdvanceBtn();
             }
         });
+
+    }
+
+    /**
+     * 查询推荐的工价
+     */
+    int recommendPrice;//推荐的工价
+    private void searchWorkPrice() {
+        dataProvider.server.recommendPrice(areaId,typeId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<PriceBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<PriceBean> baseResponse) {
+                        PriceBean data = baseResponse.getData();
+                        recommendPrice = data.getPrice();
+                        db.etPrice.setHint("请填写合理的工价（建议价"+recommendPrice+"元)");
+                        db.etPrice.setText(recommendPrice+"");
+                    }
+                });
 
     }
 

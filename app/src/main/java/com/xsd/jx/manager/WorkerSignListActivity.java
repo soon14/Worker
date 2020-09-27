@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 记录考勤
+ * 考勤记录
  */
 public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSignListBinding> {
     private WorkerSignListAdapter mAdapter = new WorkerSignListAdapter();
@@ -50,7 +51,10 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         loadData();
     }
 
-
+    /**
+     * 考勤记录
+     * 根据日期获取某个招工的所有用户的考勤信息
+     */
     private void loadData() {
         dataProvider.server.workCheckLog(date,workId,status)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckLogResponse>>() {
@@ -110,7 +114,10 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 WorkCheckLogResponse.ItemsBean item = (WorkCheckLogResponse.ItemsBean) adapter.getItem(position);
-                goActivity(WorkerSignInfoActivity.class);
+                int userId = item.getUserId();
+                Intent intent = new Intent(WorkerSignListActivity.this, WorkerSignInfoActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
             }
         });
         mAdapter.addChildClickViewIds(R.id.tv_name,R.id.tv_confirm_sign);
@@ -144,6 +151,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
     }
 
     private void initView() {
+        date = getIntent().getStringExtra("date");
         tvTitle.setText("考勤记录");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);

@@ -20,7 +20,9 @@ public class WorkCheckLogResponse implements Serializable {
     private String totalNum;
     private String notCheckNum;
     private String checkNum;
+    private List<?> workingList;
     private List<ItemsBean> items;
+
 
     public String getTotalNum() {
         return totalNum;

@@ -67,7 +67,7 @@ public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding>
 
     @Override
     public void joinCallBack(MessageBean baseResponse) {
-        PopShowUtils.showTips(db.tvJoin);
+        PopShowUtils.showTips(this);
         DataBindingAdapter.isJoin(db.tvJoin,true);
     }
 }

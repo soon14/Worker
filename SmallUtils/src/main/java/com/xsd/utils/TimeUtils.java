@@ -54,6 +54,13 @@ public class TimeUtils {
     public static int getTime() {
         return (int) (System.currentTimeMillis() / 1000);
     }
+
+    /**
+     * 自定义输入当前时间日期格式
+     * 如设置yyyy-MM-dd ，输出2020-08-02
+     * @param format 格式
+     * @return
+     */
     public static String getTime(String format) {
         return new SimpleDateFormat(format, Locale.CHINA).format(new Date());
     }

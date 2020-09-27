@@ -27,7 +27,6 @@ import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
-import com.xsd.utils.SmallUtils;
 import com.xsd.utils.SoftInputUtils;
 
 import java.util.List;
@@ -74,10 +73,12 @@ public class PopShowUtils {
      *
      * @param v
      */
-    public static void showTips(View v) {
+    public static void showTips(BaseActivity activity) {
 //        boolean no_tips_joinsuccess = (boolean) SPUtils.get("no_tips_joinsuccess", false);
 //        if (no_tips_joinsuccess)return;
-        new XPopup.Builder(SmallUtils.getApp().getApplicationContext())
+        new XPopup.Builder(activity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
                 .asConfirm("报名上工提醒",
                         "您已成功报名上工，请耐心等待企业确认您的上工申请，企业确认后您才可有效上工。",
                         "不在提示",
@@ -93,6 +94,7 @@ public class PopShowUtils {
                         R.layout.dialog_tips)
                 .show();
     }
+
 
     public static void showRealNameAuth(BaseActivity activity) {
         new XPopup.Builder(activity)

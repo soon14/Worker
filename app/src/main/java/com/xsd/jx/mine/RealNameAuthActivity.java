@@ -38,7 +38,7 @@ import java.io.File;
 import java.util.List;
 
 public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAuthBinding> {
-    String avatar ="https://upload.jianshu.io/users/upload_avatars/1503465/9d96f64dda43.png?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240";
+    String avatar ="https://www.yudaotu.com/images/2020/09/23/ZEWJ5y.jpg";
     private String nation = "汉族";
     private String workYears = "1~5年";
     @Override

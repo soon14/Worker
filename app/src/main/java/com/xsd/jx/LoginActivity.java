@@ -2,7 +2,9 @@ package com.xsd.jx;
 
 import android.os.Bundle;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
@@ -63,6 +65,7 @@ public class LoginActivity extends BaseBindBarActivity<ActivityLoginBinding> {
                         LoginUserResponse data = baseResponse.getData();
                         UserUtils.saveLoginUser(data);
                         finish();
+                        Apollo.emit(EventStr.LOGIN_SUCCESS);
                     }
                 });
     }

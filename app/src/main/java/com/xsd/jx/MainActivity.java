@@ -21,7 +21,9 @@ import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
 import com.xsd.jx.fragment.OrderFragment;
 import com.xsd.jx.listener.OnBottomNavClickListener;
+import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BottomNavUtils;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -119,10 +121,29 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     }
 
+    @Receive(EventStr.LOGIN_OUT)
+    public void loginOut(){
+        new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
+        goActivity(LoginActivity.class);
+    }
     @Receive(EventStr.GO_LOGIN)
     public void goLoginActivity(){
         goActivity(LoginActivity.class);
     }
+
+    @Receive(EventStr.GO_AUTH)
+    public void goAuthActivity(){
+        goActivity(RealNameAuthActivity.class);
+    }
+
+    @Receive(EventStr.SHOW_PUSH_JOB)
+    public void showPushJob(){
+        if (UserUtils.isLogin()) PopShowUtils.showPushJob(this);
+    }
+
+
+
+
 
     private long firstTime = 0;
     @Override

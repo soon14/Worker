@@ -2,6 +2,8 @@ package com.xsd.jx.impl;
 
 import com.xsd.jx.api.WorkApi;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.CheckLogResponse;
+import com.xsd.jx.bean.CheckResponse;
 import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobSearchBean;
@@ -82,5 +84,20 @@ public class WorkImpl implements WorkApi {
     @Override
     public Observable<BaseResponse<JobBean>> detail(Integer workId) {
         return bindIoUI(api.detail(workId));
+    }
+
+    @Override
+    public Observable<BaseResponse<CheckResponse>> check() {
+        return bindIoUI(api.check());
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> doCheck(Integer workId, String pic, String desc) {
+        return bindIoUI(api.doCheck(workId,pic,desc));
+    }
+
+    @Override
+    public Observable<BaseResponse<CheckLogResponse>> checkLog() {
+        return bindIoUI(api.checkLog());
     }
 }
