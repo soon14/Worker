@@ -10,6 +10,7 @@ import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
@@ -135,7 +136,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
 
     private void showShare() {
         new XPopup.Builder(this.getActivity())
-                .asCustom(new BottomSharePop(this.getActivity()))
+                .asCustom(new BottomSharePop((BaseActivity) this.getActivity()))
                 .show();
     }
 }

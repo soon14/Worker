@@ -1,14 +1,16 @@
 package com.xsd.jx.custom;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.lxj.xpopup.core.BottomPopupView;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
+import com.xsd.utils.ShareUtils;
 import com.xsd.utils.SpannableStringUtils;
 
 /**
@@ -16,8 +18,10 @@ import com.xsd.utils.SpannableStringUtils;
  * author: SmallCake
  */
 public class BottomSharePop extends BottomPopupView {
-    public BottomSharePop(@NonNull Context context) {
+    BaseActivity activity;
+    public BottomSharePop(@NonNull BaseActivity context) {
         super(context);
+        this.activity = context;
     }
 
     @Override
@@ -36,5 +40,22 @@ public class BottomSharePop extends BottomPopupView {
                 .create();
         tvDesc.setText(spanStr);
 
+        findViewById(R.id.tv_wx)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShareUtils.shareText(activity,"分享","分享","若工友在平台完成上工，您每次都可再获得现金奖励。");
+                    }
+                });
+        findViewById(R.id.tv_wx_circle)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShareUtils.shareText(activity,"分享","分享","若工友在平台完成上工，您每次都可再获得现金奖励。");
+                    }
+                });
+
     }
+
+
 }

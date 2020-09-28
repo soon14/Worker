@@ -18,6 +18,7 @@ import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.EditTextUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.SoftInputUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -50,7 +51,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private Integer isSafe;
     private Integer settleType = 1;
     private Integer advanceType = 1 ;
-    private String safeAmount = "2";
+    private Integer safeAmount = 2;
     private String advanceAmount = "0";
 
 
@@ -104,7 +105,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         //TODO 还差保险金额和预付款金额
 
         //接口提交
-        dataProvider.server.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount,advanceAmount)
+        dataProvider.server.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
@@ -154,7 +155,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         //根据输入工价，动态改变预付款金额
         EditTextUtils.setTextLengthChange(db.etPrice, s -> {
             if (s.length()>0){
-                price = Integer.parseInt(s.toString());
+                String s1 = s.toString();
+                s1 = s1.replace("元","");
+                if (TextUtils.isEmpty(s1))return;
+                price = Integer.parseInt(s1);
                 updateAdvanceBtn();
             }
         });
@@ -164,6 +168,49 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                 updateAdvanceBtn();
             }
         });
+        //根据购买保险和预付款，更新发布按钮
+        db.rbBuySafe.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                isSafe = 1;
+            }else {
+                isSafe = 0;
+            }
+            updateBtn();
+        });
+        db.rbPay2cost.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked)updateBtn();
+        });
+        db.rbPayAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked)updateBtn();
+        });
+        db.rbNoPay.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked)updateBtn();
+        });
+
+    }
+
+    /**
+     * 更新发布按钮
+     */
+    private void updateBtn() {
+        if (isSafe==1){//如果要购买保险，计算保险费用，
+            int totalSafePrice = num * safeAmount;
+        }
+        if (db.rbPay2cost.isChecked()){
+            advanceAmount = String.valueOf(price*num*0.2);
+            advanceType=1;
+        }
+        if (db.rbPayAll.isChecked()){
+            advanceAmount = String.valueOf(price*num);
+            advanceType=2;
+        }
+        if (db.rbNoPay.isChecked()){
+            advanceAmount="0";
+            advanceType=3;
+        }
+        L.e("advanceAmount=="+advanceAmount);
+        if (advanceAmount.equals("0"))db.tvPush.setText("发布");
+        else db.tvPush.setText("发布(支付"+advanceAmount+"元)");
 
     }
 
@@ -178,8 +225,13 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     protected void onSuccess(BaseResponse<PriceBean> baseResponse) {
                         PriceBean data = baseResponse.getData();
                         recommendPrice = data.getPrice();
-                        db.etPrice.setHint("请填写合理的工价（建议价"+recommendPrice+"元)");
-                        db.etPrice.setText(recommendPrice+"");
+                        db.etPrice.setHint("根据当地市场计算，推荐工价预算为"+recommendPrice+"元");
+                    }
+
+                    @Override
+                    protected void onErr(String err) {
+                        super.onErr(err);
+                        db.etPrice.setHint("请填写合理的价格");
                     }
                 });
 
@@ -193,6 +245,8 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         int price2 = (int) (priceAll*0.2);
         db.rbPay2cost.setText("2成/"+price2+"元");
         db.rbPayAll.setText("全额/"+priceAll+"元");
+        updateBtn();
+
     }
 
     private void showStartTime(boolean isStartTime) {

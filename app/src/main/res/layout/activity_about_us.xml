@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.mine.AboutUsActivity">
+
+        <include layout="@layout/action_common_bar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_32"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/logo"
+                        android:layout_width="@dimen/dp_66"
+                        android:layout_height="@dimen/dp_66" />
+
+                    <LinearLayout
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h2"
+                            android:text="先华匠心"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tv_app_version"
+                            android:layout_marginTop="@dimen/dp_4"
+                            android:textColor="@color/tv_darkgray"
+                            android:textSize="@dimen/h5"
+                            android:text="APP版本：V1.0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@color/tv_gray"
+                    android:textSize="@dimen/h4"
+                    android:lineSpacingExtra="@dimen/dp_8"
+                    android:padding="@dimen/dp_16"
+                    android:layout_margin="@dimen/dp_16"
+                    android:background="@drawable/round10_white_bg"
+                    android:text="   《先华匠心》是免费靠谱的建筑劳务一站式就业及招工服务平台，平台颠覆行业传统的定点蹲、全靠等的低效模式，全方位打造有效的线上信息分发、信息对称、资源共享、大数据高效智能匹配服务平台，使整个行业的劳动资源快速流动，让有余力的工人天天有活干，让有用工需求的用人方不愁找工人；平台秉承用户痛点为基本的核心理念，保障找工用工核心需求的同时，深入解决工资结算、工人管理、实名用工、灵活用工、高效用工等需求。"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:lineSpacingExtra="@dimen/dp_8"
+                    android:padding="@dimen/dp_16"
+                    android:layout_margin="@dimen/dp_16"
+                    android:background="@drawable/round10_white_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginBottom="@dimen/dp_8"
+                        android:text="公司名称：湖北先华匠心科技有限公司"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        style="@style/h_line"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:layout_marginBottom="@dimen/dp_8" />
+
+                    <TextView
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:text="公司官网：www.xhjxapp.com"
+                        android:textColor="@color/tv_gray"
+                        android:textSize="@dimen/h4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

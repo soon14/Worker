@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -15,17 +17,34 @@
         tools:context="com.xsd.jx.mine.SetActivity">
         <include layout="@layout/action_common_bar" />
         <TextView
+            android:onClick="@{clicklistener}"
+            android:id="@+id/tv_user_agreement"
             android:textSize="@dimen/h4"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:gravity="center_vertical"
             android:textColor="@color/tv_black"
-            android:text="平台协议"
+            android:text="用户协议"
             android:drawableRight="@mipmap/ic_gray_arrow_right"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_54"/>
         <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
         <TextView
+            android:onClick="@{clicklistener}"
+            android:id="@+id/tv_privacy_agreement"
+            android:textSize="@dimen/h4"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:gravity="center_vertical"
+            android:textColor="@color/tv_black"
+            android:text="隐私协议"
+            android:drawableRight="@mipmap/ic_gray_arrow_right"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_54"/>
+        <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
+        <TextView
+            android:id="@+id/tv_about_us"
+            android:onClick="@{clicklistener}"
             android:textSize="@dimen/h4"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
@@ -36,6 +55,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_54"/>
         <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_16" android:layout_marginRight="@dimen/dp_16"/>
-        <TextView android:id="@+id/tv_login_out" android:layout_gravity="center" android:layout_margin="@dimen/dp_24" style="@style/DefaultBtnStyle" android:text="退出登录" android:textColor="@color/tv_gray" android:background="@drawable/round6_gray_bg"/>
+        <TextView android:id="@+id/tv_login_out" android:onClick="@{clicklistener}" android:layout_gravity="center" android:layout_margin="@dimen/dp_24" style="@style/DefaultBtnStyle" android:text="退出登录" android:textColor="@color/tv_gray" android:background="@drawable/round6_gray_bg"/>
     </LinearLayout>
 </layout>

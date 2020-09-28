@@ -137,11 +137,11 @@
                         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
                     <View
-                        android:layout_marginBottom="@dimen/dp_8"
-                        android:layout_marginTop="@dimen/dp_8"
                         style="@style/v_line"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
                         app:layout_constraintTop_toBottomOf="@+id/tv_time_"
@@ -213,7 +213,9 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
-                    <EditText
+                    <com.xsd.jx.custom.CompanyEdittext
+                        app:ce_text="元"
+                        app:ce_text_color="@color/tv_black"
                         android:id="@+id/et_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -10,6 +10,8 @@ import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.lsxiao.apollo.core.Apollo;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.xsd.jx.base.Contants;
 import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.utils.LogHeaderInterceptor;
@@ -32,6 +34,8 @@ public class MyApplication extends Application {
         RetrofitHttp.init(this, Contants.BASE_URL, new LogHeaderInterceptor());//自定义拦截器，方便添加公共Header
         Apollo.init(AndroidSchedulers.mainThread(), this);//事件通知
         initAliOSS();
+        UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
     }
     //方法数量过多，合并
     @Override

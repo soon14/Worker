@@ -23,13 +23,16 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="o">
-        <activity android:name=".manager.WagePayActivity"></activity>
+        <activity android:name=".mine.AboutUsActivity"></activity>
+        <activity android:name=".manager.WagePayActivity" />
         <activity android:name=".manager.WorkerSignInfoActivity" />
         <activity android:name=".manager.WorkerSignListActivity" />
         <activity android:name=".manager.WorkerSignActivity" />
         <activity android:name=".manager.TogetherCommentActivity" />
         <activity android:name=".manager.SingleCommentActivity" />
-        <activity android:name=".manager.PushGetWorkersActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".manager.PushGetWorkersActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".manager.WorkerResumeActivity" />
         <activity android:name=".manager.GetWorkersInfoActivity" />
         <activity android:name=".manager.GetWorkersAllActivity" />
@@ -53,9 +56,13 @@
         <activity android:name=".mine.CollectedWorksActivity" />
         <activity android:name=".mine.ResumeActivity" />
         <activity android:name=".mine.HelpRegistListActivity" />
-        <activity android:name=".mine.HelpRegistActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".mine.HelpRegistActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".mine.WalletActivity" />
-        <activity android:name=".LoginActivity" android:launchMode="singleTop"/>
+        <activity
+            android:name=".LoginActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".job.SelectTypeWorkActivity" />
         <activity android:name=".job.JobInfoActivity" />
         <activity android:name=".job.SignListActivity" />
@@ -66,6 +73,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -89,7 +97,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath_data" />
         </provider>
-
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

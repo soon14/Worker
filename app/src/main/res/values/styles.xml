@@ -60,4 +60,9 @@
     <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>
     </style>
+
+    <declare-styleable name="CompanyEdittext">
+        <attr name="ce_text" format="string" />
+        <attr name="ce_text_color" format="color" />
+    </declare-styleable>
 </resources>

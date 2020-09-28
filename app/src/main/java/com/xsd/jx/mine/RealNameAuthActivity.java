@@ -1,31 +1,29 @@
 package com.xsd.jx.mine;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
-
-import androidx.core.content.FileProvider;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.custom.BottomNationSelecterPop;
+import com.xsd.jx.custom.GlideEngine;
 import com.xsd.jx.databinding.ActivityRealNameAuthBinding;
+import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.DataBindingAdapter;
-import com.xsd.jx.utils.FileNameUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
@@ -73,12 +71,7 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                     showNationList();
                     break;
                 case R.id.tv_work_exp:
-                    PopShowUtils.showWorkExp(db.tvWorkExp, new OnSelectListener() {
-                        @Override
-                        public void onSelect(int position, String text) {
-                            db.tvWorkExp.setText(text);
-                        }
-                    });
+                    PopShowUtils.showWorkExp(db.tvWorkExp, (position, text) -> db.tvWorkExp.setText(text));
                     break;
                 case R.id.tv_submit:
                     submit();
@@ -127,37 +120,45 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                 });
     }
 
-    private static final int OPEN_CAMERA = 0X008;
-    private String  headFile;
-    public void tackPhoto() {
-        headFile = FileNameUtils.getFileName();
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", new File(headFile));
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
-        }else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(headFile)));
-        }
-        startActivityForResult(intent, OPEN_CAMERA);
+    private void tackPhoto(){
+        PictureSelector.create(this)
+                .openCamera(PictureMimeType.ofImage())
+                .imageEngine(GlideEngine.createGlideEngine())
+                .isCompress(true)
+                .forResult(new OnResultCallbackListener<LocalMedia>() {
+                    @Override
+                    public void onResult(List<LocalMedia> result) {
+                        // onResult Callback
+                        LocalMedia localMedia = result.get(0);
+                        String compressPath = localMedia.getCompressPath();
+                        L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
+                        DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
+
+                        AliyunOSSUtils.getInstance().uploadAvatar(RealNameAuthActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
+                            @Override
+                            public void onUpLoadComplete(String url) {
+                                L.e("图片上传完成=="+url);
+                                avatar = url;
+
+                            }
+
+                            @Override
+                            public void onUpLoadProgress(int progress) {
+                                L.e("图片上传中=="+progress);
+                            }
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // onCancel Callback
+                    }
+                });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        L.e("回调==requestCode=="+requestCode);
-        if (requestCode == OPEN_CAMERA && resultCode == RESULT_OK) {
-            // 获取相机返回的数据，并转换为图片格式
-            L.e("保存的pic路径=="+headFile);
-            DataBindingAdapter.bindImageRoundUrl(db.ivHead, headFile,6);
-            long fileSize = FileUtils.getFileSize(new File(headFile));
-            L.e("fileSize=="+(fileSize/(1024))+"kb");
-            //TODO 上传此文件
-        }
-    }
-
-
-
-    BasePopupView nationPop;
+    private BasePopupView nationPop;
     private void showNationList() {
         if (nationPop==null){
             nationPop = new XPopup.Builder(this)

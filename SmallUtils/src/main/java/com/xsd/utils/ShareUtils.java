@@ -9,13 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import androidx.core.content.FileProvider;
 
 /**
  * Project20180408 --  cn.com.smallcake_utils
@@ -241,8 +241,6 @@ public class ShareUtils {
 
     public static void shareTxtAndImg(Activity activity, String activityTitle, String msgTitle, String msgText,
                                       int imgRes) {
-
-
         Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                 + activity.getResources().getResourcePackageName(imgRes) + "/"
                 + activity.getResources().getResourceTypeName(imgRes) + "/"
