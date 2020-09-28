@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.databinding.FragmentOrderBinding;
@@ -77,6 +78,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     private void onEvent() {
         db.tvOrderComment.setOnClickListener(view -> goActivity(OrderListActivity.class,7));//待评价
         db.tvOrderAll.setOnClickListener(view -> goActivity(OrderListActivity.class,0));//0全部订单1待评价
+
     }
 
     @Override
@@ -101,4 +103,8 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
         goodsPresenter.loadData();
     }
 
+    @Override
+    public BaseActivity getBaseActivity() {
+        return (BaseActivity) this.getActivity();
+    }
 }

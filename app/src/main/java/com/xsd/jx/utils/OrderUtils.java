@@ -1,12 +1,8 @@
 package com.xsd.jx.utils;
 
-import android.view.View;
-
-import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
@@ -48,18 +44,15 @@ public class OrderUtils {
             }
         });
         mAdapter.addChildClickViewIds(R.id.tv_order_comment,R.id.tv_cancel);
-        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                OrderBean item = (OrderBean) adapter.getItem(position);
-                switch (view.getId()){
-                    case R.id.tv_order_comment:
-                        activity.goActivity(CommentActivity.class);
-                        break;
-                    case R.id.tv_cancel:
-                        orderCancel(activity,mAdapter,item.getId(),position);
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            OrderBean item = (OrderBean) adapter.getItem(position);
+            switch (view.getId()){
+                case R.id.tv_order_comment:
+                    activity.goActivity(CommentActivity.class);
+                    break;
+                case R.id.tv_cancel:
+                    orderCancel(activity,mAdapter,item.getId(),position);
+                    break;
             }
         });
         //加载更多
@@ -73,7 +66,7 @@ public class OrderUtils {
     }
 
     //取消订单
-    private static void orderCancel(BaseActivity activity, BaseQuickAdapter mAdapter, int id, int position) {
+    public static void orderCancel(BaseActivity activity, BaseQuickAdapter mAdapter, int id, int position) {
         activity.getDataProvider().order.cancel(id)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override

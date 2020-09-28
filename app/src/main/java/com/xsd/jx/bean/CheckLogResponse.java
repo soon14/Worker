@@ -55,18 +55,18 @@ public class CheckLogResponse implements Serializable {
 
     public static class ItemsBean {
         /**
-         * employer : string
-         * id : 0
-         * listId : 0
-         * signInDesc : string
-         * signInPic : string
-         * signInTime : string
-         * signOutDesc : string
-         * signOutPic : string
-         * signOutTime : string
-         * status : 0
-         * userId : 0
-         * workDate : string
+         employer	    string雇主名称
+         id	            integer考勤ID
+         listId	        integer工作ID
+         signInDesc	    tring签到说明
+         signInPic	    string 签到图片
+         signInTime	    string签到时间
+         signOutDesc	string签退说明
+         signOutPic	    string签退图片
+         signOutTime	string签退时间
+         status	        integer确认状态 0:未确认 1:已确认
+         userId	        integer用户ID
+         workDate	    string 上工日期
          */
 
         private String employer;

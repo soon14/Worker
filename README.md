@@ -72,5 +72,7 @@ addItemType(7, R.layout.item_order_cancel);
 addItemType(8, R.layout.item_worker_full);
 ```
 
+# 接口修改项：
+签到确认状态值变更下  1:未确认 2:已确认
 
 

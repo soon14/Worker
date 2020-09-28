@@ -13,6 +13,8 @@ import com.xsd.jx.bean.CheckLogResponse;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.L;
+import com.xsd.utils.RandomUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.Map;
  * 文档：https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md
  */
 public class SignListActivity extends BaseBindBarActivity<ActivitySignListBinding> {
-
+    private int mYear;
+    private int mMonth;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign_list;
@@ -41,10 +44,13 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     private void initView() {
         tvTitle.setText("考勤记录");
         java.util.Calendar c = java.util.Calendar.getInstance();
-        int mYear = c.get(java.util.Calendar.YEAR);
-        int mMonth = c.get(java.util.Calendar.MONTH);
-        int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
-        db.tvMonth.setText("("+(mMonth+1)+"月)");
+        mYear = c.get(java.util.Calendar.YEAR);
+        mMonth = c.get(java.util.Calendar.MONTH)+1;
+        int mDay  = c.get(java.util.Calendar.DAY_OF_MONTH);
+        db.tvMonth.setText("("+mMonth+"月)");
+
+        //范围控制，不能大于当前日期月份
+        db.calendarView.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
 
     }
 
@@ -68,7 +74,23 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
 
     }
 
+    /**
+     * 有记录的信息，以标签形式写入
+     * @param items
+     */
     private void initItems(List<CheckLogResponse.ItemsBean> items) {
+       Map<String,Calendar> calendars = new HashMap();
+        for (int i = 0; i < 18; i++) {
+//            CheckLogResponse.ItemsBean itemsBean = items.get(i);
+//            int status = itemsBean.getStatus();// 0:未确认 1:已确认
+//            String workDate = itemsBean.getWorkDate();
+
+            int day = RandomUtils.getInt(1,30);
+            L.e(mYear+"-"+mMonth+"-"+day);
+            Calendar calendar = getSchemeCalendar(mYear, mMonth, day, day%2==0?0xFF3B77FF:0xFF999999, day%2==0?"上工":"未上");
+            calendars.put(calendar.toString(), calendar);
+        }
+        db.calendarView.setSchemeDate(calendars);
 
     }
 
@@ -85,10 +107,12 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         db.calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
             @Override
             public void onMonthChange(int year, int month) {
+                mYear = year;
+                mMonth = month;
                 db.tvMonth.setText("("+month+"月)");
+                initItems(null);
             }
         });
-
 
         //月份选择
         db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
@@ -112,19 +136,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
             }
         });
 
-        int year = db.calendarView.getCurYear();
-        int month = db.calendarView.getCurMonth();
-
-        Map<String, Calendar> map = new HashMap<>();
-        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),
-                getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
-        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
-                getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-
-        //此方法在巨大的数据量上不影响遍历性能，推荐使用
-        db.calendarView.setSchemeDate(map);
-
-
 
     }
 
@@ -142,8 +153,11 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         if (bottomDatePickerPop==null){
             bottomDatePickerPop = new BottomDatePickerPop(this);
             bottomDatePickerPop.setListener((year, month) ->{
+                mYear = year;
+                mMonth = month;
                 db.tvMonth.setText("("+month+"月)");
                 db.calendarView.scrollToCalendar(year,month,1,true);
+                initItems(null);
 
             });
            new XPopup.Builder(this)

@@ -115,6 +115,8 @@ dependencies {
     implementation 'com.hjq:xxpermissions:8.2'
     //资源图片，视频选择器
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
+    //阿里云OSS服务
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.4'
 
 
 }

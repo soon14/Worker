@@ -29,6 +29,9 @@ import java.util.List;
 
 /**
  * 考勤记录
+ * 如果是今天之前的日子没打卡，那么此处显示“
+ * 您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改
+ * ”
  */
 public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSignListBinding> {
     private WorkerSignListAdapter mAdapter = new WorkerSignListAdapter();
@@ -104,8 +107,6 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                 }
             }
         });
-
-
 
     }
 

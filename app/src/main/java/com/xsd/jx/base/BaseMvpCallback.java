@@ -7,5 +7,6 @@ import com.xsd.jx.inject.DataProvider;
  * author: SmallCake
  */
 public interface BaseMvpCallback {
+    BaseActivity getBaseActivity();
     DataProvider getDataProvider();
 }

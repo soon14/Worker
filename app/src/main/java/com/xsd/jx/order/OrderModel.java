@@ -4,14 +4,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.xsd.jx.R;
 import com.xsd.jx.adapter.OrderAdapter;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.OrderUtils;
 
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class OrderModel {
     private OrderView view;
     public OrderModel(OrderView view) {
         this.view = view;
-        this.dataProvider = view.getDataProvider();
+        this.dataProvider = view.getBaseActivity().getDataProvider();
         this.refreshLayout = view.getSwipeRefreshLayout();
         RecyclerView recyclerView = view.getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getRecyclerView().getContext()));
@@ -53,6 +56,18 @@ public class OrderModel {
             public void onRefresh() {
                 page=1;
                 loadData();
+            }
+        });
+        mAdapter.addChildClickViewIds(R.id.tv_order_comment,R.id.tv_cancel);
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            OrderBean item = (OrderBean) adapter.getItem(position);
+            switch (view.getId()){
+                case R.id.tv_order_comment:
+                    OrderModel.this.view.getBaseActivity().goActivity(CommentActivity.class);
+                    break;
+                case R.id.tv_cancel:
+                    OrderUtils.orderCancel(OrderModel.this.view.getBaseActivity(),mAdapter,item.getId(),position);
+                    break;
             }
         });
     }

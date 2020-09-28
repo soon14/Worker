@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 
@@ -42,5 +43,10 @@ public class OrderListActivity extends BaseBindBarActivity<ActivityRecyclerviewB
     @Override
     public int getType() {
         return type;
+    }
+
+    @Override
+    public BaseActivity getBaseActivity() {
+        return this;
     }
 }

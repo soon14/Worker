@@ -171,12 +171,10 @@ public class DataBindingAdapter {
                 break;
         }
         String workYears = info.getWorkYears();
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(sexStr).append(" · ")
-                .append(info.getNation());
-        if (!TextUtils.isEmpty(workYears))
-            builder.append(" · ").append(workYears);
+        String nation = info.getNation();
+        StringBuilder builder = new StringBuilder(sexStr);
+        if (!TextUtils.isEmpty(nation))builder.append(" · ").append(nation);
+        if (!TextUtils.isEmpty(workYears)) builder.append(" · ").append(workYears);
         tv.setText(builder.toString());
     }
     //工人简约描述：

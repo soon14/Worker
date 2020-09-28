@@ -3,6 +3,7 @@ package com.xsd.jx.job;
 import android.os.Bundle;
 
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
@@ -69,5 +70,10 @@ public class JobInfoActivity extends BaseBindBarActivity<ActivityJobInfoBinding>
     public void joinCallBack(MessageBean baseResponse) {
         PopShowUtils.showTips(this);
         DataBindingAdapter.isJoin(db.tvJoin,true);
+    }
+
+    @Override
+    public BaseActivity getBaseActivity() {
+        return this;
     }
 }
