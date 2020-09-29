@@ -10,6 +10,8 @@
         <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
     </data>
 
     <RelativeLayout
@@ -20,7 +22,7 @@
 
         <include layout="@layout/action_common_bar" android:id="@+id/view_top" />
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_below="@+id/view_top"
             android:id="@+id/layout_not_working"
             android:background="@color/white"
@@ -40,7 +42,7 @@
             <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_go_for_work" android:onClick="@{clicklistener}"  android:text="去找活儿"/>
         </LinearLayout>
         <ScrollView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/layout_scroll_view"
             android:layout_below="@+id/view_top"
             android:scrollbars="none"
@@ -100,7 +102,8 @@
                         android:layout_width="@dimen/dp_8"
                         android:layout_height="@dimen/dp_8"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/pot_green"
+                        tools:background="@drawable/pot_green"
+                        android:background="@{TextUtils.isEmpty(item.signInTime)?@drawable/pot_green:@drawable/circular_gray}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -109,8 +112,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="上工考勤"
-                        android:textColor="@color/tv_black"
+                        tools:text="上工考勤"
+                        android:text="@{TextUtils.isEmpty(item.signInTime)?`上工考勤`:`上工时间 `+item.signInTime}"
+                        android:textColor="@{TextUtils.isEmpty(item.signInTime)?@color/tv_black:@color/tv_gray}"
                         app:layout_constraintBottom_toBottomOf="@+id/view_up_pot"
                         app:layout_constraintStart_toEndOf="@+id/view_up_pot"
                         app:layout_constraintTop_toTopOf="@+id/view_up_pot" />
@@ -125,10 +129,10 @@
                         app:layout_constraintTop_toBottomOf="@+id/view_up_pot" />
 
                     <View
+                        android:background="@{!TextUtils.isEmpty(item.signInTime)?@drawable/pot_green:@drawable/circular_gray}"
                         android:id="@+id/view_down_pot"
                         android:layout_width="@dimen/dp_8"
                         android:layout_height="@dimen/dp_8"
-                        android:background="@drawable/circular_gray"
                         app:layout_constraintEnd_toEndOf="@+id/view_time_line"
                         app:layout_constraintStart_toStartOf="@+id/view_time_line"
                         app:layout_constraintTop_toBottomOf="@+id/view_time_line" />
@@ -138,8 +142,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="下工考勤"
-                        android:textColor="@color/tv_black"
+                        tools:text="下工考勤"
+                        android:text="@{TextUtils.isEmpty(item.signOutTime)?`上工考勤`:`上工时间 `+item.signOutTime}"
+                        android:textColor="@{TextUtils.isEmpty(item.signOutTime)?@color/tv_black:@color/tv_gray}"
                         app:layout_constraintBottom_toBottomOf="@+id/view_down_pot"
                         app:layout_constraintStart_toEndOf="@+id/view_down_pot"
                         app:layout_constraintTop_toTopOf="@+id/view_down_pot" />
@@ -150,7 +155,7 @@
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_180"
                         tools:visibility="visiable"
-                        android:visibility="gone"
+                        android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toTopOf="@+id/tv_down_work"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -179,10 +184,10 @@
 
 
                     <com.xsd.utils.custom.RadarView
+                        android:visibility="@{TextUtils.isEmpty(item.signOutTime)?View.VISIBLE:View.GONE}"
                         android:id="@+id/radar_view_down"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_180"
-                        android:visibility="gone"
                         tools:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -211,8 +216,9 @@
                     </com.xsd.utils.custom.RadarView>
 
                     <ImageView
+                        android:visibility="@{!TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
+                        roundUrl="@{item.signInPic}"
                         android:src="@mipmap/ic_worker_head"
-                        android:visibility="gone"
                         tools:visibility="visible"
                         android:id="@+id/iv_up_pic"
                         android:layout_width="@dimen/dp_66"
@@ -223,20 +229,22 @@
                         tools:srcCompat="@mipmap/ic_site" />
 
                     <TextView
-                        android:visibility="gone"
+                        android:visibility="@{!TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
                         tools:visibility="visible"
                         android:id="@+id/tv_up_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        tools:text="@{item.signInDesc}"
                         android:text="今早大雨，现在开始上工"
                         android:textColor="@color/tv_gray"
                         app:layout_constraintStart_toStartOf="@+id/iv_up_pic"
                         app:layout_constraintTop_toBottomOf="@+id/iv_up_pic" />
 
                     <ImageView
+                        roundUrl="@{item.signOutPic}"
+                        android:visibility="@{!TextUtils.isEmpty(item.signOutTime)?View.VISIBLE:View.GONE}"
                         android:src="@mipmap/ic_worker_head"
-                        android:visibility="gone"
                         tools:visibility="visible"
                         android:id="@+id/iv_down_pic"
                         android:layout_width="@dimen/dp_66"
@@ -247,13 +255,14 @@
                         tools:srcCompat="@mipmap/ic_site" />
 
                     <TextView
-                        android:visibility="gone"
+                        android:visibility="@{!TextUtils.isEmpty(item.signOutTime)?View.VISIBLE:View.GONE}"
                         tools:visibility="visible"
                         android:id="@+id/tv_down_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="下班了哦"
+                        tools:text="下班了哦"
+                        android:text="@{item.signOutDesc}"
                         android:textColor="@color/tv_gray"
                         app:layout_constraintStart_toStartOf="@+id/iv_down_pic"
                         app:layout_constraintTop_toBottomOf="@+id/iv_down_pic" />

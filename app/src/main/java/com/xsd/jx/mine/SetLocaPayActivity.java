@@ -2,14 +2,22 @@ package com.xsd.jx.mine;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.LocaAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
-import com.xsd.jx.bean.LocaResponse;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
+
+import java.util.List;
 
 /**
  * 全部事业部
@@ -26,6 +34,29 @@ public class SetLocaPayActivity extends BaseBindBarActivity<ActivityRecyclerview
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        loadData();
+        onEvent();
+    }
+
+    private void onEvent() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                DivisionBean item = (DivisionBean) adapter.getItem(position);
+
+            }
+        });
+    }
+
+    private void loadData() {
+        dataProvider.user.division()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<List<DivisionBean>>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<List<DivisionBean>> baseResponse) {
+                        List<DivisionBean> data = baseResponse.getData();
+                        mAdapter.setList(data);
+                    }
+                });
     }
 
     private void initView() {
@@ -33,9 +64,6 @@ public class SetLocaPayActivity extends BaseBindBarActivity<ActivityRecyclerview
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
         db.recyclerView.setBackgroundColor(Color.WHITE);
-        for (int i = 0; i < 4; i++) {
-            mAdapter.addData(new LocaResponse());
-        }
 
     }
 }

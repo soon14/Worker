@@ -12,14 +12,15 @@
             name="clicklistener"
             type="android.view.View.OnClickListener" />
     </data>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
         tools:context="com.xsd.jx.mine.ResumeActivity">
-
         <include layout="@layout/action_common_bar" />
 
         <ScrollView
@@ -139,6 +140,7 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:layout_marginBottom="@dimen/dp_80"
                     android:id="@+id/layout_works"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -147,10 +149,12 @@
             </LinearLayout>
         </ScrollView>
 
+    </LinearLayout>
         <LinearLayout
+            android:id="@+id/layout_bottom_btns"
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWindowBackground"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -187,5 +191,5 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

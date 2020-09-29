@@ -281,7 +281,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         mYear = year;
                         mMonth = month;
                         mDay = dayOfMonth;
-                        final String data = year+"-"+(month + 1) + "-" + dayOfMonth ;
+                        int realMonth = month + 1;
+                        String monthStr = realMonth<10?"0"+realMonth:""+realMonth;
+                        String dayStr = dayOfMonth<10?"0"+dayOfMonth:""+dayOfMonth;
+                        final String data = year+"-"+monthStr + "-" + dayStr ;
                         if (isStartTime){
                             startDate = data;
                             db.tvStartTime.setText(data);

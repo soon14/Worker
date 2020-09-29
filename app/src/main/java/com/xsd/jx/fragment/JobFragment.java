@@ -6,12 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.LoginActivity;
@@ -162,33 +158,27 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             });
         }
         mAdapter.addChildClickViewIds(R.id.tv_join);
-        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                if (!UserUtils.isLogin()){
-                    ToastUtil.showLong("请先登录！");
-                    goActivity(LoginActivity.class);
-                    return;
-                }
-                JobBean item = (JobBean) adapter.getItem(position);
-                switch (view.getId()){
-                    case R.id.tv_join:
-                        join(item.getId(),position);
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (!UserUtils.isLogin()){
+                ToastUtil.showLong("请先登录！");
+                goActivity(LoginActivity.class);
+                return;
+            }
+            JobBean item = (JobBean) adapter.getItem(position);
+            switch (view.getId()){
+                case R.id.tv_join:
+                    join(item.getId(),position);
+                    break;
             }
         });
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                if (!UserUtils.isLogin()){
-                    ToastUtil.showLong("请先登录！");
-                    goActivity(LoginActivity.class);
-                    return;
-                }
-                JobBean item = (JobBean) adapter.getItem(position);
-                goJobInfoActivity(item.getId());
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (!UserUtils.isLogin()){
+                ToastUtil.showLong("请先登录！");
+                goActivity(LoginActivity.class);
+                return;
             }
+            JobBean item = (JobBean) adapter.getItem(position);
+            goJobInfoActivity(item.getId());
         });
 
         //加载更多

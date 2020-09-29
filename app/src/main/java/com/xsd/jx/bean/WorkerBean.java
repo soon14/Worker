@@ -36,6 +36,26 @@ public class WorkerBean implements Serializable, MultiItemEntity {
     private int checkDay;
     private int totalWage;
 
+     /** type 状态 -1:不展示(有预付款项未付不显示给用户) )
+ *  1:正在招
+ *  2:已招满/待开工(所有用户已确认)
+ *  3:工期中
+ *  4:待结算
+ *  5:待评价
+ *  6:已完成
+ *  7:已取消
+ *  8:已过期
+ */
+    private int type=1;//用于我的招工 - 招工详情的工人列表
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -134,6 +154,6 @@ public class WorkerBean implements Serializable, MultiItemEntity {
 
     @Override
     public int getItemType() {
-        return status;
+        return type;
     }
 }

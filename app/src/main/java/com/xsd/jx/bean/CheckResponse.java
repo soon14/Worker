@@ -24,7 +24,7 @@ public class CheckResponse implements Serializable {
      */
 
     private String address="";
-    private int avgHour;
+    private String avgHour;
     private int day;
     private String mobile;
     private String signInDesc;
@@ -43,11 +43,11 @@ public class CheckResponse implements Serializable {
         this.address = address;
     }
 
-    public int getAvgHour() {
+    public String getAvgHour() {
         return avgHour;
     }
 
-    public void setAvgHour(int avgHour) {
+    public void setAvgHour(String avgHour) {
         this.avgHour = avgHour;
     }
 

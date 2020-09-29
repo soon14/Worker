@@ -133,7 +133,6 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                         String compressPath = localMedia.getCompressPath();
                         L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
                         DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
-
                         AliyunOSSUtils.getInstance().uploadAvatar(RealNameAuthActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
                             @Override
                             public void onUpLoadComplete(String url) {

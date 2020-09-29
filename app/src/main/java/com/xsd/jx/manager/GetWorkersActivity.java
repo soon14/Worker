@@ -182,6 +182,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 intent.putExtra("userId",item.getUserId());
                 intent.putExtra("wtId",wtId);
                 intent.putExtra("workId",workId);
+                intent.putExtra("status",item.getStatus());
                 startActivity(intent);
 
             }

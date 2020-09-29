@@ -124,7 +124,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
-        new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
+        BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager);
         goActivity(LoginActivity.class);
     }
     @Receive(EventStr.GO_LOGIN)

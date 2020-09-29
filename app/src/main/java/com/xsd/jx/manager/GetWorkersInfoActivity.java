@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 招工详情:7个状态
+ * 招工详情:8个状态
  status 状态 -1:不展示(有预付款项未付不显示给用户) )
  1:正在招
  2:已招满/待开工(所有用户已确认)
@@ -47,7 +47,7 @@ import java.util.List;
  8:已过期
  */
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {
-    private GetWorkersInfoAdapter mAdapter = new GetWorkersInfoAdapter();
+    private GetWorkersInfoAdapter mAdapter;
     private int workId;//当前详情的工种ID
     @Override
     protected int getLayoutId() {
@@ -107,6 +107,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
                        intent.putExtra("type",1);
                        intent.putExtra("userId",item.getUserId());
+                       intent.putExtra("workId",workId);
+                       intent.putExtra("status",item.getStatus());
                        startActivity(intent);
                        break;
                    case R.id.tv_cancel://婉拒
@@ -148,6 +150,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                         if (mAdapter.getData().size()==0){
                             finish();
                         }
+                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
                     }
                 });
     }
@@ -164,7 +167,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
         db.setItem(item);
         workId = item.getId();
+
         type = item.getItemType();
+        mAdapter = new GetWorkersInfoAdapter();
         switch (type){
             case 1:
                 db.tvTitle.setText("正在招");
@@ -226,25 +231,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         mAdapter.setEmptyView(emptyView);
         //工人列表
         List<WorkerBean> workers = item.getWorkers();
+        for (int i = 0; i < workers.size(); i++) workers.get(i).setType(type);
         mAdapter.setList(workers);
 
-        //查看工人详情，需要显示婉拒和雇佣
-        mAdapter.addChildClickViewIds(R.id.tv_look);
-        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                WorkerBean item = (WorkerBean) adapter.getItem(position);
-                switch (view.getId()){
-                    case R.id.tv_look:
-                        Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
-                        intent.putExtra("type",1);
-                        intent.putExtra("userId",item.getUserId());
-                        intent.putExtra("workId",workId);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
     }
 
 

@@ -7,6 +7,7 @@
         <variable
             name="item"
             type="com.xsd.jx.bean.WorkerBean" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,6 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_addr" />
 
         <LinearLayout
+            android:visibility="@{item.status==1?View.GONE:View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

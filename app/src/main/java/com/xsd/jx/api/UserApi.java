@@ -2,6 +2,7 @@ package com.xsd.jx.api;
 
 import com.xsd.jx.bean.BalanceLogResponse;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
 import com.xsd.jx.bean.JobBean;
@@ -91,6 +92,9 @@ public interface UserApi {
     //用户消息记录列表 ,type:类别默认1 1:系统消息 2：订单消息
     @GET("user/message")
     Observable<BaseResponse<MessageResponse>> message(@Query("type") Integer type,@Query("page") Integer page);
+    //我推荐的工友
+    @GET("user/division")
+    Observable<BaseResponse<List<DivisionBean>>> division();
 
     /**
      * 帮工友注册账号

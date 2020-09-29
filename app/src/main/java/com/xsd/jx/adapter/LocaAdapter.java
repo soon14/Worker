@@ -1,9 +1,10 @@
 package com.xsd.jx.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder;
 import com.xsd.jx.R;
-import com.xsd.jx.bean.LocaResponse;
+import com.xsd.jx.bean.DivisionBean;
+import com.xsd.jx.databinding.ItemDivisionBinding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2020/8/27
  * author: SmallCake
  */
-public class LocaAdapter extends BaseQuickAdapter<LocaResponse, BaseViewHolder> {
+public class LocaAdapter extends BaseQuickAdapter<DivisionBean, BaseDataBindingHolder<ItemDivisionBinding>> {
     public LocaAdapter() {
-        super(R.layout.item_loca);
+        super(R.layout.item_division);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, LocaResponse locaResponse) {
-
+    protected void convert(@NotNull BaseDataBindingHolder<ItemDivisionBinding> holder, DivisionBean item) {
+            holder.getDataBinding().setItem(item);
     }
 }

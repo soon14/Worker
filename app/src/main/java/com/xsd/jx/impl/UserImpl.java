@@ -3,6 +3,7 @@ package com.xsd.jx.impl;
 import com.xsd.jx.api.UserApi;
 import com.xsd.jx.bean.BalanceLogResponse;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
 import com.xsd.jx.bean.JobBean;
@@ -89,6 +90,11 @@ public class UserImpl implements UserApi {
     @Override
     public Observable<BaseResponse<MessageResponse>> message(Integer type, Integer page) {
         return bindIoUI(api.message(type,page));
+    }
+
+    @Override
+    public Observable<BaseResponse<List<DivisionBean>>> division() {
+        return bindIoUI(api.division());
     }
 
     @Override

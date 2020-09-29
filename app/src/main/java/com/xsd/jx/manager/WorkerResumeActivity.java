@@ -41,6 +41,7 @@ import java.util.List;
  intent.putExtra("userId",item.getUserId());
  intent.putExtra("wtId",wtId);
  intent.putExtra("workId",workId);
+ intent.putExtra("status",item.getStatus());
  startActivity(intent);
 
  情况：1如果是从报名工人列表进来的就显示【婉拒和雇佣】，这两个按钮表现形式参考报名工人列表
@@ -49,6 +50,7 @@ import java.util.List;
  intent.putExtra("type",1);
  intent.putExtra("userId",item.getUserId());
  intent.putExtra("workId",workId);
+ intent.putExtra("status",item.getStatus());
  startActivity(intent);
 
  */
@@ -56,6 +58,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
     private int userId;
     private int wtId;
     private int workId;
+    private int status;//状态 1:未处理 2：已确认 3：已拒绝
 
     @Override
     protected int getLayoutId() {
@@ -144,6 +147,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
+                        finish();
                         Apollo.emit(EventStr.CLOSE_GET_WORKERSINFO_ACTIVITY);
                         Apollo.emit(EventStr.UPDATE_GET_WORKERS);
                     }
@@ -156,14 +160,17 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", 0);
         userId = intent.getIntExtra("userId", 0);
+        status = intent.getIntExtra("status", 0);
         if (type == 0) {//邀请上工
             db.tvInvite.setVisibility(View.VISIBLE);
             wtId = intent.getIntExtra("wtId", 0);
-            workId = intent.getIntExtra("workId", 0);
         } else if (type == 1) {
-            workId = intent.getIntExtra("workId", 0);
             db.tvRefuse.setVisibility(View.VISIBLE);
             db.tvHire.setVisibility(View.VISIBLE);
+        }
+        //状态 1:未处理 2：已确认 3：已拒绝
+        if (status==1){
+            db.layoutBottomBtns.setVisibility(View.GONE);
         }
 
 
