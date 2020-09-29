@@ -1,6 +1,7 @@
 package com.xsd.jx.utils;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,6 +26,7 @@ import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
+import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.SoftInputUtils;
@@ -70,8 +72,6 @@ public class PopShowUtils {
     /**
      * 提示弹框
      * 如果点击不再提示，就不再弹出此窗口提示
-     *
-     * @param v
      */
     public static void showTips(BaseActivity activity) {
 //        boolean no_tips_joinsuccess = (boolean) SPUtils.get("no_tips_joinsuccess", false);
@@ -164,6 +164,17 @@ public class PopShowUtils {
                         0,
                         0).show();
     }
+    public static void showBankName(View v, OnSelectListener listener) {
+        new XPopup.Builder(v.getContext())
+                .asBottomList("银行选择",
+                        new String[]{"中国工商银行","中国农业银行","中国银行","中国建设银行","交通银行","招商银行","中信银行","光大银行","兴业银行","中国邮政储蓄"},
+                        null,
+                        -1,
+                        false,
+                        listener,
+                        0,
+                        0).show();
+    }
     /**
      *身份 1:建筑企业 2:劳务公司 3:个人
      */
@@ -232,5 +243,13 @@ public class PopShowUtils {
                     })
                     .asCustom(bottomAddrPop)
                     .show();
+    }
+
+    /***
+     * 联系平台
+     * @param actiivty
+     */
+    public static void callUs(Activity actiivty){
+        MobileUtils.callPhone(actiivty,"10086");
     }
 }

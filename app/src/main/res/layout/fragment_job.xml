@@ -119,6 +119,7 @@
                             android:drawablePadding="8dp" />
 
                         <ImageView
+                            android:id="@+id/iv_lq"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@mipmap/ic_get_money_txt"

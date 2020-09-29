@@ -19,14 +19,15 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Date: 2020/8/26
  * author: SmallCake
- * 报名中
- * 待开工
- * 工期中
- * 待结算
- * 待评价
- * 全部订单：除了上面5个还有：已完成，已取消，已招满
- *
- * 接口type 类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
+ * 接口type 类型 0:全部
+ * 1:未确认
+ * 2:待开工
+ * 3:已招满（被拒绝）
+ * 4:已取消
+ * 5:进行中
+ * 6:待结算
+ * 7:待评价
+ * 8:已完成
  */
 public class OrderAdapter extends BaseMultiItemQuickAdapter<OrderBean, BaseDataBindingHolder> implements LoadMoreModule {
     public OrderAdapter() {

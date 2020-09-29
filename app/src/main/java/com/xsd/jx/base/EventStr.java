@@ -13,4 +13,5 @@ public interface EventStr {
     String GO_AUTH = "go_auth";//去实名认证
     String LOGIN_SUCCESS = "login_success";
     String SHOW_PUSH_JOB = "show_push_job";
+    String CLOSE_GET_WORKERSINFO_ACTIVITY = "close_get_workersinfo_activity";
 }

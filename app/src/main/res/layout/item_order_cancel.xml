@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -36,38 +37,39 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="木工"
+                tools:text="木工"
+                android:text="@{item.typeTitle}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/h3" />
 
             <TextView
                 android:textColor="@color/tv_gray"
+                price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
-                android:text="350元/天" />
+                tools:text="350元/天" />
         </LinearLayout>
-
-
         <TextView
+            workDay="@{item}"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="工期：2020-07-29至2020-08-29(共30天)"
+            tools:text="工期：2020-07-29至2020-08-29(共30天)"
             android:textColor="@color/black"
             android:textSize="@dimen/h4" />
-
         <TextView
-            android:layout_marginBottom="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:id="@+id/tv_addr"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
 

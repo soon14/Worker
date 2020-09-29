@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.OrderBean" />
+        <import type="android.view.View"/>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <RelativeLayout
@@ -99,16 +105,18 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="钢筋工"
+                                tools:text="钢筋工"
+                                android:text="@{item.typeTitle}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/h3"
                                 android:textStyle="bold" />
 
                             <TextView
+                                price="@{item.price}"
                                 android:id="@+id/tv_work_price"
                                 style="@style/TextPriceStyle"
                                 android:gravity="right"
-                                android:text="350元/天" />
+                                tools:text="350元/天" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -118,22 +126,32 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_payed_scale"
                                 style="@style/TextWelfareTagStyle"
-                                android:text="已付2成" />
+                                tools:text="日结"
+                                android:text="@{item.settleType==1?`日结`:`做完再结`}"
+                                />
 
                             <TextView
-                                android:id="@+id/tv_buy_safe"
-                                style="@style/TextWelfareTagStyle"
+                                advanceType="@{item.advanceType}"
                                 android:layout_marginLeft="@dimen/dp_6"
-                                android:text="购买保险" />
+                                style="@style/TextWelfareTagStyle"
+                                tools:text="已付定金"
+                                />
+
+                            <TextView
+                                android:layout_marginLeft="@dimen/dp_6"
+                                style="@style/TextWelfareTagStyle"
+                                android:text="购买保险"
+                                android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
+                                />
                         </LinearLayout>
 
                         <TextView
+                            workDay="@{item}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="工期：2020-07-29至2020-08-29(共30天)"
+                            tools:text="工期：2020-07-29至2020-08-29(共30天)"
                             android:textColor="@color/black"
                             android:textSize="@dimen/h4"
                             android:textStyle="bold" />
@@ -143,11 +161,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+                            android:text="@{`上工地点：`+item.address}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h4" />
 
                         <TextView
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/tv_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -185,7 +206,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="未投保/保障中"
+                                tools:text="未投保/保障中"
+                                android:text="@{item.isSafe==1?`保障中`:`未投保`}"
                                 android:textColor="@color/tv_darkgray"
                                 android:textSize="@dimen/h4" />
                         </RelativeLayout>
@@ -210,7 +232,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="2天"
+                                tools:text="2天"
+                                android:text="@{item.workDays+`天`}"
                                 android:textColor="@color/tv_darkgray"
                                 android:textSize="@dimen/h4" />
                         </RelativeLayout>
@@ -235,7 +258,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="700元"
+                                tools:text="700元"
+                                android:text="@{item.allEarned+`元`}"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/h4" />
                         </RelativeLayout>
@@ -255,7 +279,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="订单编号:\t\t\t947498545995856"
+                                tools:text="订单编号：947498545995856"
+                                android:text="@{`订单编号：`+item.sn}"
                                 android:textColor="@color/tv_black"
                                 android:textSize="@dimen/h5" />
 
@@ -272,7 +297,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="报名时间:\t\t\t2020-08-10 17:17"
+                            tools:text="报名时间：2020-08-10 17:17"
+                            android:text="@{`报名时间：`+item.createdAt}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h5" />
 
@@ -281,7 +307,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="确认时间:\t\t\t2020-08-11 09:15"
+                            tools:text="确认时间：2020-08-11 09:15"
+                            android:text="@{`确认时间：`+item.confirmedAt}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h5" />
                         <TextView
@@ -291,19 +318,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="结算时间:\t\t\t2020-08-11 09:15"
+                            tools:text="结算时间：2020-08-11 09:15"
+                            android:text="@{`结算时间：`+item.settleAt}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h5" />
                         <TextView
+                            android:id="@+id/tv_cancel_time"
                             tools:visibility="visible"
                             android:visibility="gone"
-                            android:id="@+id/tv_cancel_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_16"
-                            android:text="取消时间:\t\t\t2020-08-11 09:15"
+                            tools:text="取消时间：2020-08-11 09:15"
+                            android:text="@{`取消时间：`+item.cancelAt}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h5" />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -332,7 +362,8 @@
             android:padding="@dimen/dp_13">
 
             <TextView
-                android:id="@+id/tv_contact_platform"
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_contact_us"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
                 android:layout_marginRight="@dimen/dp_16"
@@ -342,9 +373,10 @@
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5" />
             <TextView
+                android:onClick="@{clicklistener}"
                 tools:visibility="visible"
                 android:visibility="gone"
-                android:id="@+id/tv_cancel_apply"
+                android:id="@+id/tv_cancel_join"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
                 android:layout_marginRight="@dimen/dp_16"
@@ -353,20 +385,23 @@
                 android:text="取消报名"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5" />
-
             <TextView
-                android:id="@+id/tv_contact_manager"
+                android:id="@+id/tv_contact_employer"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
+                android:layout_marginRight="@dimen/dp_16"
                 android:background="@drawable/round20_blue_bg"
                 android:gravity="center"
+                android:onClick="@{clicklistener}"
                 android:text="联系雇主"
                 android:textColor="@color/white"
                 android:textSize="@dimen/h5" />
+
             <TextView
+                android:onClick="@{clicklistener}"
                 tools:visibility="visible"
                 android:visibility="gone"
-                android:id="@+id/tv_comment_manager"
+                android:id="@+id/tv_comment_employer"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
                 android:background="@drawable/round20_blue_bg"

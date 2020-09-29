@@ -14,6 +14,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.xsd.jx.MyApplication;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.utils.FormatUtils;
+import com.xsd.utils.L;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -203,6 +204,7 @@ public class AliyunOSSUtils {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 String url = oss.presignPublicObjectURL(BUCKET_NAME, objectKey);
+                L.e("上传后的地址=="+url);
                 activity.runOnUiThread(() -> {
                     if (listener != null) listener.onUpLoadComplete(url);
                 });

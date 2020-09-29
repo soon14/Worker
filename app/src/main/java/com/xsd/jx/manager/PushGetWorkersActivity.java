@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.xsd.jx.R;
@@ -18,6 +19,7 @@ import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.EditTextUtils;
+import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.SoftInputUtils;
 import com.xsd.utils.ToastUtil;
@@ -40,18 +42,18 @@ import java.util.Calendar;
  *  advanceAmount 预付款金额
  */
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
-    private Integer typeId;
-    private Integer areaId;//地区ID,用于查询工价
+    private int typeId;
+    private int areaId;//地区ID,用于查询工价
     private String address;
     private String startDate;
     private String endDate;
-    private Integer price;//工价
+    private int price;//工价
     private String desc;
-    private Integer num=1;//工人数量
-    private Integer isSafe;
-    private Integer settleType = 1;
-    private Integer advanceType = 1 ;
-    private Integer safeAmount = 2;
+    private int num=1;//工人数量
+    private int isSafe=1;
+    private int settleType = 1;
+    private int advanceType = 1 ;
+    private int safeAmount = 2;
     private String advanceAmount = "0";
 
 
@@ -82,16 +84,27 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             ToastUtil.showLong("请阅读并同意用工协议！");
             return;
         }
+        if (TextUtils.isEmpty(startDate)) {
+            ToastUtil.showLong("请选择工期开始时间！");
+            return;
+        }
+        if (TextUtils.isEmpty(endDate)) {
+            ToastUtil.showLong("请选择工期结束时间！");
+            return;
+        }
         if (EditTextUtils.isEmpty(db.etPrice,db.etNum,db.etDesc))return;
 
         //数据填充
-        price  = Integer.valueOf(db.etPrice.getText().toString());
+        String s = db.etPrice.getText().toString();
+        s = s.replace("元","");
+        price  = Integer.valueOf(s);
         num = Integer.valueOf(db.etNum.getText().toString());
         desc = db.etDesc.getText().toString();
         isSafe = db.rbBuySafe.isChecked()?1:0;
         settleType = db.rbDayPay.isChecked()?1:2;
         if (db.rbPay2cost.isChecked()){
-            advanceAmount = String.valueOf(price*num*0.2);
+            int ceil = (int) Math.ceil(price * num * 0.2);
+            advanceAmount = String.valueOf(ceil);
             advanceType=1;
         }
         if (db.rbPayAll.isChecked()){
@@ -177,14 +190,21 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             }
             updateBtn();
         });
-        db.rbPay2cost.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked)updateBtn();
-        });
-        db.rbPayAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked)updateBtn();
-        });
-        db.rbNoPay.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked)updateBtn();
+        db.rgAdvancePay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_pay_2cost:
+                        updateBtn();
+                    break;
+                    case R.id.rb_pay_all:
+                        updateBtn();
+                    break;
+                    case R.id.rb_no_pay:
+                        updateBtn();
+                    break;
+                }
+            }
         });
 
     }
@@ -197,7 +217,8 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             int totalSafePrice = num * safeAmount;
         }
         if (db.rbPay2cost.isChecked()){
-            advanceAmount = String.valueOf(price*num*0.2);
+            int ceil = (int) Math.ceil(price * num * 0.2);
+            advanceAmount = String.valueOf(ceil);
             advanceType=1;
         }
         if (db.rbPayAll.isChecked()){
@@ -210,7 +231,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         }
         L.e("advanceAmount=="+advanceAmount);
         if (advanceAmount.equals("0"))db.tvPush.setText("发布");
-        else db.tvPush.setText("发布(支付"+advanceAmount+"元)");
+        else{
+            advanceAmount = FormatUtils.twoDecimal(Float.parseFloat(advanceAmount));
+            db.tvPush.setText("发布(支付"+advanceAmount+"元)");
+        }
 
     }
 
@@ -242,7 +266,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
      */
     private void updateAdvanceBtn() {
         int priceAll = price * num;
-        int price2 = (int) (priceAll*0.2);
+        int price2 = (int) Math.ceil(priceAll*0.2);
         db.rbPay2cost.setText("2成/"+price2+"元");
         db.rbPayAll.setText("全额/"+priceAll+"元");
         updateBtn();
@@ -257,7 +281,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         mYear = year;
                         mMonth = month;
                         mDay = dayOfMonth;
-                        final String data = year+"年"+(month + 1) + "月" + dayOfMonth + "日";
+                        final String data = year+"-"+(month + 1) + "-" + dayOfMonth ;
                         if (isStartTime){
                             startDate = data;
                             db.tvStartTime.setText(data);

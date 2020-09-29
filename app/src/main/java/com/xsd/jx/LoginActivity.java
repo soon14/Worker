@@ -10,6 +10,7 @@ import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.custom.VerifyCountTimer;
 import com.xsd.jx.databinding.ActivityLoginBinding;
+import com.xsd.jx.job.SelectTypeWorkActivity;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.EditTextUtils;
@@ -66,6 +67,9 @@ public class LoginActivity extends BaseBindBarActivity<ActivityLoginBinding> {
                         UserUtils.saveLoginUser(data);
                         finish();
                         Apollo.emit(EventStr.LOGIN_SUCCESS);
+                        //是否已经选择了工种
+                        boolean chooseWork = data.getUser().isChooseWork();
+                        if (!chooseWork)goActivity(SelectTypeWorkActivity.class);
                     }
                 });
     }

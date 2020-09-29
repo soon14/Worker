@@ -89,7 +89,7 @@ public class PushJobPop extends CenterPopupView {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         PopShowUtils.showTips(activity);
-                        DataBindingAdapter.isFav(db.tvJoin,true);
+                        DataBindingAdapter.isJoin(db.tvJoin,true);
                     }
                 });
     }
@@ -125,6 +125,12 @@ public class PushJobPop extends CenterPopupView {
                             ToastUtil.showLong("没有更多数据了！");
                             dismiss();
                         }
+                    }
+
+                    @Override
+                    protected void onErr(String err) {
+                        super.onErr(err);
+                        dismiss();
                     }
                 });
     }

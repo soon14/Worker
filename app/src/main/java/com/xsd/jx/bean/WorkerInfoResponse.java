@@ -34,8 +34,8 @@ public class WorkerInfoResponse {
     private int isCertification;
     private String workYears;
     private int age;
-    private List<?> workTypes;
-    private List<?> experience;
+    private List<WorkTypeBean> workTypes;
+    private List<ExperienceResponse.ItemsBean> experience;
 
     public int getId() {
         return id;
@@ -117,19 +117,19 @@ public class WorkerInfoResponse {
         this.age = age;
     }
 
-    public List<?> getWorkTypes() {
+    public List<WorkTypeBean> getWorkTypes() {
         return workTypes;
     }
 
-    public void setWorkTypes(List<?> workTypes) {
+    public void setWorkTypes(List<WorkTypeBean> workTypes) {
         this.workTypes = workTypes;
     }
 
-    public List<?> getExperience() {
+    public List<ExperienceResponse.ItemsBean> getExperience() {
         return experience;
     }
 
-    public void setExperience(List<?> experience) {
+    public void setExperience(List<ExperienceResponse.ItemsBean> experience) {
         this.experience = experience;
     }
 }

@@ -30,6 +30,9 @@
                 android:textColor="@color/tv_black" />
 
             <EditText
+                android:maxLength="21"
+                android:inputType="number"
+                android:id="@+id/et_account"
                 android:padding="@dimen/dp_16"
                 android:textSize="@dimen/h4"
                 android:background="@color/transparent"
@@ -57,6 +60,8 @@
                 android:textColor="@color/tv_black" />
 
             <EditText
+                android:maxLength="11"
+                android:id="@+id/et_name"
                 android:padding="@dimen/dp_16"
                 android:textSize="@dimen/h4"
                 android:background="@color/transparent"
@@ -82,6 +87,8 @@
                 android:textColor="@color/tv_black" />
 
             <TextView
+                android:textColor="@color/tv_black"
+                android:id="@+id/tv_bankname"
                 android:drawableRight="@mipmap/ic_gray_arrow_right"
                 android:padding="@dimen/dp_16"
                 android:textSize="@dimen/h4"

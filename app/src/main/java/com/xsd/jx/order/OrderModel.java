@@ -1,11 +1,18 @@
 package com.xsd.jx.order;
 
+import android.content.Intent;
+import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.OrderAdapter;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
@@ -15,6 +22,8 @@ import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.OrderUtils;
+import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.utils.MobileUtils;
 
 import java.util.List;
 
@@ -22,6 +31,8 @@ import java.util.List;
  * Date: 2020/9/16
  * author: SmallCake
  * 只获取数据
+ * 对于用户端，订单模块
+ *
  */
 public class OrderModel {
     private DataProvider dataProvider;
@@ -29,9 +40,11 @@ public class OrderModel {
     private int page=1;
     private OrderAdapter mAdapter = new OrderAdapter();
     private OrderView view;
+    private BaseActivity activity;
     public OrderModel(OrderView view) {
         this.view = view;
-        this.dataProvider = view.getBaseActivity().getDataProvider();
+        this.dataProvider = view.getDataProvider();
+        this.activity = view.getBaseActivity();
         this.refreshLayout = view.getSwipeRefreshLayout();
         RecyclerView recyclerView = view.getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getRecyclerView().getContext()));
@@ -58,16 +71,32 @@ public class OrderModel {
                 loadData();
             }
         });
-        mAdapter.addChildClickViewIds(R.id.tv_order_comment,R.id.tv_cancel);
+        mAdapter.addChildClickViewIds(R.id.tv_order_comment,R.id.tv_cancel,R.id.tv_contact_us,R.id.tv_contact_employer);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             OrderBean item = (OrderBean) adapter.getItem(position);
             switch (view.getId()){
-                case R.id.tv_order_comment:
-                    OrderModel.this.view.getBaseActivity().goActivity(CommentActivity.class);
+                case R.id.tv_order_comment://工人评价雇主
+                    activity.goActivity(CommentActivity.class);
                     break;
-                case R.id.tv_cancel:
-                    OrderUtils.orderCancel(OrderModel.this.view.getBaseActivity(),mAdapter,item.getId(),position);
+                case R.id.tv_cancel://取消订单
+                    OrderUtils.orderCancel(activity,mAdapter,item.getId(),position);
                     break;
+                case R.id.tv_contact_us://联系平台
+                    PopShowUtils.callUs(activity);
+                    break;
+                case R.id.tv_contact_employer://联系雇主
+                    MobileUtils.callPhone(activity,item.getEmployerPhone());
+                    break;
+            }
+        });
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                OrderBean item = (OrderBean) adapter.getItem(position);
+                Intent intent = new Intent(activity, OrderInfoActivity.class);
+                intent.putExtra("item",item);
+                activity.startActivity(intent);
+
             }
         });
     }

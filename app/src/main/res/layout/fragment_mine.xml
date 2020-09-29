@@ -236,6 +236,7 @@
                     android:layout_height="wrap_content"
                     >
                     <ImageView
+                        android:id="@+id/iv_lq"
                         android:layout_marginRight="@dimen/dp_10"
                         android:layout_alignParentRight="true"
                         android:src="@mipmap/ic_get_money_txt"

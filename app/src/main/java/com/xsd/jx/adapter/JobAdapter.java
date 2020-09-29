@@ -12,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Date: 2020/8/18
  * author: SmallCake
+ *
+ * 首页-推荐的工作
+ * 首页-长期工，突击工
+ *
  */
 public class JobAdapter extends BaseQuickAdapter<JobBean, BaseDataBindingHolder<ItemJobBinding>> implements LoadMoreModule {
 

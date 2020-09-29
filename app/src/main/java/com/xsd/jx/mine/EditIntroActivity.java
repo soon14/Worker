@@ -30,6 +30,7 @@ import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.custom.GlideEngine;
 import com.xsd.jx.databinding.ActivityEditIntroBinding;
 import com.xsd.jx.listener.OnNationSelectListener;
+import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -53,6 +54,7 @@ import okhttp3.RequestBody;
 
 public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBinding> {
     private int mYear, mMonth, mDay;//生日年月日
+    private boolean isCertification;//是否实名认证；
     @Override
     protected int getLayoutId() {
         return R.layout.activity_edit_intro;
@@ -73,6 +75,8 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
                         UserInfoResponse data = baseResponse.getData();
                         UserInfo info = data.getInfo();
+                        isCertification = info.getIsCertification()==1;
+
                         db.setItem(info);
                     }
                 });
@@ -92,6 +96,7 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     break;
                 case R.id.layout_name:
                 case R.id.tv_name:
+                    if (isCertification)return;
                     new XPopup.Builder(this)
                             .asInputConfirm("请输入姓名", "", new OnInputConfirmListener() {
                                 @Override
@@ -102,6 +107,7 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     break;
                 case R.id.layout_sex:
                 case R.id.tv_sex:
+                    if (isCertification)return;
                     new XPopup.Builder(this)
                             .asBottomList("请选择性别", new String[]{"男", "女"}, new OnSelectListener() {
                                 @Override
@@ -112,6 +118,7 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     break;
                 case R.id.layout_birthday:
                 case R.id.tv_birthday:
+                    if (isCertification)return;
                     showDateDialog();
                     break;
                 case R.id.layout_nation:
@@ -235,7 +242,16 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     @Override
                     public void onResult(List<LocalMedia> result) {
                         headFile = result.get(0).getCompressPath();
-                        uploadAvatar();
+                        //上传头像到阿里云，并编辑头像
+                        AliyunOSSUtils.getInstance().uploadAvatar(EditIntroActivity.this, headFile, new AliyunOSSUtils.UploadImgListener() {
+                            @Override
+                            public void onUpLoadComplete(String url) {
+                                setAvatar(url);
+                            }
+                            @Override
+                            public void onUpLoadProgress(int progress) {
+                            }
+                        });
                     }
 
                     @Override
@@ -244,6 +260,7 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                 });
     }
 
+    @Deprecated
     private void uploadAvatar() {
         //TODO 上传头像，格式暂时不支持jpeg,调试中...
         if (TextUtils.isEmpty(headFile)) return;
@@ -271,6 +288,18 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
         setUserInfo("workYears", workYears, db.tvWorkYears);
     }
 
+    private void setAvatar(String avatar) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("avatar", RequestBody.create(MediaType.parse("text/plain"), avatar));
+        dataProvider.user.profile(map)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        DataBindingAdapter.avatar(db.ivHead,avatar);
+                    }
+                });
+    }
     private void setNation(String nation) {
         setUserInfo("nation", nation, db.tvNation);
     }

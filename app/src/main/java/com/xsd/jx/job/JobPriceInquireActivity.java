@@ -115,6 +115,9 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
                     protected void onSuccess(BaseResponse<List<JobSearchBean>> baseResponse) {
                         List<JobSearchBean> data = baseResponse.getData();
                         mAdapter.setList(data);
+                        if (data==null||data.size()==0){
+                            ToastUtil.showLong("暂无此工种工价！");
+                        }
                     }
                 });
     }

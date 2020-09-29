@@ -11,67 +11,28 @@ import java.io.Serializable;
 public class OrderBean implements MultiItemEntity, Serializable {
 
     /**
-     address	string
-     上工地点
-
-     advanceType	integer
-     结算方式 预付款类型 1:两成 2:全款 3:不预付
-
-     allEarned	integer
-     赚得收入
-
-     confirmedAt	string
-     确认时间
-
-     createdAt	string
-     报名时间
-
-     day	integer
-     工期(天数)
-
-     endDate	string
-     结束日期
-
-     id	integer
-     ID
-     isSafe	integer
-     是否购买保险 0:否 1:是
-
-     listId	integer
-     用工ID
-
-     num	integer
-     所需人数
-
-     price	integer
-     工价（元）
-
-     settleAt	string
-     结算时间
-
-     settleType	integer
-     结算方式 1:日结 2:做完再结
-
-     sn	string
-     报名编号
-
-     startDate	string
-     开始日期
-
-     status	integer
-     状态 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
-
-     typeId	integer
-     工种ID
-
-     typeTitle	string
-     工种名称
-
-     userId	integer
-     用户ID
-
-     workDays	integer
-     已上工天数
+     address	string 上工地点
+     advanceType	integer 结算方式 预付款类型 1:两成 2:全款 3:不预付
+     allEarned	integer 赚得收入
+     confirmedAt	string 确认时间
+     createdAt	string 报名时间
+     cancelAt	string 取消时间
+     day	integer 工期(天数)
+     endDate	string 结束日期
+     id	integer ID
+     isSafe	integer 是否购买保险 0:否 1:是
+     listId	integer 用工ID
+     num	integer 所需人数
+     price	integer 工价（元）
+     settleAt	string 结算时间
+     settleType	integer  结算方式 1:日结 2:做完再结
+     sn	string 报名编号
+     startDate	string 开始日期
+     status	integer 状态 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
+     typeId	integer 工种ID
+     typeTitle	string 工种名称
+     userId	integer  用户ID
+     workDays	integer 已上工天数
      */
 
 
@@ -80,6 +41,7 @@ public class OrderBean implements MultiItemEntity, Serializable {
     private int allEarned;
     private String confirmedAt;
     private String createdAt;
+    private String cancelAt;
     private int day;
     private String endDate;
     private int id;
@@ -96,7 +58,23 @@ public class OrderBean implements MultiItemEntity, Serializable {
     private String typeTitle;
     private int userId;
     private int workDays;
+    private String employerPhone;
 
+    public String getCancelAt() {
+        return cancelAt;
+    }
+
+    public void setCancelAt(String cancelAt) {
+        this.cancelAt = cancelAt;
+    }
+
+    public String getEmployerPhone() {
+        return employerPhone;
+    }
+
+    public void setEmployerPhone(String employerPhone) {
+        this.employerPhone = employerPhone;
+    }
 
     @Override
     public int getItemType() {

@@ -11,7 +11,9 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
-import com.xsd.jx.databinding.ActivityPermanentWorkerBinding;
+import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
+import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 
@@ -20,13 +22,13 @@ import java.util.List;
 /**
  *  0:不限 1:短期工 2：长期工
  */
-public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermanentWorkerBinding> {
+public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private JobAdapter mAdapter = new JobAdapter();
     private int page;
     private int type;
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_permanent_worker;
+        return R.layout.activity_recyclerview;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermane
     }
 
     private void initView() {
-         type = getIntent().getIntExtra("type", 1);
+        type = getIntent().getIntExtra("type", 1);
         tvTitle.setText(type==1?"突击工":"长期工");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
@@ -58,11 +60,18 @@ public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermane
             JobBean item = (JobBean) adapter.getItem(position);
             goJobInfoActivity(item.getId());
         });
+        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
 
-        //加载更多
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-            page++;
-            loadData();
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
         });
 
 
@@ -81,7 +90,7 @@ public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityPermane
 
     private void loadData() {
         dataProvider.work.list(page,type)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<WorkListResponse> baseResponse) {
                         WorkListResponse data = baseResponse.getData();

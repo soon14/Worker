@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -32,6 +33,10 @@ public class MobileUtils {
      * @param phoneNum 电话号码
      */
     public static void callPhone(Activity activity, String phoneNum) {
+        if (TextUtils.isEmpty(phoneNum)){
+            ToastUtil.showLong("你拨打的号码为空！");
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_DIAL);
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);

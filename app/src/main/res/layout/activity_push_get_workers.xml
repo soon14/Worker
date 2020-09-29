@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
                         android:text="工种"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView1" />
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
                         android:text="在哪儿上工"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView2" />
@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
                         android:text="工期"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView3" />
@@ -208,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
                         android:text="工价"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageView4" />
@@ -258,7 +258,7 @@
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_20"
                         android:text="您需要的工人数量 (点击可修改)"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -294,7 +294,7 @@
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text="结算方式"
-                    android:textColor="@color/tv_gray"
+                    android:textColor="@color/tv_black"
                     android:textSize="@dimen/h5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -334,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="对岗位的说明 (点击可修改，200字以内)"
-                        android:textColor="@color/tv_gray"
+                        android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         />
                     <TextView
@@ -351,6 +351,7 @@
                 </RelativeLayout>
 
                 <EditText
+                    android:minHeight="@dimen/dp_80"
                     android:id="@+id/et_desc"
                     android:maxLength="200"
                     android:padding="@dimen/dp_8"
@@ -396,7 +397,7 @@
                     android:layout_height="wrap_content"
                     android:text="是否为工人购买保险"
                     android:textColor="@color/tv_black"
-                    android:textSize="@dimen/h4"
+                    android:textSize="@dimen/h5"
                     />
                 <RadioGroup
                     android:orientation="horizontal"
@@ -429,9 +430,10 @@
                     android:layout_height="wrap_content"
                     android:text="预付款(全款优先推荐，更易获得工人信任，取消可退)"
                     android:textColor="@color/tv_black"
-                    android:textSize="@dimen/h4"
+                    android:textSize="@dimen/h5"
                     />
                 <RadioGroup
+                    android:id="@+id/rg_advance_pay"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -441,7 +443,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_12"
                         android:layout_marginBottom="16dp"
-                        android:text="2成/200元"
+                        android:text="2成"
                         android:textColor="@color/checkbox_text_gray_black_selecter"
                         android:textSize="@dimen/h4" />
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -450,7 +452,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="全额/1000元"
+                        android:text="全额"
                         android:textColor="@color/checkbox_text_gray_black_selecter"
                         android:textSize="@dimen/h4" />
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -481,7 +483,7 @@
                 android:id="@+id/tv_push"
                 android:layout_margin="@dimen/dp_10"
                 style="@style/DefaultBtnStyle"
-                android:text="发布(支付200元)"/>
+                android:text="发布"/>
 
         </LinearLayout>
     </LinearLayout>

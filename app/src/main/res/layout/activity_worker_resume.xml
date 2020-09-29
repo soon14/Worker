@@ -155,23 +155,29 @@
             android:orientation="horizontal">
 
             <TextView
+                android:onClick="@{clicklistener}"
                 android:id="@+id/tv_invite"
                 style="@style/DefaultBtnStyle"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp_16"
                 android:text="邀请上工"
-                android:visibility="gone" />
+                tools:visibility="visible"
+                android:visibility="gone"
+                />
 
             <TextView
+                android:onClick="@{clicklistener}"
                 android:id="@+id/tv_refuse"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"
                 android:layout_margin="@dimen/dp_16"
                 android:background="@drawable/round6_silver_bg"
                 android:text="婉拒"
+                tools:visibility="visible"
                 android:visibility="gone" />
 
             <TextView
+                android:onClick="@{clicklistener}"
                 android:id="@+id/tv_hire"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"

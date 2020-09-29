@@ -29,6 +29,7 @@ import com.xsd.jx.databinding.FragmentJobBinding;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.SignActivity;
+import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.BannerUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -96,6 +97,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
 
     private void initView() {
+        AnimUtils.floatView(db.ivLq);
         //轮播图片
         List<Object> imgs = new ArrayList<>();
         imgs.add(R.mipmap.banner_test);
@@ -109,7 +111,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
         mAdapter.addHeaderView(tvNotice);
     }
-    //网络请求
+    //首页-推荐的工作列表
     private void loadData() {
         dataProvider.work.list(page,0)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>(db.refreshLayout) {

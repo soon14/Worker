@@ -29,9 +29,11 @@ import com.xsd.jx.mine.RecommendListActivity;
 import com.xsd.jx.mine.ResumeActivity;
 import com.xsd.jx.mine.SetActivity;
 import com.xsd.jx.mine.WalletActivity;
+import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.MobileUtils;
+import com.xsd.utils.ToastUtil;
 
 /**
  * Date: 2020/1/3
@@ -51,9 +53,15 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
 
     @Override
     protected void onLazyLoad() {
+        initView();
         loadUserInfo();
         onEvent();
     }
+
+    private void initView() {
+        AnimUtils.floatView(db.ivLq);
+    }
+
     //用户详情
     @Receive({EventStr.UPDATE_USER_INFO,EventStr.LOGIN_SUCCESS})
     public void loadUserInfo() {
@@ -96,6 +104,13 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     break;
                 case R.id.tv_top_recruit:
                 case R.id.tv_bottom_recruit:
+                    UserInfo user = UserUtils.getUser();
+                    int isCertification = user.getIsCertification();
+                    if (isCertification==0){
+                        ToastUtil.showLong("请先进行实名认证！");
+                        goActivity(RealNameAuthActivity.class);
+                        return;
+                    }
                     goActivity(GetWorkersActivity.class);
                     break;
                 case R.id.layout_money:
@@ -123,7 +138,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     goActivity(PartnerActivity.class);
                     break;
                 case R.id.tab8:
-                    MobileUtils.callPhone(this.getActivity(),"10086");
+                    PopShowUtils.callUs(this.getActivity());
                     break;
                 case R.id.tab9:
                     goActivity(MessageActivity.class);

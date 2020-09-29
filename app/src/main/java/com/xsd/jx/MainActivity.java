@@ -20,6 +20,7 @@ import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
 import com.xsd.jx.fragment.OrderFragment;
+import com.xsd.jx.job.SelectTypeWorkActivity;
 import com.xsd.jx.listener.OnBottomNavClickListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BottomNavUtils;
@@ -70,8 +71,8 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
         if (UserUtils.isLogin()){
             L.e("token=="+UserUtils.getToken());
-//            PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
-//            if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+            PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+            if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
         }
 
 

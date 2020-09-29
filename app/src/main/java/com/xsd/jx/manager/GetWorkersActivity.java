@@ -49,9 +49,9 @@ import java.util.List;
 public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBinding> {
     private WorkerAdapter mAdapter = new WorkerAdapter();
     private int page=1;
-    private int wtId=1;
-    private int sortBy=1;
-    private int workId;
+    private int wtId=1;//工种ID
+    private int sortBy=1;//排序ID
+    private int workId;//工作ID
     private List<WorkTypeBean> workTypes;//工种筛选数据
 
     @Override
@@ -180,6 +180,8 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
                 intent.putExtra("type",0);
                 intent.putExtra("userId",item.getUserId());
+                intent.putExtra("wtId",wtId);
+                intent.putExtra("workId",workId);
                 startActivity(intent);
 
             }
@@ -247,8 +249,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                         }
                     }
                 });
-
-
     }
 
     private SortPop sortPop;

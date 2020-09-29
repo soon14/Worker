@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.GetWorkersInfoAdapter;
@@ -35,8 +36,15 @@ import java.util.List;
 
 /**
  * 招工详情:7个状态
- * 1.正在招
- * 2.已招满
+ status 状态 -1:不展示(有预付款项未付不显示给用户) )
+ 1:正在招
+ 2:已招满/待开工(所有用户已确认)
+ 3:工期中
+ 4:待结算
+ 5:待评价
+ 6:已完成
+ 7:已取消
+ 8:已过期
  */
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {
     private GetWorkersInfoAdapter mAdapter = new GetWorkersInfoAdapter();
@@ -58,6 +66,11 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     protected void onDestroy() {
         super.onDestroy();
         Apollo.unBind$core(this);
+    }
+
+    @Receive(EventStr.CLOSE_GET_WORKERSINFO_ACTIVITY)
+    public void closePage(){
+        finish();
     }
 
     private void onEvent() {
@@ -83,13 +96,19 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                }
            }
        });
-       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm);
+       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look);
        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
            @Override
            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                WorkerBean item = (WorkerBean) adapter.getItem(position);
                int userId = item.getUserId();
                switch (view.getId()){
+                   case R.id.tv_look://查看工人简历
+                       Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
+                       intent.putExtra("type",1);
+                       intent.putExtra("userId",item.getUserId());
+                       startActivity(intent);
+                       break;
                    case R.id.tv_cancel://婉拒
                        doJoinWork(userId,1,position);
                        break;
@@ -115,7 +134,6 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     }
 
     /**
-     * TODO 请求参数绑定错误
      * 拒绝/雇佣报名用户
      * @param userId 报名用户ID
      * @param type 类型 1:拒绝 2:雇佣
@@ -127,6 +145,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         mAdapter.removeAt(position);
+                        if (mAdapter.getData().size()==0){
+                            finish();
+                        }
                     }
                 });
     }
@@ -218,6 +239,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                         Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
                         intent.putExtra("type",1);
                         intent.putExtra("userId",item.getUserId());
+                        intent.putExtra("workId",workId);
                         startActivity(intent);
                         break;
                 }
