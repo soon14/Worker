@@ -14,7 +14,7 @@ import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.L;
-import com.xsd.utils.RandomUtils;
+import com.xsd.utils.MobileUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +28,9 @@ import java.util.Map;
 public class SignListActivity extends BaseBindBarActivity<ActivitySignListBinding> {
     private int mYear;
     private int mMonth;
+    private int mDay;
+    private String mobile;
+    List<CheckLogResponse.ItemsBean> items;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign_list;
@@ -42,27 +45,33 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     }
 
     private void initView() {
+         mobile = getIntent().getStringExtra("mobile");
         tvTitle.setText("考勤记录");
         java.util.Calendar c = java.util.Calendar.getInstance();
         mYear = c.get(java.util.Calendar.YEAR);
         mMonth = c.get(java.util.Calendar.MONTH)+1;
-        int mDay  = c.get(java.util.Calendar.DAY_OF_MONTH);
+        mDay  = c.get(java.util.Calendar.DAY_OF_MONTH);
         db.tvMonth.setText("("+mMonth+"月)");
-
         //范围控制，不能大于当前日期月份
         db.calendarView.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
 
     }
 
     private void loadData() {
-        dataProvider.work.checkLog()
+        String ym = mYear+"-"+(mMonth<10?"0"+mMonth:mMonth);
+        dataProvider.work.checkLog(ym)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckLogResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<CheckLogResponse> baseResponse) {
                         CheckLogResponse data = baseResponse.getData();
-                        db.setItem(data);
-                        List<CheckLogResponse.ItemsBean> items = data.getItems();
-                        initItems(items);
+                        db.setCheckLog(data);
+                        items = data.getItems();
+                        initItems();
+                        //设置今天选中
+                        String monthStr = mMonth<10?"0"+mMonth:mMonth+"";
+                        String dayStr = mDay<10?"0"+mDay:mDay+"";
+                        String selectTime = mYear+"-"+monthStr+"-"+dayStr;
+                        selectItem(selectTime);
                     }
 
                     @Override
@@ -78,23 +87,51 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
      * 有记录的信息，以标签形式写入
      * @param items
      */
-    private void initItems(List<CheckLogResponse.ItemsBean> items) {
+    private void initItems() {
+        if (items==null||items.size()==0)return;
        Map<String,Calendar> calendars = new HashMap();
-        for (int i = 0; i < 18; i++) {
-//            CheckLogResponse.ItemsBean itemsBean = items.get(i);
-//            int status = itemsBean.getStatus();// 0:未确认 1:已确认
-//            String workDate = itemsBean.getWorkDate();
-
-            int day = RandomUtils.getInt(1,30);
+        for (int i = 0; i < items.size(); i++) {
+            CheckLogResponse.ItemsBean itemsBean = items.get(i);
+            int status = itemsBean.getStatus();// 0:未确认 1:已确认
+            String workDate = itemsBean.getWorkDate();
+            String[] split = workDate.split("-");
+            int day = Integer.parseInt(split[2]);
             L.e(mYear+"-"+mMonth+"-"+day);
-            Calendar calendar = getSchemeCalendar(mYear, mMonth, day, day%2==0?0xFF3B77FF:0xFF999999, day%2==0?"上工":"未上");
+            Calendar calendar = getSchemeCalendar(mYear, mMonth, day, status==1?0xFF3B77FF:0xFF999999, status==1?"上工":"未上");
             calendars.put(calendar.toString(), calendar);
         }
         db.calendarView.setSchemeDate(calendars);
-
+    }
+    /**
+     * 选中后更新底部签到信息
+     */
+    private void selectItem(String selectTime) {
+        if (items==null||items.size()==0){
+            db.setItem(null);
+            return;
+        }
+        CheckLogResponse.ItemsBean select = findSelect(selectTime);
+        db.setItem(select);
+    }
+    private CheckLogResponse.ItemsBean findSelect(String selectTime){
+        for (int i = 0; i < items.size(); i++) {
+            CheckLogResponse.ItemsBean itemsBean = items.get(i);
+            int status = itemsBean.getStatus();// 0:未确认 1:已确认
+            String workDate = itemsBean.getWorkDate();
+            if (selectTime.equals(workDate)){
+                return itemsBean;
+            }
+        }
+        return null;
     }
 
     private void onEvent() {
+        db.tvContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MobileUtils.callPhone(SignListActivity.this,mobile);
+            }
+        });
         //日历月份改变监听
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
@@ -102,6 +139,17 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
             }
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
+                if (isClick){
+                    int year = calendar.getYear();
+                    int month = calendar.getMonth();
+                    int day = calendar.getDay();
+
+                    String monthStr = month<10?"0"+month:month+"";
+                    String dayStr = day<10?"0"+day:day+"";
+                    String selectTime = year+"-"+monthStr+"-"+dayStr;
+                    selectItem(selectTime);
+                    L.e(selectTime);
+                }
             }
         });
         db.calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
@@ -110,7 +158,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                 mYear = year;
                 mMonth = month;
                 db.tvMonth.setText("("+month+"月)");
-                initItems(null);
+                loadData();
             }
         });
 
@@ -157,7 +205,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                 mMonth = month;
                 db.tvMonth.setText("("+month+"月)");
                 db.calendarView.scrollToCalendar(year,month,1,true);
-                initItems(null);
+                loadData();
 
             });
            new XPopup.Builder(this)

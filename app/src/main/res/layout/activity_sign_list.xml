@@ -5,8 +5,13 @@
 
     <data>
         <variable
-            name="item"
+            name="checkLog"
             type="com.xsd.jx.bean.CheckLogResponse" />
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.CheckLogResponse.ItemsBean" />
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
     </data>
 
     <RelativeLayout
@@ -44,7 +49,7 @@
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             tools:text="10天"
-                            android:text="@{item.days+`天`}"
+                            android:text="@{checkLog.days+`天`}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
@@ -66,7 +71,7 @@
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             tools:text="4500元"
-                            android:text="@{item.earned+`元`}"
+                            android:text="@{checkLog.earned+`元`}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
@@ -88,7 +93,7 @@
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             tools:text="8小时"
-                            android:text="@{item.hours+`小时`}"
+                            android:text="@{checkLog.hours+`小时`}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
@@ -186,6 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <LinearLayout
+                            android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.GONE:View.VISIBLE}"
                             android:orientation="vertical"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -193,11 +199,13 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="上工时间：10:00:00"
+                                tools:text="上工时间：10:00:00"
+                                android:text="@{`上工时间：`+item.signInTime}"
                                 android:textColor="@color/tv_gray"
                                 android:textSize="@dimen/h5"
                                 />
                             <ImageView
+                                roundUrl="@{item.signInPic}"
                                 android:layout_marginTop="@dimen/dp_16"
                                 android:layout_width="@dimen/dp_54"
                                 android:layout_height="@dimen/dp_54"
@@ -207,12 +215,14 @@
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="今早大雨，现在开始上工我开始了"
+                                tools:text="今早大雨，现在开始上工我开始了"
+                                android:text="@{item.signInDesc}"
                                 android:textColor="@color/tv_darkgray"
                                 android:textSize="@dimen/h5"
                                 />
                         </LinearLayout>
                         <LinearLayout
+                            android:visibility="@{TextUtils.isEmpty(item.signOutTime)?View.GONE:View.VISIBLE}"
                             android:layout_marginLeft="@dimen/dp_24"
                             android:orientation="vertical"
                             android:layout_width="0dp"
@@ -221,11 +231,13 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="下工时间：22:00:00"
+                                tools:text="下工时间：22:00:00"
+                                android:text="@{`下工时间：`+item.signOutTime}"
                                 android:textColor="@color/tv_gray"
                                 android:textSize="@dimen/h5"
                                 />
                             <ImageView
+                                roundUrl="@{item.signOutPic}"
                                 android:layout_marginTop="@dimen/dp_16"
                                 android:layout_width="@dimen/dp_54"
                                 android:layout_height="@dimen/dp_54"
@@ -235,7 +247,8 @@
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="管理员操作"
+                                tools:text="管理员操作"
+                                android:text="@{item.signOutDesc}"
                                 android:textColor="@color/tv_darkgray"
                                 android:textSize="@dimen/h5"
                                 />

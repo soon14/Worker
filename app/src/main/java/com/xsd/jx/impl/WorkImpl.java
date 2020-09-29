@@ -97,7 +97,7 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<CheckLogResponse>> checkLog() {
-        return bindIoUI(api.checkLog());
+    public Observable<BaseResponse<CheckLogResponse>> checkLog(String month) {
+        return bindIoUI(api.checkLog(month));
     }
 }

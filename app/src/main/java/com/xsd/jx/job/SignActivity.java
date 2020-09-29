@@ -1,5 +1,6 @@
 package com.xsd.jx.job;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +34,7 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.FileUtils;
 import com.xsd.utils.L;
+import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SpannableStringUtils;
 import com.xsd.utils.TimeUtils;
 import com.xsd.utils.ToastUtil;
@@ -48,6 +50,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     private boolean isUpWork=true;//是否应该上工打卡
     private String picPath;//上工图片地址
     private int workId;
+    private String mobile;//上工图片地址
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign;
@@ -78,6 +81,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                     protected void onSuccess(BaseResponse<CheckResponse> baseResponse) {
                         CheckResponse data = baseResponse.getData();
                         db.setItem(data);
+                        mobile = data.getMobile();
                         workId = data.getWorkId();
                         db.tvAddress.setText("上工地点："+data.getAddress());
                         db.radarViewUp.setVisibility(View.VISIBLE);
@@ -131,7 +135,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                     signUp();
                     break;
                 case R.id.tv_contact://联系管理员
-                    ToastUtil.showLong("正在呼叫管理员...");
+                    MobileUtils.callPhone(this,mobile);
                     break;
                 case R.id.tv_go_for_work://找工作,点击跳转首页并弹推荐工作
                     finish();
@@ -139,7 +143,11 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                     break;
             }
         });
-        tvRight.setOnClickListener(v -> goActivity(SignListActivity.class));
+        tvRight.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignListActivity.class);
+            intent.putExtra("mobile",mobile);
+            startActivity(intent);
+        });
     }
     private SignPop signPop;
     private void signUp() {

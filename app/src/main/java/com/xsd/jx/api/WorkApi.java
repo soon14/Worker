@@ -86,7 +86,7 @@ public interface WorkApi {
     Observable<BaseResponse<MessageBean>> doCheck(@Field("workId")Integer workId,@Field("pic")String pic,@Field("desc")String desc);
     //用户查看自己整月的考勤记录
     @GET("work/check-log")
-    Observable<BaseResponse<CheckLogResponse>> checkLog();
+    Observable<BaseResponse<CheckLogResponse>> checkLog(@Query("month")String month);
 
 
 }
