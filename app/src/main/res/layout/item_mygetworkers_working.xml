@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="item"
             type="com.xsd.jx.bean.MyGetWorkersResponse.ItemsBean" />
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -27,19 +29,20 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="木工"
+                tools:text="木工"
+                android:text="@{item.typeTitle}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/h3" />
+                android:textSize="@dimen/h3"
+                android:textStyle="bold" />
 
             <TextView
+                price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
-                android:text="350元/天" />
+                tools:text="350元/天" />
         </LinearLayout>
-
         <LinearLayout
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="16dp"
@@ -48,15 +51,17 @@
             android:layout_height="wrap_content">
             <TextView
                 style="@style/TextWelfareTagStyle"
-                android:text="已付1000元" />
+                tools:text="已付1000元"
+                android:text="@{`已付`+item.paidAmount+`元`}"
+                />
             <TextView
+                android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
                 android:layout_marginLeft="@dimen/dp_6"
                 style="@style/TextWelfareTagStyle"
                 android:text="购买保险" />
         </LinearLayout>
-
-
         <TextView
+            workDay="@{item}"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
@@ -65,7 +70,6 @@
             android:text="工期：2020-07-29至2020-08-29(共30天)"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
-
         <TextView
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
@@ -73,7 +77,8 @@
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
         <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>

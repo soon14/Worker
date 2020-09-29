@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.WithdrawInfoResponse;
 import com.xsd.jx.databinding.ActivityWalletBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
@@ -24,7 +25,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     private int accountType=1;//1:支付宝 2:银行卡 3:周边事业部 4:微信
     private String account;
     private String name;
-    private String divisionId;
+    private int divisionId;
     private String bankName;
     private static final int TO_ALIPAY=0x001;
     private static final int TO_BANK_CARD=0x002;
@@ -109,7 +110,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
      */
     private void withdraw() {
         String amount = db.etAmount.getText().toString();
-        dataProvider.user.withdraw(amount,accountType+"",account,name,divisionId,bankName)
+        dataProvider.user.withdraw(amount,accountType+"",account,name,divisionId+"",bankName)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
                     @Override
                     protected void onSuccess(BaseResponse baseResponse) {
@@ -122,7 +123,6 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         tvTitle.setText("钱包");
         tvRight.setText("收支明细");
         name = UserUtils.getUser().getName();
-
     }
 
     @Override
@@ -137,7 +137,9 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                 db.tvAlipay.setText(account);
                 break;
             case TO_DIVISION:
-                divisionId = bundle.getString("divisionId");
+                DivisionBean item= (DivisionBean) bundle.getSerializable("item");
+                divisionId = item.getId();
+                db.tvLoca.setText(item.getName()+"-"+item.getAddr());
                 break;
             case TO_BANK_CARD:
                 account = bundle.getString("account");

@@ -75,6 +75,7 @@ public class MyGetWorkersResponse implements Serializable {
 
         private int id;
         private String sn;
+        private String paidAmount;
         private int userId;
         private int typeId;
         private String address;
@@ -96,6 +97,14 @@ public class MyGetWorkersResponse implements Serializable {
         private int confirmedNum;
         private int tobeSettledWage;
         private List<WorkerBean> workers;
+
+        public String getPaidAmount() {
+            return paidAmount;
+        }
+
+        public void setPaidAmount(String paidAmount) {
+            this.paidAmount = paidAmount;
+        }
 
         public int getId() {
             return id;

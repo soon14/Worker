@@ -41,7 +41,7 @@
                 price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
-                android:text="350元/天" />
+                tools:text="350元/天" />
         </LinearLayout>
 
         <LinearLayout

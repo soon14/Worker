@@ -1,5 +1,6 @@
 package com.xsd.jx.mine;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +44,12 @@ public class SetLocaPayActivity extends BaseBindBarActivity<ActivityRecyclerview
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 DivisionBean item = (DivisionBean) adapter.getItem(position);
-
+                Intent resultIntent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("item",item);
+                resultIntent.putExtras(bundle);
+                setResult(RESULT_OK, resultIntent);
+                finish();
             }
         });
     }

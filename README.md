@@ -75,4 +75,15 @@ addItemType(8, R.layout.item_worker_full);
 # 接口修改项：
 签到确认状态值变更下  1:未确认 2:已确认
 
+分享
+http://s.xhjxapp.com/html/share
+
+隐私
+http://s.xhjxapp.com/html/yszc
+
+用户
+http://s.xhjxapp.com/html/yhxy
+
+
+
 
