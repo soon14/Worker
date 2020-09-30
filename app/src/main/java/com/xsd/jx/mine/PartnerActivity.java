@@ -1,9 +1,11 @@
 package com.xsd.jx.mine;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.databinding.ActivityPartnerBinding;
@@ -30,11 +32,23 @@ public class PartnerActivity extends BaseBindBarActivity<ActivityPartnerBinding>
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        getBanner();
     }
 
     private void initView() {
         tvTitle.setText("城市合伙人");
         DataBindingAdapter.bindImageRoundUrl(db.ivTop,R.mipmap.bg_partner_top,6);
+    }
+    private void getBanner() {
+        dataProvider.site.banner(3)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<BannerBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<BannerBean> baseResponse) {
+                        BannerBean data = baseResponse.getData();
+                        if (data!=null&& !TextUtils.isEmpty(data.getContentPath()))
+                        DataBindingAdapter.bindImageRoundUrl(db.ivTop,data.getContentPath(),6);
+                    }
+                });
     }
 
     private void onEvent() {

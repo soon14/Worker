@@ -52,4 +52,12 @@ public class UserUtils {
         }
         return false;
     }
+    public static boolean isCertification() {
+        try {
+            return getUser().getIsCertification()==1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

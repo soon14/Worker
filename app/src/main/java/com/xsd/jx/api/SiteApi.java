@@ -1,5 +1,6 @@
 package com.xsd.jx.api;
 
+import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
@@ -28,5 +29,5 @@ public interface SiteApi {
     Observable<BaseResponse<MessageBean>> sendSms(@Field("mobile")String mobile, @Field("type")String type);
     //获取广告banner tid:类型 1:开屏 2:首页 3:城市合伙人 4:帮工友注册
     @GET("site/banner")
-    Observable<BaseResponse> banner(@Query("tId")Integer tId);
+    Observable<BaseResponse<BannerBean>> banner(@Query("tId")Integer tId);
 }

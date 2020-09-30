@@ -116,7 +116,7 @@ public class PopShowUtils {
                 .asConfirm("实名认证提醒",
                         "根据国家政策规定，您需要先完成实名认证才可上工。",
                         "取消",
-                        "实名认证提醒",
+                        "马上实名认证",
                         () -> activity.goActivity(RealNameAuthActivity.class),
                         null,
                         true, R.layout.dialog_tips)

@@ -33,7 +33,6 @@ import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.ToastUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ import java.util.List;
 public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     private static final String TAG = "JobFragment";
     private JobAdapter mAdapter = new JobAdapter();
-    private int page;
+    private int page=1;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_job;
@@ -66,19 +65,10 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         initView();
         loadData();
         getInviteList();
-
         onEvent();
     }
 
-    private void getBanner() {
-        dataProvider.site.banner(2)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
-                    @Override
-                    protected void onSuccess(BaseResponse baseResponse) {
 
-                    }
-                });
-    }
 
 
     //被邀请上工信息列表
@@ -160,7 +150,11 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     case 2://长期工
                         goActivity(PermanentWorkerActivity.class,2);
                         break;
-                    case 3:
+                    case 3://考勤打卡
+                        if (!UserUtils.isCertification()){
+                            PopShowUtils.showRealNameAuth((BaseActivity) this.getActivity());
+                            return;
+                        }
                         goActivity(SignActivity.class);
                         break;
                     case 4:

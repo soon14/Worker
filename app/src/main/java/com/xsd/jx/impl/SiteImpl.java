@@ -1,6 +1,7 @@
 package com.xsd.jx.impl;
 
 import com.xsd.jx.api.SiteApi;
+import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
@@ -39,7 +40,7 @@ public class SiteImpl implements SiteApi {
     }
 
     @Override
-    public Observable<BaseResponse> banner(Integer tId) {
+    public Observable<BaseResponse<BannerBean>> banner(Integer tId) {
         return bindIoUI(api.banner(tId));
     }
 }

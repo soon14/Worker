@@ -1,6 +1,7 @@
 package com.xsd.jx.mine;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
@@ -8,6 +9,7 @@ import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
@@ -41,6 +43,18 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        getBanner();
+    }
+    private void getBanner() {
+        dataProvider.site.banner(4)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<BannerBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<BannerBean> baseResponse) {
+                        BannerBean data = baseResponse.getData();
+                        if (data!=null&& !TextUtils.isEmpty(data.getContentPath()))
+                            DataBindingAdapter.bindImageRoundUrl(db.ivTop,data.getContentPath(),6);
+                    }
+                });
     }
     private void initView() {
         tvTitle.setText("帮工友注册");

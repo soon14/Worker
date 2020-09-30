@@ -23,7 +23,6 @@ import com.xsd.jx.fragment.MineFragment;
 import com.xsd.jx.fragment.OrderFragment;
 import com.xsd.jx.job.SelectTypeWorkActivity;
 import com.xsd.jx.job.SignActivity;
-import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -153,7 +152,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     @Receive(EventStr.GO_AUTH)
     public void goAuthActivity(){
-        goActivity(RealNameAuthActivity.class);
+        PopShowUtils.showRealNameAuth(this);
     }
 
     @Receive(EventStr.SHOW_PUSH_JOB)

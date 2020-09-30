@@ -34,7 +34,6 @@ import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.ToastUtil;
 
 /**
  * Date: 2020/1/3
@@ -124,11 +123,8 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     break;
                 case R.id.tv_top_recruit:
                 case R.id.tv_bottom_recruit:
-                    UserInfo user = UserUtils.getUser();
-                    int isCertification = user.getIsCertification();
-                    if (isCertification==0){
-                        ToastUtil.showLong("请先进行实名认证！");
-                        goActivity(RealNameAuthActivity.class);
+                    if (!UserUtils.isCertification()){
+                        PopShowUtils.showRealNameAuth((BaseActivity) this.getActivity());
                         return;
                     }
                     goActivity(GetWorkersActivity.class);
