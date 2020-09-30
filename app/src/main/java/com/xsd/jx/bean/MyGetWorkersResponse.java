@@ -91,7 +91,7 @@ public class MyGetWorkersResponse implements Serializable {
         private int safeAmount;
         private int advanceAmount;
         private int status;
-        private String created_at;
+        private String createdAt;
         private String typeTitle;
         private int tobeConfirmNum;
         private int confirmedNum;
@@ -242,12 +242,12 @@ public class MyGetWorkersResponse implements Serializable {
             this.status = status;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
         public String getTypeTitle() {

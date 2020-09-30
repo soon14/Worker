@@ -169,7 +169,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
             db.tvHire.setVisibility(View.VISIBLE);
         }
         //状态 1:未处理 2：已确认 3：已拒绝
-        if (status==1){
+        if (status==2){
             db.layoutBottomBtns.setVisibility(View.GONE);
         }
 

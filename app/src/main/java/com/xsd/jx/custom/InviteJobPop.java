@@ -19,6 +19,7 @@ import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.databinding.ItemJobBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class InviteJobPop extends CenterPopupView {
         LinearLayout layoutContent = findViewById(R.id.layout_content);
         for (int i = 0; i < data.size(); i++) {
             JobBean jobBean = data.get(i);
+            L.e("被邀请的ID=="+jobBean.getId());
             boolean isJoin = jobBean.isIsJoin();//是否已经报名
             View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job, null);
             ItemJobBinding bind = DataBindingUtil.bind(viewChild);

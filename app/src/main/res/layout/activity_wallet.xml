@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.UserInfo" />
     </data>
 
     <RelativeLayout
@@ -47,7 +49,8 @@
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥0"
+                            tools:text="￥0"
+                            android:text="@{`￥`+item.liveBalance}"
                             android:textColor="#ffffffff"
                             android:textSize="30sp"
                             />
@@ -75,7 +78,8 @@
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥0"
+                            tools:text="￥0"
+                            android:text="@{`￥`+item.frozenBalance}"
                             android:textColor="#ffffffff"
                             android:textSize="30sp"
                             />
@@ -165,79 +169,198 @@
                             android:layout_height="wrap_content"/>
 
                     <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8" android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:paddingTop="@dimen/dp_8"
+                                android:id="@+id/tv_alipay_name"
+                                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:drawableLeft="@mipmap/ic_alipay_pay"
+                                android:drawablePadding="@dimen/dp_8"
+                                android:gravity="center_vertical"
+                                android:layoutDirection="rtl"
+                                android:text="支付宝收款"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/tv_alipay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@mipmap/ic_gray_arrow_right"
+                                android:drawablePadding="@dimen/dp_8"
+                                android:hint="去设置"
+                                android:paddingTop="@dimen/dp_12"
+                                android:paddingBottom="@dimen/dp_12"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_alipay_name" />
+                        </LinearLayout>
+
+
                         <androidx.appcompat.widget.AppCompatCheckBox
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="@dimen/dp_16"
-                            android:layoutDirection="rtl"
-                            android:drawablePadding="@dimen/dp_8"
-                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                            android:drawableLeft="@mipmap/ic_alipay_pay"
                             android:id="@+id/checkbox_alipay"
-                            android:textColor="@color/checkbox_text_gray_black_selecter"
-                            android:textSize="@dimen/h4"
-                            android:text="支付宝收款"
+                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:checked="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:drawablePadding="@dimen/dp_8"
+                            android:gravity="center_vertical"
+                            android:layoutDirection="rtl"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </LinearLayout>
+
+
+
+
+                    <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8"/>
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:paddingTop="@dimen/dp_8"
+                                android:id="@+id/tv_division_name"
+                                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:drawableLeft="@mipmap/ic_loca_pay"
+                                android:drawablePadding="@dimen/dp_8"
+                                android:gravity="center_vertical"
+                                android:layoutDirection="rtl"
+                                android:text="附近事业部拿现金"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:layout_below="@+id/tv_division_name"
+                                android:id="@+id/tv_loca"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@mipmap/ic_gray_arrow_right"
+                                android:drawablePadding="@dimen/dp_8"
+                                android:hint="选择事业部"
+                                android:paddingTop="@dimen/dp_12"
+                                android:paddingBottom="@dimen/dp_12"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/checkbox_cash"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_division_name" />
+                        </LinearLayout>
+
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/checkbox_cash"
+                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/dp_8"
+                            android:gravity="center_vertical"
+                            android:layoutDirection="rtl"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </LinearLayout>
+
+
+
+                    <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8"/>
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
                         <TextView
-                            android:id="@+id/tv_alipay"
-                            android:paddingBottom="@dimen/dp_8"
                             android:paddingTop="@dimen/dp_8"
+                            android:id="@+id/tv_bankcard_name"
+                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:drawableLeft="@mipmap/ic_bank_pay"
+                            android:drawablePadding="@dimen/dp_8"
+                            android:gravity="center_vertical"
+                            android:layoutDirection="rtl"
+                            android:text="银行卡收款"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                        <TextView
+                            android:id="@+id/tv_bankcard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:drawableRight="@mipmap/ic_gray_arrow_right"
                             android:drawablePadding="@dimen/dp_8"
-                            android:hint="去设置"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:gravity="left"
+                            android:hint="添加账号"
+                            android:paddingTop="@dimen/dp_12"
+                            android:paddingBottom="@dimen/dp_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/checkbox_bankcard"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bankcard_name" />
+                        </LinearLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/checkbox_bankcard"
+                                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/dp_8"
+                                android:gravity="center_vertical"
+                                android:layoutDirection="rtl"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
 
-                    <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8"/>
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:layoutDirection="rtl"
-                        android:drawablePadding="@dimen/dp_8"
-                        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                        android:drawableLeft="@mipmap/ic_loca_pay"
-                        android:id="@+id/checkbox_cash"
-                        android:textColor="@color/checkbox_text_gray_black_selecter"
-                        android:textSize="@dimen/h4"
-                        android:text="附近事业部拿现金"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/tv_loca"
-                        android:paddingBottom="@dimen/dp_8"
-                        android:paddingTop="@dimen/dp_8"
-                        android:drawableRight="@mipmap/ic_gray_arrow_right"
-                        android:drawablePadding="@dimen/dp_8"
-                        android:text="湖北省武汉市中南二路2号中南建筑设计院办公大楼A座"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
 
-                    <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8"/>
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:layoutDirection="rtl"
-                        android:drawablePadding="@dimen/dp_8"
-                        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                        android:drawableLeft="@mipmap/ic_bank_pay"
-                        android:id="@+id/checkbox_bankcard"
-                        android:textColor="@color/checkbox_text_gray_black_selecter"
-                        android:textSize="@dimen/h4"
-
-                        android:text="银行卡收款"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/tv_bankcard"
-                        android:paddingBottom="@dimen/dp_8"
-                        android:paddingTop="@dimen/dp_8"
-                        android:drawableRight="@mipmap/ic_gray_arrow_right"
-                        android:drawablePadding="@dimen/dp_8"
-                        android:text="添加账号"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
                     <View style="@style/h_line" android:layout_marginTop="@dimen/dp_8"/>
                     <TextView
                         android:layout_marginBottom="@dimen/dp_64"

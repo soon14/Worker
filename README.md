@@ -77,12 +77,17 @@ addItemType(8, R.layout.item_worker_full);
 
 分享
 http://s.xhjxapp.com/html/share
+分享到微信的文案：
+3亿工友为您推荐先华匠心
+建筑找工到匠心，免费担保更安心
 
-隐私
+隐私协议
 http://s.xhjxapp.com/html/yszc
 
-用户
+用户协议
 http://s.xhjxapp.com/html/yhxy
+
+
 
 
 

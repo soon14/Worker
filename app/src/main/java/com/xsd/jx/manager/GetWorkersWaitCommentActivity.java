@@ -35,6 +35,7 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
     }
     private void initView() {
         tvTitle.setText("待评价");

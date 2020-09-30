@@ -1,7 +1,6 @@
 package com.xsd.jx.job;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -38,6 +37,8 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        checkPrice();
+
     }
 
     private void onEvent() {
@@ -45,11 +46,6 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                    String keyWord = v.getText().toString();
-                    if (TextUtils.isEmpty(keyWord)){
-                        ToastUtil.showLong("请输入搜索内容！");
-                        return false;
-                    }
                     //开始搜索keyWord相关内容
                     SoftInputUtils.closeSoftInput(JobPriceInquireActivity.this);
                     checkPrice();
@@ -61,10 +57,6 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
             @Override
             public void onClick(View v) {
                 String keyWord = db.etSearch.getText().toString();
-                if (TextUtils.isEmpty(keyWord)){
-                    ToastUtil.showLong("请输入搜索内容！");
-                    return;
-                }
                 SoftInputUtils.closeSoftInput(JobPriceInquireActivity.this);
                 checkPrice();
             }
@@ -108,7 +100,6 @@ public class JobPriceInquireActivity extends BaseBindBarActivity<ActivityJobPric
 
     private void checkPrice() {
         String s = db.etSearch.getText().toString();
-        if (TextUtils.isEmpty(s))return;
         dataProvider.work.price(selectCityId,s)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<List<JobSearchBean>>>() {
                     @Override

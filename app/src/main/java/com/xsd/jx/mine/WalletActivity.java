@@ -2,6 +2,7 @@ package com.xsd.jx.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
@@ -10,16 +11,29 @@ import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.DivisionBean;
+import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.bean.WithdrawInfoResponse;
 import com.xsd.jx.databinding.ActivityWalletBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.EditTextUtils;
+import com.xsd.utils.ToastUtil;
 
 /**
  * 钱包
  * 1.支付宝（账号，姓名）
  * 2.银行卡（银行账号，姓名，所属银行）
  * 3.周边事业部（事业部id）
+ balance	integer
+ 总余额(分)
+ liveBalance	integer
+ 可提现余额(分)
+ frozenBalance	integer
+ 冻结余额(分)
+ withdrawTotal	integer
+ 已提现总金额（分）
  */
 public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     private int accountType=1;//1:支付宝 2:银行卡 3:周边事业部 4:微信
@@ -30,6 +44,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     private static final int TO_ALIPAY=0x001;
     private static final int TO_BANK_CARD=0x002;
     private static final int TO_DIVISION=0x003;
+    WithdrawInfoResponse payData;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_wallet;
@@ -48,10 +63,59 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WithdrawInfoResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<WithdrawInfoResponse> baseResponse) {
-                        WithdrawInfoResponse data = baseResponse.getData();
-
+                         payData = baseResponse.getData();
+                        //设置支付方式的数据
+                        initPayData();
                     }
                 });
+        dataProvider.user.info()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
+                        UserInfoResponse data = baseResponse.getData();
+                        UserInfo info = data.getInfo();
+                        UserUtils.saveUser(info);
+                        db.setItem(info);
+                    }
+                });
+    }
+
+    /**
+     * 设置支付方式的数据
+     * @param data
+     */
+    private void initPayData() {
+        WithdrawInfoResponse.WxBean wx = payData.getWx();
+
+        WithdrawInfoResponse.AliBean ali = payData.getAli();
+        WithdrawInfoResponse.DivisionBean division = payData.getDivision();
+        WithdrawInfoResponse.BankBean bank = payData.getBank();
+        //默认选中的支付宝1
+        String account1 = ali.getAccount();
+        String name1 = ali.getName();
+        if (!TextUtils.isEmpty(account1)){
+            db.tvAlipay.setText(name1+"-"+account1);
+            account = account1;
+            name = name1;
+        }
+        //银行卡2
+        String account2 = bank.getAccount();//号码
+        bankName = bank.getBankName();
+        String name2 = bank.getName();
+        if (!TextUtils.isEmpty(account2)){
+            db.tvBankcard.setText(name2+"-"+account2);
+        }
+
+        //事业部3
+        divisionId = division.getId();
+        String name3 = division.getName();
+        String addr3 = division.getAddr();
+        if (!TextUtils.isEmpty(name3)){
+            db.tvLoca.setText(name3+"-"+addr3);
+        }
+
+
+
     }
 
     private void onEvent() {
@@ -62,8 +126,17 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                     if (db.checkboxBankcard.isChecked())db.checkboxBankcard.setChecked(false);
                     if (db.checkboxCash.isChecked())db.checkboxCash.setChecked(false);
                     accountType = 1;
+                    WithdrawInfoResponse.AliBean ali = payData.getAli();
+                    account = ali.getAccount();
+                    name = ali.getName();
+
                 }else {
-                    if (!db.checkboxBankcard.isChecked()&&!db.checkboxCash.isChecked())buttonView.setChecked(true);
+                    if (!db.checkboxBankcard.isChecked()&&!db.checkboxCash.isChecked()){
+                        buttonView.setChecked(true);
+                        WithdrawInfoResponse.AliBean ali = payData.getAli();
+                        account = ali.getAccount();
+                        name = ali.getName();
+                    }
                 }
             }
         });
@@ -74,8 +147,18 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                     if (db.checkboxAlipay.isChecked())db.checkboxAlipay.setChecked(false);
                     if (db.checkboxCash.isChecked())db.checkboxCash.setChecked(false);
                     accountType = 2;
+                    WithdrawInfoResponse.BankBean bank = payData.getBank();
+                    account = bank.getAccount();
+                    name = bank.getName();
+                    bankName = bank.getBankName();
                 }else {
-                    if (!db.checkboxAlipay.isChecked()&&!db.checkboxCash.isChecked())buttonView.setChecked(true);
+                    if (!db.checkboxAlipay.isChecked()&&!db.checkboxCash.isChecked()){
+                        buttonView.setChecked(true);
+                        WithdrawInfoResponse.BankBean bank = payData.getBank();
+                        account = bank.getAccount();
+                        name = bank.getName();
+                        bankName = bank.getBankName();
+                    }
                 }
             }
         });
@@ -86,6 +169,8 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                     if (db.checkboxAlipay.isChecked())db.checkboxAlipay.setChecked(false);
                     if (db.checkboxBankcard.isChecked())db.checkboxBankcard.setChecked(false);
                     accountType = 3;
+                    WithdrawInfoResponse.DivisionBean division = payData.getDivision();
+                    divisionId = division.getId();
                 }else {
                     if (!db.checkboxAlipay.isChecked()&&!db.checkboxBankcard.isChecked())buttonView.setChecked(true);
                 }
@@ -100,7 +185,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     }
     /**
      * TODO 暂无可提现余额，待测试
-     * 提现申请
+     *  提现申请
      *  amount      提现金额
      *  accountType 支付类型 1:支付宝 2:银行卡 3:周边事业部 4:微信
      *  account     账号
@@ -109,12 +194,34 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
      *  bankName    银行名称
      */
     private void withdraw() {
-        String amount = db.etAmount.getText().toString();
-        dataProvider.user.withdraw(amount,accountType+"",account,name,divisionId+"",bankName)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
+        if (EditTextUtils.isEmpty(db.etAmount))return;
+        int amount = Integer.parseInt(db.etAmount.getText().toString());
+        if (amount==0){
+            ToastUtil.showLong("提现金额需大于0");
+            return;
+        }
+        if (accountType==1){
+            if (TextUtils.isEmpty(account)){
+                ToastUtil.showLong("请设置支付宝账号！");
+                return;
+            }
+        }else if (accountType==2){
+            if (TextUtils.isEmpty(account)){
+                ToastUtil.showLong("请添加银行卡！");
+                return;
+            }
+        }else if (accountType==3){
+            if (divisionId==0){
+                ToastUtil.showLong("请选择事业部！");
+                return;
+            }
+        }
+        dataProvider.user.withdraw(amount,accountType,account,name,divisionId,bankName)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
-                    protected void onSuccess(BaseResponse baseResponse) {
-
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        finish();
                     }
                 });
     }

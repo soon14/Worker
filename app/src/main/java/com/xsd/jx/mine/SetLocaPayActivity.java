@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -52,11 +53,17 @@ public class SetLocaPayActivity extends BaseBindBarActivity<ActivityRecyclerview
                 finish();
             }
         });
+        db.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
     }
 
     private void loadData() {
         dataProvider.user.division()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<List<DivisionBean>>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<List<DivisionBean>>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<List<DivisionBean>> baseResponse) {
                         List<DivisionBean> data = baseResponse.getData();

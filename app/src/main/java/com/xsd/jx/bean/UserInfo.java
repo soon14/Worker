@@ -5,6 +5,45 @@ import java.io.Serializable;
 /**
  * Date: 2020/9/8
  * author: SmallCake
+
+ balance	integer
+ 总余额(分)
+ liveBalance	integer
+ 可提现余额(分)
+ frozenBalance	integer
+ 冻结余额(分)
+ withdrawTotal	integer
+ 已提现总金额（分）
+
+
+ idCard	string
+ 身份证号码
+ intro	string
+ 简介
+ inviteCode	integer
+ 邀请码
+ isCertification	integer
+ 是否实名认证 0否 1是
+ isHelpRegister	integer
+ 是否帮注册 0否 1是
+
+
+
+
+ parentId	integer
+ 邀请人ID
+ sex	integer
+ 性别 1男 2女 3未知
+ status	integer
+ 状态 0禁用 1正常
+ updatedAt	string
+ 更新时间
+ workAreaId	integer
+ 求职区域ID
+ workYears	string
+ 工作年限
+ wxUnionId	string
+ 微信登录凭证
  */
 public class UserInfo implements Serializable {
 

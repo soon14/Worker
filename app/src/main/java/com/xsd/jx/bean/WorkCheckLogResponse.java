@@ -20,9 +20,16 @@ public class WorkCheckLogResponse implements Serializable {
     private String totalNum;
     private String notCheckNum;
     private String checkNum;
-    private List<?> workingList;
+    private List<WorkingItem> workingList;
     private List<ItemsBean> items;
 
+    public List<WorkingItem> getWorkingList() {
+        return workingList;
+    }
+
+    public void setWorkingList(List<WorkingItem> workingList) {
+        this.workingList = workingList;
+    }
 
     public String getTotalNum() {
         return totalNum;
@@ -129,6 +136,52 @@ public class WorkCheckLogResponse implements Serializable {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+    }
+    public static class WorkingItem {
+
+        /**
+         id	        integer工作ID
+         endDate	string结束日期
+         startDate	string开始日期
+         typeTitle	string工种名称
+         */
+
+        private int id;
+        private String typeTitle;
+        private String startDate;
+        private String endDate;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getTypeTitle() {
+            return typeTitle;
+        }
+
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
+        }
+
+        public String getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(String startDate) {
+            this.startDate = startDate;
+        }
+
+        public String getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(String endDate) {
+            this.endDate = endDate;
         }
     }
 }

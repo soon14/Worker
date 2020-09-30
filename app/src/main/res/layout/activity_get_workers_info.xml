@@ -379,7 +379,7 @@
                             android:textSize="@dimen/h4"
                             android:textColor="@color/tv_darkgray"
                             tools:text="2020-08-21 10:45"
-                            android:text="@{item.created_at}"
+                            android:text="@{item.createdAt}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>

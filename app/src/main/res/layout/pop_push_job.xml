@@ -50,7 +50,7 @@
             android:layout_gravity="center_horizontal"
             android:scrollbars="none"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:onClick="@{clicklistener}"
                 android:id="@+id/layout_content"
@@ -186,6 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:gravity="center"
                 isFav="@{item.isFav}"
                 android:onClick="@{clicklistener}"
                 android:id="@+id/tv_fav"
@@ -196,18 +197,24 @@
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h5"
                 android:text="收藏"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"/>
+
             <TextView
-                android:onClick="@{clicklistener}"
-                isJoin="@{item.isJoin}"
-                android:layout_centerInParent="true"
                 android:id="@+id/tv_join"
                 style="@style/DefaultBtnStyle"
+                isJoin="@{item.isJoin}"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/tv_next"
+                android:layout_toEndOf="@+id/tv_fav"
+                android:onClick="@{clicklistener}"
                 android:text="报名上工" />
             <TextView
+                android:gravity="center"
                 android:onClick="@{clicklistener}"
                 android:id="@+id/tv_next"
                 android:drawablePadding="@dimen/dp_8"
@@ -218,18 +225,18 @@
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h5"
                 android:text="下一个"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
+
         <TextView
             android:id="@+id/tv_ignore"
-            android:onClick="@{clicklistener}"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_gravity="center_horizontal"
-            android:padding="@dimen/dp_8"
-            android:drawablePadding="@dimen/dp_6"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:onClick="@{clicklistener}"
+            android:padding="@dimen/dp_8"
             android:text="不看推荐，我自己找"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5" />

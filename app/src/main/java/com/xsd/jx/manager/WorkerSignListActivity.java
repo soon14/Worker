@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.impl.BottomListPopupView;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerSignListAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -28,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 企业端：
+ *
  * 考勤记录
  * 如果是今天之前的日子没打卡，那么此处显示“
  * 您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改
@@ -54,6 +59,13 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         loadData();
     }
 
+    private void initView() {
+        date = getIntent().getStringExtra("date");
+        tvTitle.setText("考勤记录");
+        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        db.recyclerView.setAdapter(mAdapter);
+    }
+
     /**
      * 考勤记录
      * 根据日期获取某个招工的所有用户的考勤信息
@@ -64,9 +76,51 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                     @Override
                     protected void onSuccess(BaseResponse<WorkCheckLogResponse> baseResponse) {
                         WorkCheckLogResponse data = baseResponse.getData();
+                        List<WorkCheckLogResponse.WorkingItem> workingList = data.getWorkingList();
+                        initTopWorkingList(workingList);
                         initData(data);
                     }
                 });
+    }
+    BottomListPopupView bottomWorkingList;
+    private void initTopWorkingList(List<WorkCheckLogResponse.WorkingItem> workingList) {
+        if (workingList==null||workingList.size()==0)return;
+        //默认设置第一项
+        WorkCheckLogResponse.WorkingItem workingItem0 = workingList.get(0);
+        db.tvTypeTitle.setText(workingItem0.getTypeTitle());
+        db.tvTime.setText( workingItem0.getStartDate() + "至" +  workingItem0.getEndDate());
+
+
+        String[] strings = new String[workingList.size()];
+
+        for (int i = 0; i < workingList.size(); i++) {
+            WorkCheckLogResponse.WorkingItem workingItem = workingList.get(i);
+            String typeTitle = workingItem.getTypeTitle();
+            String startDate = workingItem.getStartDate();
+            String endDate = workingItem.getEndDate();
+            strings[i] = typeTitle +"("+startDate+"至"+endDate+")";
+
+        }
+
+         bottomWorkingList = new XPopup.Builder(this)
+                .asBottomList("工期选择",
+                        strings,
+                        null,
+                        -1,
+                        false,
+                        new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                WorkCheckLogResponse.WorkingItem workingItem = workingList.get(position);
+                                String typeTitle = workingItem.getTypeTitle();
+                                String startDate = workingItem.getStartDate();
+                                String endDate = workingItem.getEndDate();
+                                db.tvTypeTitle.setText(typeTitle);
+                                db.tvTime.setText(startDate + "至" + endDate);
+                            }
+                        },
+                        0,
+                        0);
     }
 
     /**
@@ -133,6 +187,12 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                     break;
             }
         });
+        db.layoutTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomWorkingList!=null&&!bottomWorkingList.isShow())bottomWorkingList.show();
+            }
+        });
     }
 
     /**
@@ -151,10 +211,5 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                 });
     }
 
-    private void initView() {
-        date = getIntent().getStringExtra("date");
-        tvTitle.setText("考勤记录");
-        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        db.recyclerView.setAdapter(mAdapter);
-    }
+
 }

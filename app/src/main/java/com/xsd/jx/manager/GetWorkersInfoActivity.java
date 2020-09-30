@@ -25,10 +25,12 @@ import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.custom.WaitPayBillPop;
 import com.xsd.jx.databinding.ActivityGetWorkersInfoBinding;
 import com.xsd.jx.listener.OnTabClickListener;
+import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.utils.ClipboardUtils;
+import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.Arrays;
@@ -96,7 +98,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                }
            }
        });
-       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look);
+       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment);
        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
            @Override
            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -116,6 +118,16 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        break;
                    case R.id.tv_confirm://雇佣
                        doJoinWork(userId,2,position);
+                       break;
+                   case R.id.tv_name://打电话
+                       MobileUtils.callPhone(GetWorkersInfoActivity.this,item.getMobile());
+                       break;
+                   case R.id.tv_single_comment://单独评价，用工方评价上工者
+                       Intent intent1 = new Intent(GetWorkersInfoActivity.this, CommentActivity.class);
+                       intent1.putExtra("type",1);
+                       intent1.putExtra("workId",workId);
+                       intent1.putExtra("userId",userId);
+                       startActivity(intent1);
                        break;
                }
            }

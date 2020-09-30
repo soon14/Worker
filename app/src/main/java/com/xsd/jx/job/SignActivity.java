@@ -83,6 +83,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         db.setItem(data);
                         mobile = data.getMobile();
                         workId = data.getWorkId();
+
                         db.tvAddress.setText("上工地点："+data.getAddress());
                         db.radarViewUp.setVisibility(View.VISIBLE);
                         db.layoutNotWorking.setVisibility(View.GONE);
@@ -91,7 +92,10 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         mHandler.sendEmptyMessage(0);
                         String signInTime = data.getSignInTime();
                         String signOutTime = data.getSignOutTime();
-                        isUpWork = TextUtils.isEmpty(signInTime);
+                        isUpWork = TextUtils.isEmpty(signInTime);//是否是上工打卡
+                        if (!TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
+                            db.radarViewDown.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     @Override

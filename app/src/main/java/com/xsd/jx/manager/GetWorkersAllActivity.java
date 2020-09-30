@@ -31,6 +31,7 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+        loadData();
     }
     private void initView() {
         tvTitle.setText("全部招工");

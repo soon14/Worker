@@ -129,7 +129,18 @@ public interface ServerApi {
      * 评价
      * 用工方评价上工者
      * @param workId
-     * @param data
+     * @param data  {
+     *   "allRate": 0,
+     *   "content": "string",
+     *   "id": 0,
+     *   "isAnonymous": 0,
+     *   "rate1": 0,
+     *   "rate2": 0,
+     *   "rate3": 0,
+     *   "toUserId": 0,
+     *   "userId": 0,
+     *   "workId": 0
+     * }
      * @return
      */
     @FormUrlEncoded

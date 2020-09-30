@@ -12,8 +12,11 @@
     </data>
 
 <LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/empty_view_nologin" android:visibility="gone" android:id="@+id/layout_no_login"/>
+
     <ImageView
         android:id="@+id/iv_set"
         android:onClick="@{clicklistener}"

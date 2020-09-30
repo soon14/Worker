@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.xsd.jx.WebActivity;
 import com.xsd.jx.inject.DaggerCommonComponent;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.inject.NetWorkMoudle;
@@ -61,5 +62,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     public void goJobInfoActivity(int workId){
         goActivity(JobInfoActivity.class,workId);
+    }
+
+    public void goWeb(String title,String url){
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 }

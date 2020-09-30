@@ -31,7 +31,14 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         onEvent();
         loadBottomData();
     }
-
+    private void initView() {
+        tvTitle.setText("工人考勤");
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        int mYear = c.get(java.util.Calendar.YEAR);
+        int mMonth = c.get(java.util.Calendar.MONTH);
+        int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
+        date = mYear+"-"+(mMonth+1)+"-"+mDay;
+    }
 
     /**
      * 根据日期查询当日我发布的工作考勤情况
@@ -79,13 +86,5 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         });
     }
 
-    private void initView() {
-        tvTitle.setText("工人考勤");
-        java.util.Calendar c = java.util.Calendar.getInstance();
-        int mYear = c.get(java.util.Calendar.YEAR);
-        int mMonth = c.get(java.util.Calendar.MONTH);
-        int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
-        date = mYear+"-"+(mMonth+1)+"-"+mDay;
 
-    }
 }

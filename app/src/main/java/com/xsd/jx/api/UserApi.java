@@ -5,6 +5,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
+import com.xsd.jx.bean.IsInWorkResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
@@ -70,12 +71,12 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("user/withdraw")
-    Observable<BaseResponse> withdraw(
-             @Field("amount")String amount
-            ,@Field("accountType")String accountType
+    Observable<BaseResponse<MessageBean>> withdraw(
+             @Field("amount")Integer amount
+            ,@Field("accountType")Integer accountType
             ,@Field("account")String account
             ,@Field("name")String name
-            ,@Field("divisionId")String divisionId
+            ,@Field("divisionId")Integer divisionId
             ,@Field("bankName")String bankName
     );
 
@@ -132,6 +133,10 @@ public interface UserApi {
     @FormUrlEncoded
     @POST("user/feedback")
     Observable<BaseResponse<MessageBean>> feedback(@Field("content")String content,@Field("contentUrl")String contentUrl);
+
+    //打开APP检查当前用户当日是否有上工
+    @GET("user/is-in-work")
+    Observable<BaseResponse<IsInWorkResponse>> isInWork();
 
 
 

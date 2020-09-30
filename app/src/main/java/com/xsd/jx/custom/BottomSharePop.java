@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.base.Contants;
 import com.xsd.utils.ShareUtils;
 import com.xsd.utils.SpannableStringUtils;
 
@@ -40,18 +41,21 @@ public class BottomSharePop extends BottomPopupView {
                 .create();
         tvDesc.setText(spanStr);
 
+        String content="3亿工友为您推荐先华匠心\n" +
+                "建筑找工到匠心，免费担保更安心\n"+ Contants.SHARE_URL;
+
         findViewById(R.id.tv_wx)
                 .setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShareUtils.shareText(activity,"分享","分享","若工友在平台完成上工，您每次都可再获得现金奖励。");
+                        ShareUtils.shareText(activity,"分享","分享",content);
                     }
                 });
         findViewById(R.id.tv_wx_circle)
                 .setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShareUtils.shareText(activity,"分享","分享","若工友在平台完成上工，您每次都可再获得现金奖励。");
+                        ShareUtils.shareText(activity,"分享","分享",content);
                     }
                 });
 

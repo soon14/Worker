@@ -95,6 +95,21 @@ public class PopShowUtils {
                 .show();
     }
 
+    public static void showMsg(BaseActivity activity,String msg) {
+        new XPopup.Builder(activity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asConfirm("提示",
+                        msg,
+                        "",
+                        "知道了",
+                        null,
+                        null,
+                        true,
+                        R.layout.dialog_tips)
+                .show();
+    }
+
 
     public static void showRealNameAuth(BaseActivity activity) {
         new XPopup.Builder(activity)

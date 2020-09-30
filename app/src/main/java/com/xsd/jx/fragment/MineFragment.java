@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
+import com.xsd.jx.LoginActivity;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
@@ -54,17 +55,36 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
     @Override
     protected void onLazyLoad() {
         initView();
-        loadUserInfo();
         onEvent();
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            if (UserUtils.isLogin())loadUserInfo();
+        }
+    }
+
+
     private void initView() {
         AnimUtils.floatView(db.ivLq);
+        if (!UserUtils.isLogin()){
+            db.layoutNoLogin.setVisibility(View.VISIBLE);
+            db.layoutNoLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goActivity(LoginActivity.class);
+                }
+            });
+        }
     }
 
     //用户详情
     @Receive({EventStr.UPDATE_USER_INFO,EventStr.LOGIN_SUCCESS})
     public void loadUserInfo() {
+        db.layoutNoLogin.setVisibility(View.GONE);
         dataProvider.user.info()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
                     @Override

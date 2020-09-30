@@ -2,7 +2,6 @@ package com.xsd.jx;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -16,18 +15,20 @@ import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.base.BaseBindActivity;
 import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.IsInWorkResponse;
 import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
 import com.xsd.jx.fragment.OrderFragment;
 import com.xsd.jx.job.SelectTypeWorkActivity;
-import com.xsd.jx.listener.OnBottomNavClickListener;
+import com.xsd.jx.job.SignActivity;
 import com.xsd.jx.mine.RealNameAuthActivity;
 import com.xsd.jx.utils.BottomNavUtils;
+import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.L;
-import com.xsd.utils.ToastUtil;
 
 /**
  * 主要包含：
@@ -73,8 +74,25 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             L.e("token=="+UserUtils.getToken());
             PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
             if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+            isInWork();
         }
+    }
 
+    /**
+     * 是否在工种中...
+     */
+    private void isInWork() {
+        dataProvider.user.isInWork()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<IsInWorkResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<IsInWorkResponse> baseResponse) {
+                        IsInWorkResponse data = baseResponse.getData();
+                        boolean inWork = data.isInWork();
+                        if (inWork){
+                            goActivity(SignActivity.class);
+                        }
+                    }
+                });
 
     }
 
@@ -104,21 +122,22 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         };
         db.viewPager.setAdapter(fragmentPagerAdapter);
         db.viewPager.setOffscreenPageLimit(tabNames.length);
-        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, new OnBottomNavClickListener() {
-            @Override
-            public void onNavClick(int index) {
-                switch (index){
-                    case 1:
-                    case 2:
-                        if (!UserUtils.isLogin()){
-                            ToastUtil.showLong("请先登录！");
-                            goActivity(LoginActivity.class);
-                            new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
-                        }
-                        break;
-                }
-            }
-        });
+//        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, new OnBottomNavClickListener() {
+//            @Override
+////            public void onNavClick(int index) {
+////                switch (index){
+////                    case 1:
+////                    case 2:
+////                        if (!UserUtils.isLogin()){
+////                            ToastUtil.showLong("请先登录！");
+////                            goActivity(LoginActivity.class);
+////                            new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
+////                        }
+////                        break;
+////                }
+////            }
+////        });
+        BottomNavUtils.initTabBindViewPager(db.tabLayout,db.viewPager,null);
 
     }
 

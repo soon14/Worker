@@ -32,7 +32,7 @@ public class WorkerBean implements Serializable, MultiItemEntity {
 
     //招工多余参数
     private String mobile;
-    private int status;
+    private int status;//状态 1:未处理 2：已确认 3：已拒绝
     private int checkDay;
     private int totalWage;
 

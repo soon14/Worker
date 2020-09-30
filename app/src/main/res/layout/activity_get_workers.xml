@@ -184,7 +184,7 @@
             android:layout_height="@dimen/dp_88"
             app:rb_color="#FB4808"
             app:rb_duration="2000"
-            app:rb_radius="40"
+            app:rb_radius="30"
             app:rb_rippleAmount="2"
             app:rb_type="0"
             app:rb_scale="3">

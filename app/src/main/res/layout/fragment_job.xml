@@ -31,6 +31,9 @@
                     app:toolbarId="@+id/toolbar">
 
                     <com.youth.banner.Banner
+                        android:layout_marginTop="24dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp"
                         android:id="@+id/banner"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/dp_160" />
@@ -150,7 +153,7 @@
             android:layout_alignParentBottom="true"
             app:rb_color="#fffb4808"
             app:rb_duration="2000"
-            app:rb_radius="40.0"
+            app:rb_radius="30.0"
             app:rb_rippleAmount="2"
             app:rb_scale="3.0"
             app:rb_type="0">

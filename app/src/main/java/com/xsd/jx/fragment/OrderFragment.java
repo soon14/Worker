@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
+import com.xsd.jx.LoginActivity;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
@@ -20,6 +21,7 @@ import com.xsd.jx.order.OrderListActivity;
 import com.xsd.jx.order.OrderPresenter;
 import com.xsd.jx.order.OrderView;
 import com.xsd.jx.utils.TabUtils;
+import com.xsd.jx.utils.UserUtils;
 
 import java.util.Arrays;
 
@@ -58,6 +60,11 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     }
 
     private void initView() {
+        if (!UserUtils.isLogin()){
+            db.layoutNoLogin.setVisibility(View.VISIBLE);
+            return;
+        }
+        db.layoutNoLogin.setVisibility(View.GONE);
          goodsPresenter = new OrderPresenter(this);
         //类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
         TabUtils.setDefaultTab(this.getContext(), db.tabLayout,  Arrays.asList("报名中","待开工","工期中","待结算"), new OnTabClickListener() {
@@ -76,8 +83,21 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     }
 
     private void onEvent() {
-        db.tvOrderComment.setOnClickListener(view -> goActivity(OrderListActivity.class,7));//待评价
-        db.tvOrderAll.setOnClickListener(view -> goActivity(OrderListActivity.class,0));//0全部订单1待评价
+        db.layoutNoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goActivity(LoginActivity.class);
+            }
+        });
+
+        db.tvOrderComment.setOnClickListener(view -> {
+            if (!UserUtils.isLogin())return;
+            goActivity(OrderListActivity.class,7);
+        });//待评价
+        db.tvOrderAll.setOnClickListener(view -> {
+            if (!UserUtils.isLogin())return;
+            goActivity(OrderListActivity.class,0);
+        });//0全部订单1待评价
 
     }
 
@@ -99,6 +119,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
 
     @Receive(EventStr.LOGIN_SUCCESS)
     public void loginSuccess(){
+        initView();
         goodsPresenter.setPage();
         goodsPresenter.loadData();
     }

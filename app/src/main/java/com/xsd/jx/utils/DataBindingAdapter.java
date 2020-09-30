@@ -91,10 +91,10 @@ public class DataBindingAdapter {
     public static void advanceType(TextView tv, int type){
         switch (type){
             case 1:
-                tv.setText("两成");
+                tv.setText("已付2成");
                 break;
             case 2:
-                tv.setText("全款");
+                tv.setText("已付全款");
                 break;
             case 3:
                 tv.setText("未预付");

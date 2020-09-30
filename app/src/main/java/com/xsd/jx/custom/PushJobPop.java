@@ -21,6 +21,7 @@ import com.xsd.jx.databinding.PopPushJobBinding;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class PushJobPop extends CenterPopupView {
                     join();
                     break;
                 case R.id.tv_next:
-                    animRota(db.layoutRoot);
+                    animTrans(db.layoutRoot);
                     break;
                 case R.id.tv_ignore:
                     dismiss();
@@ -159,6 +160,15 @@ public class PushJobPop extends CenterPopupView {
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 1f,0f,1f);
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, alpha, scaleX,scaleY);
+        animator.setRepeatMode(ObjectAnimator.RESTART);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(600);
+        animator.start();
+        new Handler().postDelayed(() -> setData(),300);
+    }
+    private void animTrans(View view){
+        PropertyValuesHolder translationX = PropertyValuesHolder.ofFloat("translationX", 0, ScreenUtils.getRealWidth(),0);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationX);
         animator.setRepeatMode(ObjectAnimator.RESTART);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(600);

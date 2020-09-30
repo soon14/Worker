@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.Contants;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
@@ -42,8 +43,10 @@ public class LoginActivity extends BaseBindBarActivity<ActivityLoginBinding> {
                     sendSms();
                     break;
                 case R.id.tv_user_agreement:
+                    goWeb("用户协议", Contants.YHXY_URL);
                     break;
                 case R.id.tv_privacy_agreement:
+                    goWeb("隐私协议", Contants.YSZC_URL);
                     break;
                 case R.id.tv_wx_login:
                     ToastUtil.showLong("开发中...请用其他方式登录！");

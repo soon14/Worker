@@ -19,7 +19,7 @@ public class BannerImgLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         RequestOptions options= new RequestOptions()
-                .transform(new CenterCrop(),new RoundedCorners(1))
+                .transform(new CenterCrop(),new RoundedCorners(6))
                 .placeholder(R.drawable.no_banner)
                 .error(R.drawable.no_banner);
         Glide.with(context).load(path)

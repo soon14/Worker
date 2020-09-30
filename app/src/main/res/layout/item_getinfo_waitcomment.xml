@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.WorkerBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +17,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            avatar="@{item.avatar}"
             android:id="@+id/iv_head"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
@@ -32,7 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="徐大友"
+            tools:text="徐大友"
+            android:text="@{item.name}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
@@ -55,7 +59,7 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="合计 900元"
+            tools:text="合计 900元"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4"
             app:layout_constraintEnd_toEndOf="parent"

@@ -90,7 +90,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_addr" />
 
         <LinearLayout
-            android:visibility="@{item.status==1?View.GONE:View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -100,15 +99,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_look">
+            <TextView
+                android:visibility="@{item.status==3?View.VISIBLE:View.GONE}"
+                android:id="@+id/tv_refuse"
+                style="@style/DefaultBtnStyle"
+                android:layout_width="@dimen/dp_150"
+                android:background="@drawable/round6_silver_bg"
+                android:text="已拒绝" />
+            <TextView
+                android:visibility="@{item.status==2?View.VISIBLE:View.GONE}"
+                android:id="@+id/tv_is_confirm"
+                style="@style/DefaultBtnStyle"
+                android:layout_width="@dimen/dp_150"
+                android:background="@drawable/round6_silver_bg"
+                android:text="已确认" />
 
             <TextView
+                android:visibility="@{item.status==2?View.GONE:View.VISIBLE}"
                 android:id="@+id/tv_cancel"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"
                 android:background="@drawable/round6_silver_bg"
                 android:text="婉拒" />
-
             <TextView
+                android:visibility="@{item.status==2?View.GONE:View.VISIBLE}"
                 android:id="@+id/tv_confirm"
                 style="@style/DefaultBtnStyle"
                 android:layout_width="@dimen/dp_150"

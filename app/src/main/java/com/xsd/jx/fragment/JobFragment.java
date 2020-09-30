@@ -16,6 +16,7 @@ import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobBean;
@@ -65,13 +66,25 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         initView();
         loadData();
         getInviteList();
+
         onEvent();
+    }
+
+    private void getBanner() {
+        dataProvider.site.banner(2)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse>() {
+                    @Override
+                    protected void onSuccess(BaseResponse baseResponse) {
+
+                    }
+                });
     }
 
 
     //被邀请上工信息列表
     @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
+        if (!UserUtils.isLogin())return;
         dataProvider.work.inviteList()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
                     @Override
@@ -95,14 +108,9 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     private void initView() {
         AnimUtils.floatView(db.ivLq);
         //轮播图片
-        List<Object> imgs = new ArrayList<>();
-        imgs.add(R.mipmap.banner_test);
-        imgs.add(R.mipmap.banner_test);
-        imgs.add(R.mipmap.banner_test);
-        imgs.add(R.mipmap.banner_test);
-        BannerUtils.initBanner(db.banner,imgs);
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         db.recyclerView.setAdapter(mAdapter);
+        //1142*380
         //添加头部提示
         TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
         mAdapter.addHeaderView(tvNotice);
@@ -115,6 +123,10 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                     protected void onSuccess(BaseResponse<WorkListResponse> baseResponse) {
                         WorkListResponse data = baseResponse.getData();
                         List<JobBean> items = data.getItems();
+                        if (page==1){
+                            List<BannerBean> banners = data.getBanners();
+                            BannerUtils.initBanner(db.banner,banners);
+                        }
                         if (items!=null&&items.size()>0){
                             if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
                             mAdapter.getLoadMoreModule().loadMoreComplete();
@@ -203,6 +215,11 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                         mAdapter.getData().get(position).setIsJoin(true);
                         mAdapter.notifyItemChanged(position+1);
                         PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
+                    }
+
+                    @Override
+                    protected void onErr(String err) {
+                        PopShowUtils.showMsg((BaseActivity) JobFragment.this.getActivity(),err);
                     }
                 });
     }

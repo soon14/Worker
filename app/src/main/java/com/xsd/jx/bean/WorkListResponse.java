@@ -18,7 +18,7 @@ public class WorkListResponse implements Serializable {
 
     private int page;
     private int totalPage;
-    private List<?> banners;
+    private List<BannerBean> banners;
     private List<JobBean> items;
 
     public int getPage() {
@@ -37,11 +37,11 @@ public class WorkListResponse implements Serializable {
         this.totalPage = totalPage;
     }
 
-    public List<?> getBanners() {
+    public List<BannerBean> getBanners() {
         return banners;
     }
 
-    public void setBanners(List<?> banners) {
+    public void setBanners(List<BannerBean> banners) {
         this.banners = banners;
     }
 

@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="item"
-            type="com.xsd.jx.bean.OrderBean" />
+        name="item"
+        type="com.xsd.jx.bean.OrderBean" />
     </data>
 
     <LinearLayout

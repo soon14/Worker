@@ -10,9 +10,9 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="还没有工人报名，您可以主动招工人"
+        android:text="请您先进行登录"
         android:textColor="@color/tv_gray"
         android:textSize="@dimen/h4"
         />
-    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_get_workers" android:text="主动招人"/>
+    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_login" android:text="登录"/>
 </LinearLayout>

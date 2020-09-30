@@ -7,12 +7,12 @@
 
     </data>
 
-    <LinearLayout
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:tag="layout/fragment_order_0"
-        android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/empty_view_nologin" android:visibility="gone" android:id="@+id/layout_no_login"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="@dimen/dp_80"
             android:layout_width="fill_parent"

@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.UserInfo;
@@ -79,6 +81,7 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
                                 UserInfo user = UserUtils.getUser();
                                 user.setChooseWork(true);
                                 UserUtils.saveUser(user);
+                                Apollo.emit(EventStr.SHOW_PUSH_JOB);
                             }
                         });
             }

@@ -97,14 +97,17 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
             case 2:
                 db.tvStatus.setText("待开工");
                 db.tvDesc.setText("请按要求完成工作后才能结算工资");
+                db.tvConfirmTime.setVisibility(View.GONE);
                 break;
             case 5:
                 db.tvStatus.setText("工期中");
                 db.tvDesc.setText("请按要求完成工作后才能结算工资");
+                db.tvConfirmTime.setVisibility(View.GONE);
                 break;
             case 6:
                 db.tvStatus.setText("待结算");
                 db.tvDesc.setText("您已完成工作，雇主正在为您打款，您辛苦了");
+                db.tvConfirmTime.setVisibility(View.GONE);
                 break;
             case 7:
                 db.tvStatus.setText("待评价");

@@ -117,6 +117,8 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
     //阿里云OSS服务
     implementation 'com.aliyun.dpa:oss-android-sdk:2.9.4'
+    //阿里云视频点播
+    implementation 'com.aliyun.video.android:upload:1.6.0'
 
     // 友盟基础组件库（所有友盟业务SDK都依赖基础组件库）
     implementation 'com.umeng.umsdk:common:9.1.0'

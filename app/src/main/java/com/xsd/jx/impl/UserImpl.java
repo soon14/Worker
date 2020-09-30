@@ -6,6 +6,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.HelpRegResponse;
+import com.xsd.jx.bean.IsInWorkResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
@@ -72,7 +73,7 @@ public class UserImpl implements UserApi {
     }
 
     @Override
-    public Observable<BaseResponse> withdraw(String amount, String accountType, String account, String name, String divisionId, String bankName) {
+    public Observable<BaseResponse<MessageBean>> withdraw(Integer amount, Integer accountType, String account, String name, Integer divisionId, String bankName) {
         return bindIoUI(api.withdraw(amount,accountType,account,name,divisionId,bankName));
     }
 
@@ -115,6 +116,11 @@ public class UserImpl implements UserApi {
     @Override
     public Observable<BaseResponse<MessageBean>> feedback(String content, String contentUrl) {
         return bindIoUI(api.feedback(content,contentUrl));
+    }
+
+    @Override
+    public Observable<BaseResponse<IsInWorkResponse>> isInWork() {
+        return bindIoUI(api.isInWork());
     }
 
 
