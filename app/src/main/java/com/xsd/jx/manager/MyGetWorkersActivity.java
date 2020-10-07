@@ -2,9 +2,13 @@ package com.xsd.jx.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -93,6 +97,17 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
             public void onRefresh() {
                 page=1;
                 loadData();
+            }
+        });
+        mAdapter.addChildClickViewIds(R.id.tv_activ_get);
+        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.tv_activ_get:
+                        goActivity(PushGetWorkersActivity.class);
+                        break;
+                }
             }
         });
     }

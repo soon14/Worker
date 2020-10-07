@@ -95,10 +95,13 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    case R.id.tv_cancel://取消招聘
                        cancelInvite();
                        break;
+                   case R.id.tv_activ_get://主动招人
+                       goActivity(PushGetWorkersActivity.class);
+                       break;
                }
            }
        });
-       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment);
+       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment,R.id.tv_activ_get);
        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
            @Override
            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -128,6 +131,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        intent1.putExtra("workId",workId);
                        intent1.putExtra("userId",userId);
                        startActivity(intent1);
+                       break;
+                   case R.id.tv_activ_get://主动招人
+                       goActivity(PushGetWorkersActivity.class);
                        break;
                }
            }

@@ -45,7 +45,7 @@
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h5"
                 style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                android:text="全选合计: 9652元"
+                tools:text="全选合计: 9652元"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 
@@ -59,7 +59,9 @@
                 android:layout_height="@dimen/dp_40"
                 android:background="@drawable/round20_blue_bg"
                 style="@style/DefaultBtnStyle"
-                android:text="一键结算(5)" />
+                tools:text="一键结算(5)"
+                android:text="一键结算"
+                />
 
         </RelativeLayout>
     </LinearLayout>

@@ -17,6 +17,7 @@
 
 
         <ImageView
+            avatar="@{item.avatar}"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
             android:src="@mipmap/ic_worker_head"

@@ -34,6 +34,7 @@ import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
 
 /**
  * Date: 2020/1/3
@@ -71,19 +72,22 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
         AnimUtils.floatView(db.ivLq);
         if (!UserUtils.isLogin()){
             db.layoutNoLogin.setVisibility(View.VISIBLE);
-            db.layoutNoLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goActivity(LoginActivity.class);
-                }
-            });
         }
+    }
+    @Receive(EventStr.LOGIN_OUT)
+    public void loginOut(){
+        L.e("MineFragment》》loginOut()===");
+        db.layoutNoLogin.setVisibility(View.VISIBLE);
     }
 
     //用户详情
     @Receive({EventStr.UPDATE_USER_INFO,EventStr.LOGIN_SUCCESS})
     public void loadUserInfo() {
-        db.layoutNoLogin.setVisibility(View.GONE);
+        if (!UserUtils.isLogin()){
+            db.layoutNoLogin.setVisibility(View.VISIBLE);
+        }else {
+            db.layoutNoLogin.setVisibility(View.GONE);
+        }
         dataProvider.user.info()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<UserInfoResponse>>() {
                     @Override
@@ -110,6 +114,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
 
 
     private void onEvent() {
+        db.layoutNoLogin.setOnClickListener(v -> goActivity(LoginActivity.class));
         db.setClicklistener(v -> {
             switch (v.getId()) {
                 case R.id.iv_set:

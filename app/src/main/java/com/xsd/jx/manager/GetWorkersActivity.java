@@ -45,6 +45,11 @@ import java.util.List;
 /**
  * 招工人
  * 对应企业端首页
+ * 头部包含：
+ * 1.我的招工
+ * 2.工人考勤
+ * 3.工资结算
+ * 4.发布招工
  */
 public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBinding> {
     private WorkerAdapter mAdapter = new WorkerAdapter();

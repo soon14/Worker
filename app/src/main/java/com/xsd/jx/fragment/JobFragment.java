@@ -26,6 +26,8 @@ import com.xsd.jx.databinding.FragmentJobBinding;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.SignActivity;
+import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.BannerUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
@@ -187,16 +189,18 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             goJobInfoActivity(item.getId());
         });
 
-        //加载更多
-        mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-            page++;
-            loadData();
-        });
+        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
 
-        //下拉刷新
-        db.refreshLayout.setOnRefreshListener(() -> {
-            page=1;
-            loadData();
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
         });
 
     }

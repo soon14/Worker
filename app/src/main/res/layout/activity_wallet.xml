@@ -7,6 +7,9 @@
         <variable
             name="item"
             type="com.xsd.jx.bean.UserInfo" />
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <RelativeLayout
@@ -89,7 +92,7 @@
                     android:layout_margin="@dimen/dp_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="*未到账金额需要您的工友完成首次上工才可到账"
+                    android:text="*未到账金额需要您或工友完成首次上工才可到账"
                     android:textColor="#ffff0000"
                     android:textSize="13sp"
                     />
@@ -174,37 +177,41 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_100">
+                        android:layout_height="@dimen/dp_78">
                         <LinearLayout
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/layout_alipay"
                             android:orientation="vertical"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content">
+
                             <TextView
-                                android:paddingTop="@dimen/dp_8"
+                                android:onClick="@{clicklistener}"
                                 android:id="@+id/tv_alipay_name"
-                                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
                                 android:drawableLeft="@mipmap/ic_alipay_pay"
                                 android:drawablePadding="@dimen/dp_8"
                                 android:gravity="center_vertical"
                                 android:layoutDirection="rtl"
+                                android:paddingTop="@dimen/dp_8"
                                 android:text="支付宝收款"
                                 android:textColor="@color/tv_black"
                                 android:textSize="@dimen/h4"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
+
                             <TextView
+                                android:onClick="@{clicklistener}"
+                                android:textColor="@color/tv_gray"
+                                android:layout_marginLeft="@dimen/dp_36"
                                 android:id="@+id/tv_alipay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@mipmap/ic_gray_arrow_right"
                                 android:drawablePadding="@dimen/dp_8"
                                 android:hint="去设置"
-                                android:paddingTop="@dimen/dp_12"
-                                android:paddingBottom="@dimen/dp_12"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_alipay_name" />
@@ -214,8 +221,8 @@
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/checkbox_alipay"
                             style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="match_parent"
                             android:checked="true"
                             android:drawablePadding="@dimen/dp_8"
                             android:gravity="center_vertical"
@@ -238,19 +245,20 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_100">
+                        android:layout_height="@dimen/dp_78">
                         <LinearLayout
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/layout_division"
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content">
                             <TextView
-                                android:paddingTop="@dimen/dp_8"
+                                android:onClick="@{clicklistener}"
                                 android:id="@+id/tv_division_name"
-                                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                                android:paddingTop="@dimen/dp_8"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
                                 android:drawableLeft="@mipmap/ic_loca_pay"
                                 android:drawablePadding="@dimen/dp_8"
                                 android:gravity="center_vertical"
@@ -261,15 +269,16 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                             <TextView
+                                android:onClick="@{clicklistener}"
+                                android:textColor="@color/tv_gray"
+                                android:layout_marginLeft="@dimen/dp_36"
                                 android:layout_below="@+id/tv_division_name"
-                                android:id="@+id/tv_loca"
+                                android:id="@+id/tv_division"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@mipmap/ic_gray_arrow_right"
                                 android:drawablePadding="@dimen/dp_8"
                                 android:hint="选择事业部"
-                                android:paddingTop="@dimen/dp_12"
-                                android:paddingBottom="@dimen/dp_12"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/checkbox_cash"
@@ -279,12 +288,10 @@
 
 
                         <androidx.appcompat.widget.AppCompatCheckBox
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentRight="true"
-                            android:id="@+id/checkbox_cash"
+                            android:id="@+id/checkbox_division"
                             style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="match_parent"
                             android:drawablePadding="@dimen/dp_8"
                             android:gravity="center_vertical"
                             android:layoutDirection="rtl"
@@ -305,19 +312,20 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_100">
+                        android:layout_height="@dimen/dp_78">
                         <LinearLayout
+                            android:onClick="@{clicklistener}"
+                            android:id="@+id/layout_bank"
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content">
                         <TextView
-                            android:paddingTop="@dimen/dp_8"
+                            android:onClick="@{clicklistener}"
                             android:id="@+id/tv_bankcard_name"
-                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                            android:paddingTop="@dimen/dp_8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="true"
                             android:drawableLeft="@mipmap/ic_bank_pay"
                             android:drawablePadding="@dimen/dp_8"
                             android:gravity="center_vertical"
@@ -329,8 +337,10 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
-
                         <TextView
+                            android:onClick="@{clicklistener}"
+                            android:textColor="@color/tv_gray"
+                            android:layout_marginLeft="@dimen/dp_36"
                             android:id="@+id/tv_bankcard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -338,8 +348,6 @@
                             android:drawablePadding="@dimen/dp_8"
                             android:gravity="left"
                             android:hint="添加账号"
-                            android:paddingTop="@dimen/dp_12"
-                            android:paddingBottom="@dimen/dp_12"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/checkbox_bankcard"
                             app:layout_constraintStart_toStartOf="parent"
@@ -348,8 +356,8 @@
                             <androidx.appcompat.widget.AppCompatCheckBox
                                 android:id="@+id/checkbox_bankcard"
                                 style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/dp_40"
+                                android:layout_height="match_parent"
                                 android:drawablePadding="@dimen/dp_8"
                                 android:gravity="center_vertical"
                                 android:layoutDirection="rtl"
@@ -377,7 +385,7 @@
 
             </LinearLayout>
         </ScrollView>
-        <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_confirm" android:text="确认提现" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="@dimen/dp_16"/>
+        <TextView style="@style/DefaultBtnStyle" android:onClick="withdraw" android:id="@+id/tv_confirm" android:text="确认提现" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="@dimen/dp_16"/>
 
     </RelativeLayout>
 </layout>

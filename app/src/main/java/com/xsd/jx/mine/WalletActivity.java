@@ -3,7 +3,6 @@ package com.xsd.jx.mine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 
@@ -56,6 +55,11 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         initView();
         onEvent();
         loadData();
+    }
+    private void initView() {
+        tvTitle.setText("钱包");
+        tvRight.setText("收支明细");
+        name = UserUtils.getUser().getName();
     }
 
     private void loadData() {
@@ -111,7 +115,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         String name3 = division.getName();
         String addr3 = division.getAddr();
         if (!TextUtils.isEmpty(name3)){
-            db.tvLoca.setText(name3+"-"+addr3);
+            db.tvDivision.setText(name3+"-"+addr3);
         }
 
 
@@ -119,70 +123,83 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     }
 
     private void onEvent() {
-        db.checkboxAlipay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    if (db.checkboxBankcard.isChecked())db.checkboxBankcard.setChecked(false);
-                    if (db.checkboxCash.isChecked())db.checkboxCash.setChecked(false);
-                    accountType = 1;
-                    WithdrawInfoResponse.AliBean ali = payData.getAli();
-                    account = ali.getAccount();
-                    name = ali.getName();
+        db.checkboxAlipay.setOnCheckedChangeListener((buttonView, isChecked) -> selectAlipay(isChecked));
+        db.checkboxBankcard.setOnCheckedChangeListener((buttonView, isChecked) -> selectBank(isChecked));
+        db.checkboxDivision.setOnCheckedChangeListener((buttonView, isChecked) -> selectDivision(isChecked));
 
-                }else {
-                    if (!db.checkboxBankcard.isChecked()&&!db.checkboxCash.isChecked()){
-                        buttonView.setChecked(true);
-                        WithdrawInfoResponse.AliBean ali = payData.getAli();
-                        account = ali.getAccount();
-                        name = ali.getName();
-                    }
-                }
-            }
-        });
-        db.checkboxBankcard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    if (db.checkboxAlipay.isChecked())db.checkboxAlipay.setChecked(false);
-                    if (db.checkboxCash.isChecked())db.checkboxCash.setChecked(false);
-                    accountType = 2;
-                    WithdrawInfoResponse.BankBean bank = payData.getBank();
-                    account = bank.getAccount();
-                    name = bank.getName();
-                    bankName = bank.getBankName();
-                }else {
-                    if (!db.checkboxAlipay.isChecked()&&!db.checkboxCash.isChecked()){
-                        buttonView.setChecked(true);
-                        WithdrawInfoResponse.BankBean bank = payData.getBank();
-                        account = bank.getAccount();
-                        name = bank.getName();
-                        bankName = bank.getBankName();
-                    }
-                }
-            }
-        });
-        db.checkboxCash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    if (db.checkboxAlipay.isChecked())db.checkboxAlipay.setChecked(false);
-                    if (db.checkboxBankcard.isChecked())db.checkboxBankcard.setChecked(false);
-                    accountType = 3;
-                    WithdrawInfoResponse.DivisionBean division = payData.getDivision();
-                    divisionId = division.getId();
-                }else {
-                    if (!db.checkboxAlipay.isChecked()&&!db.checkboxBankcard.isChecked())buttonView.setChecked(true);
-                }
-            }
-        });
         tvRight.setOnClickListener(v -> goActivity(BalanceLogActivity.class));
-        db.tvConfirm.setOnClickListener(v -> withdraw());
-        db.tvAlipay.setOnClickListener(view -> startActivityForResult(new Intent(WalletActivity.this,SetAlipayActivity.class),TO_ALIPAY));
-        db.tvLoca.setOnClickListener(view -> startActivityForResult(new Intent(WalletActivity.this,SetLocaPayActivity.class),TO_DIVISION));
-        db.tvBankcard.setOnClickListener(view -> startActivityForResult(new Intent(WalletActivity.this,SetBankcardActivity.class),TO_BANK_CARD));
+        db.setClicklistener(v -> {
+            switch (v.getId()){
+                case R.id.tv_alipay:
+                case R.id.tv_alipay_name:
+                    startActivityForResult(new Intent(WalletActivity.this,SetAlipayActivity.class),TO_ALIPAY);
+                    break;
+                case R.id.tv_division:
+                case R.id.tv_division_name:
+                    startActivityForResult(new Intent(WalletActivity.this,SetLocaPayActivity.class),TO_DIVISION);
+                    break;
+                case R.id.tv_bankcard:
+                case R.id.tv_bankcard_name:
+                    startActivityForResult(new Intent(WalletActivity.this,SetBankcardActivity.class),TO_BANK_CARD);
+                    break;
+            }
+        });
 
     }
+
+
+    private void selectAlipay(boolean isChecked) {
+        if (isChecked) {
+            if (db.checkboxBankcard.isChecked()) db.checkboxBankcard.setChecked(false);
+            if (db.checkboxDivision.isChecked()) db.checkboxDivision.setChecked(false);
+            accountType = 1;
+            WithdrawInfoResponse.AliBean ali = payData.getAli();
+            account = ali.getAccount();
+            name = ali.getName();
+        } else {
+            if (!db.checkboxBankcard.isChecked() && !db.checkboxDivision.isChecked()) {
+                db.checkboxAlipay.setChecked(true);
+                WithdrawInfoResponse.AliBean ali = payData.getAli();
+                account = ali.getAccount();
+                name = ali.getName();
+            }
+        }
+    }
+
+    private void selectBank(boolean isChecked) {
+        if (isChecked) {
+            if (db.checkboxAlipay.isChecked()) db.checkboxAlipay.setChecked(false);
+            if (db.checkboxDivision.isChecked()) db.checkboxDivision.setChecked(false);
+            accountType = 2;
+            WithdrawInfoResponse.BankBean bank = payData.getBank();
+            account = bank.getAccount();
+            name = bank.getName();
+            bankName = bank.getBankName();
+        } else {
+            if (!db.checkboxAlipay.isChecked() && !db.checkboxDivision.isChecked()) {
+                db.checkboxBankcard.setChecked(true);
+                WithdrawInfoResponse.BankBean bank = payData.getBank();
+                account = bank.getAccount();
+                name = bank.getName();
+                bankName = bank.getBankName();
+            }
+        }
+    }
+    private void selectDivision(boolean isChecked) {
+        if (isChecked) {
+            if (db.checkboxAlipay.isChecked()) db.checkboxAlipay.setChecked(false);
+            if (db.checkboxBankcard.isChecked()) db.checkboxBankcard.setChecked(false);
+            accountType = 3;
+            WithdrawInfoResponse.DivisionBean division = payData.getDivision();
+            divisionId = division.getId();
+        } else {
+            if (!db.checkboxAlipay.isChecked() && !db.checkboxBankcard.isChecked())
+                db.checkboxDivision.setChecked(true);
+        }
+    }
+
+
+
     /**
      * TODO 暂无可提现余额，待测试
      *  提现申请
@@ -226,11 +243,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                 });
     }
 
-    private void initView() {
-        tvTitle.setText("钱包");
-        tvRight.setText("收支明细");
-        name = UserUtils.getUser().getName();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -246,7 +259,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
             case TO_DIVISION:
                 DivisionBean item= (DivisionBean) bundle.getSerializable("item");
                 divisionId = item.getId();
-                db.tvLoca.setText(item.getName()+"-"+item.getAddr());
+                db.tvDivision.setText(item.getName()+"-"+item.getAddr());
                 break;
             case TO_BANK_CARD:
                 account = bundle.getString("account");

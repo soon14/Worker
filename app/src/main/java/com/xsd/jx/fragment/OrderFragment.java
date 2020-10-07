@@ -22,6 +22,7 @@ import com.xsd.jx.order.OrderPresenter;
 import com.xsd.jx.order.OrderView;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
 
 import java.util.Arrays;
 
@@ -122,6 +123,11 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
         initView();
         goodsPresenter.setPage();
         goodsPresenter.loadData();
+    }
+    @Receive(EventStr.LOGIN_OUT)
+    public void loginOut(){
+        L.e("OrderFragment》》loginOut()===");
+        db.layoutNoLogin.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -35,9 +35,12 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         tvTitle.setText("工人考勤");
         java.util.Calendar c = java.util.Calendar.getInstance();
         int mYear = c.get(java.util.Calendar.YEAR);
-        int mMonth = c.get(java.util.Calendar.MONTH);
+        int mMonth = c.get(java.util.Calendar.MONTH)+1;
         int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
-        date = mYear+"-"+(mMonth+1)+"-"+mDay;
+        date = mYear+"-"+mMonth+"-"+mDay;
+        db.tvMonth.setText("("+mMonth+"月)");
+        //范围控制，不能大于当前日期月份
+        db.calendarView.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
     }
 
     /**
