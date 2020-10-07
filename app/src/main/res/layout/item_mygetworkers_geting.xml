@@ -99,16 +99,16 @@
         <LinearLayout
             layoutWorkers="@{item}"
             android:padding="@dimen/dp_13"
-            android:gravity="right"
+            android:gravity="right|center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_marginRight="@dimen/dp_16"
+                android:layout_marginRight="@dimen/dp_8"
                 android:gravity="center|left"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="@dimen/dp_34"
+                android:layout_height="wrap_content"
                 android:text="还没有工人报名，您可以主动招工人"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5"
@@ -118,7 +118,7 @@
                 android:gravity="center"
                 android:background="@drawable/round_blue_bg"
                 android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_34"
+                android:layout_height="@dimen/dp_32"
                 android:text="主动招人"
                 android:textColor="@color/white"
                 android:textSize="@dimen/h5"

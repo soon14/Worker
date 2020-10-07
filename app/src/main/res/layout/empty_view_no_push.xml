@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:padding="@dimen/dp_16"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="您当前还没有在招岗位，请先发布招工"
+        android:textColor="@color/tv_gray"
+        android:textSize="@dimen/h4"
+        />
+    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_push" android:text="发布招工"/>
+</LinearLayout>

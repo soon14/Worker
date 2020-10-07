@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
@@ -69,7 +70,7 @@ public class CompanyEdittext extends EditText {
         public void afterTextChanged(Editable s) {
             if (ceText.trim().isEmpty())
                 return;
-            if (s != null) {
+            if (!TextUtils.isEmpty(s.toString())) {
                 removeTextChangedListener(this);//移除输入监听
                 if (s.toString().trim().equals(ceText)) {
                     setText("");

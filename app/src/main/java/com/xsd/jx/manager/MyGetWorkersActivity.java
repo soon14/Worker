@@ -2,18 +2,15 @@ package com.xsd.jx.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.databinding.ActivityMyGetWorkersBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.listener.OnTabClickListener;
@@ -100,14 +97,21 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
             }
         });
         mAdapter.addChildClickViewIds(R.id.tv_activ_get);
-        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                switch (view.getId()){
-                    case R.id.tv_activ_get:
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
+            switch (view.getId()){
+                case R.id.tv_activ_get:
+                    List<WorkerBean> workers = item.getWorkers();
+                    if (workers!=null&&workers.size()>0){
+                        //查看工人
+                        Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
+                        intent.putExtra("item",item);
+                        startActivity(intent);
+                    }else {
+                        //主动招人
                         goActivity(PushGetWorkersActivity.class);
-                        break;
-                }
+                    }
+                    break;
             }
         });
     }

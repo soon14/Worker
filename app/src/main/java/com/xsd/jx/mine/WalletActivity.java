@@ -142,6 +142,9 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                 case R.id.tv_bankcard_name:
                     startActivityForResult(new Intent(WalletActivity.this,SetBankcardActivity.class),TO_BANK_CARD);
                     break;
+                case R.id.tv_confirm:
+                    withdraw();
+                    break;
             }
         });
 

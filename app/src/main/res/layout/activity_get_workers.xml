@@ -41,6 +41,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/tv_push"
+                            android:onClick="@{clicklistener}"
+                            android:layout_marginTop="@dimen/dp_8"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@mipmap/ic_manager_tab4"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="发布招工"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/h5" />
+                        <TextView
                             android:onClick="@{clicklistener}"
                             android:id="@+id/tv_my_getworkers"
                             android:layout_marginTop="@dimen/dp_8"
@@ -82,20 +96,7 @@
                             android:text="工资结算"
                             android:textColor="@color/black"
                             android:textSize="@dimen/h5" />
-                        <TextView
-                            android:id="@+id/tv_push"
-                            android:onClick="@{clicklistener}"
-                            android:layout_marginTop="@dimen/dp_8"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableTop="@mipmap/ic_manager_tab4"
-                            android:drawablePadding="8dp"
-                            android:gravity="center"
-                            android:padding="8dp"
-                            android:text="发布招工"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/h5" />
+
                     </LinearLayout>
                     <View style="@style/h_space_line" android:layout_gravity="bottom"/>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -184,7 +185,7 @@
             android:layout_height="@dimen/dp_88"
             app:rb_color="#FB4808"
             app:rb_duration="2000"
-            app:rb_radius="30"
+            app:rb_radius="36"
             app:rb_rippleAmount="2"
             app:rb_type="0"
             app:rb_scale="3">

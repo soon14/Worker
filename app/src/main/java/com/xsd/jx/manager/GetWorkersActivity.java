@@ -3,6 +3,7 @@ package com.xsd.jx.manager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -218,6 +219,9 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 loadData();
             }
         });
+        View viewNoPersion = LayoutInflater.from(this).inflate(R.layout.empty_view_no_push, null);
+        viewNoPersion.setOnClickListener(v -> goActivity(PushGetWorkersActivity.class));
+        mAdapter.setEmptyView(viewNoPersion);
     }
 
     /**
@@ -319,7 +323,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                             .atView(db.layoutTabAll)
                             .asCustom(filterPop)
                             .show();
-
                 }
             },200);
 

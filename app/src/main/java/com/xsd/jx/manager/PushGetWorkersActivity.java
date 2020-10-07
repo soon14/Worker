@@ -40,6 +40,10 @@ import java.util.Calendar;
  *  advanceType   结算方式 预付款类型 1:两成 2:全款 3:不预付
  *  safeAmount    保险费用
  *  advanceAmount 预付款金额
+ *
+ * 价格限制：
+ 1.填写的价格不得低于推荐价，如果填写了低于推荐的价格，那么在确认输入后自动变更为推荐价
+ 2.如果先输入了价格，再去选择工种和区域，那么自动清除已输入价格
  */
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
     private int typeId;
@@ -54,6 +58,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private int settleType = 1;
     private int advanceType = 1 ;
     private int safeAmount = 2;
+    private int recommendPrice;//推荐的工价,选择工种和地区后，有最低价格限制
     private String advanceAmount = "0";
 
 
@@ -92,12 +97,17 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             ToastUtil.showLong("请选择工期结束时间！");
             return;
         }
-        if (EditTextUtils.isEmpty(db.etPrice,db.etNum,db.etDesc))return;
 
+        if (EditTextUtils.isEmpty(db.etPrice,db.etNum,db.etDesc))return;
         //数据填充
         String s = db.etPrice.getText().toString();
         s = s.replace("元","");
         price  = Integer.valueOf(s);
+        if (price<recommendPrice) {
+            ToastUtil.showLong("价格不得低于推荐价！");
+            db.etPrice.setText("");
+            return;
+        }
         num = Integer.valueOf(db.etNum.getText().toString());
         desc = db.etDesc.getText().toString();
         isSafe = db.rbBuySafe.isChecked()?1:0;
@@ -241,7 +251,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     /**
      * 查询推荐的工价
      */
-    int recommendPrice;//推荐的工价
+
     private void searchWorkPrice() {
         dataProvider.server.recommendPrice(areaId,typeId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PriceBean>>() {
@@ -250,6 +260,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         PriceBean data = baseResponse.getData();
                         recommendPrice = data.getPrice();
                         db.etPrice.setHint("根据当地市场计算，推荐工价预算为"+recommendPrice+"元");
+                        db.etPrice.setText("");
                     }
 
                     @Override

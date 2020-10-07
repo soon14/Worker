@@ -123,6 +123,7 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
     private void tackPhoto(){
         PictureSelector.create(this)
                 .openCamera(PictureMimeType.ofImage())
+                .isCameraAroundState(true)
                 .imageEngine(GlideEngine.createGlideEngine())
                 .isCompress(true)
                 .forResult(new OnResultCallbackListener<LocalMedia>() {

@@ -123,8 +123,10 @@ public class PushJobPop extends CenterPopupView {
                             index=0;
                             setData();
                         }else {
-                            ToastUtil.showLong("没有更多数据了！");
-                            dismiss();
+                            index=0;
+                            setData();
+//                            ToastUtil.showLong("没有更多数据了！");
+//                            dismiss();
                         }
                     }
 
