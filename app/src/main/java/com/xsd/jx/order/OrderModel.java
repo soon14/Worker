@@ -78,8 +78,8 @@ public class OrderModel {
                 case R.id.tv_order_comment://工人评价雇主
                     activity.goActivity(CommentActivity.class);
                     break;
-                case R.id.tv_cancel://取消订单
-                    OrderUtils.orderCancel(activity,mAdapter,item.getId(),position);
+                case R.id.tv_cancel://取消报名
+                    PopShowUtils.showConfirm(activity, "您是否确定取消报名该工作？", () -> OrderUtils.orderCancel(activity,mAdapter,item.getId(),position));
                     break;
                 case R.id.tv_contact_us://联系平台
                     PopShowUtils.callUs(activity);

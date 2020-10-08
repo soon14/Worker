@@ -203,12 +203,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请输入评价内容"
-                tools:text="确认快，老板人好，结款干脆，期待下次合作"
+                android:text="确认快，老板人好，结款干脆，期待下次合作"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" />
             <CheckBox
+                android:checked="true"
                 android:id="@+id/cb_is_anon"
                 android:layout_marginLeft="-7dp"
                 android:layout_marginTop="@dimen/dp_16"

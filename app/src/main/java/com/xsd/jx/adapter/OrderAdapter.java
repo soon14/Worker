@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * 2:待开工
  * 3:已招满（被拒绝）
  * 4:已取消
- * 5:进行中
+ * 5:进行中（工期中）
  * 6:待结算
  * 7:待评价
  * 8:已完成

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.OnCancelListener;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.xsd.jx.R;
@@ -120,6 +121,17 @@ public class PopShowUtils {
                         () -> activity.goActivity(RealNameAuthActivity.class),
                         null,
                         true, R.layout.dialog_tips)
+                .show();
+    }
+    public static void showConfirm(BaseActivity activity, String content, OnConfirmListener listener) {
+        new XPopup.Builder(activity)
+                .asConfirm("提醒",
+                        content,
+                        "取消",
+                        "确定",
+                         listener,
+                        null,
+                        false, R.layout.dialog_confirm)
                 .show();
     }
 

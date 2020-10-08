@@ -76,7 +76,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     //被邀请上工信息列表
     @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
-        if (!UserUtils.isLogin())return;
+        if (!UserUtils.isLogin()||!UserUtils.isCertification())return;
         dataProvider.work.inviteList()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
                     @Override

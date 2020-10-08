@@ -104,4 +104,10 @@ public class ServerImpl implements ServerApi {
         return bindIoUI(api.recommendPrice(areaId,typeId));
     }
 
+    @Override
+    public Observable<BaseResponse<MessageBean>> helpCheck(Integer workId, Integer userId, String date) {
+        return bindIoUI(api.helpCheck(workId,userId,date));
+    }
+
+
 }

@@ -60,7 +60,7 @@
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
                                 tools:text="0"
-                                android:text="@{(item.num-item.tobeConfirmNum)+``}"
+                                android:text="@{(item.confirmedNum)+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView

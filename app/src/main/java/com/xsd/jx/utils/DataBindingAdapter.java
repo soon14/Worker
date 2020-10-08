@@ -1,6 +1,7 @@
 package com.xsd.jx.utils;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -98,6 +99,7 @@ public class DataBindingAdapter {
                 break;
             case 3:
                 tv.setText("未预付");
+                tv.setVisibility(View.GONE);
                 break;
         }
     }

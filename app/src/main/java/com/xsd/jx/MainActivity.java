@@ -11,12 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.base.BaseBindActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.IsInWorkResponse;
+import com.xsd.jx.custom.FloatWindowManager;
 import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
@@ -28,6 +32,9 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.L;
+import com.xsd.utils.ToastUtil;
+
+import java.util.List;
 
 /**
  * 主要包含：
@@ -71,10 +78,35 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
         if (UserUtils.isLogin()){
             L.e("token=="+UserUtils.getToken());
-            PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+            if (UserUtils.isCertification())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
             if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
-            isInWork();
+            if (UserUtils.isCertification())isInWork();
         }
+
+        openBall();
+
+    }
+    private void openBall() {
+        XXPermissions.with(this)
+                .permission(Permission.SYSTEM_ALERT_WINDOW)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean all) {
+                        if (all) {
+                            FloatWindowManager.addBallView(MainActivity.this);
+                        }
+                    }
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        if (quick) {
+                            ToastUtil.showLong("请开启悬浮窗权限");
+                            // 如果是被永久拒绝就跳转到应用权限系统设置页面
+                            XXPermissions.startPermissionActivity(MainActivity.this, denied);
+                        } else {
+                            ToastUtil.showLong("开启悬浮窗权限失败");
+                        }
+                    }
+                });
     }
 
     /**

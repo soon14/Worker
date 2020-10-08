@@ -14,5 +14,9 @@
         android:textColor="@color/tv_gray"
         android:textSize="@dimen/h4"
         />
-    <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_push" android:text="发布招工"/>
+    <TextView
+        android:layout_marginBottom="@dimen/dp_108"
+        style="@style/DefaultBtnStyle"
+        android:id="@+id/tv_push"
+        android:text="发布招工"/>
 </LinearLayout>

@@ -29,4 +29,9 @@ public class OrderImpl implements OrderApi {
     public Observable<BaseResponse<MessageBean>> cancel(Integer id) {
         return bindIoUI(api.cancel(id));
     }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> comment(Integer joinId, Integer toUserId, Integer workId, String content, Integer rate1, Integer rate2, Integer rate3, Integer allRate, Integer isAnonymous) {
+        return bindIoUI(api.comment(joinId,toUserId,workId,content,rate1,rate2,rate3,allRate,isAnonymous));
+    }
 }

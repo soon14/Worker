@@ -62,7 +62,11 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
         db.tvSearchJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ids = tags.toString().replace("[","").replace("]","");
+                String ids = tags.toString()
+                        .replace("[","")
+                        .replace("]","")
+                        .replace(" ","")
+                        .trim();
                 L.e("ids=="+ids);
                 if (TextUtils.isEmpty(ids)){
                     ToastUtil.showLong("请选择您的工种！");

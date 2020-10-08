@@ -79,6 +79,7 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                         UserInfoResponse data = baseResponse.getData();
                         UserInfo info = data.getInfo();
                         UserUtils.saveUser(info);
+//                        info.setLiveBalance(1000000);
                         db.setItem(info);
                     }
                 });

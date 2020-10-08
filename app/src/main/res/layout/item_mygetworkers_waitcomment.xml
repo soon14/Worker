@@ -100,6 +100,7 @@
                 android:textSize="@dimen/h5"
                 />
             <TextView
+                android:id="@+id/tv_comment_all"
                 android:gravity="center"
                 android:background="@drawable/round_blue_bg"
                 android:layout_width="@dimen/dp_80"

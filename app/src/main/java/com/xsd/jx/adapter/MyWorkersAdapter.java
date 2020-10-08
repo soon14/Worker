@@ -37,7 +37,7 @@ public class MyWorkersAdapter extends BaseMultiItemQuickAdapter<MyGetWorkersResp
         addItemType(2, R.layout.item_mygetworkers_full);
         addItemType(3, R.layout.item_mygetworkers_working);
         addItemType(4, R.layout.item_mygetworkers_waitpay);
-        addItemType(5, R.layout.item_mygetworkers_waitcomment);
+        addItemType(5, R.layout.item_mygetworkers_waitcomment);//待评价
         addItemType(6, R.layout.item_mygetworkers_completion);
         addItemType(7, R.layout.item_mygetworkers_cancel);
     }

@@ -38,6 +38,7 @@
         </ScrollView>
 
         <TextView
+            android:id="@+id/tv_submit"
             style="@style/DefaultBtnStyle"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"

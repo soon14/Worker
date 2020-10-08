@@ -95,6 +95,8 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         isUpWork = TextUtils.isEmpty(signInTime);//是否是上工打卡
                         if (!TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
                             db.radarViewDown.setVisibility(View.VISIBLE);
+                        }else {
+                            db.radarViewDown.setVisibility(View.GONE);
                         }
                     }
 

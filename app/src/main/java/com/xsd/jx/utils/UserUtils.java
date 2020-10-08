@@ -52,6 +52,10 @@ public class UserUtils {
         }
         return false;
     }
+
+    /**
+     * 是否已经实名认证
+     */
     public static boolean isCertification() {
         try {
             return getUser().getIsCertification()==1;

@@ -168,5 +168,9 @@ public interface ServerApi {
     @GET("server/recommend-price")
     Observable<BaseResponse<PriceBean>> recommendPrice(@Query("areaId")Integer areaId, @Query("typeId")Integer typeId);
 
+    //补考勤：发布者帮助用户完善考勤
+    @GET("server/help-check")
+    Observable<BaseResponse<MessageBean>> helpCheck(@Query("workId")Integer workId,@Query("userId")Integer userId,@Query("date")String date);
+
 
 }

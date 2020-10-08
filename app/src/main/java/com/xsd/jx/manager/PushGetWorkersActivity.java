@@ -10,11 +10,16 @@ import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
+import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.PriceBean;
+import com.xsd.jx.custom.KeyboardStatusDetector;
 import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -134,6 +139,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
+                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
                     }
                 });
     }
@@ -146,6 +152,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     PopShowUtils.showWorkTypeSelect(PushGetWorkersActivity.this, workTypeBean -> {
                         typeId = workTypeBean.getId();
                         db.tvWorkType.setText(workTypeBean.getTitle());
+                        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).statusBarDarkFont(true).init();
                         //如果地址已经选择了，就查询推荐的工种价格
                         if (!TextUtils.isEmpty(address)){
                             searchWorkPrice();
@@ -217,7 +224,39 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             }
         });
 
+
+
+        new KeyboardStatusDetector()
+                .registerView(db.etPrice)
+                .setmVisibilityListener(new KeyboardStatusDetector.KeyboardVisibilityListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean keyboardVisible) {
+                        if(keyboardVisible) {
+                            //Do stuff for keyboard visible
+                            L.e("键盘弹起");
+                        }else {
+                            //Do stuff for keyboard hidden
+                            L.e("键盘收起");
+                            if (priceFocus&&recommendPrice>0){
+                                String s = db.etPrice.getText().toString();
+                                if (!TextUtils.isEmpty(s)){
+                                    s = s.replace("元","");
+                                    if (TextUtils.isEmpty(s))return;
+                                    price = Integer.parseInt(s);
+                                    if (price<recommendPrice){
+                                        ToastUtil.showLong("价格不得低于推荐价"+recommendPrice+"!");
+                                        db.etPrice.setText("");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+        db.etPrice.setOnFocusChangeListener((v, hasFocus) -> priceFocus = hasFocus);
+
     }
+    boolean priceFocus = false;//焦点是否在输入价格控件上
 
     /**
      * 更新发布按钮

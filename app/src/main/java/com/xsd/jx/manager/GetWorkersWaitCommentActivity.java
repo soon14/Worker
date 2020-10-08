@@ -35,8 +35,15 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
         super.onCreate(savedInstanceState);
         initView();
         onEvent();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
     }
+
     private void initView() {
         tvTitle.setText("待评价");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -50,11 +57,14 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
             intent.putExtra("item",item);
             startActivity(intent);
         });
-        mAdapter.addChildClickViewIds(R.id.tv_single_comment);
+        mAdapter.addChildClickViewIds(R.id.tv_comment_all);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             switch (view.getId()){
-                case R.id.tv_single_comment:
-                    goActivity(SingleCommentActivity.class);
+                case R.id.tv_comment_all://评价所有工人
+                    Intent intent = new Intent(this, TogetherCommentActivity.class);
+                    intent.putExtra("item",item);
+                    startActivity(intent);
                     break;
             }
         });
