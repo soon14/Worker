@@ -83,7 +83,6 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         db.setItem(data);
                         mobile = data.getMobile();
                         workId = data.getWorkId();
-
                         db.tvAddress.setText("上工地点："+data.getAddress());
                         db.radarViewUp.setVisibility(View.VISIBLE);
                         db.layoutNotWorking.setVisibility(View.GONE);

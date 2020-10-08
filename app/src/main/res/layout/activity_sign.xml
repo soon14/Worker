@@ -188,7 +188,6 @@
 
 
                     <com.xsd.utils.custom.RadarView
-                        android:visibility="@{TextUtils.isEmpty(item.signOutTime)?View.VISIBLE:View.GONE}"
                         tools:visibility="visible"
                         android:id="@+id/radar_view_down"
                         android:layout_width="@dimen/dp_200"

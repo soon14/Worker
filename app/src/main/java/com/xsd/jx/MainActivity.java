@@ -2,7 +2,10 @@ package com.xsd.jx;
 
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,11 +19,16 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
+import com.lzf.easyfloat.EasyFloat;
+import com.lzf.easyfloat.enums.ShowPattern;
+import com.lzf.easyfloat.enums.SidePattern;
+import com.lzf.easyfloat.interfaces.OnInvokeView;
 import com.xsd.jx.base.BaseBindActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.IsInWorkResponse;
-import com.xsd.jx.custom.FloatWindowManager;
+import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
@@ -32,6 +40,7 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.L;
+import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -62,8 +71,8 @@ import java.util.List;
  */
 
 public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
-    private String[] tabNames = new String[]{"找活", "订单", "我的"};
-
+    private static final String TAG = "MainActivity";
+    private String[] tabNames = new String[]{"找活","订单","我的"};
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -77,23 +86,56 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         initViewPager();
 
         if (UserUtils.isLogin()){
-            L.e("token=="+UserUtils.getToken());
-            if (UserUtils.isCertification())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+//            L.e("token=="+UserUtils.getToken());
+            if (UserUtils.isCertification()){
+                PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+                isInWork();//是否在工期中
+                getInviteList();//邀请工作
+            }
             if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
-            if (UserUtils.isCertification())isInWork();
         }
 
-        openBall();
 
     }
-    private void openBall() {
+
+    //被邀请上工信息列表
+    @Receive({EventStr.UPDATE_INVITE_LIST,EventStr.LOGIN_SUCCESS})
+    public void getInviteList() {
+        dataProvider.work.inviteList()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<InviteListResponse> baseResponse) {
+                        InviteListResponse response = baseResponse.getData();
+                        List<JobBean> data = response.getItems();
+                        int count = response.getCount();
+                        if (data!=null&&data.size()>0){
+                            openBall(count,data);
+                        }
+                    }
+                });
+
+    }
+    private void openBall(int count, List<JobBean> data) {
         XXPermissions.with(this)
                 .permission(Permission.SYSTEM_ALERT_WINDOW)
                 .request(new OnPermission() {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
-                        if (all) {
-                            FloatWindowManager.addBallView(MainActivity.this);
+                        if (all){
+                            EasyFloat.with(MainActivity.this)
+                                    .setShowPattern(ShowPattern.ALL_TIME)
+                                    .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT,0, ScreenUtils.getRealHight()/4)
+                                    .setSidePattern(SidePattern.RESULT_HORIZONTAL)
+                                    .setLayout(R.layout.layout_ball, new OnInvokeView() {
+                                        @Override
+                                        public void invoke(View view) {
+                                            TextView tv = view.findViewById(R.id.tv_invite);
+                                            tv.setText(count+"个\n邀请");
+                                            view.setOnClickListener(v -> PopShowUtils.showInviteJob(data, MainActivity.this));
+                                        }
+                                    })
+                                    .show();
+
                         }
                     }
                     @Override
@@ -131,6 +173,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     protected void onDestroy() {
         super.onDestroy();
         Apollo.unBind$core(this);
+        EasyFloat.dismissAppFloat();
     }
 
     private void initViewPager() {
@@ -174,9 +217,10 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
-        L.e("loginOut()===");
+        L.e(TAG,"loginOut()===");
         BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager);
         goActivity(LoginActivity.class);
+        EasyFloat.dismissAppFloat();
     }
     @Receive(EventStr.GO_LOGIN)
     public void goLoginActivity(){

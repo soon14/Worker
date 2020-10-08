@@ -14,10 +14,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.android.material.tabs.TabLayout;
+import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
+import com.lzf.easyfloat.EasyFloat;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -68,10 +70,21 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
         loadData();
+
+        EasyFloat.hideAppFloat();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+        EasyFloat.showAppFloat();
+    }
+
     @Receive(EventStr.UPDATE_GET_WORKERS)
     public void updateGetWorkers(){
         page=1;
@@ -225,7 +238,8 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     }
 
     /**
-     * 查询当前发布者同工种有几条招工信息，如果有多条，弹出框选择上工地点
+     * 查询当前发布者同工种有几条招工信息，
+     * 如果有多条，弹出框选择上工地点
      */
     private void showInviteJobs(WorkerBean item, int position) {
         int userId = item.getUserId();
@@ -240,6 +254,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                                  workId = items.get(0).getWorkId();
                                  showInviteJobs(item,position);
                             }else if (items.size()>1){
+                                //如果有多条，弹出框选择上工地点
                                 InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
                                 inviteJobsPop.setListener(itemsBean -> {
                                     workId = itemsBean.getWorkId();

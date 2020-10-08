@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2020/8/26
  * author: SmallCake
  * 接口type 类型 0:全部
- * 1:未确认
+ * 1:未确认(报名中)
  * 2:待开工
  * 3:已招满（被拒绝）
  * 4:已取消

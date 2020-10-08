@@ -10,6 +10,7 @@ import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.lsxiao.apollo.core.Apollo;
+import com.lzf.easyfloat.EasyFloat;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xsd.jx.base.Contants;
@@ -36,6 +37,7 @@ public class MyApplication extends Application {
         initAliOSS();
         UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        EasyFloat.init(this, BuildConfig.DEBUG);
     }
     //方法数量过多，合并
     @Override

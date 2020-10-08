@@ -12,6 +12,7 @@ import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.interfaces.SimpleCallback;
+import com.lzf.easyfloat.EasyFloat;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
@@ -56,6 +57,19 @@ public class PopShowUtils {
      */
     public static void showInviteJob(List<JobBean> data, BaseActivity activity) {
         new XPopup.Builder(activity)
+                .setPopupCallback(new SimpleCallback(){
+                    @Override
+                    public void onShow(BasePopupView popupView) {
+                        super.onShow(popupView);
+                        EasyFloat.hideAppFloat();
+                    }
+
+                    @Override
+                    public void onDismiss(BasePopupView popupView) {
+                        super.onDismiss(popupView);
+                        EasyFloat.showAppFloat();
+                    }
+                })
                 .asCustom(new InviteJobPop(activity, data))
                 .show();
     }

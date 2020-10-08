@@ -113,7 +113,14 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             db.etPrice.setText("");
             return;
         }
-        num = Integer.valueOf(db.etNum.getText().toString());
+        String numStr = db.etNum.getText().toString();
+        numStr = numStr.replace("人","");
+        num = Integer.valueOf(numStr);
+        if (num==0) {
+            ToastUtil.showLong("人数不能为0！");
+            db.etNum.setText("");
+            return;
+        }
         desc = db.etDesc.getText().toString();
         isSafe = db.rbBuySafe.isChecked()?1:0;
         settleType = db.rbDayPay.isChecked()?1:2;
@@ -194,7 +201,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         });
         EditTextUtils.setTextLengthChange(db.etNum, s -> {
             if (s.length()>0){
-                num = Integer.parseInt(s.toString());
+                String s1 = s.toString();
+                s1 = s1.replace("人","");
+                if (TextUtils.isEmpty(s1))return;
+                num = Integer.parseInt(s1.toString());
                 updateAdvanceBtn();
             }
         });

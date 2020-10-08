@@ -24,6 +24,7 @@ import com.xsd.jx.custom.InviteJobsPop;
 import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -191,6 +192,14 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
 
     //经验列表
     private void setExpData(List<ExperienceResponse.ItemsBean> items) {
+        if (items==null||items.size()==0){
+            TextView tv = new TextView(this);
+            tv.setText("该工人还未在平台完成订单");
+            int dp16 = DpPxUtils.dp2px(16);
+            tv.setPadding(dp16,dp16,dp16,dp16);
+            db.layoutWorks.addView(tv);
+            return;
+        }
         if (items == null || items.size() == 0) return;
         for (int i = 0; i < items.size(); i++) {
             ExperienceResponse.ItemsBean item = items.get(i);

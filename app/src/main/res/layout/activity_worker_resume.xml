@@ -117,12 +117,12 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        intro="@{item.intro}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_intro_tag"
                         android:layout_marginTop="@dimen/dp_16"
                         tools:text="已有10年工作经验，主要从事木工/混凝土工，为人稳重，认真负责，做事高效施工质量有保障。"
-                        android:text="@{item.intro}"
                         android:textColor="#ff343434"
                         android:textSize="16sp" />
                 </RelativeLayout>

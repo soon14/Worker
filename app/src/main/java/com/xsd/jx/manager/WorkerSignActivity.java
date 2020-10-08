@@ -10,6 +10,7 @@ import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.databinding.ActivityWorkerSignBinding;
+import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 
 /**
@@ -37,7 +38,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         int mYear = c.get(java.util.Calendar.YEAR);
         int mMonth = c.get(java.util.Calendar.MONTH)+1;
         int mDay = c.get(java.util.Calendar.DAY_OF_MONTH);
-        date = mYear+"-"+mMonth+"-"+mDay;
+        date = DateFormatUtils.ymd(mYear,mMonth,mDay);
         db.tvMonth.setText("("+mMonth+"月)");
         //范围控制，不能大于当前日期月份
         db.calendarView.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
@@ -76,7 +77,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 int year = calendar.getYear();
                 int month = calendar.getMonth();
                 int day = calendar.getDay();
-                date = year+"-"+month+"-"+day;
+                date = DateFormatUtils.ymd(year,month,day);
                 loadBottomData();
             }
         });

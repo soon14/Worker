@@ -53,8 +53,8 @@ public class TabUtils {
                 colorTransitionPagerTitleView.setTextSize(18);
 //                colorTransitionPagerTitleView.getPaint().setFakeBoldText(true);
 
-                int pading = DpPxUtils.dp2px(16);
-                colorTransitionPagerTitleView.setPadding(pading,0,pading,0);
+                int pading = DpPxUtils.dp2px(8);
+                colorTransitionPagerTitleView.setPadding(0,0,0,0);
                 colorTransitionPagerTitleView.setText(tabNames.get(index));
                 colorTransitionPagerTitleView.setOnClickListener(view -> {
                     mFragmentContainerHelper.handlePageSelected(index);

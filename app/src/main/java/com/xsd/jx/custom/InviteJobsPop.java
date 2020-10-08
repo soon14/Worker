@@ -67,6 +67,7 @@ public class InviteJobsPop extends CenterPopupView {
             View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job_list, null);
             ItemJobListBinding bind = DataBindingUtil.bind(viewChild);
             bind.setItem(item);
+            bind.tvPrice.setText(item.getTypeTitle()+"/"+item.getPrice()+"元/天");
             TextView tvInviteNum = viewChild.findViewById(R.id.tv_invite_num);
             SpannableStringBuilder spannableStringBuilder = SpannableStringUtils.getBuilder("还差")
                     .append(item.getSurplus()+"").setForegroundColor(ContextCompat.getColor(getContext(),R.color.colorAccent)).setBold()

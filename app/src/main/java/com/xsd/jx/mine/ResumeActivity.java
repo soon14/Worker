@@ -23,6 +23,7 @@ import com.xsd.jx.databinding.ActivityResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -169,8 +170,16 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
                         false,R.layout.dialog_tips)
                 .show();
     }
-    //经验列表
+    //经验列表:如果工人没有工作经历，那么显示一句灰色的话：该工人还未在平台完成订单
     private void setExpData(List<ExperienceResponse.ItemsBean> items) {
+        if (items==null||items.size()==0){
+            TextView tv = new TextView(this);
+            tv.setText("该工人还未在平台完成订单");
+            int dp16 = DpPxUtils.dp2px(16);
+            tv.setPadding(dp16,dp16,dp16,dp16);
+            db.layoutWorks.addView(tv);
+            return;
+        }
         for (int i = 0; i < items.size(); i++) {
             ExperienceResponse.ItemsBean item = items.get(i);
             View view = LayoutInflater.from(this).inflate(R.layout.item_work_history, null);

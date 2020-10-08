@@ -33,6 +33,7 @@ import com.xsd.utils.ClipboardUtils;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -169,6 +170,20 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                             finish();
                         }
                         Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                        if (type==1){//拒绝:待确认工人数-1
+                            int tobeConfirmNum = item.getTobeConfirmNum();
+                            tobeConfirmNum--;
+                            item.setTobeConfirmNum(tobeConfirmNum);
+                        }else {//雇佣:待确认工人数-1，确认上工人数+1
+                            int tobeConfirmNum = item.getTobeConfirmNum();
+                            int confirmedNum = item.getConfirmedNum();
+                            tobeConfirmNum--;
+                            confirmedNum++;
+                            item.setTobeConfirmNum(tobeConfirmNum);
+                            item.setConfirmedNum(confirmedNum);
+                        }
+                        db.setItem(item);
+
                     }
                 });
     }
@@ -180,13 +195,14 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 .show();
     }
 
-    int type;
+    private int type;
+    private MyGetWorkersResponse.ItemsBean item;
     private void initView() {
-        MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
+        item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
         db.setItem(item);
         workId = item.getId();
-
         type = item.getItemType();
+
         mAdapter = new GetWorkersInfoAdapter();
         switch (type){
             case 1:
@@ -225,7 +241,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 setTopColor();
                 break;
         }
-        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList("工人列表","招工详情"), new OnTabClickListener() {
+        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(type==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
                 switch (position){
@@ -249,8 +265,16 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         mAdapter.setEmptyView(emptyView);
         //工人列表
         List<WorkerBean> workers = item.getWorkers();
-        for (int i = 0; i < workers.size(); i++) workers.get(i).setType(type);
-        mAdapter.setList(workers);
+        List<WorkerBean> showWorkers = new ArrayList<>();
+        for (int i = 0; i < workers.size(); i++){
+            WorkerBean workerBean = workers.get(i);
+            int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
+            if (status==1){
+                workerBean.setType(type);
+                showWorkers.add(workerBean);
+            }
+        }
+        mAdapter.setList(showWorkers);
 
     }
 

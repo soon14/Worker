@@ -14,6 +14,7 @@ import com.xsd.jx.job.JobInfoActivity;
 import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.utils.ClipboardUtils;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -33,6 +34,7 @@ import com.xsd.utils.ToastUtil;
  */
 public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding> {
     private int workId;//招工信息id
+    private String sn;//订单编号
     private String employerPhone;//雇主手机号
     @Override
     protected int getLayoutId() {
@@ -65,6 +67,9 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
                 case R.id.tv_comment_employer://评价雇主
                     goActivity(CommentActivity.class);
                     break;
+                case R.id.tv_copy://复制订单编号
+                    ClipboardUtils.copy(sn);
+                    break;
             }
         });
     }
@@ -83,6 +88,7 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
         db.setItem(item);
         workId = item.getListId();
         employerPhone = item.getEmployerPhone();
+        sn = item.getSn();
 
         int type = item.getStatus();//状态 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
         switch (type){

@@ -18,7 +18,6 @@ import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
-import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
@@ -33,6 +32,7 @@ import com.xsd.jx.utils.BannerUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -66,35 +66,18 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     protected void onLazyLoad() {
         initView();
         loadData();
-        getInviteList();
         onEvent();
     }
 
 
-
-
-    //被邀请上工信息列表
-    @Receive(EventStr.UPDATE_INVITE_LIST)
-    public void getInviteList() {
-        if (!UserUtils.isLogin()||!UserUtils.isCertification())return;
-        dataProvider.work.inviteList()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<InviteListResponse> baseResponse) {
-                        InviteListResponse response = baseResponse.getData();
-                        List<JobBean> data = response.getItems();
-                        int count = response.getCount();
-                        if (data!=null&&data.size()>0){
-                            db.radarView.setVisibility(View.VISIBLE);
-                            db.tvInvite.setText(count+"个\n邀请");
-                            db.tvInvite.setOnClickListener(v ->{
-                                PopShowUtils.showInviteJob(data, (BaseActivity) JobFragment.this.getActivity());
-                            } );
-                        }
-                    }
-                });
+    @Receive(EventStr.LOGIN_OUT)
+    public void loginOut(){
+        L.e(TAG,"loginOut()===");
+        db.radarView.setVisibility(View.GONE);
 
     }
+
+
 
 
     private void initView() {

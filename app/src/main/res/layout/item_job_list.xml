@@ -41,7 +41,7 @@
                     android:textSize="@dimen/h4" />
 
                 <TextView
-                    price="@{item.price}"
+                    android:id="@+id/tv_price"
                     style="@style/TextPriceStyle"
                     android:gravity="right"
                     tools:text="350元/天"

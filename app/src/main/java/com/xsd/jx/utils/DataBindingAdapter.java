@@ -25,6 +25,7 @@ import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.SmallUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -242,21 +243,29 @@ public class DataBindingAdapter {
     }
     @BindingAdapter("intro")
     public static void isJoin(TextView tv, String intro){
-        tv.setText(TextUtils.isEmpty(intro)?"很懒~！什么都没写。":intro);
+        tv.setText(TextUtils.isEmpty(intro)?"我是一个踏实肯干的人，各位老板选我准没错":intro);
     }
     /**
      *  我的招工适配器，底部状态信息{@link R.layout.item_mygetworkers_geting}
      */
 
     @BindingAdapter("layoutWorkers")
-    public static void isJoin(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
+    public static void layoutWorkers(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
         List<WorkerBean> workers = itemsBean.getWorkers();
         TextView tv0 = (TextView) layout.getChildAt(0);
         TextView tv1 = (TextView) layout.getChildAt(1);
-        if (workers!=null&&workers.size()>0){
-            tv0.setText("有"+workers.size()+"位报名待确认工人");
+        List<WorkerBean> showWorkers = new ArrayList<>();
+        for (int i = 0; i < workers.size(); i++){
+            WorkerBean workerBean = workers.get(i);
+            int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
+            if (status==1){
+                showWorkers.add(workerBean);
+            }
+        }
+        if (showWorkers!=null&&showWorkers.size()>0){
+            tv0.setText("有"+showWorkers.size()+"位报名待确认工人");
             tv1.setText("查看工人");
-        }else {
+        }else if (workers==null||workers.size()==0){
             tv0.setText("还没有工人报名，您可以主动招工人");
             tv1.setText("主动招人");
         }

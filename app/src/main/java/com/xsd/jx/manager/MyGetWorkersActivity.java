@@ -109,7 +109,8 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
                         startActivity(intent);
                     }else {
                         //主动招人
-                        goActivity(PushGetWorkersActivity.class);
+//                        goActivity(PushGetWorkersActivity.class);
+                        finish();
                     }
                     break;
             }

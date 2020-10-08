@@ -203,41 +203,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_96"
                     android:background="@color/white">
+
                     <TextView
+                        android:id="@+id/textView15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="16dp"
                         android:text="工价"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.xsd.jx.custom.CompanyEdittext
-                        app:ce_text="元"
-                        app:ce_text_color="@color/tv_black"
                         android:id="@+id/et_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_80"
                         android:background="@color/transparent"
+                        android:digits="0123456789"
+                        android:gravity="center_vertical"
                         android:hint="请填写合理的工价"
-                        android:inputType="number"
-                        android:maxLength="6"
-                        android:padding="@dimen/dp_20"
+                        android:inputType="number|textMultiLine"
+                        android:maxLines="2"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:singleLine="false"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h3"
+                        app:ce_text="元"
+                        app:ce_text_color="@color/tv_black"
                         app:layout_constraintBottom_toTopOf="@+id/view4"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="@dimen/dp_48"
-                        android:layout_height="@dimen/dp_56"
-                        android:padding="@dimen/dp_16"
-                        android:src="@mipmap/ic_gray_arrow_right"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <View
                         android:id="@+id/view4"
@@ -263,7 +261,9 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
+                    <com.xsd.jx.custom.CompanyEdittext
+                        app:ce_text="人"
+                        app:ce_text_color="@color/tv_black"
                         android:id="@+id/et_num"
                         android:maxLength="6"
                         android:inputType="number"
@@ -271,7 +271,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:text="1"
+                        android:text=""
                         android:hint="请输入工人数量"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h3"
