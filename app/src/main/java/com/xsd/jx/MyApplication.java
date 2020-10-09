@@ -1,12 +1,8 @@
 package com.xsd.jx;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
@@ -18,12 +14,9 @@ import com.lzf.easyfloat.EasyFloat;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xsd.jx.base.Contants;
-import com.xsd.jx.base.EventStr;
 import com.xsd.jx.base.MyOSSConfig;
-import com.xsd.jx.manager.GetWorkersActivity;
 import com.xsd.jx.utils.LogHeaderInterceptor;
 import com.xsd.okhttp.retrofit2.RetrofitHttp;
-import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.SmallUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,37 +39,11 @@ public class MyApplication extends Application {
         UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         EasyFloat.init(this, BuildConfig.DEBUG);
-        isBackEvent();
     }
     public static MyApplication getInstance() {
         return instances;
     }
 
-    private void isBackEvent() {
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {}
-            @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-                liveActivityCount++;
-                boolean b = ActivityCollector.hasActivity(GetWorkersActivity.class.getSimpleName());
-                   if (!b)Apollo.emit(EventStr.SHOW_RECOMMEND_JOB_POP);
-            }
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {}
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {}
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-                liveActivityCount--;
-                if (liveActivityCount==0)Apollo.emit(EventStr.HIDE_RECOMMEND_JOB_POP);
-            }
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {}
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {}
-        });
-    }
 
     //方法数量过多，合并
     @Override

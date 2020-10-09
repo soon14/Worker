@@ -48,6 +48,19 @@ public class PopShowUtils {
      */
     public static void showPushJob(BaseActivity activity) {
         new XPopup.Builder(activity)
+//                .setPopupCallback(new SimpleCallback(){
+//                    @Override
+//                    public void onShow(BasePopupView popupView) {
+//                        super.onShow(popupView);
+//                        EasyFloat.hideAppFloat();
+//                    }
+//
+//                    @Override
+//                    public void onDismiss(BasePopupView popupView) {
+//                        super.onDismiss(popupView);
+//                        EasyFloat.showAppFloat();
+//                    }
+//                })
                 .asCustom(new PushJobPop(activity))
                 .show();
     }

@@ -25,7 +25,7 @@ public class ScreenUtils {
      * 获取屏幕实际高度（也包含虚拟导航栏）
      * @return
      */
-    public static int getRealHight() {
+    public static int getRealHeight() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) SmallUtils.getApp().getSystemService(Context.WINDOW_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -68,7 +68,7 @@ public class ScreenUtils {
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
         int width = getRealWidth();
-        int height = getRealHight();
+        int height = getRealHeight();
         Bitmap bp = null;
         bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
         view.destroyDrawingCache();
@@ -92,7 +92,7 @@ public class ScreenUtils {
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
         int statusBarHeight = frame.top;
         int width = getRealWidth();
-        int height = getRealHight();
+        int height = getRealHeight();
         Bitmap bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return bp;

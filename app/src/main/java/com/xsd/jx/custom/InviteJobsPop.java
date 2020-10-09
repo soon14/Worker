@@ -43,7 +43,7 @@ public class InviteJobsPop extends CenterPopupView {
 
     @Override
     protected int getPopupHeight() {
-        return (int) (ScreenUtils.getRealHight()*0.9f);
+        return (int) (ScreenUtils.getRealHeight()*0.9f);
     }
 
 

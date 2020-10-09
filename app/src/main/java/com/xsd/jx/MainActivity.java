@@ -39,6 +39,7 @@ import com.xsd.jx.utils.BottomNavUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
@@ -123,8 +124,8 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                     public void hasPermission(List<String> granted, boolean all) {
                         if (all){
                             EasyFloat.with(MainActivity.this)
-                                    .setShowPattern(ShowPattern.ALL_TIME)
-                                    .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT,0, ScreenUtils.getRealHight()/4)
+                                    .setShowPattern(ShowPattern.FOREGROUND)
+                                    .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT,0, ScreenUtils.getRealHeight()/2- DpPxUtils.dp2px(88))
                                     .setSidePattern(SidePattern.RESULT_HORIZONTAL)
                                     .setLayout(R.layout.layout_ball, new OnInvokeView() {
                                         @Override
@@ -135,7 +136,6 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                                         }
                                     })
                                     .show();
-
                         }
                     }
                     @Override
@@ -174,16 +174,6 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         super.onDestroy();
         Apollo.unBind$core(this);
         EasyFloat.dismissAppFloat();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
 
@@ -234,19 +224,6 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     public void showPushJob(){
         if (UserUtils.isLogin()) PopShowUtils.showPushJob(this);
     }
-
-    @Receive(EventStr.SHOW_RECOMMEND_JOB_POP)
-    public void showRecommendJob(){
-        EasyFloat.showAppFloat();
-    }
-    @Receive(EventStr.HIDE_RECOMMEND_JOB_POP)
-    public void dismissRecommendJob(){
-        EasyFloat.hideAppFloat();
-    }
-
-
-
-
 
     private long firstTime = 0;
     @Override

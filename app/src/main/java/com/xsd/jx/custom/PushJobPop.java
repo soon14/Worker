@@ -1,10 +1,12 @@
 package com.xsd.jx.custom;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -74,7 +76,7 @@ public class PushJobPop extends CenterPopupView {
                     join();
                     break;
                 case R.id.tv_next:
-                    animTrans(db.layoutRoot);
+                    animTransY(db.layoutRoot);
                     break;
                 case R.id.tv_ignore:
                     dismiss();
@@ -129,9 +131,6 @@ public class PushJobPop extends CenterPopupView {
                                 index=0;
                                 setData();
                             }
-
-//                            ToastUtil.showLong("没有更多数据了！");
-//                            dismiss();
                         }
                     }
 
@@ -173,25 +172,40 @@ public class PushJobPop extends CenterPopupView {
         animator.start();
         new Handler().postDelayed(() -> setData(),300);
     }
-    private void animTrans(View view){
-        PropertyValuesHolder translationX = PropertyValuesHolder.ofFloat("translationX", 0, ScreenUtils.getRealWidth(),0);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationX);
-        animator.setRepeatMode(ObjectAnimator.RESTART);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(600);
-        animator.start();
+    private void animTransX(View view){
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(view,"translationX",0, ScreenUtils.getRealWidth());
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(view,"translationX",0f);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(view,"alpha",0f,1f);
+        objectAnimator1.setDuration(300);
+        objectAnimator2.setDuration(0);
+        objectAnimator3.setDuration(300);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(objectAnimator1,objectAnimator2,objectAnimator3);
+        animatorSet.start();
+        new Handler().postDelayed(() -> setData(),300);
+    }
+    private void animTransY(View view){
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(view,"translationY",0, ScreenUtils.getRealHeight());
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(view,"translationY",-ScreenUtils.getRealHeight(),0f);
+        objectAnimator1.setDuration(500);
+        objectAnimator2.setDuration(800);
+        objectAnimator2.setInterpolator(new OvershootInterpolator());
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(objectAnimator1,objectAnimator2);
+        animatorSet.start();
         new Handler().postDelayed(() -> setData(),300);
     }
 
     /**
      * 卡片翻转效果
      */
-    public static ObjectAnimator rotateAnim(View view) {
+    private ObjectAnimator rotateAnim(View view) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotationY",0,360f);
         animator.setRepeatMode(ObjectAnimator.RESTART);
         animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(8000);
+        animator.setDuration(300);
         animator.start();
+        new Handler().postDelayed(() -> setData(),300);
         return animator;
     }
 

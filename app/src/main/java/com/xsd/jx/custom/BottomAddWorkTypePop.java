@@ -55,7 +55,7 @@ public class BottomAddWorkTypePop extends BottomPopupView {
 
     @Override
     protected int getPopupHeight() {
-        return (int) (ScreenUtils.getRealHight()*0.96f);
+        return (int) (ScreenUtils.getRealHeight()*0.96f);
     }
 
     @Override
