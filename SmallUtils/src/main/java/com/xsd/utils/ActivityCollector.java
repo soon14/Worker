@@ -13,6 +13,16 @@ import java.util.List;
 public class ActivityCollector {
     public static List<Activity> activities = new ArrayList<Activity>();
 
+    public static boolean hasActivity(String targetActivityName) {
+        if (activities==null||activities.size()==0)return false;
+        for (Activity activity : activities) {
+            L.e(activity.getClass().getSimpleName()+":"+targetActivityName);
+            if (activity.getClass().getSimpleName().equals(targetActivityName))
+                return true;
+        }
+        return false;
+    }
+
     public static void addActivity(Activity activity) {
         activities.add(activity);
     }
@@ -31,4 +41,6 @@ public class ActivityCollector {
             if (!activity.isFinishing()) activity.finish();
         }
     }
+
+
 }

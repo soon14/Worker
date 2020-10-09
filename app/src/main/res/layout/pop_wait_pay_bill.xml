@@ -1,102 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:background="@drawable/round16_whitetop_bg"
-    android:padding="@dimen/dp_16"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_365">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableRight="@mipmap/ic_black_close"
-        android:gravity="center"
-        android:text="账单明细"
-        android:textColor="@color/tv_black"
-        android:textSize="@dimen/h2"
-        android:textStyle="bold" />
-    <LinearLayout
-        android:layout_marginTop="@dimen/dp_16"
-        android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="工资合计"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="right"
-            android:textStyle="bold"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="2340元"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <View style="@style/h_line"/>
-    <LinearLayout
-        android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="保险合计"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="right"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="0元"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <View style="@style/h_line"/>
-    <LinearLayout
-        android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="预付款项"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="right"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="540元(结算已抵扣540元)"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <View style="@style/h_line"/>
-    <LinearLayout
-        android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h4"
-            android:text="已结工资"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="right"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/h4"
-            android:text="1000元"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <View style="@style/h_line"/>
+    <data>
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.MyGetWorkersResponse.ItemsBean" />
+    </data>
 
-</LinearLayout>
+    <LinearLayout
+        android:background="@drawable/round16_whitetop_bg"
+        android:padding="@dimen/dp_16"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_365">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/ic_black_close"
+            android:gravity="center"
+            android:text="账单明细"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h2"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                android:text="工资合计"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="right"
+                android:textStyle="bold"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                tools:text="2340元"
+                android:text="@{item.tobeSettledWage+`元`}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View style="@style/h_line" />
+
+        <LinearLayout
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                android:text="保险合计"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="right"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                tools:text="0元"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View style="@style/h_line" />
+
+        <LinearLayout
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                android:text="预付款项"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="right"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                tools:text="540元(结算已抵扣540元)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View style="@style/h_line" />
+
+        <LinearLayout
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                android:text="已结工资"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="right"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/h4"
+                tools:text="1000元"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View style="@style/h_line" />
+
+    </LinearLayout>
+</layout>

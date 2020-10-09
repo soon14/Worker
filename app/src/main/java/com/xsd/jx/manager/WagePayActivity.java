@@ -158,6 +158,7 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
             @Override
             public void onClick(View view) {
                 int childCount = layoutWorkers.getChildCount();
+                if (childCount==0)return;
                 if (layoutWorkers.getChildAt(childCount-1).getVisibility()==View.GONE){
                     TextViewUtils.setRightIcon(R.mipmap.ic_gray_arrow_up_big,tvExpand);
                     for (int i = 1; i <childCount ; i++) {

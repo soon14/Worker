@@ -83,13 +83,15 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
            @Override
            public void onClick(View view) {
                switch (view.getId()){
-                   case R.id.layout_need_pay:
+                   case R.id.layout_need_pay://显示结算明细
                        showWaitPayBill();
                        break;
-                   case R.id.tv_together_comment:
-                       goActivity(TogetherCommentActivity.class);
+                   case R.id.tv_together_comment://统一评价工人
+                       Intent intent = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
+                       intent.putExtra("item",item);
+                       startActivity(intent);
                        break;
-                   case R.id.tv_copy:
+                   case R.id.tv_copy://复制订单编号
                        String s = db.tvSn.getText().toString();
                        ClipboardUtils.copy(s);
                        break;
@@ -191,7 +193,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     private void showWaitPayBill() {
         new XPopup.Builder(this)
                 .atView(db.layoutNeedPay)
-                .asCustom(new WaitPayBillPop(this))
+                .asCustom(new WaitPayBillPop(this,item))
                 .show();
     }
 
@@ -265,16 +267,23 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         mAdapter.setEmptyView(emptyView);
         //工人列表
         List<WorkerBean> workers = item.getWorkers();
-        List<WorkerBean> showWorkers = new ArrayList<>();
-        for (int i = 0; i < workers.size(); i++){
-            WorkerBean workerBean = workers.get(i);
-            int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
-            if (status==1){
-                workerBean.setType(type);
-                showWorkers.add(workerBean);
+        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
+        if (type==1){
+            List<WorkerBean> showWorkers = new ArrayList<>();
+            for (int i = 0; i < workers.size(); i++){
+                WorkerBean workerBean = workers.get(i);
+                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
+                if (status==1){
+                    workerBean.setType(type);
+                    showWorkers.add(workerBean);
+                }
             }
+            mAdapter.setList(showWorkers);
+        }else {
+            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(type);
+            mAdapter.setList(workers);
         }
-        mAdapter.setList(showWorkers);
+
 
     }
 

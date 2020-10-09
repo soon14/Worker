@@ -483,7 +483,7 @@
                     android:id="@+id/tv_pay_need_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="还需支付: 1340元"
+                    tools:text="还需支付: 1340元"
                     android:textColor="@color/tv_black"
                     android:textSize="@dimen/h4"
                     />

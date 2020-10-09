@@ -3,18 +3,23 @@ package com.xsd.jx.custom;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import com.lxj.xpopup.impl.PartShadowPopupView;
 import com.xsd.jx.R;
+import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.databinding.PopWaitPayBillBinding;
 
 /**
  * Date: 2020/8/31
  * author: SmallCake
+ * 账单明细
  */
 public class WaitPayBillPop extends PartShadowPopupView {
-
-    public WaitPayBillPop(@NonNull Context context) {
+    private MyGetWorkersResponse.ItemsBean item;
+    public WaitPayBillPop(@NonNull Context context, MyGetWorkersResponse.ItemsBean item) {
         super(context);
+        this.item = item;
     }
 
     @Override
@@ -25,6 +30,8 @@ public class WaitPayBillPop extends PartShadowPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
-        findViewById(R.id.tv_title).setOnClickListener(view -> dismiss());
+        PopWaitPayBillBinding db = DataBindingUtil.bind(getPopupImplView());
+        db.setItem(item);
+        db.tvTitle.setOnClickListener(view -> dismiss());
     }
 }

@@ -176,6 +176,17 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         EasyFloat.dismissAppFloat();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
     private void initViewPager() {
         Fragment[] fragments = new Fragment[]{new JobFragment(), new OrderFragment(), new MineFragment()};
         final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager(), 0) {
@@ -196,24 +207,11 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         };
         db.viewPager.setAdapter(fragmentPagerAdapter);
         db.viewPager.setOffscreenPageLimit(tabNames.length);
-//        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, new OnBottomNavClickListener() {
-//            @Override
-////            public void onNavClick(int index) {
-////                switch (index){
-////                    case 1:
-////                    case 2:
-////                        if (!UserUtils.isLogin()){
-////                            ToastUtil.showLong("请先登录！");
-////                            goActivity(LoginActivity.class);
-////                            new Handler().postDelayed(() -> BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager),300);
-////                        }
-////                        break;
-////                }
-////            }
-////        });
         BottomNavUtils.initTabBindViewPager(db.tabLayout,db.viewPager,null);
 
     }
+
+
 
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
@@ -235,6 +233,15 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     @Receive(EventStr.SHOW_PUSH_JOB)
     public void showPushJob(){
         if (UserUtils.isLogin()) PopShowUtils.showPushJob(this);
+    }
+
+    @Receive(EventStr.SHOW_RECOMMEND_JOB_POP)
+    public void showRecommendJob(){
+        EasyFloat.showAppFloat();
+    }
+    @Receive(EventStr.HIDE_RECOMMEND_JOB_POP)
+    public void dismissRecommendJob(){
+        EasyFloat.hideAppFloat();
     }
 
 
