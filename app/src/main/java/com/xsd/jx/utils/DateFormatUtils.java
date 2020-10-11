@@ -11,4 +11,8 @@ public class DateFormatUtils {
         String dayStr = mDay<10?"0"+mDay:""+mDay;
         return mYear+"-"+monthStr+"-"+dayStr;
     }
+    public static String ym(int mYear,int mMonth){
+        String monthStr = mMonth<10?"0"+mMonth:""+mMonth;
+        return mYear+"-"+monthStr;
+    }
 }

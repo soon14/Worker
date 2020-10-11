@@ -7,6 +7,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
@@ -80,7 +81,7 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse> userCheckLogByMonth(Integer workId, Integer userId, String month) {
+    public Observable<BaseResponse<UserMonthLogResponse>> userCheckLogByMonth(Integer workId, Integer userId, String month) {
         return bindIoUI(api.userCheckLogByMonth(workId,userId,month));
     }
 

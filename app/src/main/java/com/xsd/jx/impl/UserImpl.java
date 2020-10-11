@@ -89,6 +89,11 @@ public class UserImpl implements UserApi {
     }
 
     @Override
+    public Observable<BaseResponse<BalanceLogResponse>> rewardLog(Integer page) {
+        return bindIoUI(api.rewardLog(page));
+    }
+
+    @Override
     public Observable<BaseResponse<MessageResponse>> message(Integer type, Integer page) {
         return bindIoUI(api.message(type,page));
     }

@@ -41,8 +41,9 @@ import java.util.List;
 public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSignListBinding> {
     private WorkerSignListAdapter mAdapter = new WorkerSignListAdapter();
     private String date="";
-    private int workId;
+    private int workId;//工作ID 默认：最近的1个招工ID,赋值为workingList第一个值
     private int status;//状态 0:全部 1：未考勤 2:已考勤
+
     List<WorkCheckLogResponse.ItemsBean> items;
     List<WorkCheckLogResponse.ItemsBean> items1;
     List<WorkCheckLogResponse.ItemsBean> items2;
@@ -87,6 +88,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         if (workingList==null||workingList.size()==0)return;
         //默认设置第一项
         WorkCheckLogResponse.WorkingItem workingItem0 = workingList.get(0);
+        workId = workingItem0.getId();
         db.tvTypeTitle.setText(workingItem0.getTypeTitle());
         db.tvTime.setText( workingItem0.getStartDate() + "至" +  workingItem0.getEndDate());
 
@@ -139,7 +141,6 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         items2 = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             WorkCheckLogResponse.ItemsBean itemsBean = items.get(i);
-            int status = itemsBean.getStatus();
             String signInTime = itemsBean.getSignInTime();
             if (TextUtils.isEmpty(signInTime))items1.add(itemsBean);
             if (!TextUtils.isEmpty(signInTime))items2.add(itemsBean);
@@ -169,9 +170,10 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 WorkCheckLogResponse.ItemsBean item = (WorkCheckLogResponse.ItemsBean) adapter.getItem(position);
-                int userId = item.getUserId();
                 Intent intent = new Intent(WorkerSignListActivity.this, WorkerSignInfoActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("workId",workId);
+                intent.putExtra("yearMonth",date.substring(0,date.lastIndexOf("-")));
+                intent.putExtra("item",item);
                 startActivity(intent);
             }
         });

@@ -6,6 +6,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.bean.WorkerInfoResponse;
@@ -123,7 +124,7 @@ public interface ServerApi {
      * @param month 月份 格式 2020-01，可以不传，默认当月
      */
     @GET("server/user-check-log-by-month")
-    Observable<BaseResponse> userCheckLogByMonth(@Query("workId")Integer workId,@Query("userId")Integer userId,@Query("month")String month );
+    Observable<BaseResponse<UserMonthLogResponse>> userCheckLogByMonth(@Query("workId")Integer workId, @Query("userId")Integer userId, @Query("month")String month );
 
     /**
      * 评价

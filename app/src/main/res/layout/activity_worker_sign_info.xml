@@ -5,8 +5,16 @@
 
     <data>
         <variable
+            name="userMonthLog"
+            type="com.xsd.jx.bean.UserMonthLogResponse" />
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.DayCheckBean" />
+        <variable
             name="clicklistener"
             type="android.view.View.OnClickListener" />
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
     </data>
 
     <RelativeLayout
@@ -50,7 +58,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10天"
+                            tools:text="10天"
+                            android:text="@{userMonthLog.allDays+`天`}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             android:textStyle="bold" />
@@ -74,7 +83,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10天"
+                            tools:text="10天"
+                            android:text="@{userMonthLog.days+`天`}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             android:textStyle="bold" />
@@ -98,7 +108,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="8小时"
+                            tools:text="8小时"
+                            android:text="@{userMonthLog.hours+`小时`}"
                             android:textColor="@color/tv_black"
                             android:textSize="@dimen/h3"
                             android:textStyle="bold" />
@@ -190,74 +201,81 @@
                     <View style="@style/h_line" />
 
                     <TextView
+                        android:id="@+id/tv_worker_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_16"
-                        android:text="武汉先华匠心集团"
+                        android:text="徐冬冬"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h4" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_16"
-                        android:orientation="horizontal">
-
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                         <LinearLayout
+                            android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.GONE:View.VISIBLE}"
+                            android:orientation="vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical">
-
+                            android:layout_height="wrap_content">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="上工时间：10:00:00"
+                                tools:text="上工时间：10:00:00"
+                                android:text="@{`上工时间：`+item.signInTime}"
                                 android:textColor="@color/tv_gray"
-                                android:textSize="@dimen/h5" />
-
+                                android:textSize="@dimen/h5"
+                                />
                             <ImageView
+                                roundUrl="@{item.signInPic}"
+                                android:layout_marginTop="@dimen/dp_16"
                                 android:layout_width="@dimen/dp_54"
                                 android:layout_height="@dimen/dp_54"
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:src="@mipmap/ic_worker_head" />
-
+                                android:src="@mipmap/ic_worker_head"
+                                />
                             <TextView
+                                android:layout_marginTop="@dimen/dp_10"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_10"
-                                android:text="今早大雨，现在开始上工我开始了"
+                                tools:text="今早大雨，现在开始上工我开始了"
+                                android:text="@{item.signInDesc}"
                                 android:textColor="@color/tv_darkgray"
-                                android:textSize="@dimen/h5" />
+                                android:textSize="@dimen/h5"
+                                />
                         </LinearLayout>
-
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:visibility="@{TextUtils.isEmpty(item.signOutTime)?View.GONE:View.VISIBLE}"
                             android:layout_marginLeft="@dimen/dp_24"
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:orientation="vertical">
-
+                            android:layout_height="wrap_content">
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="下工时间：22:00:00"
+                                tools:text="下工时间：22:00:00"
+                                android:text="@{`下工时间：`+item.signOutTime}"
                                 android:textColor="@color/tv_gray"
-                                android:textSize="@dimen/h5" />
-
+                                android:textSize="@dimen/h5"
+                                />
                             <ImageView
+                                roundUrl="@{item.signOutPic}"
+                                android:layout_marginTop="@dimen/dp_16"
                                 android:layout_width="@dimen/dp_54"
                                 android:layout_height="@dimen/dp_54"
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:src="@mipmap/ic_worker_head" />
-
+                                android:src="@mipmap/ic_worker_head"
+                                />
                             <TextView
+                                android:layout_marginTop="@dimen/dp_10"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_10"
-                                android:text="管理员操作"
+                                tools:text="管理员操作"
+                                android:text="@{item.signOutDesc}"
                                 android:textColor="@color/tv_darkgray"
-                                android:textSize="@dimen/h5" />
+                                android:textSize="@dimen/h5"
+                                />
                         </LinearLayout>
 
 
@@ -276,26 +294,27 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/dp_16"
             android:orientation="horizontal">
-
             <TextView
+                android:textColor="@color/tv_blue"
+                android:background="@drawable/round6_bluerim_bg"
                 android:onClick="@{clicklistener}"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:textColor="@color/tv_blue"
-                android:background="@drawable/round6_bluerim_bg"
+                android:id="@+id/tv_edit_log"
+                style="@style/DefaultBtnStyle"
+                android:layout_gravity="center"
+                android:text="修改记录" />
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp_16"
+                android:onClick="@{clicklistener}"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:id="@+id/tv_contact"
                 style="@style/DefaultBtnStyle"
                 android:layout_gravity="center"
                 android:text="联系对方" />
-            <TextView
-                android:onClick="@{clicklistener}"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:id="@+id/tv_confirm_sign"
-                style="@style/DefaultBtnStyle"
-                android:layout_gravity="center"
-                android:text="确认已考勤" />
+
 
         </LinearLayout>
     </RelativeLayout>

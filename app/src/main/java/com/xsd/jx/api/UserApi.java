@@ -90,6 +90,10 @@ public interface UserApi {
     @GET("user/recommend")
     Observable<BaseResponse<RecommendResponse>> recommend(@Query("page") Integer page);
 
+    //邀请奖励记录列表
+    @GET("user/reward-log")
+    Observable<BaseResponse<BalanceLogResponse>> rewardLog(@Query("page") Integer page);
+
     //用户消息记录列表 ,type:类别默认1 1:系统消息 2：订单消息
     @GET("user/message")
     Observable<BaseResponse<MessageResponse>> message(@Query("type") Integer type,@Query("page") Integer page);

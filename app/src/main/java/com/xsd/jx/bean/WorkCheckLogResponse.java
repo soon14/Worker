@@ -63,7 +63,7 @@ public class WorkCheckLogResponse implements Serializable {
         this.items = items;
     }
 
-    public static class ItemsBean {
+    public static class ItemsBean implements Serializable{
         /**
          * checkId : 1
          * userId : 1

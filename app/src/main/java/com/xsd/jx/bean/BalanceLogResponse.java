@@ -58,6 +58,16 @@ public class BalanceLogResponse implements Serializable {
         private String type;
         private int value;
 
+        private String userName;//奖励激励独有字段
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
         public String getCreatedAt() {
             return createdAt;
         }

@@ -46,11 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
-        <ScrollView
-            android:layout_gravity="center_horizontal"
-            android:scrollbars="none"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <LinearLayout
                 android:onClick="@{clicklistener}"
                 android:id="@+id/layout_content"
@@ -179,7 +174,6 @@
 
 
             </LinearLayout>
-        </ScrollView>
         <RelativeLayout
             android:paddingRight="@dimen/dp_8"
             android:paddingLeft="@dimen/dp_8"

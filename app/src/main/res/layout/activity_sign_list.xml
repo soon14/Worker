@@ -9,7 +9,7 @@
             type="com.xsd.jx.bean.CheckLogResponse" />
         <variable
             name="item"
-            type="com.xsd.jx.bean.CheckLogResponse.ItemsBean" />
+            type="com.xsd.jx.bean.DayCheckBean" />
         <import type="android.view.View"/>
         <import type="android.text.TextUtils"/>
     </data>

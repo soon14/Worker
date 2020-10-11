@@ -10,8 +10,10 @@ import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.CheckLogResponse;
+import com.xsd.jx.bean.DayCheckBean;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
+import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
@@ -30,7 +32,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     private int mMonth;
     private int mDay;
     private String mobile;
-    List<CheckLogResponse.ItemsBean> items;
+    List<DayCheckBean> items;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign_list;
@@ -68,9 +70,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                         items = data.getItems();
                         initItems();
                         //设置今天选中
-                        String monthStr = mMonth<10?"0"+mMonth:mMonth+"";
-                        String dayStr = mDay<10?"0"+mDay:mDay+"";
-                        String selectTime = mYear+"-"+monthStr+"-"+dayStr;
+                        String selectTime = DateFormatUtils.ymd(mYear,mMonth,mDay);
                         selectItem(selectTime);
                     }
 
@@ -91,13 +91,13 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         if (items==null||items.size()==0)return;
        Map<String,Calendar> calendars = new HashMap();
         for (int i = 0; i < items.size(); i++) {
-            CheckLogResponse.ItemsBean itemsBean = items.get(i);
-            int status = itemsBean.getStatus();// 0:未确认 1:已确认
+            DayCheckBean itemsBean = items.get(i);
+            int status = itemsBean.getStatus();// 确认状态 1:未确认 2:已确认
             String workDate = itemsBean.getWorkDate();
             String[] split = workDate.split("-");
             int day = Integer.parseInt(split[2]);
             L.e(mYear+"-"+mMonth+"-"+day);
-            Calendar calendar = getSchemeCalendar(mYear, mMonth, day, status==1?0xFF3B77FF:0xFF999999, status==1?"上工":"未上");
+            Calendar calendar = getSchemeCalendar(mYear, mMonth, day, status==2?0xFF3B77FF:0xFF999999, status==2?"上工":"未上");
             calendars.put(calendar.toString(), calendar);
         }
         db.calendarView.setSchemeDate(calendars);
@@ -110,13 +110,12 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
             db.setItem(null);
             return;
         }
-        CheckLogResponse.ItemsBean select = findSelect(selectTime);
+        DayCheckBean select = findSelect(selectTime);
         db.setItem(select);
     }
-    private CheckLogResponse.ItemsBean findSelect(String selectTime){
+    private DayCheckBean findSelect(String selectTime){
         for (int i = 0; i < items.size(); i++) {
-            CheckLogResponse.ItemsBean itemsBean = items.get(i);
-            int status = itemsBean.getStatus();// 0:未确认 1:已确认
+            DayCheckBean itemsBean = items.get(i);
             String workDate = itemsBean.getWorkDate();
             if (selectTime.equals(workDate)){
                 return itemsBean;
