@@ -88,7 +88,7 @@ public class DataBindingAdapter {
         transformation.setExceptCorner(true, true, false, false);
         Glide.with(SmallUtils.getApp()).load(imageRoundUrl).apply(new RequestOptions().transform(transformation)).into(view);
     }
-    //付款多少
+    //付款多少成
     @BindingAdapter("advanceType")
     public static void advanceType(TextView tv, int type){
         switch (type){
@@ -103,6 +103,11 @@ public class DataBindingAdapter {
                 tv.setVisibility(View.GONE);
                 break;
         }
+    }
+    @BindingAdapter("advanceAmount")
+    public static void advanceAmount(TextView tv, int amount){
+        if (amount==0) tv.setVisibility(View.GONE);
+        tv.setText("已付"+amount+"元");
     }
     //工期：2020-07-29至2020-08-29(共30天)
     @BindingAdapter("workDay")

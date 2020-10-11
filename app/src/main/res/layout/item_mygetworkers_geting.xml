@@ -57,10 +57,10 @@
                 />
 
             <TextView
-                advanceType="@{item.advanceType}"
+                advanceAmount="@{item.advanceAmount}"
                 android:layout_marginLeft="@dimen/dp_6"
                 style="@style/TextWelfareTagStyle"
-                tools:text="已付定金"
+                tools:text="已付1000元"
                 />
 
             <TextView

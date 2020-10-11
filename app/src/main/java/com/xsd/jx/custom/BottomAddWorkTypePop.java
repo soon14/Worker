@@ -28,7 +28,10 @@ import java.util.Set;
  * Date: 2020/9/12
  * author: SmallCake
  * 从底部弹出的增加工种的弹框
+ * 改为单选：工人注册以后选择工种以及去个人中心修改工种都改为只能有一个工种
+ * {@link BottomSingleWorkTypePop}
  */
+@Deprecated
 public class BottomAddWorkTypePop extends BottomPopupView {
     private List<WorkTypeBean> items;//已经有的工种
     private BaseActivity activity;

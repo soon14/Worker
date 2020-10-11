@@ -53,7 +53,7 @@ import java.util.Calendar;
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
     private int typeId;
     private int areaId;//地区ID,用于查询工价
-    private String address;
+    private String address;//用户选择的省市区
     private String startDate;
     private String endDate;
     private int price;//工价
@@ -65,8 +65,6 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private int safeAmount = 2;
     private int recommendPrice;//推荐的工价,选择工种和地区后，有最低价格限制
     private String advanceAmount = "0";
-
-
     private int mYear, mMonth, mDay;//开始的年月日
     @Override
     protected int getLayoutId() {
@@ -103,7 +101,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             return;
         }
 
-        if (EditTextUtils.isEmpty(db.etPrice,db.etNum,db.etDesc))return;
+        if (EditTextUtils.isEmpty(db.etAddrInfo,db.etPrice,db.etNum,db.etDesc))return;
         //数据填充
         String s = db.etPrice.getText().toString();
         s = s.replace("元","");
@@ -137,10 +135,10 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             advanceAmount="0";
             advanceType=3;
         }
-        //TODO 还差保险金额和预付款金额
+        String addressInfo = db.etAddrInfo.getText().toString();
 
         //接口提交
-        dataProvider.server.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount)
+        dataProvider.server.publishWork(typeId,address+addressInfo,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
@@ -167,8 +165,8 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     });
                     break;
                 case R.id.layout_addr:
-                    PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (city, district, desc) -> {
-                        address = "湖北省" + city.getName() + (district == null ? "" : district.getName()) + (TextUtils.isEmpty(desc) ? "" : desc);
+                    PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (city, district) -> {
+                        address = "湖北省" + city.getName() + (district == null ? "" : district.getName());
                         db.tvAddr.setText(address);
                         areaId = city.getId();
                         new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(PushGetWorkersActivity.this),800);
@@ -370,7 +368,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private void initView() {
         tvTitle.setText("发布招工");
         db.rbDayPay.setChecked(true);
-        db.rbBuySafe.setChecked(true);
+        db.rbNoSafe.setChecked(true);
         db.rbPay2cost.setChecked(true);
         Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);

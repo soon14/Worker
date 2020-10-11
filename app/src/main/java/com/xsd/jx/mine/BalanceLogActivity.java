@@ -17,9 +17,6 @@ import com.xsd.jx.utils.OnSuccessAndFailListener;
 
 import java.util.List;
 
-/**
- * 收支列表
- */
 public class BalanceLogActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private PaymentsAdapter mAdapter = new PaymentsAdapter();
     private int page=1;

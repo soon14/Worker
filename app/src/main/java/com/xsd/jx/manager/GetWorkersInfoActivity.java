@@ -29,6 +29,7 @@ import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
+import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.ClipboardUtils;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
@@ -99,7 +100,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        cancelInvite();
                        break;
                    case R.id.tv_activ_get://主动招人
-                       goActivity(PushGetWorkersActivity.class);
+                       ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+                       finish();
                        break;
                }
            }
@@ -136,7 +138,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        startActivity(intent1);
                        break;
                    case R.id.tv_activ_get://主动招人
-                       goActivity(PushGetWorkersActivity.class);
+                       ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+                       finish();
                        break;
                }
            }
@@ -263,7 +266,10 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
         View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
-        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> goActivity(PushGetWorkersActivity.class));
+        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> {
+            ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+            finish();
+        });
         mAdapter.setEmptyView(emptyView);
         //工人列表
         List<WorkerBean> workers = item.getWorkers();

@@ -87,6 +87,11 @@ http://s.xhjxapp.com/html/yszc
 用户协议
 http://s.xhjxapp.com/html/yhxy
 
+阿里云身份证校验
+https://market.aliyun.com/products/57000002/cmapi025518.html#sku=yuncode19518000012
+
+工人注册以后选择工种以及去个人中心修改工种都改为只能有一个工种
+
 
 
 

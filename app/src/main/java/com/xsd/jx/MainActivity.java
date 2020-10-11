@@ -95,7 +95,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             }
             if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
         }
-
+//        PopShowUtils.showAppUpdate(this);
 
     }
 

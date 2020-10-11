@@ -32,7 +32,9 @@ import java.util.List;
 /**
  * Date: 2020/9/3
  * author: SmallCake
+ * is old user {@link BottomProvincesPop}
  */
+@Deprecated
 public class BottomAddrPop extends BottomPopupView {
     private AddrBean selectCity;//市
     private AddrBean selectDistrict;//区
@@ -120,7 +122,7 @@ public class BottomAddrPop extends BottomPopupView {
                     return;
                 }
                 dismiss();
-                if (listener!=null)listener.onAddrSelect(selectCity,selectDistrict,s);
+                if (listener!=null)listener.onAddrSelect(selectCity,selectDistrict);
             }
         });
 

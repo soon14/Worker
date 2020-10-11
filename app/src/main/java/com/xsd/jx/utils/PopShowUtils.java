@@ -2,7 +2,10 @@ package com.xsd.jx.utils;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Handler;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -18,8 +21,8 @@ import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.custom.BottomAddrPop;
 import com.xsd.jx.custom.BottomNationSelecterPop;
+import com.xsd.jx.custom.BottomProvincesPop;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.BottomSingleWorkTypePop;
 import com.xsd.jx.custom.InviteJobPop;
@@ -28,12 +31,20 @@ import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.mine.RealNameAuthActivity;
+import com.xsd.utils.AppUtils;
+import com.xsd.utils.FormatUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.SoftInputUtils;
+import com.xsd.utils.SpannableStringUtils;
+import com.xsd.utils.ToastUtil;
 
+import java.io.File;
 import java.util.List;
+
+import me.jessyan.progressmanager.body.ProgressInfo;
 
 /**
  * Date: 2020/9/10
@@ -139,6 +150,78 @@ public class PopShowUtils {
     }
 
 
+    public static void showAppUpdate(BaseActivity activity) {
+        SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容").setForegroundColor(Color.parseColor("#333333")).setProportion(1.1f)
+                .append("\n" +"1. 新增加服务单新建功能.\n" +
+                        "2. 客户端体验优化.\n" +
+                        "3. 随便增加了点bug.\n" +
+                        "4. 客户端体验优化.\n" +
+                        "5. 随便增加了点bug.\n")
+                .create();
+        new XPopup.Builder(activity)
+                .setPopupCallback(new SimpleCallback(){
+                    @Override
+                    public void onShow(BasePopupView popupView) {
+                        super.onShow(popupView);
+                        EasyFloat.hideAppFloat();
+                    }
+
+                    @Override
+                    public void onDismiss(BasePopupView popupView) {
+                        super.onDismiss(popupView);
+                        EasyFloat.showAppFloat();
+                    }
+                })
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asConfirm("发现新版本",
+                        content,
+                        "稍后更新",
+                        "立即更新",
+                        () -> {
+                    ToastUtil.showLong("开始更新中...");
+                            String down_url = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+                            downloadApk(activity,down_url);
+                        },
+                        null,
+                        false, R.layout.dialog_update)
+
+                .show();
+    }
+
+    private static void downloadApk(Activity context, String down_url) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("进度更新");
+        progressDialog.show();
+        String path = context.getExternalCacheDir().getAbsolutePath()+ File.separator;
+        DownloadUtils.getInstance().download(down_url, path, "QQ.apk", new DownloadUtils.OnDownloadListener() {
+            @Override
+            public void onDownloadSuccess() {
+                L.i("恭喜你下载成功，开始安装！==" + path + "QQ.apk");
+                ToastUtil.showShort("恭喜你下载成功，开始安装！");
+                String successDownloadApkPath = path + "QQ.apk";
+                AppUtils.installApk(context, successDownloadApkPath);
+            }
+            @Override
+            public void onDownloading(ProgressInfo progressInfo) {
+                progressDialog.setProgress(progressInfo.getPercent());
+                boolean finish = progressInfo.isFinish();
+                if (!finish) {
+                    long speed = progressInfo.getSpeed();
+                    progressDialog.setMessage("下载速度(" + (speed > 0 ? FormatUtils.formatSize(context, speed) : speed) + "/s)");
+                } else {
+                    progressDialog.setMessage("下载完成！");
+                }
+            }
+            @Override
+            public void onDownloadFailed() {
+                progressDialog.dismiss();
+                ToastUtil.showShort("下载失败！");
+            }
+        });
+
+    }
     public static void showRealNameAuth(BaseActivity activity) {
         new XPopup.Builder(activity)
                 .asConfirm("实名认证提醒",
@@ -285,8 +368,8 @@ public class PopShowUtils {
      * @param listener
      */
     public static void showBottomAddrSelect(BaseActivity baseActivity,OnAddrListener listener){
-        BottomAddrPop bottomAddrPop = new BottomAddrPop(baseActivity);
-            bottomAddrPop.setListener(listener);
+        BottomProvincesPop bottomProvincesPop = new BottomProvincesPop(baseActivity);
+        bottomProvincesPop.setListener(listener);
             new XPopup.Builder(baseActivity)
                     .setPopupCallback(new SimpleCallback() {
                         @Override
@@ -295,8 +378,10 @@ public class PopShowUtils {
                             new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(baseActivity), 800);
                         }
                     })
-                    .asCustom(bottomAddrPop)
+                    .asCustom(bottomProvincesPop)
                     .show();
+
+
     }
 
     /***

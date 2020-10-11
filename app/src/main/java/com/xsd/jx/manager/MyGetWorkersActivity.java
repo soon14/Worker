@@ -2,6 +2,7 @@ package com.xsd.jx.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -10,7 +11,6 @@ import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
-import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.databinding.ActivityMyGetWorkersBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.listener.OnTabClickListener;
@@ -76,14 +76,6 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
 
     }
     private void onEvent() {
-        db.tvOrderComment.setOnClickListener(view -> goActivity(GetWorkersWaitCommentActivity.class));
-        db.tvOrderAll.setOnClickListener(view -> goActivity(GetWorkersAllActivity.class));
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
-            Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
-            intent.putExtra("item",item);
-            startActivity(intent);
-        });
         AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
             @Override
             public void loadMore() {
@@ -96,21 +88,29 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
                 loadData();
             }
         });
+        db.tvOrderComment.setOnClickListener(view -> goActivity(GetWorkersWaitCommentActivity.class));
+        db.tvOrderAll.setOnClickListener(view -> goActivity(GetWorkersAllActivity.class));
+
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
+            Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
+            intent.putExtra("item",item);
+            startActivity(intent);
+        });
+
         mAdapter.addChildClickViewIds(R.id.tv_activ_get);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             switch (view.getId()){
                 case R.id.tv_activ_get:
-                    List<WorkerBean> workers = item.getWorkers();
-                    if (workers!=null&&workers.size()>0){
-                        //查看工人
+                    TextView tvActivGet = view.findViewById(R.id.tv_activ_get);
+                    String s = tvActivGet.getText().toString();
+                    if (s.equals("主动招人")){
+                        finish();
+                    }else {
                         Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
                         intent.putExtra("item",item);
                         startActivity(intent);
-                    }else {
-                        //主动招人
-//                        goActivity(PushGetWorkersActivity.class);
-                        finish();
                     }
                     break;
             }

@@ -78,7 +78,7 @@
             <TextView
                 android:onClick="@{clicklistener}"
                 android:drawablePadding="@dimen/dp_4"
-                android:layout_marginRight="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_16"
                 android:id="@+id/tv_share"
                 android:textSize="@dimen/h6"
                 android:textColor="@color/tv_black"
@@ -134,9 +134,10 @@
                         tools:text="木工"
                         android:text="@{item.typeTitle}"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/h3" />
+                        android:textSize="33sp" />
 
                     <TextView
+                        android:textSize="24sp"
                         price="@{item.price}"
                         style="@style/TextPriceStyle"
                         android:gravity="right"
@@ -169,9 +170,10 @@
                         android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
                         />
                 </LinearLayout>
+                <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16"/>
 
                 <TextView
-                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_24"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,7 +190,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
-                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_32"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,7 +208,7 @@
 
 
                 <TextView
-                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_32"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -334,6 +336,8 @@
             </LinearLayout>
         </ScrollView>
         <TextView
+            android:layout_height="@dimen/dp_54"
+            android:layout_width="@dimen/dp_333"
             android:onClick="@{clicklistener}"
             android:enabled="@{!item.isJoin}"
             isJoin="@{item.isJoin}"

@@ -18,17 +18,19 @@
             layout="@layout/action_common_bar" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_desc1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view_top"
             android:layout_marginTop="@dimen/dp_24"
             android:gravity="center"
-            android:text="请选择您的工种（可多选）"
+            android:text="请选择您的工种（单选）"
             android:textColor="@color/tv_darkgray"
             android:textSize="@dimen/h4" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_desc2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,6 +59,7 @@
         </ScrollView>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_search_job"
             style="@style/DefaultBtnStyle"
             android:layout_alignParentBottom="true"

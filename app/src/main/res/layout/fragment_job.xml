@@ -6,12 +6,6 @@
     <data>
 
     </data>
-
-    <RelativeLayout
-        android:tag="layout/fragment_job_0"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -143,33 +137,4 @@
                     android:layout_height="match_parent" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <com.xsd.utils.custom.RadarView
-            tools:visibility="visible"
-            android:visibility="gone"
-            android:id="@+id/radar_view"
-            android:layout_width="@dimen/dp_88"
-            android:layout_height="@dimen/dp_88"
-            android:layout_marginBottom="@dimen/dp_152"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            app:rb_color="#fffb4808"
-            app:rb_duration="2000"
-            app:rb_radius="30.0"
-            app:rb_rippleAmount="2"
-            app:rb_scale="3.0"
-            app:rb_type="0">
-
-            <TextView
-                android:textSize="@dimen/h4"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:id="@+id/tv_invite"
-                android:background="@drawable/pot_orange"
-                android:layout_width="@dimen/dp_68"
-                android:layout_height="@dimen/dp_68"
-                android:text="3个\n邀请"
-                android:layout_centerInParent="true" />
-        </com.xsd.utils.custom.RadarView>
-    </RelativeLayout>
 </layout>

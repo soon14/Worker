@@ -39,6 +39,19 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
         db.recyclerView.setAdapter(mAdapter);
     }
     private void onEvent() {
+        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
+            @Override
+            public void loadMore() {
+                page++;
+                loadData();
+            }
+            @Override
+            public void onRefresh() {
+                page=1;
+                loadData();
+            }
+        });
+
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             Intent intent = new Intent(GetWorkersAllActivity.this, GetWorkersInfoActivity.class);
@@ -54,19 +67,7 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
             }
         });
 
-        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
-            @Override
-            public void loadMore() {
-                page++;
-                loadData();
-            }
 
-            @Override
-            public void onRefresh() {
-                page=1;
-                loadData();
-            }
-        });
     }
 
     private void loadData() {

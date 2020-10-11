@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.lsxiao.apollo.core.Apollo;
-import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -13,24 +12,23 @@ import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
-import com.xsd.jx.custom.BottomAddWorkTypePop;
 import com.xsd.jx.custom.VerifyCountTimer;
 import com.xsd.jx.databinding.ActivityHelpRegistBinding;
 import com.xsd.jx.listener.OnNationSelectListener;
+import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.ToastUtil;
 
-import java.util.Set;
-
 /**
  * 帮工友注册
  */
 public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBinding> {
     private VerifyCountTimer mTimer;
-    private Set<WorkTypeBean> workTypes;//工种
+//    private Set<WorkTypeBean> workTypes;//工种
+    private int wtIds;//工种单选
     private String nation = "汉族";
     private String workYears = "1~5年";
     @Override
@@ -70,21 +68,29 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
                     getCode();
                     break;
                 case R.id.tv_type_work:
-                    new XPopup.Builder(this)
-                            .asCustom(new BottomAddWorkTypePop(this, null, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
-                                @Override
-                                public void addWorkTypes(Set<WorkTypeBean> types) {
-                                    workTypes = types;
-                                    StringBuilder builder = new StringBuilder();
-                                    for (WorkTypeBean workType : workTypes) {
-                                        builder.append(workType.getTitle()).append(",");
-                                    }
-                                    String s = builder.toString();
-                                    s = s.substring(0,s.lastIndexOf(","));
-                                    db.tvTypeWork.setText(s);
-                                }
-                            },false))
-                            .show();
+//                    new XPopup.Builder(this)
+//                            .asCustom(new BottomAddWorkTypePop(this, null, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
+//                                @Override
+//                                public void addWorkTypes(Set<WorkTypeBean> types) {
+//                                    workTypes = types;
+//                                    StringBuilder builder = new StringBuilder();
+//                                    for (WorkTypeBean workType : workTypes) {
+//                                        builder.append(workType.getTitle()).append(",");
+//                                    }
+//                                    String s = builder.toString();
+//                                    s = s.substring(0,s.lastIndexOf(","));
+//                                    db.tvTypeWork.setText(s);
+//                                }
+//                            },false))
+//                            .show();
+                    //帮工友注册需要改为单选
+                    PopShowUtils.showWorkTypeSelect(this, new OnWorkTypeSelectListener() {
+                        @Override
+                        public void onSelect(WorkTypeBean workTypeBean) {
+                            db.tvTypeWork.setText(workTypeBean.getTitle());
+                            wtIds = workTypeBean.getId();
+                        }
+                    });
                     break;
                 case R.id.tv_nation:
                     PopShowUtils.showNationList(this, new OnNationSelectListener() {
@@ -115,7 +121,7 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
     }
     private void helpReg() {
         if (EditTextUtils.isEmpty(db.etMobile,db.etCode,db.etName,db.etIdcard))return;
-        if (workTypes==null||workTypes.size()==0){
+        if (wtIds==0){
             ToastUtil.showLong("请选择工种！");
             return;
         }
@@ -124,14 +130,14 @@ public class HelpRegistActivity extends BaseBindBarActivity<ActivityHelpRegistBi
         String name = db.etName.getText().toString();
         String idCard = db.etIdcard.getText().toString();
 
-        StringBuilder builder = new StringBuilder();
-        for (WorkTypeBean workType : workTypes) {
-            builder.append(workType.getId()).append(",");
-        }
-        String wtIds = builder.toString();
-        wtIds = wtIds.substring(0,wtIds.lastIndexOf(","));
+//        StringBuilder builder = new StringBuilder();
+//        for (WorkTypeBean workType : workTypes) {
+//            builder.append(workType.getId()).append(",");
+//        }
+//        String wtIds = builder.toString();
+//        wtIds = wtIds.substring(0,wtIds.lastIndexOf(","));
 
-        dataProvider.user.helpReg(mobile,code,name,idCard,wtIds,nation,workYears)
+        dataProvider.user.helpReg(mobile,code,name,idCard,wtIds+"",nation,workYears)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {

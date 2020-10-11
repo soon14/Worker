@@ -106,7 +106,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_width="@dimen/dp_87"
                         android:layout_height="@dimen/dp_30"
-                        android:text="新增工种"
+                        android:text="修改工种"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold"
                         android:textSize="@dimen/h5"

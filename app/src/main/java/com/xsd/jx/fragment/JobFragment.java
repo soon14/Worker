@@ -32,7 +32,6 @@ import com.xsd.jx.utils.BannerUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -72,9 +71,12 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
-        L.e(TAG,"loginOut()===");
-        db.radarView.setVisibility(View.GONE);
-
+        mAdapter.setList(null);
+    }
+    @Receive(EventStr.LOGIN_SUCCESS)
+    public void loginSuccess(){
+        page=1;
+        loadData();
     }
 
 

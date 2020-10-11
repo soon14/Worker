@@ -18,19 +18,20 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.bean.WorkTypeBean;
-import com.xsd.jx.custom.BottomAddWorkTypePop;
 import com.xsd.jx.databinding.ActivityResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
+import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.DpPxUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -40,6 +41,7 @@ import okhttp3.RequestBody;
  */
 public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
     private List<WorkTypeBean> workTypes;
+//    private int workTypeId;//单选的工作类型id
     @Override
     protected int getLayoutId() {
         return R.layout.activity_resume;
@@ -96,15 +98,22 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
                     goActivity(EditIntroActivity.class);
                     break;
                 case R.id.tv_add_work_type:
-                    new XPopup.Builder(this)
-                            .asCustom(new BottomAddWorkTypePop(this, workTypes, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
-                                @Override
-                                public void addWorkTypes(Set<WorkTypeBean> types) {
-                                    workTypes.addAll(types);
-                                    setWorkTypes();
-                                }
-                            }))
-                            .show();
+//                    new XPopup.Builder(this)
+//                            .asCustom(new BottomAddWorkTypePop(this, workTypes, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
+//                                @Override
+//                                public void addWorkTypes(Set<WorkTypeBean> types) {
+//                                    workTypes.addAll(types);
+//                                    setWorkTypes();
+//                                }
+//                            }))
+//                            .show();
+                    PopShowUtils.showWorkTypeSelect(this, new OnWorkTypeSelectListener() {
+                        @Override
+                        public void onSelect(WorkTypeBean workTypeBean) {
+//                            workTypeId = workTypeBean.getId();
+                            submit(workTypeBean);
+                        }
+                    });
                     break;
                 case R.id.tv_edit_intro:
                     new XPopup.Builder(this)
@@ -123,8 +132,34 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
             TextView tvName = viewType.findViewById(R.id.tv_name);
             tvName.setText(workTypesBean.getTitle());
             db.layoutTypesWork.addView(viewType);
+            ivDel.setVisibility(View.GONE);
             ivDel.setOnClickListener(v -> showDelPop(workTypesBean,viewType));
         }
+    }
+    //TODO 单选，目前接口还是新添加
+    private void submit(WorkTypeBean workTypeBean) {
+        StringBuilder builder = new StringBuilder();
+        for (WorkTypeBean tag : workTypes) {
+            int id = tag.getId();
+            builder.append(id).append(",");
+        }
+        String s = builder.toString();
+        String ids =s.substring(0,s.lastIndexOf(","));
+        L.e("ids=="+ids);
+        dataProvider.work.workTypeSubmitChoice(workTypeBean.getId()+"")
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        db.layoutTypesWork.removeAllViews();
+                        View viewType = LayoutInflater.from(ResumeActivity.this).inflate(R.layout.item_type_work_del, null);
+                        ImageView ivDel = viewType.findViewById(R.id.iv_del);
+                        TextView tvName = viewType.findViewById(R.id.tv_name);
+                        tvName.setText(workTypeBean.getTitle());
+                        ivDel.setVisibility(View.GONE);
+                        db.layoutTypesWork.addView(viewType);
+                    }
+                });
     }
     //删除工种提醒弹框
     private void showDelPop(WorkTypeBean workTypesBean,View viewType){

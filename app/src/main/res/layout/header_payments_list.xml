@@ -9,25 +9,16 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/dp_40"
-            android:text="收支金额"
+            android:text="金额/类型"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h5"
             />
         <TextView
             android:gravity="center"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_height="@dimen/dp_40"
             android:text="状态"
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h5"
-            />
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/dp_40"
-            android:text="收支类型"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h5"
             />
