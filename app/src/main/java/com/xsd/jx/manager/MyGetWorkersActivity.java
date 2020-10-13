@@ -6,9 +6,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.databinding.ActivityMyGetWorkersBinding;
@@ -36,8 +39,21 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
+        loadData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+    }
+
+    @Receive(EventStr.UPDATE_MY_GET_WORKERS)
+    public void update(){
+        page=1;
         loadData();
     }
 

@@ -92,7 +92,6 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                         db.setUserMonthLog(data);
                         items = data.getItems();
                         initItems();
-
                         selectItem();
                     }
                 });
@@ -130,18 +129,21 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
     private void selectItem() {
         if (items == null || items.size() == 0) {
             db.setItem(null);
-            return;
         }
         DayCheckBean select = findSelect(selectTime);
         db.setItem(select);
         db.tvEditLog.setVisibility(select == null ? View.INVISIBLE : View.VISIBLE);
         SpannableStringUtils.Builder builder = SpannableStringUtils.getBuilder(userName);
-        if (select == null)
-            builder.append("\n该工人当天没有考勤记录").setProportion(0.83F).setForegroundColor(ContextCompat.getColor(this, R.color.tv_gray));
+        if (select == null){
+            builder.append("\n\n该工人当天没有考勤记录")
+                    .setProportion(0.83F)
+                    .setForegroundColor(ContextCompat.getColor(this, R.color.tv_gray));
+        }
         db.tvWorkerName.setText(builder.create());
     }
 
     private DayCheckBean findSelect(String selectTime) {
+        if (selectTime==null)return null;
         for (int i = 0; i < items.size(); i++) {
             DayCheckBean itemsBean = items.get(i);
             String workDate = itemsBean.getWorkDate();

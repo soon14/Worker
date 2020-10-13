@@ -42,9 +42,10 @@
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <TextView
+            workerType="@{item.type}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="等待上工"
+            tools:text="等待上工"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="parent"

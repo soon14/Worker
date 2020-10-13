@@ -213,8 +213,5 @@ public class PushJobPop extends CenterPopupView {
     protected int getMaxWidth() {
         return (int) (XPopupUtils.getWindowWidth(getContext()) * 0.95f);
     }
-    @Override
-    protected int getMaxHeight() {
-        return (int) (XPopupUtils.getWindowHeight(getContext()) * 0.95f);
-    }
+
 }

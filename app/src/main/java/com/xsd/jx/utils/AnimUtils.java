@@ -39,6 +39,17 @@ public class AnimUtils {
         animator.setDuration(1000);
         animator.start();
     }
+    public static void potView(View view) {
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f,0f);
+        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0f,1f);
+        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0f,1f);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, alpha, scaleX,scaleY);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setDuration(2000);
+        animator.start();
+    }
     public static void scaleView(View view) {
         PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.8f,1f);
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.9f,1.1f);

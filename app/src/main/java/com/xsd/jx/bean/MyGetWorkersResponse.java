@@ -88,8 +88,9 @@ public class MyGetWorkersResponse implements Serializable {
         private int num;
         private String desc;
         private int isSafe;
-        private int safeAmount;
-        private int advanceAmount;
+        private String safeAmount;
+        private String advanceAmount;//预付款（元）
+        private String advanceUsedAmount;//预付款已使用金额(元)
         private int status;
         private String createdAt;
         private String typeTitle;
@@ -218,20 +219,28 @@ public class MyGetWorkersResponse implements Serializable {
             this.isSafe = isSafe;
         }
 
-        public int getSafeAmount() {
+        public String getSafeAmount() {
             return safeAmount;
         }
 
-        public void setSafeAmount(int safeAmount) {
+        public void setSafeAmount(String safeAmount) {
             this.safeAmount = safeAmount;
         }
 
-        public int getAdvanceAmount() {
+        public String getAdvanceAmount() {
             return advanceAmount;
         }
 
-        public void setAdvanceAmount(int advanceAmount) {
+        public void setAdvanceAmount(String advanceAmount) {
             this.advanceAmount = advanceAmount;
+        }
+
+        public String getAdvanceUsedAmount() {
+            return advanceUsedAmount;
+        }
+
+        public void setAdvanceUsedAmount(String advanceUsedAmount) {
+            this.advanceUsedAmount = advanceUsedAmount;
         }
 
         public int getStatus() {

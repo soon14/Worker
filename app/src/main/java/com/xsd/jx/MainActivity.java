@@ -36,6 +36,7 @@ import com.xsd.jx.fragment.OrderFragment;
 import com.xsd.jx.job.SelectTypeWorkActivity;
 import com.xsd.jx.job.SignActivity;
 import com.xsd.jx.utils.BottomNavUtils;
+import com.xsd.jx.utils.CommonDataUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
@@ -95,8 +96,8 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             }
             if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
         }
-//        PopShowUtils.showAppUpdate(this);
-
+        PopShowUtils.showAppUpdate(this);
+        CommonDataUtils.getPhone(this);
     }
 
     //被邀请上工信息列表

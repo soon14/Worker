@@ -2,13 +2,16 @@ package com.xsd.jx.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
+import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
@@ -68,10 +71,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         //日历点击事件
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
-            public void onCalendarOutOfRange(Calendar calendar) {
-
-            }
-
+            public void onCalendarOutOfRange(Calendar calendar) {}
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
                 int year = calendar.getYear();
@@ -88,6 +88,30 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 db.tvMonth.setText("("+month+"月)");
             }
         });
+        //月份选择
+        db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectYearMonth();
+            }
+        });
+    }
+
+    private BottomDatePickerPop bottomDatePickerPop;
+    private void showSelectYearMonth() {
+        if (bottomDatePickerPop==null){
+            bottomDatePickerPop = new BottomDatePickerPop(this);
+            bottomDatePickerPop.setListener((year, month) ->{
+                db.tvMonth.setText("("+month+"月)");
+                db.calendarView.scrollToCalendar(year,month,1,true);
+               loadBottomData();
+
+            });
+            new XPopup.Builder(this)
+                    .asCustom(bottomDatePickerPop).show();
+        }else {
+            bottomDatePickerPop.show();
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.xsd.jx.order;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
     private int workId;//招工信息id
     private String sn;//订单编号
     private String employerPhone;//雇主手机号
+    private int toUserId;//雇主id
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order_info;
@@ -65,7 +67,10 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
                     MobileUtils.callPhone(OrderInfoActivity.this,employerPhone);
                     break;
                 case R.id.tv_comment_employer://评价雇主
-                    goActivity(CommentActivity.class);
+                    Intent intent = new Intent(this, CommentActivity.class);
+                    intent.putExtra("workId",workId);
+                    intent.putExtra("toUserId",toUserId);
+                    startActivity(intent);
                     break;
                 case R.id.tv_copy://复制订单编号
                     ClipboardUtils.copy(sn);
@@ -88,6 +93,7 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
         db.setItem(item);
         workId = item.getListId();
         employerPhone = item.getEmployerPhone();
+        toUserId =item.getEmployerId();
         sn = item.getSn();
 
         int type = item.getStatus();//状态 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成

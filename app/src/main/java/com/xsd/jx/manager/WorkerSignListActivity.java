@@ -207,7 +207,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
-                        mAdapter.getItem(position).setStatus(1);
+                        mAdapter.getItem(position).setStatus(2);
                         mAdapter.notifyItemChanged(position);
                     }
                 });

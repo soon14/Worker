@@ -30,6 +30,7 @@ import com.xsd.jx.custom.SignPop;
 import com.xsd.jx.databinding.ActivitySignBinding;
 import com.xsd.jx.listener.OnSignTackPicListener;
 import com.xsd.jx.utils.AliyunOSSUtils;
+import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.FileUtils;
@@ -72,6 +73,8 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         //今天日期
         String todayDate = TimeUtils.getTodayDate();
         db.tvToday.setText(todayDate);
+        AnimUtils.potView(db.ivPot);
+        AnimUtils.potView(db.ivPot2);
     }
 
     private void loadData() {

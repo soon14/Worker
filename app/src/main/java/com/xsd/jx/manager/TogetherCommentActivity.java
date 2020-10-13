@@ -7,12 +7,13 @@ import android.view.View;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
+import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.CommentRequest;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.databinding.ActivityTogetherCommentBinding;
 import com.xsd.jx.databinding.ItemWaitCommentWorkersBinding;
@@ -28,6 +29,10 @@ import java.util.List;
 /**
  * 评价工人
  * 一起评价
+ Intent intent = new Intent(this, TogetherCommentActivity.class);
+ intent.putExtra("workId",item.getId());
+ intent.putExtra("workers", (Serializable) item.getWorkers());
+ startActivity(intent);
  */
 public class TogetherCommentActivity extends BaseBindBarActivity<ActivityTogetherCommentBinding> {
     private int workId;
@@ -101,17 +106,19 @@ public class TogetherCommentActivity extends BaseBindBarActivity<ActivityTogethe
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
+                        //评价提交后刷新列表
+                        Apollo.emit(EventStr.UPDATE_COMMENT_LIST);
+
                     }
                 });
     }
 
     private void initView() {
         tvTitle.setText("评价工人");
-        MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
-        workId = item.getId();
+        workId = getIntent().getIntExtra("workId",0);
+        workers = (List<WorkerBean>) getIntent().getSerializableExtra("workers");
         userId = UserUtils.getUser().getId();
-
-        workers = item.getWorkers();
+        if (workers==null)return;
         for (int i = 0; i <workers.size(); i++) {
             View viewWorkers = LayoutInflater.from(this).inflate(R.layout.item_wait_comment_workers, null);
             ItemWaitCommentWorkersBinding bind = DataBindingUtil.bind(viewWorkers);

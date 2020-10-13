@@ -162,7 +162,10 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
     private void showNationList() {
         if (nationPop==null){
             nationPop = new XPopup.Builder(this)
-                    .asCustom(new BottomNationSelecterPop(this, nationName -> db.tvNation.setText(nationName)))
+                    .asCustom(new BottomNationSelecterPop(this, nationName -> {
+                        nation = nationName;
+                        db.tvNation.setText(nationName);
+                    }))
                     .show();
             new Handler().postDelayed(() -> {
                 if (!nationPop.isShow())

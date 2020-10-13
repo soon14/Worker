@@ -5,6 +5,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
@@ -96,8 +97,8 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> doSettle(String ids) {
-        return bindIoUI(api.doSettle(ids));
+    public Observable<BaseResponse<PaidResponse>> doSettle(Integer payment, String ids) {
+        return bindIoUI(api.doSettle(payment,ids));
     }
 
     @Override

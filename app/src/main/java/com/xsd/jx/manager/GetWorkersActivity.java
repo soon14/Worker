@@ -36,6 +36,7 @@ import com.xsd.jx.databinding.ActivityGetWorkersBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.listener.OnWorkTypeSelectListener;
 import com.xsd.jx.utils.AdapterUtils;
+import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
@@ -57,7 +58,7 @@ import java.util.List;
 public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBinding> {
     private WorkerAdapter mAdapter = new WorkerAdapter();
     private int page=1;
-    private int wtId=1;//工种ID
+    private int wtId;//工种ID
     private int sortBy=1;//排序ID
     private int workId;//工作ID
     private List<WorkTypeBean> workTypes;//工种筛选数据
@@ -351,5 +352,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         tvTitle.setText("招工人");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
+        AnimUtils.potView(db.ivPot);
     }
 }

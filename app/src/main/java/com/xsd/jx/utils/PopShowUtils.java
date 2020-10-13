@@ -21,6 +21,7 @@ import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.VersionResponse;
 import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.custom.BottomProvincesPop;
 import com.xsd.jx.custom.BottomSharePop;
@@ -151,42 +152,56 @@ public class PopShowUtils {
 
 
     public static void showAppUpdate(BaseActivity activity) {
-        SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容").setForegroundColor(Color.parseColor("#333333")).setProportion(1.1f)
-                .append("\n" +"1. 新增加服务单新建功能.\n" +
-                        "2. 客户端体验优化.\n" +
-                        "3. 随便增加了点bug.\n" +
-                        "4. 客户端体验优化.\n" +
-                        "5. 随便增加了点bug.\n")
-                .create();
-        new XPopup.Builder(activity)
-                .setPopupCallback(new SimpleCallback(){
+        activity.getDataProvider().site.checkVersion()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<VersionResponse>>() {
                     @Override
-                    public void onShow(BasePopupView popupView) {
-                        super.onShow(popupView);
-                        EasyFloat.hideAppFloat();
+                    protected void onSuccess(BaseResponse<VersionResponse> baseResponse) {
+                        VersionResponse data = baseResponse.getData();
+                        boolean isMust = data.getIs_must() == 1;//是否强制更新
+                        String desc = data.getDesc();
+                        String down_url = data.getUrl();
+                        int version = data.getVersion();
+                        if (version<=AppUtils.getVersionCode()) return;
+                        SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容")
+                                .setForegroundColor(Color.parseColor("#333333"))
+                                .setProportion(1.1f)
+                                .append(desc)
+                                .create();
+                        new XPopup.Builder(activity)
+                                .setPopupCallback(new SimpleCallback(){
+                                    @Override
+                                    public void onShow(BasePopupView popupView) {
+                                        super.onShow(popupView);
+                                        EasyFloat.hideAppFloat();
+                                    }
+
+                                    @Override
+                                    public void onDismiss(BasePopupView popupView) {
+                                        super.onDismiss(popupView);
+                                        EasyFloat.showAppFloat();
+                                    }
+                                })
+                                .dismissOnBackPressed(false)
+                                .dismissOnTouchOutside(false)
+                                .asConfirm("发现新版本",
+                                        content,
+                                        "稍后更新",
+                                        "立即更新",
+                                        () -> {
+                                            downloadApk(activity,down_url);
+                                        },
+                                        null,
+                                        isMust, R.layout.dialog_update)
+
+                                .show();
                     }
 
                     @Override
-                    public void onDismiss(BasePopupView popupView) {
-                        super.onDismiss(popupView);
-                        EasyFloat.showAppFloat();
+                    protected void onErr(String err) {
                     }
-                })
-                .dismissOnBackPressed(false)
-                .dismissOnTouchOutside(false)
-                .asConfirm("发现新版本",
-                        content,
-                        "稍后更新",
-                        "立即更新",
-                        () -> {
-                    ToastUtil.showLong("开始更新中...");
-                            String down_url = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
-                            downloadApk(activity,down_url);
-                        },
-                        null,
-                        false, R.layout.dialog_update)
+                });
 
-                .show();
+
     }
 
     private static void downloadApk(Activity context, String down_url) {
@@ -195,12 +210,12 @@ public class PopShowUtils {
         progressDialog.setMessage("进度更新");
         progressDialog.show();
         String path = context.getExternalCacheDir().getAbsolutePath()+ File.separator;
-        DownloadUtils.getInstance().download(down_url, path, "QQ.apk", new DownloadUtils.OnDownloadListener() {
+        DownloadUtils.getInstance().download(down_url, path, "jiangxin.apk", new DownloadUtils.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
-                L.i("恭喜你下载成功，开始安装！==" + path + "QQ.apk");
+                L.i("恭喜你下载成功，开始安装！==" + path + "jiangxin.apk");
                 ToastUtil.showShort("恭喜你下载成功，开始安装！");
-                String successDownloadApkPath = path + "QQ.apk";
+                String successDownloadApkPath = path + "jiangxin.apk";
                 AppUtils.installApk(context, successDownloadApkPath);
             }
             @Override
@@ -233,17 +248,18 @@ public class PopShowUtils {
                         true, R.layout.dialog_tips)
                 .show();
     }
-    public static void showConfirm(BaseActivity activity, String content, OnConfirmListener listener) {
+    public static void showConfirm(BaseActivity activity, String content,String cancelBtnText,String confirmBtnText, OnConfirmListener listener) {
         new XPopup.Builder(activity)
                 .asConfirm("提醒",
                         content,
-                        "取消",
-                        "确定",
+                        cancelBtnText,
+                        confirmBtnText,
                          listener,
                         null,
                         false, R.layout.dialog_confirm)
                 .show();
     }
+
 
     public static void showDelWorkType(BaseActivity activity, int id, LinearLayout layoutTypesWork, View viewType) {
         new XPopup.Builder(activity)
@@ -389,6 +405,7 @@ public class PopShowUtils {
      * @param actiivty
      */
     public static void callUs(Activity actiivty){
-        MobileUtils.callPhone(actiivty,"10086");
+        String platPhone = (String) SPUtils.get("platPhone", "");
+        MobileUtils.callPhone(actiivty,platPhone);
     }
 }

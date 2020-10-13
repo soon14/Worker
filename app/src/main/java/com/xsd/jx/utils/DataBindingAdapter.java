@@ -105,8 +105,8 @@ public class DataBindingAdapter {
         }
     }
     @BindingAdapter("advanceAmount")
-    public static void advanceAmount(TextView tv, int amount){
-        if (amount==0) tv.setVisibility(View.GONE);
+    public static void advanceAmount(TextView tv, String amount){
+        if (TextUtils.isEmpty(amount)||amount.equals("0")) tv.setVisibility(View.GONE);
         tv.setText("已付"+amount+"元");
     }
     //工期：2020-07-29至2020-08-29(共30天)
@@ -157,6 +157,7 @@ public class DataBindingAdapter {
     public static void isJoin(TextView tv, boolean isJoin){
         tv.setText(isJoin?"已报名":"报名上工");
         tv.setBackgroundResource(isJoin?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
+        tv.setClickable(!isJoin);
     }
     @BindingAdapter("isFav")
     public static void isFav(TextView tv, boolean isFav){
@@ -257,8 +258,8 @@ public class DataBindingAdapter {
     @BindingAdapter("layoutWorkers")
     public static void layoutWorkers(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
         List<WorkerBean> workers = itemsBean.getWorkers();
-        TextView tv0 = (TextView) layout.getChildAt(0);
-        TextView tv1 = (TextView) layout.getChildAt(1);
+        TextView tv0 = (TextView) layout.getChildAt(0);//左侧描述
+        TextView tv1 = (TextView) layout.getChildAt(1);//右侧按钮
         List<WorkerBean> showWorkers = new ArrayList<>();
         for (int i = 0; i < workers.size(); i++){
             WorkerBean workerBean = workers.get(i);
@@ -270,7 +271,7 @@ public class DataBindingAdapter {
         if (showWorkers!=null&&showWorkers.size()>0){
             tv0.setText("有"+showWorkers.size()+"位报名待确认工人");
             tv1.setText("查看工人");
-        }else if (workers==null||workers.size()==0){
+        }else{
             tv0.setText("还没有工人报名，您可以主动招工人");
             tv1.setText("主动招人");
         }
@@ -299,5 +300,44 @@ public class DataBindingAdapter {
             case 3:at="不预付";break;
         }
         tv.setText(at+"/"+isPayedPrice+"元");
+    }
+
+    /**
+     *  1:正在招
+     *  2:已招满/待开工(所有用户已确认)
+     *  3:工期中
+     *  4:待结算
+     *  5:待评价
+     *  6:已完成
+     *  7:已取消
+     *  8:已过期
+     */
+    @BindingAdapter("workerType")
+    public static void workerType(TextView tv, int type){
+
+        switch (type){
+            case 2:
+                tv.setText("待开工");
+            break;
+            case 3:
+                tv.setText("上工中");
+            break;
+            case 4:
+                tv.setText("待结算");
+            break;
+            case 5:
+                tv.setText("待评价");
+            break;
+            case 6:
+                tv.setText("已完成");
+            break;
+            case 7:
+                tv.setText("已取消");
+            break;
+            default:
+                tv.setText("等待上工");
+                break;
+        }
+
     }
 }

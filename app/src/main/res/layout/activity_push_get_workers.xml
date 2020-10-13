@@ -434,6 +434,7 @@
                 <View style="@style/h_space_line"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:padding="@dimen/dp_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

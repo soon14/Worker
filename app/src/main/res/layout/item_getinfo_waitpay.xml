@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tv_price_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="工价: 300/天 考勤: 3天"
@@ -57,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="合计 900元"
+            android:text="@{`合计 `+item.totalWage+`元`}"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h4"
             android:textStyle="bold"

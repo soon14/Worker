@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * type 状态 -1:不展示(有预付款项未付不显示给用户) )
  *  1:正在招
  *  2:已招满/待开工(所有用户已确认)
- *  3:工期中
+ *  3:工期中 (和待结算一个状态)
  *  4:待结算
  *  5:待评价
  *  6:已完成
@@ -27,16 +27,18 @@ import org.jetbrains.annotations.NotNull;
  *  status:状态 1:未处理 2：已确认 3：已拒绝
  */
 public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean, BaseDataBindingHolder> {
-    public GetWorkersInfoAdapter() {
+    String price;
+    public GetWorkersInfoAdapter(String price) {
         super();
+        this.price = price;
         // 绑定 layout 对应的 type
         addItemType(1, R.layout.item_getinfo_apply_workers);
 
         addItemType(2, R.layout.item_getinfo_full);
-        addItemType(3, R.layout.item_getinfo_full);
 
-        addItemType(4, R.layout.item_getinfo_waitpay);
-        addItemType(5, R.layout.item_getinfo_waitcomment);
+        addItemType(3, R.layout.item_getinfo_waitpay);//工期中
+        addItemType(4, R.layout.item_getinfo_waitpay);//待结算
+        addItemType(5, R.layout.item_getinfo_waitcomment);//待评价
 
         addItemType(6, R.layout.item_getinfo_full);
         addItemType(7, R.layout.item_getinfo_full);
@@ -53,16 +55,18 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
                 dataBinding1.setItem(item);
                 break;
             case 2:
-            case 3:
             case 6:
             case 7:
             case 8:
                 ItemGetinfoFullBinding dataBinding2 = (ItemGetinfoFullBinding) helper.getDataBinding();
                 dataBinding2.setItem(item);
                 break;
+
+            case 3:
             case 4:
                 ItemGetinfoWaitpayBinding dataBinding4 = (ItemGetinfoWaitpayBinding) helper.getDataBinding();
                 dataBinding4.setItem(item);
+                dataBinding4.tvPriceDay.setText("工价"+price+"元/天  考勤"+item.getCheckDay()+"天");
                 break;
             case 5:
                 ItemGetinfoWaitcommentBinding dataBinding5 = (ItemGetinfoWaitcommentBinding) helper.getDataBinding();

@@ -4,6 +4,8 @@ import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.PlatPhoneResponse;
+import com.xsd.jx.bean.VersionResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -30,4 +32,10 @@ public interface SiteApi {
     //获取广告banner tid:类型 1:开屏 2:首页 3:城市合伙人 4:帮工友注册
     @GET("site/banner")
     Observable<BaseResponse<BannerBean>> banner(@Query("tId")Integer tId);
+    //版本更新
+    @GET("site/check-version")
+    Observable<BaseResponse<VersionResponse>> checkVersion(@Query("platform")Integer platform, @Query("version")Integer version);
+    //平台联系电话
+    @GET("site/plat-phone")
+    Observable<BaseResponse<PlatPhoneResponse>> platPhone();
 }

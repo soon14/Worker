@@ -7,6 +7,7 @@
         <variable
             name="item"
             type="com.xsd.jx.bean.ToSettleResponse.ItemsBean" />
+        <import type="android.view.View"/>
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -99,6 +100,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_addr" />
         <LinearLayout
+            android:visibility="@{(item.users.size() > 1)?View.VISIBLE:View.GONE}"
             android:id="@+id/layout_expand"
             android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -237,6 +239,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView5" />
 
         <TextView
+            android:id="@+id/tv_sigle_pay"
             style="@style/DefaultBtnStyle"
             android:textColor="@color/white"
             android:layout_width="@dimen/dp_84"

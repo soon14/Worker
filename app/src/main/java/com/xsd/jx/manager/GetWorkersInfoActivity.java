@@ -21,19 +21,24 @@ import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.WorkerBean;
+import com.xsd.jx.custom.PayTypePop;
 import com.xsd.jx.custom.WaitPayBillPop;
 import com.xsd.jx.databinding.ActivityGetWorkersInfoBinding;
+import com.xsd.jx.listener.OnPayListener;
 import com.xsd.jx.listener.OnTabClickListener;
-import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.ClipboardUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,33 +82,40 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         finish();
     }
 
+    @Receive(EventStr.UPDATE_COMMENT_LIST)
+    public void update(){
+        L.e("关闭===");
+        finish();
+    }
+
     private void onEvent() {
         //layoutHead为appbar中的一个控件
        AppBarUtils.setColorGrayWhite(db.appbar,db.tabLayout);
-       db.setClicklistener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               switch (view.getId()){
-                   case R.id.layout_need_pay://显示结算明细
-                       showWaitPayBill();
-                       break;
-                   case R.id.tv_together_comment://统一评价工人
-                       Intent intent = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
-                       intent.putExtra("item",item);
-                       startActivity(intent);
-                       break;
-                   case R.id.tv_copy://复制订单编号
-                       String s = db.tvSn.getText().toString();
-                       ClipboardUtils.copy(s);
-                       break;
-                   case R.id.tv_cancel://取消招聘
-                       cancelInvite();
-                       break;
-                   case R.id.tv_activ_get://主动招人
-                       ActivityCollector.finishActivity(MyGetWorkersActivity.class);
-                       finish();
-                       break;
-               }
+       db.setClicklistener(view -> {
+           switch (view.getId()){
+               case R.id.layout_need_pay://显示结算明细
+                   showWaitPayBill();
+                   break;
+               case R.id.tv_together_comment://统一评价工人
+                   Intent intent = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
+                   intent.putExtra("workId",item.getId());
+                   intent.putExtra("workers", (Serializable) item.getWorkers());
+                   startActivity(intent);
+                   break;
+               case R.id.tv_copy://复制订单编号
+                   String s = db.tvSn.getText().toString();
+                   ClipboardUtils.copy(s);
+                   break;
+               case R.id.tv_cancel://取消招聘
+                   cancelInvite();
+                   break;
+               case R.id.tv_activ_get://主动招人
+                   ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+                   finish();
+                   break;
+               case R.id.tv_pay://结算
+                   showPayType();
+                   break;
            }
        });
        mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment,R.id.tv_activ_get);
@@ -131,10 +143,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                        MobileUtils.callPhone(GetWorkersInfoActivity.this,item.getMobile());
                        break;
                    case R.id.tv_single_comment://单独评价，用工方评价上工者
-                       Intent intent1 = new Intent(GetWorkersInfoActivity.this, CommentActivity.class);
-                       intent1.putExtra("type",1);
+                       Intent intent1 = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
                        intent1.putExtra("workId",workId);
-                       intent1.putExtra("userId",userId);
+                       intent1.putExtra("workers", (Serializable) Arrays.asList(item));
                        startActivity(intent1);
                        break;
                    case R.id.tv_activ_get://主动招人
@@ -148,15 +159,19 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     }
 
     private void cancelInvite() {
-        dataProvider.server.cancelWork(workId)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        ToastUtil.showLong(baseResponse.getData().getMessage());
-                        finish();
-                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
-                    }
-                });
+        PopShowUtils.showConfirm(this,
+                "您是否确定取消招工？取消后若有已支付款项将退回至您的平台账户余额。",
+                "我再想想",
+                "确认取消", () -> dataProvider.server.cancelWork(workId)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                ToastUtil.showLong(baseResponse.getData().getMessage());
+                                finish();
+                                Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                            }
+                        }));
+
     }
 
     /**
@@ -179,6 +194,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                             int tobeConfirmNum = item.getTobeConfirmNum();
                             tobeConfirmNum--;
                             item.setTobeConfirmNum(tobeConfirmNum);
+                            //拒绝后刷新我的招工列表
                         }else {//雇佣:待确认工人数-1，确认上工人数+1
                             int tobeConfirmNum = item.getTobeConfirmNum();
                             int confirmedNum = item.getConfirmedNum();
@@ -188,6 +204,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                             item.setConfirmedNum(confirmedNum);
                         }
                         db.setItem(item);
+                        Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
 
                     }
                 });
@@ -196,6 +213,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     private void showWaitPayBill() {
         new XPopup.Builder(this)
                 .atView(db.layoutNeedPay)
+                .isRequestFocus(false)
                 .asCustom(new WaitPayBillPop(this,item))
                 .show();
     }
@@ -204,11 +222,12 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     private MyGetWorkersResponse.ItemsBean item;
     private void initView() {
         item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
+        String price = item.getPrice();//工价
         db.setItem(item);
         workId = item.getId();
         type = item.getItemType();
 
-        mAdapter = new GetWorkersInfoAdapter();
+        mAdapter = new GetWorkersInfoAdapter(price);
         switch (type){
             case 1:
                 db.tvTitle.setText("正在招");
@@ -218,7 +237,11 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 db.layoutBtns.setVisibility(View.GONE);
                 break;
             case 3:
-                db.tvTitle.setText("工期内");
+                db.tvTitle.setText("工期内");//也可以结算
+                db.tvCancel.setVisibility(View.GONE);
+                db.tvActivGet.setVisibility(View.GONE);
+                db.layoutNeedPay.setVisibility(View.VISIBLE);
+                db.tvPay.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 db.tvTitle.setText("待结算");
@@ -226,6 +249,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 db.tvActivGet.setVisibility(View.GONE);
                 db.layoutNeedPay.setVisibility(View.VISIBLE);
                 db.tvPay.setVisibility(View.VISIBLE);
+                //还需支付
+
                 break;
             case 5:
                 db.tvTitle.setText("待评价");
@@ -299,5 +324,43 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         db.appbar.setBackgroundColor(gray);
         db.layoutHead.setContentScrimColor(gray);
         db.layoutBtns.setVisibility(View.GONE);
+    }
+
+    //支付方式
+    private int payment=1;//支付方式:1:微信 2:支付宝
+    PayTypePop payTypePop;
+    private void showPayType() {
+        if (payTypePop==null){
+            payTypePop = new PayTypePop(this);
+            payTypePop.setListener(new OnPayListener() {
+                @Override
+                public void wxPay() {
+                    payment=1;
+                    submitPay();
+                }
+
+                @Override
+                public void aliPay() {
+                    payment=2;
+                    submitPay();
+                }
+            });
+            new XPopup.Builder(this)
+                    .asCustom(payTypePop)
+                    .show();
+        }else {
+            payTypePop.show();
+        }
+    }
+    private void submitPay() {
+        dataProvider.server.doSettle(payment,item.getId()+"")
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<PaidResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<PaidResponse> baseResponse) {
+                        ToastUtil.showLong("支付成功！订单号："+baseResponse.getData().getOrderId());
+                        finish();
+                        Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
+                    }
+                });
     }
 }

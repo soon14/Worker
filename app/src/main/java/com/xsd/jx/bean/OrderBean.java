@@ -59,6 +59,15 @@ public class OrderBean implements MultiItemEntity, Serializable {
     private int userId;
     private int workDays;
     private String employerPhone;
+    private int employerId;//用工方id
+
+    public int getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(int employerId) {
+        this.employerId = employerId;
+    }
 
     public String getCancelAt() {
         return cancelAt;

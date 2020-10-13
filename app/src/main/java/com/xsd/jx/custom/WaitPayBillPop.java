@@ -32,6 +32,7 @@ public class WaitPayBillPop extends PartShadowPopupView {
         super.onCreate();
         PopWaitPayBillBinding db = DataBindingUtil.bind(getPopupImplView());
         db.setItem(item);
+        db.tvAdvance.setText(item.getAdvanceAmount()+"元（结算已抵扣"+item.getAdvanceUsedAmount()+"元）");
         db.tvTitle.setOnClickListener(view -> dismiss());
     }
 }

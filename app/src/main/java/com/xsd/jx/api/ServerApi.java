@@ -4,6 +4,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
+import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
@@ -39,7 +40,12 @@ public interface ServerApi {
      */
     @GET("server/invite")
     Observable<BaseResponse<JobListResponse>> invite(@Query("userId")Integer userId, @Query("wtId")Integer wtId, @Query("workId")Integer workId);
-     //我的招工
+    /**
+     * 我的招工
+     * @param page 页码
+     * @param type 类型 0:全部 1:正在招 2:已招满 3:工期内 4:待结算 5:待评价 6:已完成 7:已取消
+     * @return
+     */
     @GET("server/work-list")
     Observable<BaseResponse<MyGetWorkersResponse>> workList(@Query("page")Integer page, @Query("type")Integer type);
 
@@ -155,10 +161,11 @@ public interface ServerApi {
     /**
      * 工资结算提交
      * 提交支付用户需要结算的招工，成功后跳转支付
+     * @param payment 支付方式:1:微信 2:支付宝
      * @param ids 选择提交的结算工作ID，用英文逗号分隔 1,2,3,4
      */
     @GET("server/do-settle")
-    Observable<BaseResponse<MessageBean>> doSettle(@Query("ids")String ids);
+    Observable<BaseResponse<PaidResponse>> doSettle(@Query("payment")Integer payment, @Query("ids")String ids);
 
     /**
      * 查工价

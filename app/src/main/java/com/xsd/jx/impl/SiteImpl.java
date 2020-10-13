@@ -5,6 +5,9 @@ import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.PlatPhoneResponse;
+import com.xsd.jx.bean.VersionResponse;
+import com.xsd.utils.AppUtils;
 
 import javax.inject.Inject;
 
@@ -42,5 +45,19 @@ public class SiteImpl implements SiteApi {
     @Override
     public Observable<BaseResponse<BannerBean>> banner(Integer tId) {
         return bindIoUI(api.banner(tId));
+    }
+
+    @Override
+    public Observable<BaseResponse<VersionResponse>> checkVersion(Integer platform, Integer version) {
+        return bindIoUI(api.checkVersion(platform,version));
+    }
+
+    @Override
+    public Observable<BaseResponse<PlatPhoneResponse>> platPhone() {
+        return bindIoUI(api.platPhone());
+    }
+
+    public Observable<BaseResponse<VersionResponse>> checkVersion() {
+        return bindIoUI(api.checkVersion(1, AppUtils.getVersionCode()));
     }
 }

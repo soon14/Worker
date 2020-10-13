@@ -150,6 +150,7 @@
                         android:layout_weight="1"
                         android:id="@+id/tab_layout"/>
                     <TextView
+                        android:visibility="gone"
                         android:onClick="@{clicklistener}"
                         android:id="@+id/tv_all"
                         android:paddingLeft="@dimen/dp_8"
@@ -176,7 +177,7 @@
                 android:layout_height="match_parent"/>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <com.xsd.utils.custom.RadarView
+        <RelativeLayout
             android:layout_marginBottom="@dimen/dp_152"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
@@ -189,6 +190,11 @@
             app:rb_rippleAmount="2"
             app:rb_type="0"
             app:rb_scale="3">
+            <ImageView
+                android:background="@drawable/pot_orange"
+                android:id="@+id/iv_pot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <TextView
                 android:onClick="@{clicklistener}"
                 android:textStyle="bold"
@@ -201,6 +207,6 @@
                 android:text="发布\n招工"
                 android:textColor="@color/white"
                 android:textSize="@dimen/h3" />
-        </com.xsd.utils.custom.RadarView>
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

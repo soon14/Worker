@@ -479,14 +479,29 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_pay_need_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="还需支付: 1340元"
-                    android:textColor="@color/tv_black"
-                    android:textSize="@dimen/h4"
-                    />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="还需支付: "
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            />
+                        <TextView
+                            android:textStyle="bold"
+                            android:id="@+id/tv_pay_need_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="1300元"
+                            android:text="@{item.tobeSettledWage+`元`}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/h4"
+                            />
+                    </LinearLayout>
+
                 <TextView
                     android:drawablePadding="@dimen/dp_8"
                     android:drawableRight="@mipmap/ic_gray_arrow_up"

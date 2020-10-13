@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:hint="请输入评价内容"
                 android:text="确认快，老板人好，结款干脆，期待下次合作"
-                android:textColor="@color/tv_gray"
+                android:textColor="@color/tv_black"
                 android:textSize="@dimen/h4"
                 />
             <View style="@style/h_line" />

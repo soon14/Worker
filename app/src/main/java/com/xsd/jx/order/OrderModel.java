@@ -14,6 +14,7 @@ import com.xsd.jx.R;
 import com.xsd.jx.adapter.OrderAdapter;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 import com.xsd.jx.inject.DataProvider;
@@ -21,9 +22,9 @@ import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.mine.CommentActivity;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
-import com.xsd.jx.utils.OrderUtils;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.MobileUtils;
+import com.xsd.utils.ToastUtil;
 
 import java.util.List;
 
@@ -76,10 +77,12 @@ public class OrderModel {
             OrderBean item = (OrderBean) adapter.getItem(position);
             switch (view.getId()){
                 case R.id.tv_order_comment://工人评价雇主
-                    activity.goActivity(CommentActivity.class);
+                    Intent intent = new Intent(activity, CommentActivity.class);
+                    intent.putExtra("item",item);
+                    activity.startActivity(intent);
                     break;
                 case R.id.tv_cancel://取消报名
-                    PopShowUtils.showConfirm(activity, "您是否确定取消报名该工作？", () -> OrderUtils.orderCancel(activity,mAdapter,item.getId(),position));
+                    PopShowUtils.showConfirm(activity, "您是否确定取消报名该工作？","取消","确定", () -> orderCancel(item.getId(),position));
                     break;
                 case R.id.tv_contact_us://联系平台
                     PopShowUtils.callUs(activity);
@@ -99,6 +102,17 @@ public class OrderModel {
 
             }
         });
+    }
+    private void orderCancel( int id, int position) {
+        dataProvider.order.cancel(id)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        mAdapter.removeAt(position);
+                    }
+                });
+
     }
 
     public void loadData() {

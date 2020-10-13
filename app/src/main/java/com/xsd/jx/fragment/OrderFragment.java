@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implements OrderView {
     private static final String TAG = "OrderFragment";
     private int type=1;//类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
-    private OrderPresenter goodsPresenter;
+    private OrderPresenter orderPresenter;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_order;
@@ -66,7 +66,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
             return;
         }
         db.layoutNoLogin.setVisibility(View.GONE);
-         goodsPresenter = new OrderPresenter(this);
+        orderPresenter = new OrderPresenter(this);
         //类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
         TabUtils.setDefaultTab(this.getContext(), db.tabLayout,  Arrays.asList("报名中","待开工","工期中","待结算"), new OnTabClickListener() {
             @Override
@@ -77,8 +77,8 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
                     case 2: type=5;break;
                     case 3: type=6;break;
                 }
-                goodsPresenter.setPage();
-                goodsPresenter.loadData();
+                orderPresenter.setPage();
+                orderPresenter.loadData();
             }
         });
     }
@@ -121,13 +121,18 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     @Receive(EventStr.LOGIN_SUCCESS)
     public void loginSuccess(){
         initView();
-        goodsPresenter.setPage();
-        goodsPresenter.loadData();
+        orderPresenter.setPage();
+        orderPresenter.loadData();
     }
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
         L.e("OrderFragment》》loginOut()===");
         db.layoutNoLogin.setVisibility(View.VISIBLE);
+    }
+    @Receive(EventStr.UPDATE_ORDER_LIST)
+    public void updateOrder(){
+        orderPresenter.setPage();
+        orderPresenter.loadData();
     }
 
     @Override

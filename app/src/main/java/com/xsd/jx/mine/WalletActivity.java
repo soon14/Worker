@@ -223,17 +223,21 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         }
         if (accountType==1){
             if (TextUtils.isEmpty(account)){
-                ToastUtil.showLong("请设置支付宝账号！");
+                //请设置支付宝账号！
+                ToastUtil.showLong("您还未设置支付宝账号，请在此页面填写");
+                goActivity(SetAlipayActivity.class);
                 return;
             }
         }else if (accountType==2){
             if (TextUtils.isEmpty(account)){
-                ToastUtil.showLong("请添加银行卡！");
+                ToastUtil.showLong("您还未添加银行卡，请在此页面填写");
+                goActivity(SetBankcardActivity.class);
                 return;
             }
         }else if (accountType==3){
             if (divisionId==0){
                 ToastUtil.showLong("请选择事业部！");
+                goActivity(SetLocaPayActivity.class);
                 return;
             }
         }

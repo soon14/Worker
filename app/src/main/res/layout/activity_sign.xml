@@ -150,15 +150,15 @@
                         app:layout_constraintTop_toTopOf="@+id/view_down_pot" />
 
                     <!--
-                                            android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
+                        android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
 
                     -->
-                    <com.xsd.utils.custom.RadarView
+                    <RelativeLayout
                         android:visibility="@{TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"
                         android:id="@+id/radar_view_up"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
-                        tools:visibility="visiable"
+                        tools:visibility="visible"
                         app:layout_constraintBottom_toTopOf="@+id/tv_down_work"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +170,11 @@
                         app:rb_scale="3"
                         app:rb_type="0">
 
-
+                        <ImageView
+                            android:id="@+id/iv_pot"
+                            android:background="@drawable/pot_blue"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
                         <TextView
                             android:onClick="@{clicklistener}"
                             android:id="@+id/tv_sign_up"
@@ -184,10 +188,10 @@
                             android:text="上工打卡"
                             android:textColor="#80FFFFFF"
                             android:textSize="@dimen/h3" />
-                    </com.xsd.utils.custom.RadarView>
+                    </RelativeLayout>
 
 
-                    <com.xsd.utils.custom.RadarView
+                    <RelativeLayout
                         tools:visibility="visible"
                         android:id="@+id/radar_view_down"
                         android:layout_width="@dimen/dp_200"
@@ -202,6 +206,11 @@
                         app:rb_rippleAmount="1"
                         app:rb_scale="3"
                         app:rb_type="0">
+                        <ImageView
+                            android:id="@+id/iv_pot2"
+                            android:background="@drawable/pot_blue"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
 
                         <TextView
                             android:onClick="@{clicklistener}"
@@ -216,7 +225,7 @@
                             android:text="下工打卡"
                             android:textColor="#80FFFFFF"
                             android:textSize="@dimen/h3" />
-                    </com.xsd.utils.custom.RadarView>
+                    </RelativeLayout>
 
                     <ImageView
                         android:visibility="@{!TextUtils.isEmpty(item.signInTime)?View.VISIBLE:View.GONE}"

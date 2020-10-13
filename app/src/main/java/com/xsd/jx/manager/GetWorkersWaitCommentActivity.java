@@ -5,9 +5,12 @@ import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.MyWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
@@ -15,6 +18,7 @@ import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -33,16 +37,24 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
+        loadData();
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+    }
+    @Receive(EventStr.UPDATE_COMMENT_LIST)
+    public void update(){
+        page=1;
         loadData();
     }
+
 
     private void initView() {
         tvTitle.setText("待评价");
@@ -62,8 +74,9 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             switch (view.getId()){
                 case R.id.tv_comment_all://评价所有工人
-                    Intent intent = new Intent(this, TogetherCommentActivity.class);
-                    intent.putExtra("item",item);
+                    Intent intent = new Intent(GetWorkersWaitCommentActivity.this, TogetherCommentActivity.class);
+                    intent.putExtra("workId",item.getId());
+                    intent.putExtra("workers", (Serializable) item.getWorkers());
                     startActivity(intent);
                     break;
             }

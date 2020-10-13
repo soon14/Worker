@@ -198,6 +198,8 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                         mAdapter.getData().get(position).setIsJoin(true);
                         mAdapter.notifyItemChanged(position+1);
                         PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
+                        //报名成功，刷新订单
+                        Apollo.emit(EventStr.UPDATE_ORDER_LIST);
                     }
 
                     @Override
