@@ -26,7 +26,6 @@ import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
-import com.xsd.utils.SoftInputUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.Calendar;
@@ -169,7 +168,6 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         address = "湖北省" + city.getName() + (district == null ? "" : district.getName());
                         db.tvAddr.setText(address);
                         areaId = city.getId();
-                        new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(PushGetWorkersActivity.this),800);
                         //如果已经选择了工种，就查询推荐的工种价格
                         if (typeId>0){
                             searchWorkPrice();

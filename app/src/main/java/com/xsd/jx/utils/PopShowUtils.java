@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -38,7 +37,6 @@ import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SPUtils;
 import com.xsd.utils.ScreenUtils;
-import com.xsd.utils.SoftInputUtils;
 import com.xsd.utils.SpannableStringUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -387,13 +385,6 @@ public class PopShowUtils {
         BottomProvincesPop bottomProvincesPop = new BottomProvincesPop(baseActivity);
         bottomProvincesPop.setListener(listener);
             new XPopup.Builder(baseActivity)
-                    .setPopupCallback(new SimpleCallback() {
-                        @Override
-                        public void onDismiss(BasePopupView popupView) {
-                            super.onDismiss(popupView);
-                            new Handler().postDelayed(() -> SoftInputUtils.closeSoftInput(baseActivity), 800);
-                        }
-                    })
                     .asCustom(bottomProvincesPop)
                     .show();
 

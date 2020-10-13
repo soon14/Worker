@@ -213,4 +213,12 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
             }
         });
     }
+
+
+    //调起支付宝支付
+    private void alipayPay() {
+
+
+    }
+
 }

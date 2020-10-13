@@ -84,11 +84,13 @@
             android:textSize="@dimen/h4" />
 
         <TextView
+            android:ellipsize="end"
+            android:maxLines="2"
             android:id="@+id/tv_addr"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座,武汉市青山区建设一路31号武汉宝业中心A座,武汉市青山区建设一路31号武汉宝业中心A座"
             android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/dimgray"
             android:textSize="@dimen/h4" />

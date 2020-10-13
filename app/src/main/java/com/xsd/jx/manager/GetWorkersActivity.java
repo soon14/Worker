@@ -57,9 +57,9 @@ import java.util.List;
  */
 public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBinding> {
     private WorkerAdapter mAdapter = new WorkerAdapter();
-    private int page=1;
+    private int page = 1;
     private int wtId;//工种ID
-    private int sortBy=1;//排序ID
+    private int sortBy = 1;//排序ID
     private int workId;//工作ID
     private List<WorkTypeBean> workTypes;//工种筛选数据
 
@@ -75,7 +75,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         initView();
         onEvent();
         loadData();
-
         EasyFloat.hideAppFloat();
     }
 
@@ -87,29 +86,30 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     }
 
     @Receive(EventStr.UPDATE_GET_WORKERS)
-    public void updateGetWorkers(){
-        page=1;
+    public void updateGetWorkers() {
+        L.e("刷新招工人列表");
+        page = 1;
         loadData();
     }
 
     private void loadData() {
-        dataProvider.server.index(page,wtId,sortBy)
+        dataProvider.server.index(page, wtId, sortBy)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkerResponse>>(db.refreshLayout) {
                     @Override
                     protected void onSuccess(BaseResponse<WorkerResponse> baseResponse) {
                         WorkerResponse data = baseResponse.getData();
                         List<WorkerBean> items = data.getItems();
-                        if (items!=null&&items.size()>0){
-                            if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+                        if (items != null && items.size() > 0) {
+                            if (page == 1) mAdapter.setList(items);
+                            else mAdapter.addData(items);
                             mAdapter.getLoadMoreModule().loadMoreComplete();
-                        }else {
-                            if (page==1)mAdapter.setList(items);else
+                        } else {
+                            if (page == 1) mAdapter.setList(items);
+                            else
                                 mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
-
-                        if (page==1&&workTypes==null){
-                             workTypes = data.getWorkTypes();
-                            setTabs();
+                        if (page == 1) {
+                            setTabs(data.getWorkTypes());
                         }
                     }
                 });
@@ -117,55 +117,87 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
     /**
      * 动态设置工种选项
+     *
+     * @param newWorkTypes
      */
-    private void setTabs() {
-        if (workTypes==null)return;
-        if (workTypes.size()>0){
-            db.layoutTabAll.setVisibility(View.VISIBLE);
-            List<String> tabNames = new ArrayList<>();
-            for (WorkTypeBean workType : workTypes) {
-                String title = workType.getTitle();
-                tabNames.add(title);
-                TabLayout.Tab tab = db.tabLayout.newTab();
-                tab.setText(title);
-                tab.setTag(workType.getId());
-                db.tabLayout.addTab(tab);
-            }
-           db.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-               @Override
-               public void onTabSelected(TabLayout.Tab tab) {
-                    page=1;
-                    wtId = (int) tab.getTag();
-                    loadData();
-               }
-
-               @Override
-               public void onTabUnselected(TabLayout.Tab tab) {
-
-               }
-
-               @Override
-               public void onTabReselected(TabLayout.Tab tab) {
-
-               }
-           });
-
-            if (workTypes.size()<5){
-                db.tabLayout.setTabMode(TabLayout.MODE_FIXED);
-                db.tvAll.setVisibility(View.GONE);
-            }else {
-                db.tvAll.setVisibility(View.VISIBLE);
-                db.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            }
-        }else {
+    private void setTabs(List<WorkTypeBean> newWorkTypes) {
+        L.e("setTabs==" + newWorkTypes.size());
+        if (newWorkTypes.size() == 0) {
             db.layoutTabAll.setVisibility(View.GONE);
+            return;
         }
+        db.layoutTabAll.setVisibility(View.VISIBLE);
+
+        //1.没有tabs直接赋值，添加头部Tabs
+        if (workTypes == null) {
+            workTypes = newWorkTypes;
+            updateTopTabs();
+            return;
+        }
+        //2.如果已经有tabs了，而且条目和新的tabs条目数相同，就不改变
+        if (workTypes.size() == newWorkTypes.size()) return;
+        //3.如果有新增的tabs
+        workTypes = newWorkTypes;
+
+        updateTopTabs();
+
+
+    }
+
+    private void updateTopTabs() {
+        db.tabLayout.removeAllTabs();
+        List<String> tabNames = new ArrayList<>();
+        for (WorkTypeBean workType : workTypes) {
+            String title = workType.getTitle();
+            tabNames.add(title);
+            TabLayout.Tab tab = db.tabLayout.newTab();
+            tab.setText(title);
+            tab.setTag(workType.getId());
+            db.tabLayout.addTab(tab);
+        }
+        if (workTypes.size() < 5) {
+            db.tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            db.tvAll.setVisibility(View.GONE);
+        } else {
+            db.tvAll.setVisibility(View.VISIBLE);
+            db.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            //只要更新了Tabs，同时就要更新全部
+            filterPop = new FilterPop(GetWorkersActivity.this, workTypes);
+            filterPop.setListener(new OnWorkTypeSelectListener() {
+                @Override
+                public void onSelect(WorkTypeBean workTypeBean) {
+                    wtId = workTypeBean.getId();
+                    //比较数据，确定滚动位置
+                    int position = 0;
+                    for (int i = 0; i < workTypes.size(); i++) {
+                        if (wtId == workTypes.get(i).getId()) {
+                            position = i;
+                        }
+                    }
+                    db.tabLayout.getTabAt(position).select();
+                    page = 1;
+                    loadData();
+                }
+            });
+            new XPopup.Builder(this)
+                    .atView(db.tvAll)
+                    .asCustom(filterPop);
+        }
+
+        //如果重新设置Tabs需要刷新列表除去重复数据
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                page = 1;
+                loadData();
+            }
+        }, 800);
     }
 
     private void onEvent() {
-        AppBarUtils.setColorGrayWhite(db.appbar,db.layoutCondition);
+        AppBarUtils.setColorGrayWhite(db.appbar, db.layoutCondition);
         db.setClicklistener(view -> {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.tv_my_getworkers:
                     goActivity(MyGetWorkersActivity.class);
                     break;
@@ -193,16 +225,34 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                     break;
             }
         });
+        db.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                page = 1;
+                wtId = (int) tab.getTag();
+                loadData();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 WorkerBean item = (WorkerBean) adapter.getItem(position);
                 Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
-                intent.putExtra("type",0);
-                intent.putExtra("userId",item.getUserId());
-                intent.putExtra("wtId",wtId);
-                intent.putExtra("workId",workId);
-                intent.putExtra("status",item.getStatus());
+                intent.putExtra("type", 0);
+                intent.putExtra("userId", item.getUserId());
+                intent.putExtra("wtId", wtId);
+                intent.putExtra("workId", workId);
+                intent.putExtra("status", item.getStatus());
                 startActivity(intent);
 
             }
@@ -213,9 +263,9 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 WorkerBean item = (WorkerBean) adapter.getItem(position);
 
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.tv_invite://邀请上工
-                        showInviteJobs(item,position);
+                        showInviteJobs(item, position);
                         break;
                 }
             }
@@ -229,7 +279,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
                 loadData();
             }
         });
@@ -244,28 +294,28 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
      */
     private void showInviteJobs(WorkerBean item, int position) {
         int userId = item.getUserId();
-        dataProvider.server.invite(userId,wtId,workId)
+        dataProvider.server.invite(userId, wtId, workId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
                         JobListResponse data = baseResponse.getData();
                         List<JobListResponse.ItemsBean> items = data.getItems();
-                        if (items!=null){
-                            if (items.size()==1){
-                                 workId = items.get(0).getWorkId();
-                                 showInviteJobs(item,position);
-                            }else if (items.size()>1){
+                        if (items != null) {
+                            if (items.size() == 1) {
+                                workId = items.get(0).getWorkId();
+                                showInviteJobs(item, position);
+                            } else if (items.size() > 1) {
                                 //如果有多条，弹出框选择上工地点
                                 InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
                                 inviteJobsPop.setListener(itemsBean -> {
                                     workId = itemsBean.getWorkId();
-                                    showInviteJobs(item,position);
+                                    showInviteJobs(item, position);
                                 });
                                 new XPopup.Builder(GetWorkersActivity.this)
                                         .asCustom(inviteJobsPop)
                                         .show();
                             }
-                        }else {
+                        } else {
                             try {
                                 ToastUtil.showLong(baseResponse.getData().getMessage());
                             } catch (Exception e) {
@@ -278,74 +328,50 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     }
 
     private SortPop sortPop;
+
     private void showSortPop() {
-        if (sortPop==null){
+        if (sortPop == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-            sortPop = new SortPop(GetWorkersActivity.this);
-            new XPopup.Builder(GetWorkersActivity.this)
-                    .atView(db.tvSort)
-                    .setPopupCallback(new SimpleCallback(){
-                        @Override
-                        public void onShow(BasePopupView popupView) {
-                            super.onShow(popupView);
-                            db.tvSort.setTextColor(ContextCompat.getColor(GetWorkersActivity.this,R.color.tv_blue));
-                            TextViewUtils.setLeftIcon(R.mipmap.ic_blue_arrow_up_down,db.tvSort);
-                        }
+                    sortPop = new SortPop(GetWorkersActivity.this);
+                    new XPopup.Builder(GetWorkersActivity.this)
+                            .atView(db.tvSort)
+                            .setPopupCallback(new SimpleCallback() {
+                                @Override
+                                public void onShow(BasePopupView popupView) {
+                                    super.onShow(popupView);
+                                    db.tvSort.setTextColor(ContextCompat.getColor(GetWorkersActivity.this, R.color.tv_blue));
+                                    TextViewUtils.setLeftIcon(R.mipmap.ic_blue_arrow_up_down, db.tvSort);
+                                }
 
-                        @Override
-                        public void onDismiss(BasePopupView popupView) {
-                            super.onDismiss(popupView);
-                            db.tvSort.setTextColor(ContextCompat.getColor(GetWorkersActivity.this,R.color.tv_darkgray));
-                            TextViewUtils.setLeftIcon(R.mipmap.ic_gray_arrow_up_down,db.tvSort);
-                        }
-                    })
-                    .asCustom(sortPop)
-                    .show();
+                                @Override
+                                public void onDismiss(BasePopupView popupView) {
+                                    super.onDismiss(popupView);
+                                    db.tvSort.setTextColor(ContextCompat.getColor(GetWorkersActivity.this, R.color.tv_darkgray));
+                                    TextViewUtils.setLeftIcon(R.mipmap.ic_gray_arrow_up_down, db.tvSort);
+                                }
+                            })
+                            .asCustom(sortPop)
+                            .show();
                 }
-            },200);
-        }else {
+            }, 200);
+        } else {
             sortPop.show();
         }
     }
 
     private FilterPop filterPop;
+
     private void showFilterPop() {
-        if (workTypes==null)return;
-        if (filterPop==null){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    filterPop = new FilterPop(GetWorkersActivity.this,workTypes);
-                    filterPop.setListener(new OnWorkTypeSelectListener() {
-                        @Override
-                        public void onSelect(WorkTypeBean workTypeBean) {
-                            wtId = workTypeBean.getId();
-                            //比较数据，确定滚动位置
-                            int position=0;
-                            for (int i = 0; i < workTypes.size(); i++) {
-                                if (wtId==workTypes.get(i).getId()){
-                                    position=i;
-                                }
-                            }
-                            L.e("选中了=="+position);
-                            db.tabLayout.getTabAt(position).select();
-                            page=1;
-                            loadData();
-                        }
-                    });
-                    new XPopup.Builder(GetWorkersActivity.this)
-                            .atView(db.layoutTabAll)
-                            .asCustom(filterPop)
-                            .show();
-                }
-            },200);
+        if (filterPop == null) return;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                filterPop.show();
+            }
+        }, 300);
 
-
-        }else {
-            filterPop.show();
-        }
     }
 
     private void initView() {
