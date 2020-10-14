@@ -52,6 +52,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
     @Override
     protected void onBindView(View view, ViewGroup container, Bundle savedInstanceState) {
+        if (!Apollo.isBind(this))
         Apollo.bind(this);
     }
 
@@ -69,11 +70,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     }
 
 
-    @Receive(EventStr.LOGIN_OUT)
-    public void loginOut(){
-        mAdapter.setList(null);
-    }
-    @Receive(EventStr.LOGIN_SUCCESS)
+    @Receive({EventStr.LOGIN_SUCCESS,EventStr.LOGIN_OUT})
     public void loginSuccess(){
         page=1;
         loadData();

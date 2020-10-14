@@ -52,6 +52,11 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
+    public Observable<BaseResponse<MyGetWorkersResponse.ItemsBean>> workDetail(Integer workId) {
+        return bindIoUI(api.workDetail(workId));
+    }
+
+    @Override
     public Observable<BaseResponse<MessageBean>> publishWork(Integer typeId, String address, String startDate, String endDate, Integer price, String desc, Integer num, Integer isSafe, Integer settleType, Integer advanceType, String safeAmount, String advanceAmount) {
         return bindIoUI(api.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount,advanceAmount));
     }

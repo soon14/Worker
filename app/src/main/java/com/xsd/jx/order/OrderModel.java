@@ -96,9 +96,7 @@ public class OrderModel {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 OrderBean item = (OrderBean) adapter.getItem(position);
-                Intent intent = new Intent(activity, OrderInfoActivity.class);
-                intent.putExtra("item",item);
-                activity.startActivity(intent);
+                activity.goActivity(OrderInfoActivity.class,item.getId());
 
             }
         });

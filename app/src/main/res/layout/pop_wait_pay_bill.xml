@@ -46,7 +46,7 @@
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h4"
                 tools:text="2340元"
-                android:text="@{item.tobeSettledWage+`元`}"
+                android:text="@{item.totalAmount+`元`}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

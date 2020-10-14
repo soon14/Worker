@@ -22,7 +22,7 @@ public class BannerImgLoader extends ImageLoader {
                 .transform(new CenterCrop(),new RoundedCorners(6))
                 .placeholder(R.drawable.no_banner)
                 .error(R.drawable.no_banner);
-        Glide.with(context).load(path)
+        Glide.with(context.getApplicationContext()).load(path)
                 .apply(options)
                 .into(imageView);
     }

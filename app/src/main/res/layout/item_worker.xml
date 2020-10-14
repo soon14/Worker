@@ -67,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_head" />
 
         <TextView
+            isInvite="@{item.invited}"
             android:id="@+id/tv_invite"
             style="@style/DefaultBtnStyle"
             android:text="邀请上工"

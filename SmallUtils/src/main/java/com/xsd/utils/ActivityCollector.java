@@ -2,6 +2,7 @@ package com.xsd.utils;
 
 import android.app.Activity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,37 @@ import java.util.List;
  */
 
 public class ActivityCollector {
+
+    private static ActivityCollector sInstance = new ActivityCollector();
+
+    private WeakReference<Activity> sCurrentActivityWeakRef;
+
+    private Object activityUpdateLock = new Object();
+    private ActivityCollector() {
+
+    }
+
+    public static ActivityCollector getInstance() {
+        return sInstance;
+    }
+    //获取当前栈顶的Activity
+    public Activity getCurrentActivity() {
+        Activity currentActivity = null;
+        synchronized (activityUpdateLock){
+            if (sCurrentActivityWeakRef != null) {
+                currentActivity = sCurrentActivityWeakRef.get();
+            }
+        }
+        return currentActivity;
+    }
+    //设置栈顶的Activity
+    public void setCurrentActivity(Activity activity) {
+        synchronized (activityUpdateLock){
+            sCurrentActivityWeakRef = new WeakReference<Activity>(activity);
+        }
+
+    }
+
     public static List<Activity> activities = new ArrayList<Activity>();
 
     public static boolean hasActivity(String targetActivityName) {

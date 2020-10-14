@@ -112,22 +112,27 @@ public class DataBindingAdapter {
     //工期：2020-07-29至2020-08-29(共30天)
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, JobBean item){
+        if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, OrderBean item){
+        if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, JobListResponse.ItemsBean item){
+        if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, MyGetWorkersResponse.ItemsBean item){
+        if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, ToSettleResponse.ItemsBean item){
+        if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate());
     }
     //工种类型：木工（共需3人）
@@ -300,6 +305,14 @@ public class DataBindingAdapter {
             case 3:at="不预付";break;
         }
         tv.setText(at+"/"+isPayedPrice+"元");
+    }
+    //是否邀请上工
+    @BindingAdapter("isInvite")
+    public static void isInvite(TextView tv, boolean isInvite){
+        tv.setText(isInvite?"已邀请":"邀请上工");
+        tv.setClickable(!isInvite);
+        tv.setEnabled(!isInvite);
+        tv.setBackgroundResource(isInvite?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
     }
 
     /**

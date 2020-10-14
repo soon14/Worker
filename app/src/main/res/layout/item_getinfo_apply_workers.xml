@@ -53,6 +53,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_head" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_type_work"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -66,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_head" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_addr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

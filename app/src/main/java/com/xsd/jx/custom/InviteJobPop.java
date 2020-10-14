@@ -70,8 +70,8 @@ public class InviteJobPop extends CenterPopupView {
                             ToastUtil.showLong(baseResponse.getData().getMessage());
                             bind.tvJoin.setText("已接受邀请");
                             bind.tvJoin.setBackgroundResource(R.drawable.round6_gray_bg);
-//                                    delayDismiss(800);
                             Apollo.emit(EventStr.UPDATE_INVITE_LIST);
+                            delayDismiss(800);
                         }
                     }));
             viewChild.setOnClickListener(view -> activity.goJobInfoActivity(jobBean.getId()));

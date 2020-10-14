@@ -20,7 +20,7 @@ import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.databinding.FragmentMineBinding;
 import com.xsd.jx.manager.GetWorkersActivity;
-import com.xsd.jx.mine.CollectedWorksActivity;
+import com.xsd.jx.mine.FavWorksActivity;
 import com.xsd.jx.mine.FeedbackActivity;
 import com.xsd.jx.mine.HelpRegistActivity;
 import com.xsd.jx.mine.MessageActivity;
@@ -34,7 +34,6 @@ import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.L;
 
 /**
  * Date: 2020/1/3
@@ -76,7 +75,6 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
     }
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
-        L.e("MineFragment》》loginOut()===");
         db.layoutNoLogin.setVisibility(View.VISIBLE);
     }
 
@@ -103,6 +101,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Apollo.isBind(this))
         Apollo.bind(this);
     }
 
@@ -147,7 +146,7 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     goActivity(RecommendListActivity.class);
                     break;
                 case R.id.tab4:
-                    goActivity(CollectedWorksActivity.class);
+                    goActivity(FavWorksActivity.class);
                     break;
                 case R.id.tab5:
                     goActivity(RealNameAuthActivity.class);

@@ -6,8 +6,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.DivisionBean;
 import com.xsd.jx.bean.MessageBean;
@@ -36,8 +38,10 @@ import com.xsd.utils.ToastUtil;
  */
 public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     private int accountType=1;//1:支付宝 2:银行卡 3:周边事业部 4:微信
-    private String account;
-    private String name;
+    private String accountAliPay;
+    private String nameAliPay;
+    private String accountBank;
+    private String nameBank;
     private int divisionId;
     private String bankName;
     private static final int TO_ALIPAY=0x001;
@@ -59,7 +63,6 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
     private void initView() {
         tvTitle.setText("钱包");
         tvRight.setText("收支明细");
-        name = UserUtils.getUser().getName();
     }
 
     private void loadData() {
@@ -96,19 +99,17 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         WithdrawInfoResponse.DivisionBean division = payData.getDivision();
         WithdrawInfoResponse.BankBean bank = payData.getBank();
         //默认选中的支付宝1
-        String account1 = ali.getAccount();
-        String name1 = ali.getName();
-        if (!TextUtils.isEmpty(account1)){
-            db.tvAlipay.setText(name1+"-"+account1);
-            account = account1;
-            name = name1;
+        accountAliPay = ali.getAccount();
+        nameAliPay = ali.getName();
+        if (!TextUtils.isEmpty(accountAliPay)){
+            db.tvAlipay.setText(accountAliPay+"-"+nameAliPay);
         }
         //银行卡2
-        String account2 = bank.getAccount();//号码
-        bankName = bank.getBankName();
-        String name2 = bank.getName();
-        if (!TextUtils.isEmpty(account2)){
-            db.tvBankcard.setText(name2+"-"+account2);
+        accountBank = bank.getAccount();//银行卡号
+        nameBank = bank.getName();//真实名称
+        bankName = bank.getBankName();//银行名称
+        if (!TextUtils.isEmpty(accountBank)){
+            db.tvBankcard.setText(nameBank+"-"+accountBank+"("+bankName+")");
         }
 
         //事业部3
@@ -158,14 +159,14 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
             if (db.checkboxDivision.isChecked()) db.checkboxDivision.setChecked(false);
             accountType = 1;
             WithdrawInfoResponse.AliBean ali = payData.getAli();
-            account = ali.getAccount();
-            name = ali.getName();
+            accountAliPay = ali.getAccount();
+            nameAliPay = ali.getName();
         } else {
             if (!db.checkboxBankcard.isChecked() && !db.checkboxDivision.isChecked()) {
                 db.checkboxAlipay.setChecked(true);
                 WithdrawInfoResponse.AliBean ali = payData.getAli();
-                account = ali.getAccount();
-                name = ali.getName();
+                accountAliPay = ali.getAccount();
+                nameAliPay = ali.getName();
             }
         }
     }
@@ -176,15 +177,15 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
             if (db.checkboxDivision.isChecked()) db.checkboxDivision.setChecked(false);
             accountType = 2;
             WithdrawInfoResponse.BankBean bank = payData.getBank();
-            account = bank.getAccount();
-            name = bank.getName();
+            accountBank = bank.getAccount();
+            nameBank = bank.getName();
             bankName = bank.getBankName();
         } else {
             if (!db.checkboxAlipay.isChecked() && !db.checkboxDivision.isChecked()) {
                 db.checkboxBankcard.setChecked(true);
                 WithdrawInfoResponse.BankBean bank = payData.getBank();
-                account = bank.getAccount();
-                name = bank.getName();
+                accountBank = bank.getAccount();
+                nameBank = bank.getName();
                 bankName = bank.getBankName();
             }
         }
@@ -221,23 +222,30 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
             ToastUtil.showLong("提现金额需大于0");
             return;
         }
+        String account="",name="";
         if (accountType==1){
-            if (TextUtils.isEmpty(account)){
+            account = accountAliPay;
+            name = nameAliPay;
+            if (TextUtils.isEmpty(accountAliPay)){
                 //请设置支付宝账号！
                 ToastUtil.showLong("您还未设置支付宝账号，请在此页面填写");
-                goActivity(SetAlipayActivity.class);
+                startActivityForResult(new Intent(WalletActivity.this,SetAlipayActivity.class),TO_ALIPAY);
                 return;
             }
         }else if (accountType==2){
-            if (TextUtils.isEmpty(account)){
+            account = accountBank;
+            name = nameBank;
+            if (TextUtils.isEmpty(accountBank)){
                 ToastUtil.showLong("您还未添加银行卡，请在此页面填写");
-                goActivity(SetBankcardActivity.class);
+                startActivityForResult(new Intent(WalletActivity.this,SetBankcardActivity.class),TO_BANK_CARD);
                 return;
             }
         }else if (accountType==3){
+            account = "";
+            name = "";
             if (divisionId==0){
                 ToastUtil.showLong("请选择事业部！");
-                goActivity(SetLocaPayActivity.class);
+                startActivityForResult(new Intent(WalletActivity.this,SetLocaPayActivity.class),TO_DIVISION);
                 return;
             }
         }
@@ -247,6 +255,8 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
+                        //提现成功后刷新我的页码，余额
+                        Apollo.emit(EventStr.UPDATE_USER_INFO);
                     }
                 });
     }
@@ -260,9 +270,9 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
         Bundle bundle = data.getExtras();
         switch (requestCode){
             case TO_ALIPAY:
-                account = bundle.getString("account");
-                name = bundle.getString("name");
-                db.tvAlipay.setText(account);
+                accountAliPay = bundle.getString("account");//支付宝账号
+                nameAliPay = bundle.getString("name");//支付宝名称
+                db.tvAlipay.setText(accountAliPay+"-"+nameAliPay);
                 break;
             case TO_DIVISION:
                 DivisionBean item= (DivisionBean) bundle.getSerializable("item");
@@ -270,10 +280,10 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                 db.tvDivision.setText(item.getName()+"-"+item.getAddr());
                 break;
             case TO_BANK_CARD:
-                account = bundle.getString("account");
-                name = bundle.getString("name");
-                bankName = bundle.getString("bankName");
-                db.tvBankcard.setText(name+"-"+account+"("+bankName+")");
+                accountBank = bundle.getString("account");//银行账号
+                nameBank = bundle.getString("name");//真实姓名
+                bankName = bundle.getString("bankName");//银行名称
+                db.tvBankcard.setText(nameBank+"-"+accountBank+"("+bankName+")");
                 break;
         }
     }

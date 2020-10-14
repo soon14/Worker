@@ -136,7 +136,7 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
             ivDel.setOnClickListener(v -> showDelPop(workTypesBean,viewType));
         }
     }
-    //TODO 单选，目前接口还是新添加
+
     private void submit(WorkTypeBean workTypeBean) {
         StringBuilder builder = new StringBuilder();
         for (WorkTypeBean tag : workTypes) {

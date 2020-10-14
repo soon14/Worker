@@ -48,6 +48,14 @@ public interface ServerApi {
      */
     @GET("server/work-list")
     Observable<BaseResponse<MyGetWorkersResponse>> workList(@Query("page")Integer page, @Query("type")Integer type);
+    /**
+     * 我的招工详情
+     * 根据ID获取我发布的招工详细数据
+     * @param workId 工作ID
+     * {@link com.xsd.jx.manager.GetWorkersInfoActivity}
+     */
+    @GET("server/work-detail")
+    Observable<BaseResponse<MyGetWorkersResponse.ItemsBean>> workDetail(@Query("workId")Integer workId);
 
     /**
      * 发布招工

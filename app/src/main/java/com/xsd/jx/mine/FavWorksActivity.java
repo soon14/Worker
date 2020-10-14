@@ -22,7 +22,7 @@ import java.util.List;
  * 收藏的工作
  *  status 状态 1:可报名 2:已过期
  */
-public class CollectedWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
+public class FavWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private JobFavAdapter mAdapter = new JobFavAdapter();
     private int page=1;
     @Override
@@ -46,19 +46,6 @@ public class CollectedWorksActivity extends BaseBindBarActivity<ActivityRecycler
                 loadData();
             }
         });
-//        AdapterUtils.onAdapterEvent(mAdapter, db.refreshLayout, new OnAdapterListener() {
-//            @Override
-//            public void loadMore() {
-//                page++;
-//                loadData();
-//            }
-//            @Override
-//            public void onRefresh() {
-//                page=1;
-//                loadData();
-//
-//            }
-//        });
         mAdapter.addChildClickViewIds(R.id.tv_join);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             JobBean item = (JobBean) adapter.getItem(position);
@@ -104,7 +91,7 @@ public class CollectedWorksActivity extends BaseBindBarActivity<ActivityRecycler
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         mAdapter.getData().get(position).setIsJoin(true);
                         mAdapter.notifyItemChanged(position);
-                        PopShowUtils.showTips(CollectedWorksActivity.this);
+                        PopShowUtils.showTips(FavWorksActivity.this);
                     }
                 });
     }

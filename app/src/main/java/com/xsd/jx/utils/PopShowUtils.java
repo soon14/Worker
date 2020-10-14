@@ -58,19 +58,6 @@ public class PopShowUtils {
      */
     public static void showPushJob(BaseActivity activity) {
         new XPopup.Builder(activity)
-//                .setPopupCallback(new SimpleCallback(){
-//                    @Override
-//                    public void onShow(BasePopupView popupView) {
-//                        super.onShow(popupView);
-//                        EasyFloat.hideAppFloat();
-//                    }
-//
-//                    @Override
-//                    public void onDismiss(BasePopupView popupView) {
-//                        super.onDismiss(popupView);
-//                        EasyFloat.showAppFloat();
-//                    }
-//                })
                 .asCustom(new PushJobPop(activity))
                 .show();
     }
@@ -160,7 +147,7 @@ public class PopShowUtils {
                         String down_url = data.getUrl();
                         int version = data.getVersion();
                         if (version<=AppUtils.getVersionCode()) return;
-                        SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容")
+                        SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容\n")
                                 .setForegroundColor(Color.parseColor("#333333"))
                                 .setProportion(1.1f)
                                 .append(desc)

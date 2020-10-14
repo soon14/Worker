@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/><!--悬浮窗权限-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:name=".MyApplication"
@@ -56,7 +58,7 @@
         <activity android:name=".mine.SetActivity" />
         <activity android:name=".mine.AwardActivity" />
         <activity android:name=".mine.BalanceLogActivity" />
-        <activity android:name=".mine.CollectedWorksActivity" />
+        <activity android:name=".mine.FavWorksActivity" />
         <activity android:name=".mine.ResumeActivity" />
         <activity android:name=".mine.HelpRegistListActivity" />
         <activity

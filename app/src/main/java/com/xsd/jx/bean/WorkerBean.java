@@ -36,6 +36,8 @@ public class WorkerBean implements Serializable, MultiItemEntity {
     private int checkDay;
     private int totalWage;
 
+    private boolean isInvited;
+
      /** type 状态 -1:不展示(有预付款项未付不显示给用户) )
  *  1:正在招
  *  2:已招满/待开工(所有用户已确认)
@@ -150,6 +152,14 @@ public class WorkerBean implements Serializable, MultiItemEntity {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public boolean isInvited() {
+        return isInvited;
+    }
+
+    public void setInvited(boolean invited) {
+        isInvited = invited;
     }
 
     @Override

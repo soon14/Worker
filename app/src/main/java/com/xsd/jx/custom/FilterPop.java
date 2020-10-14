@@ -44,6 +44,7 @@ public class FilterPop extends PartShadowPopupView {
     protected void onCreate() {
         super.onCreate();
         RadioGroupEx layoutContent = findViewById(R.id.layout_content);
+
         int width = (ScreenUtils.getRealWidth() - DpPxUtils.dp2px(64)) / 3;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, DpPxUtils.dp2px(40));
         int dp8 = DpPxUtils.dp2px(8);

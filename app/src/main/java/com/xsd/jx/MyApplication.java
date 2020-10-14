@@ -1,7 +1,9 @@
 package com.xsd.jx;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 
 import androidx.multidex.MultiDex;
 
@@ -17,6 +19,7 @@ import com.xsd.jx.base.Contants;
 import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.utils.LogHeaderInterceptor;
 import com.xsd.okhttp.retrofit2.RetrofitHttp;
+import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.SmallUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,7 +42,50 @@ public class MyApplication extends Application {
         UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         EasyFloat.init(this, BuildConfig.DEBUG);
+
+        registLifecycle();
+
     }
+
+    private void registLifecycle() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                ActivityCollector.getInstance().setCurrentActivity(activity);
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
+    }
+
     public static MyApplication getInstance() {
         return instances;
     }

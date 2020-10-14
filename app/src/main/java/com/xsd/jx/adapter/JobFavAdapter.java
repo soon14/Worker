@@ -26,7 +26,7 @@ public class JobFavAdapter extends BaseQuickAdapter<JobBean, BaseDataBindingHold
         super(R.layout.item_job_fav);
     }
 
-
+    //TODO 删除功能接口
     @Override
     protected void convert(@NotNull BaseDataBindingHolder<ItemJobFavBinding> helper, JobBean item) {
         ItemJobFavBinding db = helper.getDataBinding();

@@ -1,6 +1,8 @@
 package com.xsd.jx.manager;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,11 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.alipay.sdk.app.PayTask;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -24,9 +28,11 @@ import com.xsd.jx.databinding.ItemWagepayWorkerBinding;
 import com.xsd.jx.listener.OnPayListener;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
+import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 工资结算
@@ -153,8 +159,16 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
     private void bindData() {
         db.layoutContent.removeAllViews();
         if (items==null||items.size()==0){
+            db.layoutBtns.setVisibility(View.GONE);
+            int dimen80 = (int) getResources().getDimension(R.dimen.dp_80);
+            int height = ScreenUtils.getRealHeight()- dimen80;
+            View nodataView = LayoutInflater.from(this).inflate(R.layout.empty_view_nodata, null);
+            nodataView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,height));
+            db.layoutContent.addView(nodataView);
             return;
         }
+        db.layoutBtns.setVisibility(View.VISIBLE);
+
         for (int i = 0; i < items.size(); i++) {
             ToSettleResponse.ItemsBean itemsBean = items.get(i);
             View viewItem = LayoutInflater.from(this).inflate(R.layout.item_wage_pay, null);
@@ -214,11 +228,37 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
         });
     }
 
-
+    final String orderInfo = "";   // 订单信息
+    final static int SDK_PAY_FLAG=1;
     //调起支付宝支付
     private void alipayPay() {
-
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(WagePayActivity.this);
+                Map<String,String> result = alipay.payV2(orderInfo,true);
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
 
     }
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG:
+
+                    break;
+            }
+            return false;
+        }
+    });
 
 }

@@ -22,7 +22,6 @@ import com.xsd.jx.order.OrderPresenter;
 import com.xsd.jx.order.OrderView;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.jx.utils.UserUtils;
-import com.xsd.utils.L;
 
 import java.util.Arrays;
 
@@ -51,6 +50,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Apollo.isBind(this))
         Apollo.bind(this);
     }
 
@@ -126,7 +126,6 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     }
     @Receive(EventStr.LOGIN_OUT)
     public void loginOut(){
-        L.e("OrderFragment》》loginOut()===");
         db.layoutNoLogin.setVisibility(View.VISIBLE);
     }
     @Receive(EventStr.UPDATE_ORDER_LIST)

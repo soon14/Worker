@@ -19,10 +19,12 @@ import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
+import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.jx.custom.InviteJobsPop;
 import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
+import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.ToastUtil;
@@ -38,7 +40,6 @@ import java.util.List;
  情况：0如果是从推荐的工人列表进来的就显示【邀请上工】
  WorkerBean item = (WorkerBean) adapter.getItem(position);
  Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
- intent.putExtra("type",0);
  intent.putExtra("userId",item.getUserId());
  intent.putExtra("wtId",wtId);
  intent.putExtra("workId",workId);
@@ -60,6 +61,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
     private int wtId;
     private int workId;
     private int status;//状态 1:未处理 2：已确认 3：已拒绝
+    private WorkerBean item;
 
     @Override
     protected int getLayoutId() {
@@ -160,8 +162,11 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
         tvTitle.setText("工人简历");
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", 0);
-        userId = intent.getIntExtra("userId", 0);
-        status = intent.getIntExtra("status", 0);
+        WorkerBean item = (WorkerBean) intent.getSerializableExtra("item");
+        userId = item.getUserId();
+        status = item.getStatus();
+        boolean invited = item.isInvited();
+        DataBindingAdapter.isInvite(db.tvInvite,invited);
         if (type == 0) {//邀请上工
             db.tvInvite.setVisibility(View.VISIBLE);
             wtId = intent.getIntExtra("wtId", 0);

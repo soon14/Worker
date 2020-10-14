@@ -1,6 +1,7 @@
 package com.xsd.jx;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import com.lzf.easyfloat.EasyFloat;
 import com.lzf.easyfloat.enums.ShowPattern;
 import com.lzf.easyfloat.enums.SidePattern;
 import com.lzf.easyfloat.interfaces.OnInvokeView;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
@@ -40,6 +42,7 @@ import com.xsd.jx.utils.CommonDataUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
@@ -83,7 +86,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Apollo.bind(this);
+        if (!Apollo.isBind(this)) Apollo.bind(this);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
 
@@ -100,23 +103,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         CommonDataUtils.getPhone(this);
     }
 
-    //被邀请上工信息列表
-    @Receive({EventStr.UPDATE_INVITE_LIST,EventStr.LOGIN_SUCCESS})
-    public void getInviteList() {
-        dataProvider.work.inviteList()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<InviteListResponse> baseResponse) {
-                        InviteListResponse response = baseResponse.getData();
-                        List<JobBean> data = response.getItems();
-                        int count = response.getCount();
-                        if (data!=null&&data.size()>0){
-                            openBall(count,data);
-                        }
-                    }
-                });
 
-    }
     private void openBall(int count, List<JobBean> data) {
         XXPermissions.with(this)
                 .permission(Permission.SYSTEM_ALERT_WINDOW)
@@ -124,6 +111,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
                         if (all){
+                            EasyFloat.dismissAppFloat();
                             EasyFloat.with(MainActivity.this)
                                     .setShowPattern(ShowPattern.FOREGROUND)
                                     .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT,0, ScreenUtils.getRealHeight()/2- DpPxUtils.dp2px(88))
@@ -133,7 +121,10 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                                         public void invoke(View view) {
                                             TextView tv = view.findViewById(R.id.tv_invite);
                                             tv.setText(count+"个\n邀请");
-                                            view.setOnClickListener(v -> PopShowUtils.showInviteJob(data, MainActivity.this));
+                                            view.setOnClickListener(v -> {
+                                                Activity currentActivity = ActivityCollector.getInstance().getCurrentActivity();
+                                                PopShowUtils.showInviteJob(data, (BaseActivity) currentActivity);
+                                            });
                                         }
                                     })
                                     .show();
@@ -221,9 +212,27 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         PopShowUtils.showRealNameAuth(this);
     }
 
-    @Receive(EventStr.SHOW_PUSH_JOB)
+    @Receive({EventStr.SHOW_PUSH_JOB,EventStr.LOGIN_SUCCESS})
     public void showPushJob(){
         if (UserUtils.isLogin()) PopShowUtils.showPushJob(this);
+    }
+    //被邀请上工信息列表
+    @Receive({EventStr.UPDATE_INVITE_LIST,EventStr.LOGIN_SUCCESS})
+    public void getInviteList() {
+        dataProvider.work.inviteList()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<InviteListResponse> baseResponse) {
+                        InviteListResponse response = baseResponse.getData();
+                        List<JobBean> data = response.getItems();
+                        int count = response.getCount();
+                        if (data!=null&&data.size()>0){
+                            openBall(count,data);
+                        }else {
+                           EasyFloat.dismissAppFloat();
+                        }
+                    }
+                });
     }
 
     private long firstTime = 0;

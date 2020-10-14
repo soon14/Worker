@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
@@ -34,7 +31,6 @@ import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.ClipboardUtils;
-import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -45,7 +41,8 @@ import java.util.List;
 
 /**
  * 招工详情:8个状态
- status 状态 -1:不展示(有预付款项未付不显示给用户) )
+ 状态 -1:不展示(有预付款项未付不显示给用户) )
+ itemType
  1:正在招
  2:已招满/待开工(所有用户已确认)
  3:工期中
@@ -58,6 +55,8 @@ import java.util.List;
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {
     private GetWorkersInfoAdapter mAdapter;
     private int workId;//当前详情的工种ID
+    private int itemType;//8个状态
+    private MyGetWorkersResponse.ItemsBean item;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_get_workers_info;
@@ -68,7 +67,21 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         super.onCreate(savedInstanceState);
         Apollo.bind(this);
         initView();
-        onEvent();
+        loadData();
+    }
+    private void initView() {
+        workId = getIntent().getIntExtra("type", 1);
+    }
+    private void loadData() {
+        dataProvider.server.workDetail(workId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MyGetWorkersResponse.ItemsBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MyGetWorkersResponse.ItemsBean> baseResponse) {
+                        item = baseResponse.getData();
+                        itemType = item.getItemType();
+                        initData();
+                    }
+                });
     }
 
     @Override
@@ -84,8 +97,107 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
 
     @Receive(EventStr.UPDATE_COMMENT_LIST)
     public void update(){
-        L.e("关闭===");
         finish();
+    }
+
+    private void initData() {
+        String price = item.getPrice();//工价
+        db.setItem(item);
+        mAdapter = new GetWorkersInfoAdapter(price);
+        switch (itemType){
+            case 1:
+                db.tvTitle.setText("正在招");
+                break;
+            case 2:
+                db.tvTitle.setText("已招满");
+                db.layoutBtns.setVisibility(View.GONE);
+                break;
+            case 3:
+                db.tvTitle.setText("工期内");//也可以结算
+                db.tvCancel.setVisibility(View.GONE);
+                db.tvActivGet.setVisibility(View.GONE);
+                db.layoutNeedPay.setVisibility(View.VISIBLE);
+                db.tvPay.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                db.tvTitle.setText("待结算");
+                db.tvCancel.setVisibility(View.GONE);
+                db.tvActivGet.setVisibility(View.GONE);
+                db.layoutNeedPay.setVisibility(View.VISIBLE);
+                db.tvPay.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                db.tvTitle.setText("待评价");
+                db.tvCancel.setVisibility(View.GONE);
+                db.tvActivGet.setVisibility(View.GONE);
+                db.tvTogetherComment.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                db.tvTitle.setText("已完成");
+                db.layoutPayedTime.setVisibility(View.VISIBLE);
+                db.recyclerView.setVisibility(View.GONE);
+                db.layoutInfo.setVisibility(View.VISIBLE);
+                setTopColor();
+                break;
+            case 7:
+                db.tvTitle.setText("已取消");
+                db.layoutCancelTime.setVisibility(View.VISIBLE);
+                db.recyclerView.setVisibility(View.GONE);
+                db.layoutInfo.setVisibility(View.VISIBLE);
+                setTopColor();
+                break;
+            case 8:
+                db.tvTitle.setText("已过期");
+                db.layoutCancelTime.setVisibility(View.VISIBLE);
+                db.recyclerView.setVisibility(View.GONE);
+                db.layoutInfo.setVisibility(View.VISIBLE);
+                setTopColor();
+                break;
+        }
+        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(itemType ==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
+            @Override
+            public void onTabClick(int position) {
+                switch (position){
+                    case 0:
+                        db.recyclerView.setVisibility(View.VISIBLE);
+                        db.layoutInfo.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        db.recyclerView.setVisibility(View.GONE);
+                        db.layoutInfo.setVisibility(View.VISIBLE);
+                        break;
+                }
+
+            }
+        });
+
+        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        db.recyclerView.setAdapter(mAdapter);
+        View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
+        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> {
+            ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+            finish();
+        });
+        mAdapter.setEmptyView(emptyView);
+        //工人列表
+        List<WorkerBean> workers = item.getWorkers();
+        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
+        if (itemType ==1){
+            List<WorkerBean> showWorkers = new ArrayList<>();
+            for (int i = 0; i < workers.size(); i++){
+                WorkerBean workerBean = workers.get(i);
+                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
+                if (status==1){
+                    workerBean.setType(itemType);
+                    showWorkers.add(workerBean);
+                }
+            }
+            mAdapter.setList(showWorkers);
+        }else {
+            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(itemType);
+            mAdapter.setList(workers);
+        }
+        onEvent();
     }
 
     private void onEvent() {
@@ -119,40 +231,36 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
            }
        });
        mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment,R.id.tv_activ_get);
-       mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-           @Override
-           public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-               WorkerBean item = (WorkerBean) adapter.getItem(position);
-               int userId = item.getUserId();
-               switch (view.getId()){
-                   case R.id.tv_look://查看工人简历
-                       Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
-                       intent.putExtra("type",1);
-                       intent.putExtra("userId",item.getUserId());
-                       intent.putExtra("workId",workId);
-                       intent.putExtra("status",item.getStatus());
-                       startActivity(intent);
-                       break;
-                   case R.id.tv_cancel://婉拒
-                       doJoinWork(userId,1,position);
-                       break;
-                   case R.id.tv_confirm://雇佣
-                       doJoinWork(userId,2,position);
-                       break;
-                   case R.id.tv_name://打电话
-                       MobileUtils.callPhone(GetWorkersInfoActivity.this,item.getMobile());
-                       break;
-                   case R.id.tv_single_comment://单独评价，用工方评价上工者
-                       Intent intent1 = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
-                       intent1.putExtra("workId",workId);
-                       intent1.putExtra("workers", (Serializable) Arrays.asList(item));
-                       startActivity(intent1);
-                       break;
-                   case R.id.tv_activ_get://主动招人
-                       ActivityCollector.finishActivity(MyGetWorkersActivity.class);
-                       finish();
-                       break;
-               }
+       mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+           WorkerBean item = (WorkerBean) adapter.getItem(position);
+           int userId = item.getUserId();
+           switch (view.getId()){
+               case R.id.tv_look://查看工人简历
+                   Intent intent = new Intent(GetWorkersInfoActivity.this, WorkerResumeActivity.class);
+                   intent.putExtra("type",1);
+                   intent.putExtra("workId",workId);
+                   intent.putExtra("item",item);
+                   startActivity(intent);
+                   break;
+               case R.id.tv_cancel://婉拒
+                   doJoinWork(userId,1,position);
+                   break;
+               case R.id.tv_confirm://雇佣
+                   doJoinWork(userId,2,position);
+                   break;
+               case R.id.tv_name://打电话
+                   MobileUtils.callPhone(GetWorkersInfoActivity.this,item.getMobile());
+                   break;
+               case R.id.tv_single_comment://单独评价，用工方评价上工者
+                   Intent intent1 = new Intent(GetWorkersInfoActivity.this, TogetherCommentActivity.class);
+                   intent1.putExtra("workId",workId);
+                   intent1.putExtra("workers", (Serializable) Arrays.asList(item));
+                   startActivity(intent1);
+                   break;
+               case R.id.tv_activ_get://主动招人
+                   ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+                   finish();
+                   break;
            }
        });
 
@@ -187,9 +295,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         mAdapter.removeAt(position);
                         if (mAdapter.getData().size()==0){
-                            finish();
+//                            finish();
                         }
-                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+
                         if (type==1){//拒绝:待确认工人数-1
                             int tobeConfirmNum = item.getTobeConfirmNum();
                             tobeConfirmNum--;
@@ -204,7 +312,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                             item.setConfirmedNum(confirmedNum);
                         }
                         db.setItem(item);
+                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
                         Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
+                        loadData();
 
                     }
                 });
@@ -217,107 +327,6 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 .asCustom(new WaitPayBillPop(this,item))
                 .show();
     }
-
-    private int type;
-    private MyGetWorkersResponse.ItemsBean item;
-    private void initView() {
-        item = (MyGetWorkersResponse.ItemsBean) getIntent().getSerializableExtra("item");
-        String price = item.getPrice();//工价
-        db.setItem(item);
-        workId = item.getId();
-        type = item.getItemType();
-
-        mAdapter = new GetWorkersInfoAdapter(price);
-        switch (type){
-            case 1:
-                db.tvTitle.setText("正在招");
-                break;
-            case 2:
-                db.tvTitle.setText("已招满");
-                db.layoutBtns.setVisibility(View.GONE);
-                break;
-            case 3:
-                db.tvTitle.setText("工期内");//也可以结算
-                db.tvCancel.setVisibility(View.GONE);
-                db.tvActivGet.setVisibility(View.GONE);
-                db.layoutNeedPay.setVisibility(View.VISIBLE);
-                db.tvPay.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                db.tvTitle.setText("待结算");
-                db.tvCancel.setVisibility(View.GONE);
-                db.tvActivGet.setVisibility(View.GONE);
-                db.layoutNeedPay.setVisibility(View.VISIBLE);
-                db.tvPay.setVisibility(View.VISIBLE);
-                //还需支付
-
-                break;
-            case 5:
-                db.tvTitle.setText("待评价");
-                db.tvCancel.setVisibility(View.GONE);
-                db.tvActivGet.setVisibility(View.GONE);
-                db.tvTogetherComment.setVisibility(View.VISIBLE);
-                break;
-            case 6:
-                db.tvTitle.setText("已完成");
-                db.layoutPayedTime.setVisibility(View.VISIBLE);
-                db.tvPayedMoney.setText("已结清（3200元）");
-                setTopColor();
-                break;
-            case 7:
-                db.tvTitle.setText("已取消");
-                db.layoutCancelTime.setVisibility(View.VISIBLE);
-                db.tvPayedMoney.setText("2成/1200元(已退至您的账户钱包)");
-                setTopColor();
-                break;
-        }
-        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(type==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
-            @Override
-            public void onTabClick(int position) {
-                switch (position){
-                    case 0:
-                        db.recyclerView.setVisibility(View.VISIBLE);
-                        db.layoutInfo.setVisibility(View.GONE);
-                        break;
-                    case 1:
-                        db.recyclerView.setVisibility(View.GONE);
-                        db.layoutInfo.setVisibility(View.VISIBLE);
-                        break;
-                }
-
-            }
-        });
-
-        db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        db.recyclerView.setAdapter(mAdapter);
-        View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
-        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> {
-            ActivityCollector.finishActivity(MyGetWorkersActivity.class);
-            finish();
-        });
-        mAdapter.setEmptyView(emptyView);
-        //工人列表
-        List<WorkerBean> workers = item.getWorkers();
-        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
-        if (type==1){
-            List<WorkerBean> showWorkers = new ArrayList<>();
-            for (int i = 0; i < workers.size(); i++){
-                WorkerBean workerBean = workers.get(i);
-                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
-                if (status==1){
-                    workerBean.setType(type);
-                    showWorkers.add(workerBean);
-                }
-            }
-            mAdapter.setList(showWorkers);
-        }else {
-            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(type);
-            mAdapter.setList(workers);
-        }
-
-
-    }
-
 
     private void setTopColor() {
         int gray = Color.parseColor("#9A9A9A");

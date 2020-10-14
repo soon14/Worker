@@ -3,7 +3,6 @@ package com.xsd.jx.manager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -105,8 +104,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                             mAdapter.getLoadMoreModule().loadMoreComplete();
                         } else {
                             if (page == 1) mAdapter.setList(items);
-                            else
-                                mAdapter.getLoadMoreModule().loadMoreEnd();
+                            else mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
                         if (page == 1) {
                             setTabs(data.getWorkTypes());
@@ -116,7 +114,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     }
 
     /**
-     * 动态设置工种选项
+     * 动态设置顶部工种选项Tabs
      *
      * @param newWorkTypes
      */
@@ -124,9 +122,11 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         L.e("setTabs==" + newWorkTypes.size());
         if (newWorkTypes.size() == 0) {
             db.layoutTabAll.setVisibility(View.GONE);
+            AdapterUtils.setNoPushView(mAdapter,this);
             return;
         }
         db.layoutTabAll.setVisibility(View.VISIBLE);
+        AdapterUtils.setEmptyDataView(mAdapter);
 
         //1.没有tabs直接赋值，添加头部Tabs
         if (workTypes == null) {
@@ -138,10 +138,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         if (workTypes.size() == newWorkTypes.size()) return;
         //3.如果有新增的tabs
         workTypes = newWorkTypes;
-
         updateTopTabs();
-
-
     }
 
     private void updateTopTabs() {
@@ -252,7 +249,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 intent.putExtra("userId", item.getUserId());
                 intent.putExtra("wtId", wtId);
                 intent.putExtra("workId", workId);
-                intent.putExtra("status", item.getStatus());
+                intent.putExtra("item", item);
                 startActivity(intent);
 
             }
@@ -262,7 +259,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 WorkerBean item = (WorkerBean) adapter.getItem(position);
-
                 switch (view.getId()) {
                     case R.id.tv_invite://邀请上工
                         showInviteJobs(item, position);
@@ -283,12 +279,10 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                 loadData();
             }
         });
-        View viewNoPersion = LayoutInflater.from(this).inflate(R.layout.empty_view_no_push, null);
-        viewNoPersion.setOnClickListener(v -> goActivity(PushGetWorkersActivity.class));
-        mAdapter.setEmptyView(viewNoPersion);
     }
 
     /**
+     * 邀请上工
      * 查询当前发布者同工种有几条招工信息，
      * 如果有多条，弹出框选择上工地点
      */
@@ -300,28 +294,26 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                     protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
                         JobListResponse data = baseResponse.getData();
                         List<JobListResponse.ItemsBean> items = data.getItems();
-                        if (items != null) {
-                            if (items.size() == 1) {
-                                workId = items.get(0).getWorkId();
+                        if (items != null && items.size() > 0) {
+                            //如果有多条，弹出框选择上工地点
+                            InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
+                            inviteJobsPop.setListener(itemsBean -> {
+                                workId = itemsBean.getWorkId();
                                 showInviteJobs(item, position);
-                            } else if (items.size() > 1) {
-                                //如果有多条，弹出框选择上工地点
-                                InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
-                                inviteJobsPop.setListener(itemsBean -> {
-                                    workId = itemsBean.getWorkId();
-                                    showInviteJobs(item, position);
-                                });
-                                new XPopup.Builder(GetWorkersActivity.this)
-                                        .asCustom(inviteJobsPop)
-                                        .show();
-                            }
+                            });
+                            new XPopup.Builder(GetWorkersActivity.this)
+                                    .asCustom(inviteJobsPop)
+                                    .show();
+
                         } else {
                             try {
                                 ToastUtil.showLong(baseResponse.getData().getMessage());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            mAdapter.removeAt(position);
+                            item.setInvited(true);
+                            mAdapter.notifyItemChanged(position);
+
                         }
                     }
                 });
@@ -361,8 +353,8 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         }
     }
 
+    //点击全部，显示所有的工种
     private FilterPop filterPop;
-
     private void showFilterPop() {
         if (filterPop == null) return;
         new Handler().postDelayed(new Runnable() {

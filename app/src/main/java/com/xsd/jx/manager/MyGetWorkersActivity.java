@@ -1,6 +1,5 @@
 package com.xsd.jx.manager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -109,9 +108,7 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
-            Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
-            intent.putExtra("item",item);
-            startActivity(intent);
+            goActivity(GetWorkersInfoActivity.class,item.getId());
         });
 
         mAdapter.addChildClickViewIds(R.id.tv_activ_get);
@@ -124,9 +121,7 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
                     if (s.equals("主动招人")){
                         finish();
                     }else {
-                        Intent intent = new Intent(MyGetWorkersActivity.this, GetWorkersInfoActivity.class);
-                        intent.putExtra("item",item);
-                        startActivity(intent);
+                        goActivity(GetWorkersInfoActivity.class,item.getId());
                     }
                     break;
             }

@@ -97,7 +97,17 @@ public class MyGetWorkersResponse implements Serializable {
         private int tobeConfirmNum;
         private int confirmedNum;
         private int tobeSettledWage;
+        private String totalAmount;//工资合计
+
         private List<WorkerBean> workers;
+
+        public String getTotalAmount() {
+            return totalAmount;
+        }
+
+        public void setTotalAmount(String totalAmount) {
+            this.totalAmount = totalAmount;
+        }
 
         public String getPaidAmount() {
             return paidAmount;

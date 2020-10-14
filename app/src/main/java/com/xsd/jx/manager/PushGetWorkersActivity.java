@@ -21,10 +21,10 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.custom.KeyboardStatusDetector;
 import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
+import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.EditTextUtils;
-import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
@@ -65,6 +65,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
     private int recommendPrice;//推荐的工价,选择工种和地区后，有最低价格限制
     private String advanceAmount = "0";
     private int mYear, mMonth, mDay;//开始的年月日
+    private int diffDays;//时间差，需要上工天数
     @Override
     protected int getLayoutId() {
         return R.layout.activity_push_get_workers;
@@ -122,12 +123,12 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         isSafe = db.rbBuySafe.isChecked()?1:0;
         settleType = db.rbDayPay.isChecked()?1:2;
         if (db.rbPay2cost.isChecked()){
-            int ceil = (int) Math.ceil(price * num * 0.2);
+            int ceil = (int) Math.ceil(price * num * diffDays * 0.2);
             advanceAmount = String.valueOf(ceil);
             advanceType=1;
         }
         if (db.rbPayAll.isChecked()){
-            advanceAmount = String.valueOf(price*num);
+            advanceAmount = String.valueOf(price*num*diffDays);
             advanceType=2;
         }
         if (db.rbNoPay.isChecked()){
@@ -272,12 +273,12 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
             int totalSafePrice = num * safeAmount;
         }
         if (db.rbPay2cost.isChecked()){
-            int ceil = (int) Math.ceil(price * num * 0.2);
+            int ceil = (int) Math.ceil(price * num*diffDays * 0.2);
             advanceAmount = String.valueOf(ceil);
             advanceType=1;
         }
         if (db.rbPayAll.isChecked()){
-            advanceAmount = String.valueOf(price*num);
+            advanceAmount = String.valueOf(price*num*diffDays);
             advanceType=2;
         }
         if (db.rbNoPay.isChecked()){
@@ -287,7 +288,6 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         L.e("advanceAmount=="+advanceAmount);
         if (advanceAmount.equals("0"))db.tvPush.setText("发布");
         else{
-            advanceAmount = FormatUtils.twoDecimal(Float.parseFloat(advanceAmount));
             db.tvPush.setText("发布(支付"+advanceAmount+"元)");
         }
 
@@ -321,7 +321,9 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
      * 更新预付款金额
      */
     private void updateAdvanceBtn() {
-        int priceAll = price * num;
+        if (TextUtils.isEmpty(startDate)||TextUtils.isEmpty(endDate))return;
+
+        int priceAll = price * num * diffDays;
         int price2 = (int) Math.ceil(priceAll*0.2);
         db.rbPay2cost.setText("2成/"+price2+"元");
         db.rbPayAll.setText("全额/"+priceAll+"元");
@@ -337,10 +339,8 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         mYear = year;
                         mMonth = month;
                         mDay = dayOfMonth;
-                        int realMonth = month + 1;
-                        String monthStr = realMonth<10?"0"+realMonth:""+realMonth;
-                        String dayStr = dayOfMonth<10?"0"+dayOfMonth:""+dayOfMonth;
-                        final String data = year+"-"+monthStr + "-" + dayStr ;
+                        String data = DateFormatUtils.ymd(mYear,mMonth+1,mDay);
+
                         if (isStartTime){
                             startDate = data;
                             db.tvStartTime.setText(data);
@@ -348,7 +348,25 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         }else {
                             endDate = data;
                             db.tvEndTime.setText(data);
+
+                            Calendar startCalendar = DateFormatUtils.strToCalendar(startDate);
+                            Calendar endCalendar = DateFormatUtils.strToCalendar(endDate);
+                            L.e("startCalendar=="+startCalendar.get(Calendar.DAY_OF_MONTH)+"  endCalendar=="+endCalendar.get(Calendar.DAY_OF_MONTH));
+                            if (endCalendar.before(startCalendar)){
+                                startDate="";
+                                endDate="";
+                                db.tvStartTime.setText("");
+                                db.tvEndTime.setText("");
+                                ToastUtil.showLong("开始时间不能大于结束时间");
+                                return;
+                            }
+
+                            diffDays = (int) (((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis()) / (1000 * 60 * 60 * 24))+1);
+                            L.e("您已经活了：" + diffDays + " 天");
+
                         }
+
+                        updateAdvanceBtn();
                     }
                 },
                 mYear, mMonth, mDay);

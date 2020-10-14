@@ -214,4 +214,9 @@ public class PushJobPop extends CenterPopupView {
         return (int) (XPopupUtils.getWindowWidth(getContext()) * 0.95f);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.activity=null;
+    }
 }

@@ -2,6 +2,7 @@ package com.xsd.jx.api;
 
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.bean.OrderResponse;
 
 import io.reactivex.Observable;
@@ -20,6 +21,13 @@ public interface OrderApi {
     //订单列表 type:类型 0:全部 1:未确认 2:待开工 3:已招满（被拒绝）4:已取消 5:进行中 6:待结算 7:待评价 8:已完成
     @GET("order/list")
     Observable<BaseResponse<OrderResponse>> list(@Query("page")Integer page, @Query("type")Integer type);
+
+    /**
+     * 获取订单详情数据
+     * @param id 报名ID
+     */
+    @GET("order/detail")
+    Observable<BaseResponse<OrderBean>> detail(@Query("id")Integer id);
     //取消订单
     @GET("order/cancel")
     Observable<BaseResponse<MessageBean>> cancel(@Query("id")Integer id);

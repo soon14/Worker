@@ -65,9 +65,7 @@ public class GetWorkersWaitCommentActivity extends BaseBindBarActivity<ActivityR
     private void onEvent() {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
-            Intent intent = new Intent(GetWorkersWaitCommentActivity.this, GetWorkersInfoActivity.class);
-            intent.putExtra("item",item);
-            startActivity(intent);
+            goActivity(GetWorkersInfoActivity.class,item.getId());
         });
         mAdapter.addChildClickViewIds(R.id.tv_comment_all);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {

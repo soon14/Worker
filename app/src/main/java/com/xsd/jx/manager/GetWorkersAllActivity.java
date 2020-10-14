@@ -1,6 +1,5 @@
 package com.xsd.jx.manager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,9 +53,7 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
-            Intent intent = new Intent(GetWorkersAllActivity.this, GetWorkersInfoActivity.class);
-            intent.putExtra("item",item);
-            startActivity(intent);
+            goActivity(GetWorkersInfoActivity.class,item.getId());
         });
         mAdapter.addChildClickViewIds(R.id.tv_single_comment);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
