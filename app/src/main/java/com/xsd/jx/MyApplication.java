@@ -15,6 +15,7 @@ import com.lsxiao.apollo.core.Apollo;
 import com.lzf.easyfloat.EasyFloat;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.xsd.jx.base.Contants;
 import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.utils.LogHeaderInterceptor;
@@ -35,14 +36,21 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instances = this;
-        SmallUtils.init(this);//工具类
-        RetrofitHttp.init(this, Contants.BASE_URL, new LogHeaderInterceptor());//自定义拦截器，方便添加公共Header
-        Apollo.init(AndroidSchedulers.mainThread(), this);//事件通知
+        //工具集
+        SmallUtils.init(this);
+        //网络框架
+        RetrofitHttp.init(this, Contants.BASE_URL, new LogHeaderInterceptor());
+        //事件通知
+        Apollo.init(AndroidSchedulers.mainThread(), this);
+        //阿里云存储
         initAliOSS();
+        //友盟分享，统计
         UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        //全局悬浮球
         EasyFloat.init(this, BuildConfig.DEBUG);
-
+        //生命周期监听
         registLifecycle();
 
     }
@@ -50,39 +58,21 @@ public class MyApplication extends Application {
     private void registLifecycle() {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-            }
-
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
             @Override
-            public void onActivityStarted(Activity activity) {
-
-            }
-
+            public void onActivityStarted(Activity activity) {}
             @Override
             public void onActivityResumed(Activity activity) {
                 ActivityCollector.getInstance().setCurrentActivity(activity);
             }
-
             @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
+            public void onActivityPaused(Activity activity) {}
             @Override
-            public void onActivityStopped(Activity activity) {
-
-            }
-
+            public void onActivityStopped(Activity activity) {}
             @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
             @Override
-            public void onActivityDestroyed(Activity activity) {
-
-            }
+            public void onActivityDestroyed(Activity activity) {}
         });
     }
 

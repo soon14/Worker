@@ -34,7 +34,7 @@ public class DayCheckBean {
     private String signOutDesc;
     private String signOutPic;
     private String signOutTime;
-    private int status;
+    private int status;//确认状态 1:未确认 2:已确认
 
     //企业端独有字段
     private int checkId;//考勤ID

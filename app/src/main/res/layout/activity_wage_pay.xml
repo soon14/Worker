@@ -46,7 +46,7 @@
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h5"
                 style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                tools:text="全选合计: 9652元"
+                android:text="全选"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 

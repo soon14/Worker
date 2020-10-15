@@ -56,14 +56,14 @@ public class ToSettleResponse {
         private int safeAmount;
         private int advanceAmount;
         private String paidAmount;//已支付的工资（元）
-        private String needPayAmount;//还需支付金额
+        private int needPayAmount;//还需支付金额
         private List<UsersBean> users;
 
-        public String getNeedPayAmount() {
+        public int getNeedPayAmount() {
             return needPayAmount;
         }
 
-        public void setNeedPayAmount(String needPayAmount) {
+        public void setNeedPayAmount(int needPayAmount) {
             this.needPayAmount = needPayAmount;
         }
 

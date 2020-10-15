@@ -28,6 +28,7 @@ import com.xsd.jx.databinding.ItemWagepayWorkerBinding;
 import com.xsd.jx.listener.OnPayListener;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TextViewUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -41,6 +42,7 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
     private String ids;//选择提交的结算工作ID，用英文逗号分隔 1,2,3,4
     private int payment=1;//支付方式:1:微信 2:支付宝
     private List<ToSettleResponse.ItemsBean> items;
+    private int totalNeedPayAmount;//总共还需支付的金额
     @Override
     protected int getLayoutId() {
         return R.layout.activity_wage_pay;
@@ -74,6 +76,7 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
                 doSettle();
             }
         });
+        //底部全选按钮事件
         db.cbSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -85,11 +88,18 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
                         ItemWagePayBinding bind = DataBindingUtil.bind(viewItem);
                         bind.cbSelect.setChecked(true);
                         ToSettleResponse.ItemsBean itemsBean = items.get(i);
+                        //根据是否有工人来判断是否需要结算此笔订单，从而确定是否要添加结算id和统计结算工资
                         List<ToSettleResponse.ItemsBean.UsersBean> users = itemsBean.getUsers();
-                        if (users!=null&&users.size()!=0)builder.append(itemsBean.getId());
-                        if (i<childCount-1)builder.append(",");
+                        if (users!=null&&users.size()>0){
+                            builder.append(itemsBean.getId()).append(",");
+                            int needPayAmount = itemsBean.getNeedPayAmount();//每单还需支付
+                            totalNeedPayAmount += needPayAmount;
+                        }
                     }
-                    ids= builder.toString();
+                    //用于结算的id集合
+                    String idStr = builder.toString();
+                    ids= idStr.substring(0,idStr.length()-1);
+                    db.cbSelectAll.setText("全选合计："+totalNeedPayAmount+"元");
 
                 }else {
                     int childCount = db.layoutContent.getChildCount();
@@ -110,6 +120,11 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
             ToastUtil.showLong("请选中要结算的选项！");
             return;
         }
+        if (true){
+            L.e("ids=="+ids);
+            return;
+        }
+
         showPayType();
 
     }

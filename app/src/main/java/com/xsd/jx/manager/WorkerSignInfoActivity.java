@@ -7,9 +7,11 @@ import androidx.core.content.ContextCompat;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.DayCheckBean;
 import com.xsd.jx.bean.MessageBean;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 记录明细
+ *  工人考勤{@link WorkerSignActivity}>>考勤记录{@link WorkerSignListActivity}>>【记录明细】
  * 获取用户整月的考勤记录
  * 根据上工记录获取用户整月的上工记录
  */
@@ -172,7 +174,7 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                 showSelectYearMonth();
             }
         });
-        //日历月份改变监听
+        //日历日期选中事件
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {
@@ -230,6 +232,9 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                                             db.tvEditLog.setTextColor(ContextCompat.getColor(WorkerSignInfoActivity.this, R.color.tv_gray));
                                             db.tvEditLog.setBackgroundResource(R.drawable.round6_gray_bg);
                                             loadData();
+                                            //刷新考勤记录页面
+                                            Apollo.emit(EventStr.UPDATE_WORK_CHECK_LOG);
+                                            Apollo.emit(EventStr.UPDATE_WORK_CHECK);
                                         }
                                     });
 

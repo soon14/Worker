@@ -11,6 +11,8 @@ public interface EventStr {
     String UPDATE_USER_INFO = "update_user_info";
     String UPDATE_ORDER_LIST = "update_order_list";
     String UPDATE_COMMENT_LIST = "update_comment_list";//刷新企业端待评价列表
+    String UPDATE_WORK_CHECK = "update_work_check";//刷新企业端:工人考勤
+    String UPDATE_WORK_CHECK_LOG = "update_work_check_log";//刷新企业端:考勤记录
     String LOGIN_OUT = "login_out";
     String GO_LOGIN = "go_login";
     String GO_AUTH = "go_auth";//去实名认证

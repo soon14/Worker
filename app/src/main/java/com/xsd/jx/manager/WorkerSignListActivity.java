@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.BottomListPopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.WorkerSignListAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkCheckLogResponse;
@@ -33,7 +36,7 @@ import java.util.List;
 /**
  * 企业端：
  *
- * 考勤记录
+ * 工人考勤{@link WorkerSignActivity}>>【考勤记录】>>记录明细{@link WorkerSignInfoActivity}
  * 如果是今天之前的日子没打卡，那么此处显示“
  * 您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改
  * ”
@@ -55,9 +58,16 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
         loadData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
     }
 
     private void initView() {
@@ -71,7 +81,8 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
      * 考勤记录
      * 根据日期获取某个招工的所有用户的考勤信息
      */
-    private void loadData() {
+    @Receive(EventStr.UPDATE_WORK_CHECK_LOG)
+    public void loadData() {
         dataProvider.server.workCheckLog(date,workId,status)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckLogResponse>>() {
                     @Override

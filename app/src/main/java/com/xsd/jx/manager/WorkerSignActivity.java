@@ -6,18 +6,22 @@ import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 
 /**
- * 工人考勤
+ * 【工人考勤>>考勤记录{@link WorkerSignListActivity}>>记录明细{@link WorkerSignInfoActivity}
  */
 public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBinding> {
     private String date="";
@@ -31,10 +35,18 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Apollo.bind(this);
         initView();
         onEvent();
         loadBottomData();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apollo.unBind$core(this);
+    }
+
     private void initView() {
         tvTitle.setText("工人考勤");
         java.util.Calendar c = java.util.Calendar.getInstance();
@@ -51,7 +63,8 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
      * 根据日期查询当日我发布的工作考勤情况
      * 日期 格式 2006-01-02，可以不传，默认今日
      */
-    private void loadBottomData() {
+    @Receive(EventStr.UPDATE_WORK_CHECK)
+    public void loadBottomData() {
         dataProvider.server.workCheck(date)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckResponse>>() {
                     @Override
@@ -95,6 +108,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 showSelectYearMonth();
             }
         });
+        db.tvContactUs.setOnClickListener(v -> PopShowUtils.callUs(WorkerSignActivity.this));
     }
 
     private BottomDatePickerPop bottomDatePickerPop;
