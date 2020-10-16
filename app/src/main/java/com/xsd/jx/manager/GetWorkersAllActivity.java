@@ -1,5 +1,6 @@
 package com.xsd.jx.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
@@ -55,11 +57,15 @@ public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerv
             MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             goActivity(GetWorkersInfoActivity.class,item.getId());
         });
-        mAdapter.addChildClickViewIds(R.id.tv_single_comment);
+        mAdapter.addChildClickViewIds(R.id.tv_comment_all);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            MyGetWorkersResponse.ItemsBean item = (MyGetWorkersResponse.ItemsBean) adapter.getItem(position);
             switch (view.getId()){
-                case R.id.tv_single_comment:
-                    goActivity(SingleCommentActivity.class);
+                case R.id.tv_comment_all:
+                    Intent intent = new Intent(GetWorkersAllActivity.this, TogetherCommentActivity.class);
+                    intent.putExtra("workId",item.getId());
+                    intent.putExtra("workers", (Serializable) item.getWorkers());
+                    startActivity(intent);
                     break;
             }
         });

@@ -95,6 +95,19 @@ public class UserInfo implements Serializable {
     private String updatedAt;
     private int inviteCode;
     private boolean isChooseWork;
+    private String shareUrl;//邀请链接
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
 
     @Override
     public String toString() {

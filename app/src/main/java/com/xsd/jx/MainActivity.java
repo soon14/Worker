@@ -93,7 +93,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         if (UserUtils.isLogin()){
 //            L.e("token=="+UserUtils.getToken());
             if (UserUtils.isCertification()){
-                PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
+                if (UserUtils.isChooseWork())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
                 isInWork();//是否在工期中
                 getInviteList();//邀请工作
             }
@@ -214,7 +214,11 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     @Receive({EventStr.SHOW_PUSH_JOB,EventStr.LOGIN_SUCCESS})
     public void showPushJob(){
-        if (UserUtils.isLogin()) PopShowUtils.showPushJob(this);
+        if (UserUtils.isLogin()&&UserUtils.isCertification()){
+            PopShowUtils.showPushJob(this);
+            isInWork();//是否在工期中
+        }
+
     }
     //被邀请上工信息列表
     @Receive({EventStr.UPDATE_INVITE_LIST,EventStr.LOGIN_SUCCESS})

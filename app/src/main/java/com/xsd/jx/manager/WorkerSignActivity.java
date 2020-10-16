@@ -1,8 +1,10 @@
 package com.xsd.jx.manager;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -105,7 +107,15 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSelectYearMonth();
+//                showSelectYearMonth();
+                PopShowUtils.showYM(WorkerSignActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        db.tvMonth.setText("("+(month+1)+"月)");
+                        db.calendarView.scrollToCalendar(year,month,1,true);
+                        loadBottomData();
+                    }
+                });
             }
         });
         db.tvContactUs.setOnClickListener(v -> PopShowUtils.callUs(WorkerSignActivity.this));

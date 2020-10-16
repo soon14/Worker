@@ -28,7 +28,7 @@
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="木工"
+                tools:text="木工"
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h4"
                 />
@@ -41,7 +41,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="2020-08-22至2020-08-16"
+                tools:text="2020-08-22至2020-08-16"
                 android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 />

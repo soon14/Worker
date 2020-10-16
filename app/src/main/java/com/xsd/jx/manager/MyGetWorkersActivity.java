@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 我的招工
+ * 【我的招工】 >> 招工详情{@link GetWorkersInfoActivity}
  */
 public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorkersBinding> {
     private MyWorkersAdapter mAdapter = new MyWorkersAdapter();

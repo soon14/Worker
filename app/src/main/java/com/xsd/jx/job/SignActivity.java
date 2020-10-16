@@ -44,7 +44,8 @@ import java.io.File;
 import java.util.List;
 
 /**
- * 如果当前不在上工期，那么显示缺省页“您当前还没上工，快去找活儿赚钱吧”，文案下面是去找活儿按钮，点击跳转首页并弹推荐工作
+ * 工人端：
+ * 【（考勤打卡）考勤签到】>>考勤记录{@link SignListActivity}
  */
 public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
@@ -75,6 +76,8 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         db.tvToday.setText(todayDate);
         AnimUtils.potView(db.ivPot);
         AnimUtils.potView(db.ivPot2);
+
+        db.radarViewDown.setVisibility(View.GONE);
     }
 
     private void loadData() {
@@ -87,7 +90,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         mobile = data.getMobile();
                         workId = data.getWorkId();
                         db.tvAddress.setText("上工地点："+data.getAddress());
-                        db.radarViewUp.setVisibility(View.VISIBLE);
+
                         db.layoutNotWorking.setVisibility(View.GONE);
                         db.tvContact.setVisibility(View.VISIBLE);
                         db.layoutScrollView.setVisibility(View.VISIBLE);

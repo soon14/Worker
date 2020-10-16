@@ -85,6 +85,7 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
                         UserInfo user = UserUtils.getUser();
                         user.setChooseWork(true);
                         UserUtils.saveUser(user);
+                        //由于登录已经推荐了工种，选择工种后不再推荐
                         Apollo.emit(EventStr.SHOW_PUSH_JOB);
                     }
                 });

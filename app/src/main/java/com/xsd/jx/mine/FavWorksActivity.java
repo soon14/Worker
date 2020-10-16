@@ -15,6 +15,7 @@ import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.utils.ToastUtil;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class FavWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
                 loadData();
             }
         });
-        mAdapter.addChildClickViewIds(R.id.tv_join);
+        mAdapter.addChildClickViewIds(R.id.tv_join,R.id.tv_del);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             JobBean item = (JobBean) adapter.getItem(position);
             switch (view.getId()){
@@ -54,6 +55,9 @@ public class FavWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
                     int status = item.getStatus();// 1:可报名 2:已过期
                     if (status==1)join(item.getId(),position);
                     else if (status==2)del(item.getId(),position);
+                    break;
+                case R.id.tv_del:
+                    fav(item.getId(),position);
                     break;
             }
         });
@@ -63,6 +67,17 @@ public class FavWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
         });
     }
 
+    public void fav(int id,int position){
+        dataProvider.work.fav(id)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        mAdapter.removeAt(position);
+                    }
+                });
+
+    }
 
 
     private void loadData() {

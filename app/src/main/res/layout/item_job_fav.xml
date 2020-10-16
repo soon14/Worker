@@ -94,12 +94,24 @@
             android:textSize="@dimen/h4" />
 
         <TextView
+            android:visibility="@{item.status==2?View.GONE:View.VISIBLE}"
             isJoin="@{item.isJoin}"
             android:id="@+id/tv_join"
             style="@style/DefaultBtnStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_16"
             android:text="报名上工"
+            />
+        <TextView
+            tools:visibility="visible"
+            android:visibility="@{item.status==2?View.VISIBLE:View.GONE}"
+            android:textColor="@color/tv_gray"
+            android:background="@drawable/round6_gray_bg"
+            android:id="@+id/tv_del"
+            style="@style/DefaultBtnStyle"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="已过期，点击删除"
             />
         </LinearLayout>
         <View style="@style/h_space_line"/>

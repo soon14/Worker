@@ -1,10 +1,10 @@
 package com.xsd.jx.bean;
 
 /**
- * Date: 2020/10/12
+ * Date: 2020/10/15
  * author: SmallCake
  */
-public class PaidResponse extends MessageBean {
+public class PushGetWorkersResponse extends MessageBean {
     private String orderString;
 
     public String getOrderString() {

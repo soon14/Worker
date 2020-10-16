@@ -2,10 +2,14 @@ package com.xsd.jx.utils;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
 import com.lxj.xpopup.XPopup;
@@ -41,6 +45,7 @@ import com.xsd.utils.SpannableStringUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 import me.jessyan.progressmanager.body.ProgressInfo;
@@ -53,6 +58,66 @@ import me.jessyan.progressmanager.body.ProgressInfo;
  * 数据卡片弹框提示
  */
 public class PopShowUtils {
+    /**
+     * 年月选择器
+     new DatePickerDialog.OnDateSetListener() {
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    L.e(year + "年" + (month + 1) + "月");
+    }
+    },
+     */
+
+    public static void showYM(BaseActivity activity,DatePickerDialog.OnDateSetListener listener) {
+        Calendar ca = Calendar.getInstance();
+        Calendar caMin = Calendar.getInstance();
+        int mYear = ca.get(Calendar.YEAR);
+        int mMonth = ca.get(Calendar.MONTH);
+        int mDay = ca.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(activity, DatePickerDialog.THEME_HOLO_LIGHT,
+                listener,
+                mYear, mMonth, mDay);
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        //范围控制,最大能选两年前的月份
+        caMin.add(Calendar.YEAR,-2);
+        datePicker.setMinDate(caMin.getTimeInMillis());//最小为2年前
+        datePicker.setMaxDate(ca.getTimeInMillis());//最大时间为当前年月
+        ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+        //范围控制
+        datePickerDialog.show();
+    }
+
+
+    /**
+     * 首页显示推荐的工作弹框
+     */
+    public static void showLoad(BaseActivity activity,String title,onDismissListener listener) {
+        new XPopup.Builder(activity)
+                .setPopupCallback(new SimpleCallback(){
+                    @Override
+                    public void onShow(BasePopupView popupView) {
+                        super.onShow(popupView);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                popupView.dismiss();
+                            }
+                        },3000);
+                    }
+
+                    @Override
+                    public void onDismiss(BasePopupView popupView) {
+                        super.onDismiss(popupView);
+                        L.e("窗口已关闭");
+                        listener.onDismiss(popupView);
+                    }
+                })
+                .asLoading(title)
+                .show();
+    }
+    public interface onDismissListener {
+         void onDismiss(BasePopupView popupView);
+    };
     /**
      * 首页显示推荐的工作弹框
      */
@@ -67,7 +132,7 @@ public class PopShowUtils {
      */
     public static void showInviteJob(List<JobBean> data, BaseActivity activity) {
         new XPopup.Builder(activity)
-                .setPopupCallback(new SimpleCallback(){
+                .setPopupCallback(new SimpleCallback() {
                     @Override
                     public void onShow(BasePopupView popupView) {
                         super.onShow(popupView);
@@ -120,7 +185,7 @@ public class PopShowUtils {
                 .show();
     }
 
-    public static void showMsg(BaseActivity activity,String msg) {
+    public static void showMsg(BaseActivity activity, String msg) {
         new XPopup.Builder(activity)
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
@@ -146,14 +211,14 @@ public class PopShowUtils {
                         String desc = data.getDesc();
                         String down_url = data.getUrl();
                         int version = data.getVersion();
-                        if (version<=AppUtils.getVersionCode()) return;
+                        if (version <= AppUtils.getVersionCode()) return;
                         SpannableStringBuilder content = SpannableStringUtils.getBuilder("更新内容\n")
                                 .setForegroundColor(Color.parseColor("#333333"))
                                 .setProportion(1.1f)
                                 .append(desc)
                                 .create();
                         new XPopup.Builder(activity)
-                                .setPopupCallback(new SimpleCallback(){
+                                .setPopupCallback(new SimpleCallback() {
                                     @Override
                                     public void onShow(BasePopupView popupView) {
                                         super.onShow(popupView);
@@ -173,7 +238,7 @@ public class PopShowUtils {
                                         "稍后更新",
                                         "立即更新",
                                         () -> {
-                                            downloadApk(activity,down_url);
+                                            downloadApk(activity, down_url);
                                         },
                                         null,
                                         isMust, R.layout.dialog_update)
@@ -194,7 +259,7 @@ public class PopShowUtils {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMessage("进度更新");
         progressDialog.show();
-        String path = context.getExternalCacheDir().getAbsolutePath()+ File.separator;
+        String path = context.getExternalCacheDir().getAbsolutePath() + File.separator;
         DownloadUtils.getInstance().download(down_url, path, "jiangxin.apk", new DownloadUtils.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
@@ -203,6 +268,7 @@ public class PopShowUtils {
                 String successDownloadApkPath = path + "jiangxin.apk";
                 AppUtils.installApk(context, successDownloadApkPath);
             }
+
             @Override
             public void onDownloading(ProgressInfo progressInfo) {
                 progressDialog.setProgress(progressInfo.getPercent());
@@ -214,6 +280,7 @@ public class PopShowUtils {
                     progressDialog.setMessage("下载完成！");
                 }
             }
+
             @Override
             public void onDownloadFailed() {
                 progressDialog.dismiss();
@@ -222,6 +289,7 @@ public class PopShowUtils {
         });
 
     }
+
     public static void showRealNameAuth(BaseActivity activity) {
         new XPopup.Builder(activity)
                 .asConfirm("实名认证提醒",
@@ -233,13 +301,14 @@ public class PopShowUtils {
                         true, R.layout.dialog_tips)
                 .show();
     }
-    public static void showConfirm(BaseActivity activity, String content,String cancelBtnText,String confirmBtnText, OnConfirmListener listener) {
+
+    public static void showConfirm(BaseActivity activity, String content, String cancelBtnText, String confirmBtnText, OnConfirmListener listener) {
         new XPopup.Builder(activity)
                 .asConfirm("提醒",
                         content,
                         cancelBtnText,
                         confirmBtnText,
-                         listener,
+                        listener,
                         null,
                         false, R.layout.dialog_confirm)
                 .show();
@@ -288,8 +357,6 @@ public class PopShowUtils {
 
     /**
      * 工作经验选择
-     *
-     * @param v
      */
     public static void showWorkExp(View v, OnSelectListener listener) {
         new XPopup.Builder(v.getContext())
@@ -302,10 +369,14 @@ public class PopShowUtils {
                         0,
                         0).show();
     }
+
+    /**
+     * 银行选择
+     */
     public static void showBankName(View v, OnSelectListener listener) {
         new XPopup.Builder(v.getContext())
                 .asBottomList("银行选择",
-                        new String[]{"中国工商银行","中国农业银行","中国银行","中国建设银行","交通银行","招商银行","中信银行","光大银行","兴业银行","中国邮政储蓄"},
+                        new String[]{"中国工商银行", "中国农业银行", "中国银行", "中国建设银行", "交通银行", "招商银行", "中信银行", "光大银行", "兴业银行", "中国邮政储蓄"},
                         null,
                         -1,
                         false,
@@ -313,8 +384,9 @@ public class PopShowUtils {
                         0,
                         0).show();
     }
+
     /**
-     *身份 1:建筑企业 2:劳务公司 3:个人
+     * 身份 1:建筑企业 2:劳务公司 3:个人
      */
     public static void showIdTypes(View v, OnSelectListener listener) {
         new XPopup.Builder(v.getContext())
@@ -327,6 +399,7 @@ public class PopShowUtils {
                         0,
                         0).show();
     }
+
     /**
      * 合作意向 1:项目入股 2:资源合作 3:委托招工
      */
@@ -344,6 +417,7 @@ public class PopShowUtils {
 
     /**
      * 名族选择
+     *
      * @param activity
      * @param listener
      */
@@ -356,7 +430,7 @@ public class PopShowUtils {
     /**
      * 选择单个工种的底部弹框
      */
-    public static void showWorkTypeSelect(BaseActivity baseActivity,OnWorkTypeSelectListener listener){
+    public static void showWorkTypeSelect(BaseActivity baseActivity, OnWorkTypeSelectListener listener) {
         new XPopup.Builder(baseActivity)
                 .asCustom(new BottomSingleWorkTypePop(baseActivity, listener))
                 .show();
@@ -365,15 +439,16 @@ public class PopShowUtils {
     /**
      * 省市区地址选择器
      * 目前为湖北省下的市和区的选择
+     *
      * @param baseActivity
      * @param listener
      */
-    public static void showBottomAddrSelect(BaseActivity baseActivity,OnAddrListener listener){
+    public static void showBottomAddrSelect(BaseActivity baseActivity, OnAddrListener listener) {
         BottomProvincesPop bottomProvincesPop = new BottomProvincesPop(baseActivity);
         bottomProvincesPop.setListener(listener);
-            new XPopup.Builder(baseActivity)
-                    .asCustom(bottomProvincesPop)
-                    .show();
+        new XPopup.Builder(baseActivity)
+                .asCustom(bottomProvincesPop)
+                .show();
 
 
     }
@@ -382,8 +457,8 @@ public class PopShowUtils {
      * 联系平台
      * @param actiivty
      */
-    public static void callUs(Activity actiivty){
+    public static void callUs(Activity actiivty) {
         String platPhone = (String) SPUtils.get("platPhone", "");
-        MobileUtils.callPhone(actiivty,platPhone);
+        MobileUtils.callPhone(actiivty, platPhone);
     }
 }

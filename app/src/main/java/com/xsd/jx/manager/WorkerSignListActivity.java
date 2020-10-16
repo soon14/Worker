@@ -24,6 +24,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.databinding.ActivityWorkerSignListBinding;
 import com.xsd.jx.listener.OnTabClickListener;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.utils.MobileUtils;
@@ -37,19 +38,16 @@ import java.util.List;
  * 企业端：
  *
  * 工人考勤{@link WorkerSignActivity}>>【考勤记录】>>记录明细{@link WorkerSignInfoActivity}
- * 如果是今天之前的日子没打卡，那么此处显示“
- * 您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改
- * ”
+ *
  */
 public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSignListBinding> {
     private WorkerSignListAdapter mAdapter = new WorkerSignListAdapter();
     private String date="";
     private int workId;//工作ID 默认：最近的1个招工ID,赋值为workingList第一个值
-    private int status;//状态 0:全部 1：未考勤 2:已考勤
 
-    List<WorkCheckLogResponse.ItemsBean> items;
-    List<WorkCheckLogResponse.ItemsBean> items1;
-    List<WorkCheckLogResponse.ItemsBean> items2;
+    private List<WorkCheckLogResponse.ItemsBean> items;
+    private List<WorkCheckLogResponse.ItemsBean> items1;
+    private List<WorkCheckLogResponse.ItemsBean> items2;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_worker_sign_list;
@@ -75,6 +73,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
         tvTitle.setText("考勤记录");
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
+        AdapterUtils.setEmptyDataView(mAdapter);
     }
 
     /**
@@ -83,7 +82,7 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
      */
     @Receive(EventStr.UPDATE_WORK_CHECK_LOG)
     public void loadData() {
-        dataProvider.server.workCheckLog(date,workId,status)
+        dataProvider.server.workCheckLog(date,workId,0)//状态 0:全部 1：未考勤 2:已考勤
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkCheckLogResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<WorkCheckLogResponse> baseResponse) {
@@ -96,7 +95,10 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
     }
     BottomListPopupView bottomWorkingList;
     private void initTopWorkingList(List<WorkCheckLogResponse.WorkingItem> workingList) {
-        if (workingList==null||workingList.size()==0)return;
+        if (workingList==null||workingList.size()==0){
+            db.layoutTop.setVisibility(View.GONE);
+            return;
+        }
         //默认设置第一项
         WorkCheckLogResponse.WorkingItem workingItem0 = workingList.get(0);
         workId = workingItem0.getId();
@@ -130,6 +132,8 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                                 String endDate = workingItem.getEndDate();
                                 db.tvTypeTitle.setText(typeTitle);
                                 db.tvTime.setText(startDate + "至" + endDate);
+                                workId = workingItem.getId();
+                                loadData();
                             }
                         },
                         0,

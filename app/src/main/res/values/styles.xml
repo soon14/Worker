@@ -11,8 +11,11 @@
         <item name="colorControlNormal">#cccccc</item>
         <item name="colorControlActivated">@color/colorAccent</item>
     </style>
-
+    <!-- 自定义系统年月日选择器颜色 -->
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="DialogYmTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -66,7 +69,7 @@
         <item name="colorControlNormal">@color/green</item>
         <item name="colorControlActivated">@color/red</item>
     </style>
-
+    <!-- 自动追加单位元的小控件 -->
     <declare-styleable name="CompanyEdittext">
         <attr name="ce_text" format="string" />
         <attr name="ce_text_color" format="color" />

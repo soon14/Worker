@@ -1,5 +1,6 @@
 package com.xsd.jx.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -34,10 +35,13 @@ public class WorkerSignListAdapter extends BaseQuickAdapter<WorkCheckLogResponse
         int checkId = item.getCheckId();
 
         String signInTime = item.getSignInTime();
+        String signOutTime = item.getSignOutTime();
         int status = item.getStatus();//确认状态 1:未确认 2:已确认
-        holder.setText(R.id.tv_time, checkId==0?"未考勤":"上工时间:"+signInTime);
-        holder.setText(R.id.tv_status,checkId==0?"未考勤":"已考勤");
-        binding.tvConfirmSign.setVisibility((checkId>0&&status==1)? View.VISIBLE:View.GONE);
-        binding.tvStatus.setVisibility((checkId>0&&status==1)? View.GONE:View.VISIBLE);
+        holder.setText(R.id.tv_time, checkId==0?"未考勤":(TextUtils.isEmpty(signOutTime)?"上工时间:"+signInTime:"上工:"+signInTime+"下工:"+signOutTime));
+        holder.setText(R.id.tv_status,checkId==0?"未考勤":(TextUtils.isEmpty(signOutTime)?"未打下班卡":"已考勤"));
+        //是否应该显示确认考勤
+        boolean showConfirmBtn = checkId > 0 && status == 1 && !TextUtils.isEmpty(signInTime) && !TextUtils.isEmpty(signOutTime);
+        binding.tvConfirmSign.setVisibility(showConfirmBtn? View.VISIBLE:View.GONE);
+        binding.tvStatus.setVisibility(showConfirmBtn? View.GONE:View.VISIBLE);
     }
 }

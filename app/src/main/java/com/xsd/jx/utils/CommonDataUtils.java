@@ -8,8 +8,10 @@ import com.xsd.utils.SPUtils;
 /**
  * Date: 2020/10/13
  * author: SmallCake
+ * 公共数据获取类
  */
 public class CommonDataUtils {
+    //获取公共的平台电话号码
     public static void getPhone(BaseActivity activity){
         activity.getDataProvider().site.platPhone()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PlatPhoneResponse>>() {

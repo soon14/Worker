@@ -3,11 +3,15 @@ package com.xsd.jx.manager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alipay.sdk.app.PayTask;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.lxj.xpopup.XPopup;
@@ -19,6 +23,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PaidResponse;
+import com.xsd.jx.bean.PayResult;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.custom.PayTypePop;
 import com.xsd.jx.custom.WaitPayBillPop;
@@ -31,6 +36,7 @@ import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.TabUtils;
 import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.ClipboardUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -38,6 +44,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 招工详情:8个状态
@@ -51,6 +58,9 @@ import java.util.List;
  6:已完成
  7:已取消
  8:已过期
+
+ 我的招工{@link MyGetWorkersActivity} >> 【招工详情】
+
  */
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {
     private GetWorkersInfoAdapter mAdapter;
@@ -157,6 +167,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(itemType ==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
+                if (itemType==6||itemType==7||itemType==8)return;
                 switch (position){
                     case 0:
                         db.recyclerView.setVisibility(View.VISIBLE);
@@ -226,7 +237,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    finish();
                    break;
                case R.id.tv_pay://结算
-                   showPayType();
+//                   showPayType();
+                   submitPay();
                    break;
            }
        });
@@ -362,14 +374,72 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         }
     }
     private void submitPay() {
-        dataProvider.server.doSettle(payment,item.getId()+"")
+        int tobeSettledWage = item.getTobeSettledWage();//共待结算工资
+        dataProvider.server.doSettle(payment, item.getId()+"")
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PaidResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<PaidResponse> baseResponse) {
-                        ToastUtil.showLong("支付成功！订单号："+baseResponse.getData().getOrderId());
-                        finish();
-                        Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
+                        PaidResponse data = baseResponse.getData();
+
+                        if (tobeSettledWage>0){
+                            String orderString = data.getOrderString();
+                            aliPay(orderString);
+                        }else {
+                            ToastUtil.showLong("结算成功！");
+                            loadData();
+                        }
+
+
                     }
                 });
     }
+    private static final int SDK_ALIPAY_FLAG = 1;
+    private static final int SDK_WXPAY_FLAG = 2;
+    private void aliPay(String orderInfo){
+        Runnable payRunnable = () -> {
+            PayTask alipay = new PayTask(GetWorkersInfoActivity.this);
+            Map<String, String> result = alipay.payV2(orderInfo, true);
+            L.e("msp", result.toString());
+            Message msg = new Message();
+            msg.what = SDK_ALIPAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    private Handler mHandler = new Handler(msg -> {
+        switch (msg.what) {
+            case SDK_ALIPAY_FLAG: {
+                @SuppressWarnings("unchecked")
+                PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                /**
+                 * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                 */
+                String resultInfo = payResult.getResult();//同步返回需要验证的信息
+                String resultStatus = payResult.getResultStatus();
+                String memo = payResult.getMemo();
+
+                // 判断resultStatus 为9000则代表支付成功
+                if (TextUtils.equals(resultStatus, "9000")) {
+                    // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                    ToastUtil.showLong("支付成功");
+                    finish();
+                    Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+
+                } else {
+                    // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                    ToastUtil.showLong("支付失败");
+                }
+                break;
+            }
+            case SDK_WXPAY_FLAG:
+                break;
+            default:
+                break;
+        }
+        return false;
+    });
 }

@@ -33,6 +33,7 @@ public class MyWorkersAdapter extends BaseMultiItemQuickAdapter<MyGetWorkersResp
     public MyWorkersAdapter() {
         super();
         // 绑定 layout 对应的 type
+        addItemType(-1, R.layout.item_null);
         addItemType(1, R.layout.item_mygetworkers_geting);
         addItemType(2, R.layout.item_mygetworkers_full);
         addItemType(3, R.layout.item_mygetworkers_working);

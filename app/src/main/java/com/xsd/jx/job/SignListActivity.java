@@ -1,7 +1,9 @@
 package com.xsd.jx.job;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -15,6 +17,7 @@ import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 
@@ -23,7 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 考勤记录
+ * 工人端：
+ * （考勤打卡）考勤签到{@link SignActivity} >>【考勤记录】
+ *
+ * 如果是今天之前的日子没打卡，那么此处显示“您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改”
  * 日历采用CalendarView
  * 文档：https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md
  */
@@ -47,7 +53,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     }
 
     private void initView() {
-         mobile = getIntent().getStringExtra("mobile");
+        mobile = getIntent().getStringExtra("mobile");
         tvTitle.setText("考勤记录");
         java.util.Calendar c = java.util.Calendar.getInstance();
         mYear = c.get(java.util.Calendar.YEAR);
@@ -165,7 +171,17 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSelectYearMonth();
+//                showSelectYearMonth();
+                PopShowUtils.showYM(SignListActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = month+1;
+                        db.tvMonth.setText("("+mMonth+"月)");
+                        db.calendarView.scrollToCalendar(year,mMonth,1,true);
+                        loadData();
+                    }
+                });
             }
         });
 

@@ -3,13 +3,14 @@ package com.xsd.jx.manager;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lsxiao.apollo.core.Apollo;
@@ -17,8 +18,9 @@ import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
-import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.PayResult;
 import com.xsd.jx.bean.PriceBean;
+import com.xsd.jx.bean.PushGetWorkersResponse;
 import com.xsd.jx.custom.KeyboardStatusDetector;
 import com.xsd.jx.databinding.ActivityPushGetWorkersBinding;
 import com.xsd.jx.utils.DateFormatUtils;
@@ -29,6 +31,7 @@ import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.util.Calendar;
+import java.util.Map;
 
 /**
  *  [发布招工]
@@ -41,7 +44,7 @@ import java.util.Calendar;
  *  num           所需人数
  *  isSafe        是否购买保险 0:否 1:是
  *  settleType    结算方式 1:日结 2:做完再结
- *  advanceType   结算方式 预付款类型 1:两成 2:全款 3:不预付
+ *  advanceType   预付款类型 1:两成 2:全款 3:不预付
  *  safeAmount    保险费用
  *  advanceAmount 预付款金额
  *
@@ -50,20 +53,25 @@ import java.util.Calendar;
  2.如果先输入了价格，再去选择工种和区域，那么自动清除已输入价格
  */
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
-    private int typeId;
+    private int typeId;//工种ID
     private int areaId;//地区ID,用于查询工价
     private String address;//用户选择的省市区
     private String startDate;
     private String endDate;
-    private int price;//工价
-    private String desc;
+    private int price;//输入的工价
+    private String desc;//岗位说明
     private int num=1;//工人数量
-    private int isSafe=1;
-    private int settleType = 1;
-    private int advanceType = 1 ;
-    private int safeAmount = 2;
+
+    private int settleType = 1;//结算方式 1:日结 2:做完再结
+    private int advanceType = 1 ;//预付款类型 1:两成 2:全款 3:不预付
+
+    private int isSafe=0;//是否购买保险 0:否 1:是
+    private int safeAmount = 0;//TODO 目前保险默认为不够买
+
+    private int advanceAmount;//预付款
+    private int payment=2;//1.微信2.支付宝
+
     private int recommendPrice;//推荐的工价,选择工种和地区后，有最低价格限制
-    private String advanceAmount = "0";
     private int mYear, mMonth, mDay;//开始的年月日
     private int diffDays;//时间差，需要上工天数
     @Override
@@ -124,27 +132,33 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         settleType = db.rbDayPay.isChecked()?1:2;
         if (db.rbPay2cost.isChecked()){
             int ceil = (int) Math.ceil(price * num * diffDays * 0.2);
-            advanceAmount = String.valueOf(ceil);
+            advanceAmount = ceil;
             advanceType=1;
         }
         if (db.rbPayAll.isChecked()){
-            advanceAmount = String.valueOf(price*num*diffDays);
+            advanceAmount = price*num*diffDays;
             advanceType=2;
         }
         if (db.rbNoPay.isChecked()){
-            advanceAmount="0";
+            advanceAmount=0;
             advanceType=3;
         }
         String addressInfo = db.etAddrInfo.getText().toString();
 
         //接口提交
-        dataProvider.server.publishWork(typeId,address+addressInfo,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+        dataProvider.server.publishWork(typeId,address+addressInfo,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount,payment)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<PushGetWorkersResponse>>() {
                     @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        ToastUtil.showLong(baseResponse.getData().getMessage());
-                        finish();
-                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                    protected void onSuccess(BaseResponse<PushGetWorkersResponse> baseResponse) {
+                        PushGetWorkersResponse data = baseResponse.getData();
+                        if (advanceAmount==0){
+                            ToastUtil.showLong(data.getMessage());
+                            finish();
+                            Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                        }else {
+                            String orderString = data.getOrderString();
+                            aliPay(orderString);
+                        }
                     }
                 });
     }
@@ -196,43 +210,25 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                 updateAdvanceBtn();
             }
         });
+        //根据输入人数，动态改变预付款金额
         EditTextUtils.setTextLengthChange(db.etNum, s -> {
             if (s.length()>0){
                 String s1 = s.toString();
                 s1 = s1.replace("人","");
                 if (TextUtils.isEmpty(s1))return;
-                num = Integer.parseInt(s1.toString());
+                num = Integer.parseInt(s1);
                 updateAdvanceBtn();
             }
         });
         //根据购买保险和预付款，更新发布按钮
         db.rbBuySafe.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
-                isSafe = 1;
-            }else {
-                isSafe = 0;
-            }
+            isSafe = isChecked?1:0;
             updateBtn();
         });
-        db.rgAdvancePay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rb_pay_2cost:
-                        updateBtn();
-                    break;
-                    case R.id.rb_pay_all:
-                        updateBtn();
-                    break;
-                    case R.id.rb_no_pay:
-                        updateBtn();
-                    break;
-                }
-            }
-        });
+        db.rgAdvancePay.setOnCheckedChangeListener((group, checkedId) -> updateBtn());
 
 
-
+        //监听软键盘的收起，
         new KeyboardStatusDetector()
                 .registerView(db.etPrice)
                 .setmVisibilityListener(new KeyboardStatusDetector.KeyboardVisibilityListener() {
@@ -267,30 +263,29 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
 
     /**
      * 更新发布按钮
+     * TODO 还差保险费用，目前为统一不买保险
      */
     private void updateBtn() {
         if (isSafe==1){//如果要购买保险，计算保险费用，
             int totalSafePrice = num * safeAmount;
         }
+        //预付2层
         if (db.rbPay2cost.isChecked()){
             int ceil = (int) Math.ceil(price * num*diffDays * 0.2);
-            advanceAmount = String.valueOf(ceil);
+            advanceAmount = ceil;
             advanceType=1;
         }
+        //预付全款
         if (db.rbPayAll.isChecked()){
-            advanceAmount = String.valueOf(price*num*diffDays);
+            advanceAmount = price*num*diffDays;
             advanceType=2;
         }
+        //不预付
         if (db.rbNoPay.isChecked()){
-            advanceAmount="0";
+            advanceAmount=0;
             advanceType=3;
         }
-        L.e("advanceAmount=="+advanceAmount);
-        if (advanceAmount.equals("0"))db.tvPush.setText("发布");
-        else{
-            db.tvPush.setText("发布(支付"+advanceAmount+"元)");
-        }
-
+        db.tvPush.setText(advanceAmount==0?"发布":"发布(支付"+advanceAmount+"元)");
     }
 
     /**
@@ -391,6 +386,57 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
     }
+    private static final int SDK_ALIPAY_FLAG = 1;
+    private static final int SDK_WXPAY_FLAG = 2;
+    private void aliPay(String orderInfo){
+        Runnable payRunnable = () -> {
+            PayTask alipay = new PayTask(PushGetWorkersActivity.this);
+            Map<String, String> result = alipay.payV2(orderInfo, true);
+            L.e("msp", result.toString());
+            Message msg = new Message();
+            msg.what = SDK_ALIPAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    private Handler mHandler = new Handler(msg -> {
+        switch (msg.what) {
+            case SDK_ALIPAY_FLAG: {
+                @SuppressWarnings("unchecked")
+                PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                /**
+                 * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                 */
+                String resultInfo = payResult.getResult();//同步返回需要验证的信息
+                String resultStatus = payResult.getResultStatus();
+                String memo = payResult.getMemo();
+
+                // 判断resultStatus 为9000则代表支付成功
+                if (TextUtils.equals(resultStatus, "9000")) {
+                    // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                    ToastUtil.showLong("支付成功");
+                    finish();
+                    Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+
+                } else {
+                    // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                    ToastUtil.showLong("支付失败");
+                }
+                break;
+            }
+            case SDK_WXPAY_FLAG:
+                break;
+            default:
+                break;
+        }
+        return false;
+    });
+
+
 
 
 }

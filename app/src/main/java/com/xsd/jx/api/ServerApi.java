@@ -6,6 +6,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
+import com.xsd.jx.bean.PushGetWorkersResponse;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
@@ -71,10 +72,11 @@ public interface ServerApi {
      * @param advanceType   结算方式 预付款类型 1:两成 2:全款 3:不预付
      * @param safeAmount    保险费用
      * @param advanceAmount 预付款金额
+     * @param payment 预付款金额
      */
     @FormUrlEncoded
     @POST("server/publish-work")
-    Observable<BaseResponse<MessageBean>> publishWork(
+    Observable<BaseResponse<PushGetWorkersResponse>> publishWork(
             @Field("typeId") Integer typeId
             , @Field("address")String address
             , @Field("startDate")String startDate
@@ -86,7 +88,8 @@ public interface ServerApi {
             , @Field("settleType")Integer settleType
             , @Field("advanceType")Integer advanceType
             , @Field("safeAmount")String safeAmount
-            , @Field("advanceAmount")String advanceAmount
+            , @Field("advanceAmount")Integer advanceAmount
+            , @Field("payment")Integer payment
     );
 
     //取消招聘:在还没有人报名的情况下，发布者可以取消招聘

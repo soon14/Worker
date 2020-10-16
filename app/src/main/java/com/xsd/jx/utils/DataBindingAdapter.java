@@ -262,6 +262,7 @@ public class DataBindingAdapter {
 
     @BindingAdapter("layoutWorkers")
     public static void layoutWorkers(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
+        if (itemsBean==null)return;
         List<WorkerBean> workers = itemsBean.getWorkers();
         TextView tv0 = (TextView) layout.getChildAt(0);//左侧描述
         TextView tv1 = (TextView) layout.getChildAt(1);//右侧按钮

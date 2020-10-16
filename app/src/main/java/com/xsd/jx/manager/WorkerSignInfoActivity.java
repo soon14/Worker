@@ -1,7 +1,9 @@
 package com.xsd.jx.manager;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 
 import androidx.core.content.ContextCompat;
 
@@ -21,6 +23,7 @@ import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignInfoBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SpannableStringUtils;
@@ -171,7 +174,17 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSelectYearMonth();
+//                showSelectYearMonth();
+                PopShowUtils.showYM(WorkerSignInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = month+1;
+                        db.tvMonth.setText("("+mMonth+"月)");
+                        db.calendarView.scrollToCalendar(year,mMonth,1,true);
+                        loadData();
+                    }
+                });
             }
         });
         //日历日期选中事件

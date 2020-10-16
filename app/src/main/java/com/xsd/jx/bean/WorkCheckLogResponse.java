@@ -80,6 +80,7 @@ public class WorkCheckLogResponse implements Serializable {
         private String avatar;
         private String mobile;
         private String signInTime;
+        private String signOutTime;
         private int status;
 
         public int getCheckId() {
@@ -128,6 +129,14 @@ public class WorkCheckLogResponse implements Serializable {
 
         public void setSignInTime(String signInTime) {
             this.signInTime = signInTime;
+        }
+
+        public String getSignOutTime() {
+            return signOutTime;
+        }
+
+        public void setSignOutTime(String signOutTime) {
+            this.signOutTime = signOutTime;
         }
 
         public int getStatus() {

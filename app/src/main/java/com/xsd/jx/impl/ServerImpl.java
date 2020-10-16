@@ -7,6 +7,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
+import com.xsd.jx.bean.PushGetWorkersResponse;
 import com.xsd.jx.bean.ToSettleResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
@@ -57,8 +58,8 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> publishWork(Integer typeId, String address, String startDate, String endDate, Integer price, String desc, Integer num, Integer isSafe, Integer settleType, Integer advanceType, String safeAmount, String advanceAmount) {
-        return bindIoUI(api.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount,advanceAmount));
+    public Observable<BaseResponse<PushGetWorkersResponse>> publishWork(Integer typeId, String address, String startDate, String endDate, Integer price, String desc, Integer num, Integer isSafe, Integer settleType, Integer advanceType, String safeAmount, Integer advanceAmount,Integer payment) {
+        return bindIoUI(api.publishWork(typeId,address,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount,advanceAmount,payment));
     }
 
     @Override
