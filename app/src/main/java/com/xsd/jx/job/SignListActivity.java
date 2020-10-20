@@ -175,11 +175,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                 PopShowUtils.showYM(SignListActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mYear = year;
-                        mMonth = month+1;
-                        db.tvMonth.setText("("+mMonth+"月)");
-                        db.calendarView.scrollToCalendar(year,mMonth,1,true);
-                        loadData();
+                        db.calendarView.scrollToCalendar(year,month+1,1,true);
                     }
                 });
             }

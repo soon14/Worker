@@ -75,7 +75,6 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
         db.tvPayedAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                doSettle();
                 submitPay();
             }
         });
@@ -130,17 +129,11 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
         });
     }
 
-//    private void doSettle() {
-//        if (TextUtils.isEmpty(ids)) {
-//            ToastUtil.showLong("请选中要结算的选项！");
-//            return;
-//        }
-//        L.e("ids==" + ids);
-//        showPayType();
-//
-//    }
-
     private void submitPay() {
+        if (TextUtils.isEmpty(ids)) {
+            ToastUtil.showLong("请选中要结算的选项！");
+            return;
+        }
         dataProvider.server.doSettle(payment, ids)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PaidResponse>>() {
                     @Override
@@ -222,7 +215,7 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
                 bind.tvSiglePay.setOnClickListener(v -> {
                     String id = itemsBean.getId();
                     ids = id;
-//                    doSettle();
+                    totalNeedPayAmount = itemsBean.getNeedPayAmount();
                     submitPay();
                 });
             }

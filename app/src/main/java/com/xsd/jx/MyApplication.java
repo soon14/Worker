@@ -8,16 +8,13 @@ import android.os.Bundle;
 import androidx.multidex.MultiDex;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
-import com.alibaba.sdk.android.oss.OSS;
-import com.alibaba.sdk.android.oss.OSSClient;
-import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.alibaba.sdk.android.oss.common.OSSLog;
 import com.lsxiao.apollo.core.Apollo;
 import com.lzf.easyfloat.EasyFloat;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.xsd.jx.base.Contants;
-import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.utils.LogHeaderInterceptor;
 import com.xsd.okhttp.retrofit2.RetrofitHttp;
 import com.xsd.utils.ActivityCollector;
@@ -31,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class MyApplication extends Application {
     private static MyApplication instances;
-    private int liveActivityCount;//当前应用活动的页面个数
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,7 +40,7 @@ public class MyApplication extends Application {
         //事件通知
         Apollo.init(AndroidSchedulers.mainThread(), this);
         //阿里云存储
-        initAliOSS();
+        initOSSClient();
         //友盟分享，统计
         UMConfigure.init(this, Contants.UM_APP_KEY,"xsd", UMConfigure.DEVICE_TYPE_PHONE, "");
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
@@ -88,18 +85,30 @@ public class MyApplication extends Application {
         MultiDex.install(this);
     }
 
-    private OSS oss;
-    public OSS getOss() {
-        return oss;
-    }
-    private void initAliOSS() {
+//    private OSS oss;
+//    public OSS getOss() {
+//        return oss;
+//    }
+//    private void initAliOSS() {
         // 配置类如果不设置，会有默认配置。
-        OSSPlainTextAKSKCredentialProvider provider = new OSSPlainTextAKSKCredentialProvider(MyOSSConfig.OSS_ACCESS_KEY_ID, MyOSSConfig.OSS_ACCESS_KEY_SECRET);
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒。
-        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒。
-        conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个。
-        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次。
-        new Thread(() -> oss = new OSSClient(MyApplication.getInstance(), MyOSSConfig.OSS_EXTERNAL_ENDPOINT, provider, conf)).start();
+//        OSSPlainTextAKSKCredentialProvider provider = new OSSPlainTextAKSKCredentialProvider(MyOSSConfig.OSS_ACCESS_KEY_ID, MyOSSConfig.OSS_ACCESS_KEY_SECRET);
+//        ClientConfiguration conf = new ClientConfiguration();
+//        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒。
+//        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒。
+//        conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个。
+//        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次。
+//        new Thread(() -> oss = new OSSClient(MyApplication.getInstance(), MyOSSConfig.ENDPOINT, provider, conf)).start();
+//    }
+
+    protected void initOSSClient() {
+
+        OSSLog.enableLog();
+
+
+
+
     }
+
+
+
 }

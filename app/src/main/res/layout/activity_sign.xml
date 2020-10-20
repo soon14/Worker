@@ -143,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         tools:text="下工考勤"
-                        android:text="@{TextUtils.isEmpty(item.signOutTime)?`下工考勤`:`上工时间 `+item.signOutTime}"
+                        android:text="@{TextUtils.isEmpty(item.signOutTime)?`下工考勤`:`下工时间 `+item.signOutTime}"
                         android:textColor="@{TextUtils.isEmpty(item.signOutTime)?@color/tv_black:@color/tv_gray}"
                         app:layout_constraintBottom_toBottomOf="@+id/view_down_pot"
                         app:layout_constraintStart_toEndOf="@+id/view_down_pot"

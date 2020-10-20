@@ -178,13 +178,18 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                 PopShowUtils.showYM(WorkerSignInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mYear = year;
-                        mMonth = month+1;
-                        db.tvMonth.setText("("+mMonth+"月)");
-                        db.calendarView.scrollToCalendar(year,mMonth,1,true);
-                        loadData();
+                        db.calendarView.scrollToCalendar(year,month+1,1,true);
                     }
                 });
+            }
+        });
+        db.calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
+            @Override
+            public void onMonthChange(int year, int month) {
+                mYear = year;
+                mMonth = month;
+                db.tvMonth.setText("("+month+"月)");
+                loadData();
             }
         });
         //日历日期选中事件

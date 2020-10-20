@@ -5,14 +5,20 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
-import com.xsd.jx.MyApplication;
 import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.base.MyOSSConfig;
+import com.xsd.jx.bean.BaseResponse;
+import com.xsd.jx.bean.StsResponse;
 import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 
@@ -29,17 +35,15 @@ import static com.xsd.jx.base.MyOSSConfig.BUCKET_NAME;
  */
 public class AliyunOSSUtils {
     private static AliyunOSSUtils mOSSUtils;
-    private static OSS oss;
     private int upLoadNum = 0;//上传的数量
-
-    public static final String USER_AVATARS = "user-avatars/";
-    public static final String SERVANT_AVATARS = "servant-avatars/";
-    public static final String SERVANT_CERT = "servant-cert/";
-    public static final String GALLERY = "gallery/";
-    public static final String BLOG = "blog/";
-    public static final String ORDER_COMMENT = "order-comment/";
-    public static final String REPORT = "report/";
-    public static final String CHAT = "chat/";
+    /**
+     * 头像路径  avatar/202010/aaaaa.jpg
+     * 反馈 feedback/202010/aaaa.jpg
+     * 签到路径 sign/20201019/aaaa.jpg
+     */
+    public static final String AVATAR = "avatar/";
+    public static final String FEEDBACK = "feedback/";
+    public static final String SIGN = "sign/";
 
     /**
      * 单一实例
@@ -53,29 +57,61 @@ public class AliyunOSSUtils {
         return mOSSUtils;
     }
 
-    public AliyunOSSUtils() {
-        oss = MyApplication.getInstance().getOss();
-    }
+
 
     /**
      * 上传头像
-     *
-     *  type      1、消费者2、服务者 合并，现在只有消费者1
      * @param localPath 本地要上次的文件地址
-     * @return
      */
     public void uploadAvatar(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
-//        String aliFolder = (type == 1 ? USER_AVATARS : SERVANT_AVATARS);
-        String aliFolder =  USER_AVATARS;
-        this.uploadImg(baseActivity, aliFolder, localPath, listener);
+        String aliFolder =  AVATAR+DateFormatUtils.getCurrentYm()+"/";
+        baseActivity.getDataProvider().user.aliSts()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
+                        StsResponse data = baseResponse.getData();
+                        String accessKeyId = data.getAccessKeyId();
+                        String accessKeySecret = data.getAccessKeySecret();
+                        String securityToken = data.getSecurityToken();
+                        ClientConfiguration conf = new ClientConfiguration();
+                        conf.setHttpDnsEnable(true);
+                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                            }
+                        }).start();
+
+                    }
+                });
+    }
+    public void sign(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
+        String aliFolder =  SIGN+DateFormatUtils.getCurrentYmd()+"/";
+        baseActivity.getDataProvider().user.aliSts()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
+                        StsResponse data = baseResponse.getData();
+                        String accessKeyId = data.getAccessKeyId();
+                        String accessKeySecret = data.getAccessKeySecret();
+                        String securityToken = data.getSecurityToken();
+                        ClientConfiguration conf = new ClientConfiguration();
+                        conf.setHttpDnsEnable(true);
+                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                            }
+                        }).start();
+
+                    }
+                });
     }
 
-    /**
-     * 聊天上传图片
-     */
-    public void uploadChat(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
-        this.uploadImg(baseActivity, CHAT, localPath, listener);
-    }
 
 
     /**
@@ -83,7 +119,6 @@ public class AliyunOSSUtils {
      */
     public interface UploadImgListener {
         void onUpLoadComplete(String url);
-
         void onUpLoadProgress(int progress);
     }
 
@@ -102,7 +137,7 @@ public class AliyunOSSUtils {
      * @param datas     本地图片地址集
      * @param listener  监听所有图片
      */
-    public void uploadImgs(String aliFolder, BaseActivity activity, List<String> datas, UploadAllImgsListener listener) {
+    public void uploadImgs(OSS oss,String aliFolder, BaseActivity activity, List<String> datas, UploadAllImgsListener listener) {
         upLoadNum = 0;
         List<String> isUpUrls = new ArrayList<>();
         ProgressDialog progressDialog;
@@ -112,14 +147,14 @@ public class AliyunOSSUtils {
             progressDialog.setTitle("图片正在上传中，请等待");
             progressDialog.show();
             String path = datas.get(upLoadNum);
-            uploadLoop(aliFolder, activity, path, isUpUrls, datas, progressDialog, listener);
+            uploadLoop(oss,aliFolder, activity, path, isUpUrls, datas, progressDialog, listener);
         } else {
             //upload complete
             if (listener != null) listener.onUpLoadComplete(isUpUrls);
         }
     }
 
-    public void uploadImgsReport(String aliFolder, BaseActivity activity, List<String> picPaths, UploadAllImgsListener listener) {
+    public void uploadImgsReport(OSS oss,String aliFolder, BaseActivity activity, List<String> picPaths, UploadAllImgsListener listener) {
         List<String> datas = new ArrayList<>();
         for (int i = 0; i < picPaths.size(); i++) {
             String path = picPaths.get(i);
@@ -134,7 +169,7 @@ public class AliyunOSSUtils {
             progressDialog.setTitle("图片正在上传中，请等待");
             progressDialog.show();
             String path = datas.get(upLoadNum);
-            uploadLoop(aliFolder, activity, path, isUpUrls, datas, progressDialog, listener);
+            uploadLoop(oss,aliFolder, activity, path, isUpUrls, datas, progressDialog, listener);
         } else {
             //upload complete
             if (listener != null) listener.onUpLoadComplete(isUpUrls);
@@ -153,15 +188,15 @@ public class AliyunOSSUtils {
      * @param progressDialog 进度显示dialog
      * @param listener       监听所有图片上传完成，并把所有上传完成后的图片地址 {@param isUpUrls}传递给页面
      */
-    private void uploadLoop(String aliFolder, BaseActivity activity, String locaPath, List<String> isUpUrls, List<String> locaImgs, ProgressDialog progressDialog, UploadAllImgsListener listener) {
-        AliyunOSSUtils.getInstance().uploadImg(activity, aliFolder, locaPath, new AliyunOSSUtils.UploadImgListener() {
+    private void uploadLoop(OSS oss,String aliFolder, BaseActivity activity, String locaPath, List<String> isUpUrls, List<String> locaImgs, ProgressDialog progressDialog, UploadAllImgsListener listener) {
+        AliyunOSSUtils.getInstance().uploadImg(oss,activity, aliFolder, locaPath, new AliyunOSSUtils.UploadImgListener() {
             @Override
             public void onUpLoadComplete(String url) {
                 isUpUrls.add(url);
                 upLoadNum++;
                 if (upLoadNum < locaImgs.size()) {
                     String path = locaImgs.get(upLoadNum);
-                    uploadLoop(aliFolder, activity, path, isUpUrls, locaImgs, progressDialog, listener);
+                    uploadLoop(oss,aliFolder, activity, path, isUpUrls, locaImgs, progressDialog, listener);
                 } else {
                     //upload complete
                     if (progressDialog != null && progressDialog.isShowing())
@@ -183,13 +218,12 @@ public class AliyunOSSUtils {
 
     /**
      * 上传单张图片
-     *
      * @param activity    页面
      * @param aliFolder   文件夹名称
      * @param locaImgPath 本地文件路径
      * @param listener    监听上传进度
      */
-    private void uploadImg(BaseActivity activity, String aliFolder, String locaImgPath, UploadImgListener listener) {
+    private void uploadImg(OSS oss,BaseActivity activity, String aliFolder, String locaImgPath, UploadImgListener listener) {
         String objectKey = aliFolder + getUpFileName(locaImgPath);
         // 构造上传请求。
         PutObjectRequest put = new PutObjectRequest(BUCKET_NAME, objectKey, locaImgPath);

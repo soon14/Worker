@@ -16,8 +16,8 @@
     <TextView
         android:id="@+id/tv_desc"
         android:layout_marginTop="@dimen/dp_16"
-        android:layout_width="368dp"
-        android:layout_height="37dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="工友点击您分享的链接，成功注册您立得5元现金，若工友在平台完成上工，您每次都可再获得现金奖励。"
         android:textColor="#ff666666"
         android:textSize="14sp"

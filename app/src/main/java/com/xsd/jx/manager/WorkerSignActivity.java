@@ -101,6 +101,7 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
             @Override
             public void onMonthChange(int year, int month) {
                 db.tvMonth.setText("("+month+"月)");
+                loadBottomData();
             }
         });
         //月份选择
@@ -111,9 +112,8 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
                 PopShowUtils.showYM(WorkerSignActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        db.tvMonth.setText("("+(month+1)+"月)");
-                        db.calendarView.scrollToCalendar(year,month,1,true);
-                        loadBottomData();
+                        db.calendarView.scrollToCalendar(year,(month+1),1,true);
+
                     }
                 });
             }

@@ -101,7 +101,11 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         }
         PopShowUtils.showAppUpdate(this);
         CommonDataUtils.getPhone(this);
+
+
     }
+
+
 
 
     private void openBall(int count, List<JobBean> data) {

@@ -11,6 +11,7 @@ import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
 import com.xsd.jx.bean.RecommendResponse;
+import com.xsd.jx.bean.StsResponse;
 import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.bean.WithdrawInfoResponse;
 
@@ -126,6 +127,11 @@ public class UserImpl implements UserApi {
     @Override
     public Observable<BaseResponse<IsInWorkResponse>> isInWork() {
         return bindIoUI(api.isInWork());
+    }
+
+    @Override
+    public Observable<BaseResponse<StsResponse>> aliSts() {
+        return bindIoUI(api.aliSts());
     }
 
 

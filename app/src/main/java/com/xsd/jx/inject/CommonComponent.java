@@ -1,6 +1,7 @@
 package com.xsd.jx.inject;
 
 
+import com.xsd.jx.MyApplication;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseFragment;
 
@@ -18,4 +19,5 @@ import dagger.Component;
 public interface CommonComponent {
     void inject(BaseFragment baseFragment);
     void inject(BaseActivity baseActivity);
+    void inject(MyApplication myApplication);
 }

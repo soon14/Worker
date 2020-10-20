@@ -10,6 +10,7 @@ import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MessageResponse;
 import com.xsd.jx.bean.RecommendResponse;
+import com.xsd.jx.bean.StsResponse;
 import com.xsd.jx.bean.UserInfoResponse;
 import com.xsd.jx.bean.WithdrawInfoResponse;
 
@@ -141,6 +142,10 @@ public interface UserApi {
     //打开APP检查当前用户当日是否有上工
     @GET("user/is-in-work")
     Observable<BaseResponse<IsInWorkResponse>> isInWork();
+
+    //阿里sts
+    @GET("user/ali-sts")
+    Observable<BaseResponse<StsResponse>> aliSts();
 
 
 

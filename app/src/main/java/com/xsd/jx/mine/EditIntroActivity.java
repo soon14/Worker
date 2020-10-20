@@ -169,6 +169,8 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
 
 
 
+
+
     private void initView() {
         tvTitle.setText("编辑资料");
         tvRight.setText("保存");
@@ -236,12 +238,12 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                 .isPreviewImage(true)
                 .isCamera(true)
                 .isCompress(true)
-                .compressSavePath(this.getExternalCacheDir().getPath())
                 .setPictureStyle(pictureParameterStyle)
                 .forResult(new OnResultCallbackListener<LocalMedia>() {
                     @Override
                     public void onResult(List<LocalMedia> result) {
                         headFile = result.get(0).getCompressPath();
+                        L.e("上传的头像地址=="+headFile);
                         //上传头像到阿里云，并编辑头像
                         AliyunOSSUtils.getInstance().uploadAvatar(EditIntroActivity.this, headFile, new AliyunOSSUtils.UploadImgListener() {
                             @Override

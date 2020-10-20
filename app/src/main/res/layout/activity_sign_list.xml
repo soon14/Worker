@@ -78,7 +78,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:textColor="@color/tv_gray"
                             android:textSize="@dimen/h5"
-                            android:text="本月预计赚钱"
+                            android:text="本月预计赚取"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -181,7 +181,8 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="武汉先华匠心集团"
+                        tools:text="武汉先华匠心集团"
+                        android:text="@{item.employer}"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h4"
                         />

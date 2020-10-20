@@ -31,6 +31,7 @@ import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.BottomSingleWorkTypePop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.custom.PushJobPop;
+import com.xsd.jx.custom.YearMonthSelecterPop;
 import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.jx.listener.OnWorkTypeSelectListener;
@@ -59,15 +60,9 @@ import me.jessyan.progressmanager.body.ProgressInfo;
  */
 public class PopShowUtils {
     /**
+     * 系统 DatePickerDialog
      * 年月选择器
-     new DatePickerDialog.OnDateSetListener() {
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-    L.e(year + "年" + (month + 1) + "月");
-    }
-    },
      */
-
     public static void showYM(BaseActivity activity,DatePickerDialog.OnDateSetListener listener) {
         Calendar ca = Calendar.getInstance();
         Calendar caMin = Calendar.getInstance();
@@ -85,6 +80,11 @@ public class PopShowUtils {
         ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
         //范围控制
         datePickerDialog.show();
+    }
+    public static void showCustomYM(BaseActivity activity) {
+        new XPopup.Builder(activity)
+                .asCustom(new YearMonthSelecterPop(activity))
+                .show();
     }
 
 

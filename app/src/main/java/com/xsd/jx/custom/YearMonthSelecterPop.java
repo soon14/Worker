@@ -1,15 +1,13 @@
 package com.xsd.jx.custom;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.haibin.calendarview.CalendarView;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.xsd.jx.R;
-import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.utils.L;
 
 import java.util.Calendar;
@@ -32,24 +30,32 @@ public class YearMonthSelecterPop extends CenterPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
-        DatePicker datePicker = findViewById(R.id.date_picker);
-        Calendar mCalendar= Calendar.getInstance(); datePicker.init(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), null);
-        //禁止弹出输入键盘
-        datePicker.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
-        LinearLayout ll = (LinearLayout) datePicker.getChildAt(0);
-        LinearLayout ll2 = (LinearLayout) ll.getChildAt(0);
-        ll2.getChildAt(1).setVisibility(View.GONE);
-        Integer month = datePicker.getMonth() + 1;
-        Integer year = datePicker.getYear();
-        String strMonth = (month.toString().length() == 1 ? "0" + month.toString() : month.toString());
-        String strYear = year.toString();
+        Calendar ca = Calendar.getInstance();
+        int mYear = ca.get(Calendar.YEAR);
+        int mMonth = ca.get(java.util.Calendar.MONTH)+1;
+        int mDay = ca.get(java.util.Calendar.DAY_OF_MONTH);
+        CalendarView calendar = findViewById(R.id.calendar_view);
+        calendar.showYearSelectLayout(mYear);
+        calendar.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
 
-
-        findViewById(R.id.tv_confirm).setOnClickListener(new OnClickListener() {
+        TextView tvYear = findViewById(R.id.tv_year);
+        tvYear.setText(mYear+"年");
+        calendar.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
-            public void onClick(View v) {
-                L.e("选中了=="+ DateFormatUtils.ym(year,month));
+            public void onCalendarOutOfRange(com.haibin.calendarview.Calendar calendar) {
+
+            }
+
+            @Override
+            public void onCalendarSelect(com.haibin.calendarview.Calendar calendar, boolean isClick) {
+                int year = calendar.getYear();
+                int month = calendar.getMonth();
+                L.e("选中了"+year+"年"+month+"月");
+//                dismiss();
             }
         });
+
     }
+
+
 }
