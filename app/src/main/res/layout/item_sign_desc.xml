@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <TextView
+        android:id="@+id/tv_employer"
         android:layout_marginTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

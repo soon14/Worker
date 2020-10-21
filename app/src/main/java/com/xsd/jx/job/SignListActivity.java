@@ -2,9 +2,11 @@ package com.xsd.jx.job;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -132,20 +134,19 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
             mobile = item.getEmployerPhone();
             View view = LayoutInflater.from(this).inflate(R.layout.item_sign_desc, null);
             ItemSignDescBinding bind = DataBindingUtil.bind(view);
-            bind.setItem(item);
-            bind.ivInPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopShowUtils.showPic(bind.ivInPic,item.getSignInPic());
-                }
-            });
-            bind.ivOutPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic());
-                }
-            });
+            String signInTime = item.getSignInTime();
+            String signOutTime = item.getSignOutTime();
+            //如果上下工都没打卡，那么此处显示：您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改
+            if (TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
+                TextView tv = new TextView(this);
+                tv.setText("\n您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改");
+                db.layoutSignDesc.addView(tv);
+                return;
+            }
             db.layoutSignDesc.addView(view);
+            bind.setItem(item);
+            bind.ivInPic.setOnClickListener(v -> PopShowUtils.showPic(bind.ivInPic,item.getSignInPic()));
+            bind.ivOutPic.setOnClickListener(v -> PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic()));
         }
     }
     private List<DayCheckBean> findSelect(String selectTime){
@@ -161,7 +162,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     }
 
     private void onEvent() {
-        //TODO 每一天的考勤，都应该有雇主的电话号码
         db.tvContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

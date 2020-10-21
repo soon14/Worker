@@ -53,6 +53,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     private String picPath;//上下工图片地址
     private int workId;
     private String mobile;
+    private String compressPath;//拍照后的图片压缩地址
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign;
@@ -105,9 +106,13 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         db.tvContact.setVisibility(View.VISIBLE);
                         if (TextUtils.isEmpty(signInTime)){
                             db.radarViewUp.setVisibility(View.VISIBLE);
+                        }else {
+                            db.radarViewUp.setVisibility(View.GONE);
                         }
                         if (!TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
                             db.radarViewDown.setVisibility(View.VISIBLE);
+                        }else {
+                            db.radarViewDown.setVisibility(View.GONE);
                         }
                     }
 
@@ -223,25 +228,9 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                     public void onResult(List<LocalMedia> result) {
                         // onResult Callback
                         LocalMedia localMedia = result.get(0);
-                        String compressPath = localMedia.getCompressPath();
+                        compressPath = localMedia.getCompressPath();
                         L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
-
-                        AliyunOSSUtils.getInstance().sign(SignActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
-                            @Override
-                            public void onUpLoadComplete(String url) {
-                                L.e("图片上传完成=="+url);
-                                picPath = url;
-                                signPop.setIvTackPic(url);
-
-                            }
-
-                            @Override
-                            public void onUpLoadProgress(int progress) {
-                                L.e("图片上传中=="+progress);
-                            }
-                        });
-
-
+                        signPop.setIvTackPic(compressPath);
                     }
 
                     @Override
@@ -255,20 +244,33 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
      * 考勤打卡提交
      */
     private void doCheck(String desc){
-        dataProvider.work.doCheck(workId,picPath,desc)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        ToastUtil.showLong(baseResponse.getData().getMessage());
-                        if (isUpWork){
-                            if (signPop!=null) signPop=null;
-                            isUpWork=false;
-                        }else {
-                            isUpWork=true;
-                        }
-                        loadData();
-                    }
-                });
+        if (TextUtils.isEmpty(compressPath)){
+            return;
+        }
+        //图片上传完成后，提交打卡
+        AliyunOSSUtils.getInstance().sign(SignActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
+            @Override
+            public void onUpLoadComplete(String url) {
+                dataProvider.work.doCheck(workId,url,desc)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                ToastUtil.showLong(baseResponse.getData().getMessage());
+                                if (isUpWork){
+                                    if (signPop!=null) signPop=null;
+                                    isUpWork=false;
+                                }else {
+                                    isUpWork=true;
+                                }
+                                loadData();
+                            }
+                        });
+            }
+            @Override
+            public void onUpLoadProgress(int progress) {
+            }
+        });
+
     }
 
 

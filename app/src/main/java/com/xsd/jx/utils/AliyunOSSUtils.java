@@ -2,7 +2,6 @@ package com.xsd.jx.utils;
 
 import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
@@ -61,6 +60,8 @@ public class AliyunOSSUtils {
     /**
      * 上传头像
      * @param localPath 本地要上次的文件地址
+     * 实名认证{@link com.xsd.jx.mine.RealNameAuthActivity}
+     * 编辑资料{@link com.xsd.jx.mine.EditIntroActivity}
      */
     public void uploadAvatar(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
         String aliFolder =  AVATAR+DateFormatUtils.getCurrentYm()+"/";
@@ -79,7 +80,13 @@ public class AliyunOSSUtils {
                             @Override
                             public void run() {
                                 OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
-                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                baseActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                    }
+                                });
+
                             }
                         }).start();
 
@@ -104,7 +111,13 @@ public class AliyunOSSUtils {
                             @Override
                             public void run() {
                                 OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
-                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                baseActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                    }
+                                });
+
                             }
                         }).start();
 
@@ -129,7 +142,12 @@ public class AliyunOSSUtils {
                             @Override
                             public void run() {
                                 OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
-                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                baseActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                                    }
+                                });
                             }
                         }).start();
 
@@ -179,27 +197,6 @@ public class AliyunOSSUtils {
         }
     }
 
-    public void uploadImgsReport(OSS oss,String aliFolder, BaseActivity activity, List<String> picPaths, UploadAllImgsListener listener) {
-        List<String> datas = new ArrayList<>();
-        for (int i = 0; i < picPaths.size(); i++) {
-            String path = picPaths.get(i);
-            if (!TextUtils.isEmpty(path)) datas.add(path);
-        }
-        upLoadNum = 0;
-        List<String> isUpUrls = new ArrayList<>();
-        ProgressDialog progressDialog;
-        if (datas.size() > 0) {
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setTitle("图片正在上传中，请等待");
-            progressDialog.show();
-            String path = datas.get(upLoadNum);
-            uploadLoop(oss,aliFolder, activity, path, isUpUrls, datas, progressDialog, listener);
-        } else {
-            //upload complete
-            if (listener != null) listener.onUpLoadComplete(isUpUrls);
-        }
-    }
 
     /**
      * 嵌套单张图片上传方法 {@link AliyunOSSUtils#uploadImg(BaseActivity, String, String, UploadImgListener)}
@@ -249,12 +246,16 @@ public class AliyunOSSUtils {
      * @param listener    监听上传进度
      */
     private void uploadImg(OSS oss,BaseActivity activity, String aliFolder, String locaImgPath, UploadImgListener listener) {
+        ProgressDialog progressDialog = new ProgressDialog(activity);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("上传中");
+        progressDialog.show();
         String objectKey = aliFolder + getUpFileName(locaImgPath);
         // 构造上传请求。
         PutObjectRequest put = new PutObjectRequest(BUCKET_NAME, objectKey, locaImgPath);
         put.setProgressCallback((request, currentSize, totalSize) -> {
             int progress = FormatUtils.getProgress(currentSize, totalSize);
-//            L.d("PutObject", "上传进度 " + progress + "%");
+            progressDialog.setProgress(progress);
             activity.runOnUiThread(() -> {
                 if (listener != null) listener.onUpLoadProgress(progress);
             });
@@ -262,6 +263,7 @@ public class AliyunOSSUtils {
         oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                progressDialog.dismiss();
                 String url = oss.presignPublicObjectURL(BUCKET_NAME, objectKey);
                 activity.runOnUiThread(() -> {
                     if (listener != null) listener.onUpLoadComplete(url);
@@ -270,6 +272,7 @@ public class AliyunOSSUtils {
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                progressDialog.dismiss();
                 // 请求异常。
                 if (clientExcepion != null) {
                     // 本地异常，如网络异常等。

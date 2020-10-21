@@ -17,7 +17,7 @@ public class PaymentsAdapter extends BaseQuickAdapter<BalanceLogResponse.ItemsBe
     public PaymentsAdapter() {
         super(R.layout.item_payments);
     }
-
+    //TODO statusText没有值
     @Override
     protected void convert(@NotNull BaseDataBindingHolder<ItemPaymentsBinding> holder, BalanceLogResponse.ItemsBean item) {
         holder.getDataBinding().setItem(item);

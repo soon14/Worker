@@ -2,6 +2,7 @@ package com.xsd.jx.mine;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.hjq.permissions.OnPermission;
@@ -36,7 +37,7 @@ import java.io.File;
 import java.util.List;
 
 public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAuthBinding> {
-    String avatar ="https://www.yudaotu.com/images/2020/09/23/ZEWJ5y.jpg";
+    private String compressPath;//上传的头像本地压缩地址
     private String nation = "汉族";
     private String workYears = "1~5年";
     @Override
@@ -84,15 +85,30 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
         if (EditTextUtils.isEmpty(db.etName,db.etCardNumber))return;
         String name = db.etName.getText().toString();
         String idCard = db.etCardNumber.getText().toString();
-        dataProvider.user.certification(avatar,name,idCard,nation,workYears)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        ToastUtil.showLong(baseResponse.getData().getMessage());
-                        Apollo.emit(EventStr.UPDATE_USER_INFO);
-                        finish();
-                    }
-                });
+        if (TextUtils.isEmpty(compressPath)){
+            ToastUtil.showLong("请点击拍一张本人照片！");
+            return;
+        }
+        AliyunOSSUtils.getInstance().uploadAvatar(RealNameAuthActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
+            @Override
+            public void onUpLoadComplete(String url) {
+                dataProvider.user.certification(url,name,idCard,nation,workYears)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                ToastUtil.showLong(baseResponse.getData().getMessage());
+                                Apollo.emit(EventStr.UPDATE_USER_INFO);
+                                finish();
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onUpLoadProgress(int progress) {
+            }
+        });
+
     }
 
     private void getPermissionOfTakePhoto() {
@@ -131,22 +147,10 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                     public void onResult(List<LocalMedia> result) {
                         // onResult Callback
                         LocalMedia localMedia = result.get(0);
-                        String compressPath = localMedia.getCompressPath();
+                        compressPath = localMedia.getCompressPath();
                         L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
                         DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
-                        AliyunOSSUtils.getInstance().uploadAvatar(RealNameAuthActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
-                            @Override
-                            public void onUpLoadComplete(String url) {
-                                L.e("图片上传完成=="+url);
-                                avatar = url;
 
-                            }
-
-                            @Override
-                            public void onUpLoadProgress(int progress) {
-                                L.e("图片上传中=="+progress);
-                            }
-                        });
 
 
                     }

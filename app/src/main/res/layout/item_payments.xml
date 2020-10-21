@@ -35,8 +35,8 @@
                 android:layout_weight="0.5"
                 android:layout_height="match_parent"
                 tools:text="已到账"
-                android:text="@{item.status==1?`未到账`:`已到账`}"
-                android:textColor="@{item.status==1?@color/red:@color/tv_gray}"
+                android:text="@{item.statusText}"
+                android:textColor="@{item.status==1||item.status==3?@color/red:@color/tv_gray}"
                 android:textSize="@dimen/h5" />
 
             <TextView

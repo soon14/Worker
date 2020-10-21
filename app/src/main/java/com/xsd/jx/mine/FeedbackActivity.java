@@ -1,6 +1,5 @@
 package com.xsd.jx.mine;
 
-import android.app.ProgressDialog;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -116,15 +115,10 @@ public class FeedbackActivity extends BaseBindBarActivity<ActivityFeedbackBindin
 
         //如果有音频就先上传音频到阿里云
         if (!TextUtils.isEmpty(filePath)){
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMessage("文件上传中");
-            progressDialog.show();
             AliyunOSSUtils.getInstance().uploadVoice(FeedbackActivity.this, filePath, new AliyunOSSUtils.UploadImgListener() {
                 @Override
                 public void onUpLoadComplete(String url) {
                     voiceUrl = url;
-                    progressDialog.dismiss();
                     L.e("上传的音频文件为："+voiceUrl);
                     dataProvider.user.feedback(content,voiceUrl)
                             .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
@@ -138,7 +132,6 @@ public class FeedbackActivity extends BaseBindBarActivity<ActivityFeedbackBindin
 
                 @Override
                 public void onUpLoadProgress(int progress) {
-                    progressDialog.setProgress(progress);
                 }
             });
         }else {

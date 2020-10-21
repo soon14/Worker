@@ -76,7 +76,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                         UserInfoResponse data = baseResponse.getData();
                         UserInfo info = data.getInfo();
                         isCertification = info.getIsCertification()==1;
-
                         db.setItem(info);
                     }
                 });
@@ -243,7 +242,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     @Override
                     public void onResult(List<LocalMedia> result) {
                         headFile = result.get(0).getCompressPath();
-                        L.e("上传的头像地址=="+headFile);
                         //上传头像到阿里云，并编辑头像
                         AliyunOSSUtils.getInstance().uploadAvatar(EditIntroActivity.this, headFile, new AliyunOSSUtils.UploadImgListener() {
                             @Override

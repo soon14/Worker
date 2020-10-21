@@ -54,11 +54,20 @@ public class BalanceLogResponse implements Serializable {
 
         private String createdAt;
         private int id;
-        private int status;
+        private int status;//状态 1:冻结 2：解冻，status值增加一个为3，表示提现未到账，显示为红色
+        private String statusText;//状态文本描述
         private String type;
         private int value;
 
         private String userName;//奖励激励独有字段
+
+        public String getStatusText() {
+            return statusText;
+        }
+
+        public void setStatusText(String statusText) {
+            this.statusText = statusText;
+        }
 
         public String getUserName() {
             return userName;
