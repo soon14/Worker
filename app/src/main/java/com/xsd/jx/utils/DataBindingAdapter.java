@@ -41,6 +41,17 @@ public class DataBindingAdapter {
                 .load(imageUrl)
                 .into(view);
     }
+
+    //圆角图片,圆角系数,默认为9
+    @BindingAdapter("roundNormalUrl")
+    public static void roundNormalUrl(ImageView view, Object imageRoundUrl){
+        RequestOptions options = new RequestOptions()
+                .transform(new CenterCrop(),new RoundedCorners((int) DpPxUtils.dp2pxFloat(9)));
+        Glide.with(view)
+                .load(imageRoundUrl)
+                .apply(options)
+                .into(view);
+    }
     //圆形图片
     @BindingAdapter("circleUrl")
     public static void bindImageCircleUrl(ImageView view, Object imageUrl){

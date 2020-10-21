@@ -20,7 +20,6 @@ import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.StsResponse;
 import com.xsd.utils.FormatUtils;
-import com.xsd.utils.L;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,8 +86,34 @@ public class AliyunOSSUtils {
                     }
                 });
     }
+    //签到图片
     public void sign(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
         String aliFolder =  SIGN+DateFormatUtils.getCurrentYmd()+"/";
+        baseActivity.getDataProvider().user.aliSts()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
+                        StsResponse data = baseResponse.getData();
+                        String accessKeyId = data.getAccessKeyId();
+                        String accessKeySecret = data.getAccessKeySecret();
+                        String securityToken = data.getSecurityToken();
+                        ClientConfiguration conf = new ClientConfiguration();
+                        conf.setHttpDnsEnable(true);
+                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                            }
+                        }).start();
+
+                    }
+                });
+    }
+    //上传音频文件到阿里云
+    public void uploadVoice(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
+        String aliFolder =  FEEDBACK+DateFormatUtils.getCurrentYm()+"/";
         baseActivity.getDataProvider().user.aliSts()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
                     @Override
@@ -238,7 +263,6 @@ public class AliyunOSSUtils {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 String url = oss.presignPublicObjectURL(BUCKET_NAME, objectKey);
-                L.e("上传后的地址=="+url);
                 activity.runOnUiThread(() -> {
                     if (listener != null) listener.onUpLoadComplete(url);
                 });

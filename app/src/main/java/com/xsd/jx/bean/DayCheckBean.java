@@ -22,6 +22,7 @@ public class DayCheckBean {
      */
     //工人端独有字段
     private String employer;
+    private String employerPhone;
     private int id;
     private int userId;
     private int listId;
@@ -38,6 +39,14 @@ public class DayCheckBean {
 
     //企业端独有字段
     private int checkId;//考勤ID
+
+    public String getEmployerPhone() {
+        return employerPhone;
+    }
+
+    public void setEmployerPhone(String employerPhone) {
+        this.employerPhone = employerPhone;
+    }
 
     public int getCheckId() {
         return checkId;

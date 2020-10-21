@@ -41,7 +41,6 @@ import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +127,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 db.tvActivGet.setVisibility(View.GONE);
                 db.layoutNeedPay.setVisibility(View.VISIBLE);
                 db.tvPay.setVisibility(View.VISIBLE);
+
+                db.recyclerView.setVisibility(View.GONE);
+                db.layoutInfo.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 db.tvTitle.setText("待结算");
@@ -167,7 +169,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(itemType ==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
-                if (itemType==6||itemType==7||itemType==8)return;
+                if (itemType==3||itemType==6||itemType==7||itemType==8)return;
                 switch (position){
                     case 0:
                         db.recyclerView.setVisibility(View.VISIBLE);
@@ -192,22 +194,35 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         mAdapter.setEmptyView(emptyView);
         //工人列表
         List<WorkerBean> workers = item.getWorkers();
-        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
-        if (itemType ==1){
-            List<WorkerBean> showWorkers = new ArrayList<>();
-            for (int i = 0; i < workers.size(); i++){
-                WorkerBean workerBean = workers.get(i);
-                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
-                if (status==1){
-                    workerBean.setType(itemType);
-                    showWorkers.add(workerBean);
-                }
-            }
-            mAdapter.setList(showWorkers);
-        }else {
-            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(itemType);
-            mAdapter.setList(workers);
+        //只要我的订单有1个已确认的工人，那么就隐藏取消招聘按钮
+        boolean hasConfirmWorker = false;//是否有已经确认的工人
+        for (int i = 0; i < workers.size(); i++) {
+            WorkerBean workerBean = workers.get(i);
+            int status = workerBean.getStatus();
+            workerBean.setType(itemType);
+            if (status==2)hasConfirmWorker=true;
         }
+        mAdapter.setList(workers);
+        if (hasConfirmWorker)db.tvCancel.setVisibility(View.GONE);
+
+
+
+//        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
+//        if (itemType ==1){
+//            List<WorkerBean> showWorkers = new ArrayList<>();
+//            for (int i = 0; i < workers.size(); i++){
+//                WorkerBean workerBean = workers.get(i);
+//                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
+//                if (status==1){
+//                    workerBean.setType(itemType);
+//                    showWorkers.add(workerBean);
+//                }
+//            }
+//            mAdapter.setList(showWorkers);
+//        }else {
+//            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(itemType);
+//            mAdapter.setList(workers);
+//        }
         onEvent();
     }
 
@@ -348,7 +363,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
     }
 
     //支付方式
-    private int payment=1;//支付方式:1:微信 2:支付宝
+    private int payment=2;//支付方式:1:微信 2:支付宝
     PayTypePop payTypePop;
     private void showPayType() {
         if (payTypePop==null){

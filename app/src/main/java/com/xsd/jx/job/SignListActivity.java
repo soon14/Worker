@@ -2,8 +2,11 @@ package com.xsd.jx.job;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -15,19 +18,21 @@ import com.xsd.jx.bean.CheckLogResponse;
 import com.xsd.jx.bean.DayCheckBean;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
+import com.xsd.jx.databinding.ItemSignDescBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 工人端：
- * （考勤打卡）考勤签到{@link SignActivity} >>【考勤记录】
+ * 考勤签到{@link SignActivity} >>【考勤记录】
  *
  * 如果是今天之前的日子没打卡，那么此处显示“您当天处于工期内但未考勤，这将影响您的工资结算，若忘记考勤可联系雇主修改”
  * 日历采用CalendarView
@@ -113,24 +118,50 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
      */
     private void selectItem(String selectTime) {
         if (items==null||items.size()==0){
-            db.setItem(null);
             return;
         }
-        DayCheckBean select = findSelect(selectTime);
-        db.setItem(select);
+        List<DayCheckBean> selectDatas = findSelect(selectTime);
+        db.layoutSignDesc.removeAllViews();
+        db.tvContact.setVisibility(View.GONE);
+        if (selectDatas.size()==0){
+            return;
+        }
+        db.tvContact.setVisibility(View.VISIBLE);
+        for (int i = 0; i <selectDatas.size() ; i++) {
+            DayCheckBean item = selectDatas.get(i);
+            mobile = item.getEmployerPhone();
+            View view = LayoutInflater.from(this).inflate(R.layout.item_sign_desc, null);
+            ItemSignDescBinding bind = DataBindingUtil.bind(view);
+            bind.setItem(item);
+            bind.ivInPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopShowUtils.showPic(bind.ivInPic,item.getSignInPic());
+                }
+            });
+            bind.ivOutPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic());
+                }
+            });
+            db.layoutSignDesc.addView(view);
+        }
     }
-    private DayCheckBean findSelect(String selectTime){
+    private List<DayCheckBean> findSelect(String selectTime){
+        List<DayCheckBean> datas = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             DayCheckBean itemsBean = items.get(i);
             String workDate = itemsBean.getWorkDate();
             if (selectTime.equals(workDate)){
-                return itemsBean;
+                datas.add(itemsBean);
             }
         }
-        return null;
+        return datas;
     }
 
     private void onEvent() {
+        //TODO 每一天的考勤，都应该有雇主的电话号码
         db.tvContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

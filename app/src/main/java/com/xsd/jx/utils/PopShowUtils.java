@@ -7,9 +7,11 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lxj.xpopup.XPopup;
@@ -74,16 +76,24 @@ public class PopShowUtils {
                 mYear, mMonth, mDay);
         DatePicker datePicker = datePickerDialog.getDatePicker();
         //范围控制,最大能选两年前的月份
-        caMin.add(Calendar.YEAR,-2);
+        caMin.add(Calendar.YEAR,-1);
         datePicker.setMinDate(caMin.getTimeInMillis());//最小为2年前
         datePicker.setMaxDate(ca.getTimeInMillis());//最大时间为当前年月
         ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
         //范围控制
         datePickerDialog.show();
     }
+    //显示自定的年月选择器
     public static void showCustomYM(BaseActivity activity) {
         new XPopup.Builder(activity)
                 .asCustom(new YearMonthSelecterPop(activity))
+                .show();
+    }
+    //显示单张图片
+    public static void showPic(ImageView iv,String url) {
+        if (TextUtils.isEmpty(url))return;
+        new XPopup.Builder(iv.getContext())
+                .asImageViewer(iv,url,new MyXPopupImgLoader())
                 .show();
     }
 

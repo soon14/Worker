@@ -121,6 +121,7 @@ public class OrderFragment extends BaseBindFragment<FragmentOrderBinding> implem
     @Receive(EventStr.LOGIN_SUCCESS)
     public void loginSuccess(){
         initView();
+        orderPresenter.getType();
         orderPresenter.setPage();
         orderPresenter.loadData();
     }

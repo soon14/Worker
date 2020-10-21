@@ -339,28 +339,23 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         if (isStartTime){
                             startDate = data;
                             db.tvStartTime.setText(data);
-                            new Handler().postDelayed(() -> showStartTime(false),300);
+                            //如果没有选择结束时间
+                            if (TextUtils.isEmpty(endDate)){
+                                new Handler().postDelayed(() -> showStartTime(false),300);
+                            }else {
+                                if (computeTime()) return;
+                            }
                         }else {
                             endDate = data;
                             db.tvEndTime.setText(data);
-
-                            Calendar startCalendar = DateFormatUtils.strToCalendar(startDate);
-                            Calendar endCalendar = DateFormatUtils.strToCalendar(endDate);
-                            L.e("startCalendar=="+startCalendar.get(Calendar.DAY_OF_MONTH)+"  endCalendar=="+endCalendar.get(Calendar.DAY_OF_MONTH));
-                            if (endCalendar.before(startCalendar)){
-                                startDate="";
-                                endDate="";
-                                db.tvStartTime.setText("");
-                                db.tvEndTime.setText("");
-                                ToastUtil.showLong("开始时间不能大于结束时间");
-                                return;
+                            //选中结束时间时，可能开始时间未选
+                            if (TextUtils.isEmpty(startDate)){
+                                new Handler().postDelayed(() -> showStartTime(true),300);
+                            }else {
+                                if (computeTime()) return;
                             }
 
-                            diffDays = (int) (((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis()) / (1000 * 60 * 60 * 24))+1);
-                            L.e("您已经活了：" + diffDays + " 天");
-
                         }
-
                         updateAdvanceBtn();
                     }
                 },
@@ -374,6 +369,21 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         datePickerDialog.show();
     }
 
+    private boolean computeTime() {
+        Calendar startCalendar = DateFormatUtils.strToCalendar(startDate);
+        Calendar endCalendar = DateFormatUtils.strToCalendar(endDate);
+        L.e("startCalendar==" + startCalendar.get(Calendar.DAY_OF_MONTH) + "  endCalendar==" + endCalendar.get(Calendar.DAY_OF_MONTH));
+        if (endCalendar.before(startCalendar)) {
+            startDate = "";
+            endDate = "";
+            db.tvStartTime.setText("");
+            db.tvEndTime.setText("");
+            ToastUtil.showLong("开始时间不能大于结束时间");
+            return true;
+        }
+        diffDays = (int) (((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis()) / (1000 * 60 * 60 * 24)) + 1);
+        return false;
+    }
 
 
     private void initView() {

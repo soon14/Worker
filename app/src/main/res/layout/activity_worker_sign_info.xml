@@ -205,11 +205,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_16"
-                        android:text="徐冬冬"
+                        tools:text="徐冬冬"
                         android:textColor="@color/tv_black"
                         android:textSize="@dimen/h4" />
 
                     <LinearLayout
+                        android:id="@+id/layout_sign_desc"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_16"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"

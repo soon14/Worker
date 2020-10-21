@@ -154,7 +154,6 @@
 
                     -->
                     <RelativeLayout
-                        android:visibility="@{!TextUtils.isEmpty(item.signInTime)?View.GONE:View.VISIBLE}"
                         android:id="@+id/radar_view_up"
                         android:layout_width="200dp"
                         android:layout_height="200dp"

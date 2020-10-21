@@ -2,10 +2,12 @@ package com.xsd.jx.manager;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -21,14 +23,15 @@ import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignInfoBinding;
+import com.xsd.jx.databinding.ItemSignDescBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
-import com.xsd.utils.SpannableStringUtils;
 import com.xsd.utils.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,33 +134,65 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
     /**
      * 选中后更新底部签到信息
      */
+//    private void selectItem() {
+//        if (items == null || items.size() == 0) {
+//            db.setItem(null);
+//        }
+//        DayCheckBean select = findSelect(selectTime);
+//        db.setItem(select);
+//        db.tvEditLog.setVisibility(select == null ? View.INVISIBLE : View.VISIBLE);
+//        SpannableStringUtils.Builder builder = SpannableStringUtils.getBuilder(userName);
+//        if (select == null){
+//            builder.append("\n\n该工人当天没有考勤记录")
+//                    .setProportion(0.83F)
+//                    .setForegroundColor(ContextCompat.getColor(this, R.color.tv_gray));
+//        }
+//        db.tvWorkerName.setText(builder.create());
+//    }
+    /**
+     * 选中后更新底部签到信息
+     */
     private void selectItem() {
-        if (items == null || items.size() == 0) {
-            db.setItem(null);
+        if (items==null||items.size()==0){
+            return;
         }
-        DayCheckBean select = findSelect(selectTime);
-        db.setItem(select);
-        db.tvEditLog.setVisibility(select == null ? View.INVISIBLE : View.VISIBLE);
-        SpannableStringUtils.Builder builder = SpannableStringUtils.getBuilder(userName);
-        if (select == null){
-            builder.append("\n\n该工人当天没有考勤记录")
-                    .setProportion(0.83F)
-                    .setForegroundColor(ContextCompat.getColor(this, R.color.tv_gray));
+        List<DayCheckBean> selectDatas = findSelect(selectTime);
+        db.layoutSignDesc.removeAllViews();
+        if (selectDatas.size()==0){
+            return;
         }
-        db.tvWorkerName.setText(builder.create());
+        for (int i = 0; i <selectDatas.size() ; i++) {
+            DayCheckBean item = selectDatas.get(i);
+            View view = LayoutInflater.from(this).inflate(R.layout.item_sign_desc, null);
+            ItemSignDescBinding bind = DataBindingUtil.bind(view);
+            bind.setItem(item);
+            bind.ivInPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopShowUtils.showPic(bind.ivInPic,item.getSignInPic());
+                }
+            });
+            bind.ivOutPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic());
+                }
+            });
+            db.layoutSignDesc.addView(view);
+        }
     }
-
-    private DayCheckBean findSelect(String selectTime) {
-        if (selectTime==null)return null;
+    private List<DayCheckBean> findSelect(String selectTime){
+        List<DayCheckBean> datas = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             DayCheckBean itemsBean = items.get(i);
             String workDate = itemsBean.getWorkDate();
-            if (selectTime.equals(workDate)) {
-                return itemsBean;
+            if (selectTime.equals(workDate)){
+                datas.add(itemsBean);
             }
         }
-        return null;
+        return datas;
     }
+
 
     private void onEvent() {
         db.setClicklistener(view -> {

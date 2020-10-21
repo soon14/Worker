@@ -45,14 +45,14 @@ import java.util.List;
 
 /**
  * 工人端：
- * 【（考勤打卡）考勤签到】>>考勤记录{@link SignListActivity}
+ * 【考勤签到】>>考勤记录{@link SignListActivity}
  */
 public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
     private boolean isUpWork=true;//是否应该上工打卡
-    private String picPath;//上工图片地址
+    private String picPath;//上下工图片地址
     private int workId;
-    private String mobile;//上工图片地址
+    private String mobile;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign;
@@ -77,6 +77,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         AnimUtils.potView(db.ivPot);
         AnimUtils.potView(db.ivPot2);
 
+        db.radarViewUp.setVisibility(View.GONE);
         db.radarViewDown.setVisibility(View.GONE);
     }
 
@@ -91,17 +92,22 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         workId = data.getWorkId();
                         db.tvAddress.setText("上工地点："+data.getAddress());
 
-                        db.layoutNotWorking.setVisibility(View.GONE);
-                        db.tvContact.setVisibility(View.VISIBLE);
-                        db.layoutScrollView.setVisibility(View.VISIBLE);
-                        mHandler.sendEmptyMessage(0);
                         String signInTime = data.getSignInTime();
                         String signOutTime = data.getSignOutTime();
+
                         isUpWork = TextUtils.isEmpty(signInTime);//是否是上工打卡
+                        mHandler.sendEmptyMessage(0);
+
+
+
+                        db.layoutNotWorking.setVisibility(View.GONE);
+                        db.layoutScrollView.setVisibility(View.VISIBLE);
+                        db.tvContact.setVisibility(View.VISIBLE);
+                        if (TextUtils.isEmpty(signInTime)){
+                            db.radarViewUp.setVisibility(View.VISIBLE);
+                        }
                         if (!TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
                             db.radarViewDown.setVisibility(View.VISIBLE);
-                        }else {
-                            db.radarViewDown.setVisibility(View.GONE);
                         }
                     }
 
@@ -220,7 +226,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         String compressPath = localMedia.getCompressPath();
                         L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
 
-                        AliyunOSSUtils.getInstance().uploadAvatar(SignActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
+                        AliyunOSSUtils.getInstance().sign(SignActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
                             @Override
                             public void onUpLoadComplete(String url) {
                                 L.e("图片上传完成=="+url);

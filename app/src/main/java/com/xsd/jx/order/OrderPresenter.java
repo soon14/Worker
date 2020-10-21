@@ -17,5 +17,8 @@ public class OrderPresenter {
     public void setPage(){
         model.setPage(1);
     }
+    public void getType(){
+        model.getType();
+    }
 
 }

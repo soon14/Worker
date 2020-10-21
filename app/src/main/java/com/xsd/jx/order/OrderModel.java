@@ -57,6 +57,9 @@ public class OrderModel {
     public void setPage(int page) {
         this.page = page;
     }
+    public void getType() {
+        this.view.getType();
+    }
 
     public void initView(){
         loadData();
