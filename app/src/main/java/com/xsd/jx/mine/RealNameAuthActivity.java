@@ -1,18 +1,20 @@
 package com.xsd.jx.mine;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.core.content.FileProvider;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xsd.jx.R;
@@ -21,23 +23,26 @@ import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.custom.BottomNationSelecterPop;
-import com.xsd.jx.custom.GlideEngine;
 import com.xsd.jx.databinding.ActivityRealNameAuthBinding;
 import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.DataBindingAdapter;
+import com.xsd.jx.utils.FileNameUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.FileUtils;
+import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.io.File;
 import java.util.List;
 
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+
 public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAuthBinding> {
-    private String compressPath;//上传的头像本地压缩地址
     private String nation = "汉族";
     private String workYears = "1~5年";
     @Override
@@ -136,30 +141,72 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
                 });
     }
 
-    private void tackPhoto(){
-        PictureSelector.create(this)
-                .openCamera(PictureMimeType.ofImage())
-                .isCameraAroundState(true)
-                .imageEngine(GlideEngine.createGlideEngine())
-                .isCompress(true)
-                .forResult(new OnResultCallbackListener<LocalMedia>() {
-                    @Override
-                    public void onResult(List<LocalMedia> result) {
-                        // onResult Callback
-                        LocalMedia localMedia = result.get(0);
-                        compressPath = localMedia.getCompressPath();
-                        L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
-                        DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
+//    private void tackPhoto(){
+//        PictureSelector.create(this)
+//                .openCamera(PictureMimeType.ofImage())
+//                .isCameraAroundState(true)
+//                .imageEngine(GlideEngine.createGlideEngine())
+//                .isCompress(true)
+//                .forResult(new OnResultCallbackListener<LocalMedia>() {
+//                    @Override
+//                    public void onResult(List<LocalMedia> result) {
+//                        // onResult Callback
+//                        LocalMedia localMedia = result.get(0);
+//                        compressPath = localMedia.getCompressPath();
+//                        L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
+//                        DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
+//
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        // onCancel Callback
+//                    }
+//                });
+//    }
 
+    public static final int REQUEST_CAMERA = 909;
+    private String compressPath;//拍照后的图片地址
+    public void tackPhoto() {
+        compressPath = FileNameUtils.getFileName();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", new File(compressPath));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(compressPath)));
+        }
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CAMERA) {
+            L.e("图片地址==" + compressPath + " 图片大小==" + FormatUtils.formatSize(FileUtils.getFileSize(new File(compressPath))));
+            if (TextUtils.isEmpty(compressPath)) return;
+            Luban.with(this)
+                    .load(compressPath)
+                    .ignoreBy(100)
+                    .setTargetDir(getExternalCacheDir().getPath())//压缩后的图片保存到应用缓存目录
+                    .setCompressListener(new OnCompressListener() {
+                        @Override
+                        public void onStart() {}
+                        @Override
+                        public void onSuccess(File file) {
+                            compressPath = file.getPath();
+                            L.e("压缩后图片地址==" + file.getPath() + " 图片大小==" + FormatUtils.formatSize(FileUtils.getFileSize(file)));
+                            DataBindingAdapter.bindImageRoundUrl(db.ivHead,compressPath,6);
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable e) {}
+                    })
+                    .launch();
 
-                    @Override
-                    public void onCancel() {
-                        // onCancel Callback
-                    }
-                });
+        }
     }
 
     private BasePopupView nationPop;

@@ -66,7 +66,7 @@ public class AliyunOSSUtils {
     public void uploadAvatar(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
         String aliFolder =  AVATAR+DateFormatUtils.getCurrentYm()+"/";
         baseActivity.getDataProvider().user.aliSts()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>(baseActivity.getDialog()) {
                     @Override
                     protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
                         StsResponse data = baseResponse.getData();
@@ -76,18 +76,10 @@ public class AliyunOSSUtils {
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setHttpDnsEnable(true);
                         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
-                                baseActivity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        uploadImg(oss,baseActivity, aliFolder, localPath, listener);
-                                    }
-                                });
+                        new Thread(() -> {
+                            OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                            baseActivity.runOnUiThread(() -> uploadImg(oss,baseActivity, aliFolder, localPath, listener));
 
-                            }
                         }).start();
 
                     }

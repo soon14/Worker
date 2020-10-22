@@ -1,6 +1,5 @@
 package com.xsd.utils;
 
-import android.content.Context;
 import android.text.format.Formatter;
 
 import java.text.DecimalFormat;
@@ -18,8 +17,8 @@ public class FormatUtils {
      * @param sizeBytes long
      * @return 47kb, 4.70M, 1.47GB
      */
-    public static String formatSize(Context context, long sizeBytes) {
-        return Formatter.formatFileSize(context, sizeBytes);
+    public static String formatSize( long sizeBytes) {
+        return Formatter.formatFileSize(SmallUtils.getApp(), sizeBytes);
     }
 
     /**

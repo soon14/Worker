@@ -17,7 +17,7 @@ import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.databinding.ItemJobBinding;
+import com.xsd.jx.databinding.ItemInviteJobBinding;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -56,9 +56,8 @@ public class InviteJobPop extends CenterPopupView {
             JobBean jobBean = data.get(i);
             L.e("被邀请的ID=="+jobBean.getId());
             boolean isJoin = jobBean.isIsJoin();//是否已经报名
-            View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_job, null);
-            ItemJobBinding bind = DataBindingUtil.bind(viewChild);
-            bind.tvJoin.setText(isJoin ? "已接受邀请" : "接受上工邀请");
+            View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_invite_job, null);
+            ItemInviteJobBinding bind = DataBindingUtil.bind(viewChild);
             bind.tvJoin.setBackgroundResource(isJoin ? R.drawable.round6_gray_bg : R.drawable.round6_blue_bg);
             bind.setItem(jobBean);
             layoutContent.addView(viewChild);

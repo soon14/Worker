@@ -16,7 +16,6 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
-import com.luck.picture.lib.style.PictureParameterStyle;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
@@ -34,6 +33,8 @@ import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
+import com.xsd.utils.FileUtils;
+import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
@@ -161,8 +162,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
 //        DatePicker datePicker = datePickerDialog.getDatePicker();
 //        datePicker.setMaxDate(ca.getTimeInMillis());
 //        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
-//        datePicker.setCalendarViewShown(true);
-//        datePicker.setSpinnersShown(true);
         datePickerDialog.show();
     }
 
@@ -225,27 +224,24 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
     private String headFile;
 
     private void getPic() {
-        PictureParameterStyle pictureParameterStyle = new PictureParameterStyle();
-        pictureParameterStyle.pictureStatusBarColor = 0xFF393a3e;
-        pictureParameterStyle.pictureTitleBarBackgroundColor = 0xFF393a3e;
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
                 .isWeChatStyle(true)
                 .selectionMode(PictureConfig.SINGLE)
-                .isWithVideoImage(true)
-                .isPreviewImage(true)
-                .isCamera(true)
+                .isCamera(false)
                 .isCompress(true)
-                .setPictureStyle(pictureParameterStyle)
+                .setOutputCameraPath(EditIntroActivity.this.getExternalCacheDir().getPath())
                 .forResult(new OnResultCallbackListener<LocalMedia>() {
                     @Override
                     public void onResult(List<LocalMedia> result) {
                         headFile = result.get(0).getCompressPath();
+                        L.e("压缩后图片地址==" + headFile + " 图片大小==" + FormatUtils.formatSize(FileUtils.getFileSize(new File(headFile))));
                         //上传头像到阿里云，并编辑头像
                         AliyunOSSUtils.getInstance().uploadAvatar(EditIntroActivity.this, headFile, new AliyunOSSUtils.UploadImgListener() {
                             @Override
                             public void onUpLoadComplete(String url) {
+                                DataBindingAdapter.avatar(db.ivHead,headFile);
                                 setAvatar(url);
                             }
                             @Override
@@ -296,7 +292,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
-                        DataBindingAdapter.avatar(db.ivHead,avatar);
                     }
                 });
     }

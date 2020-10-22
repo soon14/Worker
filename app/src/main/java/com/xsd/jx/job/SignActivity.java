@@ -2,21 +2,22 @@ package com.xsd.jx.job;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.core.content.FileProvider;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
@@ -25,15 +26,16 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.CheckResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.UserInfo;
-import com.xsd.jx.custom.GlideEngine;
 import com.xsd.jx.custom.SignPop;
 import com.xsd.jx.databinding.ActivitySignBinding;
 import com.xsd.jx.listener.OnSignTackPicListener;
 import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.AnimUtils;
+import com.xsd.jx.utils.FileNameUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.UserUtils;
 import com.xsd.utils.FileUtils;
+import com.xsd.utils.FormatUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
 import com.xsd.utils.SpannableStringUtils;
@@ -43,17 +45,20 @@ import com.xsd.utils.ToastUtil;
 import java.io.File;
 import java.util.List;
 
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+
 /**
  * 工人端：
  * 【考勤签到】>>考勤记录{@link SignListActivity}
  */
 public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
-    private boolean isUpWork=true;//是否应该上工打卡
-    private String picPath;//上下工图片地址
+    private boolean isUpWork = true;//是否应该上工打卡
     private int workId;
     private String mobile;
-    private String compressPath;//拍照后的图片压缩地址
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_sign;
@@ -66,6 +71,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         onEvent();
         loadData();
     }
+
     private void initView() {
         tvTitle.setText("考勤签到");
         tvRight.setText("考勤记录");
@@ -91,7 +97,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         db.setItem(data);
                         mobile = data.getMobile();
                         workId = data.getWorkId();
-                        db.tvAddress.setText("上工地点："+data.getAddress());
+                        db.tvAddress.setText("上工地点：" + data.getAddress());
 
                         String signInTime = data.getSignInTime();
                         String signOutTime = data.getSignOutTime();
@@ -100,25 +106,24 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         mHandler.sendEmptyMessage(0);
 
 
-
                         db.layoutNotWorking.setVisibility(View.GONE);
                         db.layoutScrollView.setVisibility(View.VISIBLE);
                         db.tvContact.setVisibility(View.VISIBLE);
-                        if (TextUtils.isEmpty(signInTime)){
+                        if (TextUtils.isEmpty(signInTime)) {
                             db.radarViewUp.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             db.radarViewUp.setVisibility(View.GONE);
                         }
-                        if (!TextUtils.isEmpty(signInTime)&&TextUtils.isEmpty(signOutTime)){
+                        if (!TextUtils.isEmpty(signInTime) && TextUtils.isEmpty(signOutTime)) {
                             db.radarViewDown.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             db.radarViewDown.setVisibility(View.GONE);
                         }
                     }
 
                     @Override
                     protected void onErr(String err) {
-                        super.onErr(err);
+//                        super.onErr(err);
                         db.layoutNotWorking.setVisibility(View.VISIBLE);
                         db.layoutScrollView.setVisibility(View.GONE);
                         db.tvContact.setVisibility(View.GONE);
@@ -127,37 +132,36 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     }
 
 
-
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             setTime();
-            mHandler.sendEmptyMessageDelayed(0,1000);
+            mHandler.sendEmptyMessageDelayed(0, 1000);
             return false;
         }
     });
 
     private void setTime() {
         String time = TimeUtils.getTime("HH:mm:ss");
-        SpannableStringBuilder spanStrUp = SpannableStringUtils.getBuilder(isUpWork?"上工打卡\n":"下工打卡\n").setProportion(1.125f).setBold().setForegroundColor(Color.parseColor("#ffffff"))
+        SpannableStringBuilder spanStrUp = SpannableStringUtils.getBuilder(isUpWork ? "上工打卡\n" : "下工打卡\n").setProportion(1.125f).setBold().setForegroundColor(Color.parseColor("#ffffff"))
                 .append(time).create();
-        if (isUpWork)db.tvSignUp.setText(spanStrUp);
+        if (isUpWork) db.tvSignUp.setText(spanStrUp);
         else db.tvSignDown.setText(spanStrUp);
     }
 
     private void onEvent() {
         db.setClicklistener(v -> {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.tv_sign_up://上工打卡
-                    isUpWork=true;
+                    isUpWork = true;
                     signUp();
                     break;
                 case R.id.tv_sign_down://下工打卡
-                    isUpWork=false;
+                    isUpWork = false;
                     signUp();
                     break;
                 case R.id.tv_contact://联系管理员
-                    MobileUtils.callPhone(this,mobile);
+                    MobileUtils.callPhone(this, mobile);
                     break;
                 case R.id.tv_go_for_work://找工作,点击跳转首页并弹推荐工作
                     finish();
@@ -167,28 +171,31 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         });
         tvRight.setOnClickListener(v -> {
             Intent intent = new Intent(this, SignListActivity.class);
-            intent.putExtra("mobile",mobile);
+            intent.putExtra("mobile", mobile);
             startActivity(intent);
         });
     }
+
     private SignPop signPop;
+
     private void signUp() {
-        if (signPop==null){
+        if (signPop == null) {
             signPop = new SignPop(this, new OnSignTackPicListener() {
                 @Override
                 public void tackPicComplete(String content) {
-                    if (TextUtils.isEmpty(content))content=isUpWork?"开始上工":"今日工作已完成";
+                    if (TextUtils.isEmpty(content)) content = isUpWork ? "开始上工" : "今日工作已完成";
                     doCheck(content);
                 }
+
                 @Override
                 public void tackPic() {
                     getPermissionOfTakePhoto();
                 }
-            },isUpWork);
+            }, isUpWork);
             new XPopup.Builder(this)
                     .asCustom(signPop)
                     .show();
-        }else {
+        } else {
             signPop.show();
         }
     }
@@ -205,6 +212,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                             ToastUtil.showLong("获取权限成功，部分权限未正常授予");
                         }
                     }
+
                     @Override
                     public void noPermission(List<String> denied, boolean quick) {
                         if (quick) {
@@ -218,54 +226,76 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                 });
     }
 
+    public static final int REQUEST_CAMERA = 909;
+    private String compressPath;//拍照后的图片地址
     public void tackPhoto() {
-        PictureSelector.create(this)
-                .openCamera(PictureMimeType.ofImage())
-                .imageEngine(GlideEngine.createGlideEngine())
-                .isCompress(true)
-                .forResult(new OnResultCallbackListener<LocalMedia>() {
-                    @Override
-                    public void onResult(List<LocalMedia> result) {
-                        // onResult Callback
-                        LocalMedia localMedia = result.get(0);
-                        compressPath = localMedia.getCompressPath();
-                        L.e("图片地址=="+compressPath+" 图片大小=="+ FileUtils.getFileSize(new File(compressPath)));
-                        signPop.setIvTackPic(compressPath);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // onCancel Callback
-                    }
-                });
+        compressPath = FileNameUtils.getFileName();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", new File(compressPath));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(compressPath)));
+        }
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CAMERA) {
+            L.e("图片地址==" + compressPath + " 图片大小==" + FormatUtils.formatSize(FileUtils.getFileSize(new File(compressPath))));
+            if (TextUtils.isEmpty(compressPath)) return;
+            Luban.with(this)
+                    .load(compressPath)
+                    .ignoreBy(100)
+                    .setTargetDir(getExternalCacheDir().getPath())//压缩后的图片保存到应用缓存目录
+                    .setCompressListener(new OnCompressListener() {
+                        @Override
+                        public void onStart() {}
+                        @Override
+                        public void onSuccess(File file) {
+                            compressPath = file.getPath();
+                            L.e("压缩后图片地址==" + file.getPath() + " 图片大小==" + FormatUtils.formatSize(FileUtils.getFileSize(file)));
+                            signPop.setIvTackPic(compressPath);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {}
+                    })
+                    .launch();
+
+        }
+    }
+
 
     /**
      * 考勤打卡提交
      */
-    private void doCheck(String desc){
-        if (TextUtils.isEmpty(compressPath)){
+    private void doCheck(String desc) {
+        if (TextUtils.isEmpty(compressPath)) {
             return;
         }
         //图片上传完成后，提交打卡
         AliyunOSSUtils.getInstance().sign(SignActivity.this, compressPath, new AliyunOSSUtils.UploadImgListener() {
             @Override
             public void onUpLoadComplete(String url) {
-                dataProvider.work.doCheck(workId,url,desc)
+                dataProvider.work.doCheck(workId, url, desc)
                         .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
                             @Override
                             protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                                 ToastUtil.showLong(baseResponse.getData().getMessage());
-                                if (isUpWork){
-                                    if (signPop!=null) signPop=null;
-                                    isUpWork=false;
-                                }else {
-                                    isUpWork=true;
+                                if (isUpWork) {
+                                    if (signPop != null) signPop = null;
+                                    isUpWork = false;
+                                } else {
+                                    isUpWork = true;
                                 }
                                 loadData();
                             }
                         });
             }
+
             @Override
             public void onUpLoadProgress(int progress) {
             }
@@ -274,14 +304,12 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mHandler!=null){
+        if (mHandler != null) {
             mHandler.removeMessages(0);
-            mHandler=null;
+            mHandler = null;
         }
     }
 }

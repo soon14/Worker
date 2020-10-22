@@ -285,7 +285,7 @@ public class PopShowUtils {
                 boolean finish = progressInfo.isFinish();
                 if (!finish) {
                     long speed = progressInfo.getSpeed();
-                    progressDialog.setMessage("下载速度(" + (speed > 0 ? FormatUtils.formatSize(context, speed) : speed) + "/s)");
+                    progressDialog.setMessage("下载速度(" + (speed > 0 ? FormatUtils.formatSize(speed) : speed) + "/s)");
                 } else {
                     progressDialog.setMessage("下载完成！");
                 }
