@@ -62,7 +62,8 @@ public class UserImpl implements UserApi {
     public Observable<BaseResponse<HelpRegResponse>> helpRegRecord(Integer page) {
         return bindIoUI(api.helpRegRecord(page));
     }
-
+    //上传头像，改用阿里云上传头像
+    @Deprecated
     @Override
     public Observable<BaseResponse<MessageBean>> uploadAvatar(MultipartBody.Part body) {
         return bindIoUI(api.uploadAvatar(body));

@@ -30,6 +30,7 @@ import com.xsd.jx.custom.WaitPayBillPop;
 import com.xsd.jx.databinding.ActivityGetWorkersInfoBinding;
 import com.xsd.jx.listener.OnPayListener;
 import com.xsd.jx.listener.OnTabClickListener;
+import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
@@ -113,9 +114,16 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         String price = item.getPrice();//工价
         db.setItem(item);
         mAdapter = new GetWorkersInfoAdapter(price);
+        AdapterUtils.setEmptyDataView(mAdapter);
         switch (itemType){
             case 1:
                 db.tvTitle.setText("正在招");
+                View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
+                emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> {
+                    ActivityCollector.finishActivity(MyGetWorkersActivity.class);
+                    finish();
+                });
+                mAdapter.setEmptyView(emptyView);
                 break;
             case 2:
                 db.tvTitle.setText("已招满");
@@ -127,9 +135,6 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 db.tvActivGet.setVisibility(View.GONE);
                 db.layoutNeedPay.setVisibility(View.VISIBLE);
                 db.tvPay.setVisibility(View.VISIBLE);
-
-                db.recyclerView.setVisibility(View.GONE);
-                db.layoutInfo.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 db.tvTitle.setText("待结算");
@@ -147,29 +152,23 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
             case 6:
                 db.tvTitle.setText("已完成");
                 db.layoutPayedTime.setVisibility(View.VISIBLE);
-                db.recyclerView.setVisibility(View.GONE);
-                db.layoutInfo.setVisibility(View.VISIBLE);
                 setTopColor();
                 break;
             case 7:
                 db.tvTitle.setText("已取消");
                 db.layoutCancelTime.setVisibility(View.VISIBLE);
-                db.recyclerView.setVisibility(View.GONE);
-                db.layoutInfo.setVisibility(View.VISIBLE);
                 setTopColor();
                 break;
             case 8:
                 db.tvTitle.setText("已过期");
                 db.layoutCancelTime.setVisibility(View.VISIBLE);
-                db.recyclerView.setVisibility(View.GONE);
-                db.layoutInfo.setVisibility(View.VISIBLE);
                 setTopColor();
                 break;
         }
         TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList(itemType ==1?"报名工人列表":"工人列表","招工详情"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
-                if (itemType==3||itemType==6||itemType==7||itemType==8)return;
+//                if (itemType==6||itemType==7||itemType==8)return;
                 switch (position){
                     case 0:
                         db.recyclerView.setVisibility(View.VISIBLE);
@@ -186,12 +185,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
 
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db.recyclerView.setAdapter(mAdapter);
-        View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_view_noperson, null);
-        emptyView.findViewById(R.id.tv_get_workers).setOnClickListener(view -> {
-            ActivityCollector.finishActivity(MyGetWorkersActivity.class);
-            finish();
-        });
-        mAdapter.setEmptyView(emptyView);
+
+
+
         //工人列表
         List<WorkerBean> workers = item.getWorkers();
         //只要我的订单有1个已确认的工人，那么就隐藏取消招聘按钮

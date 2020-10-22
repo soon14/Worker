@@ -9,6 +9,7 @@ import com.xsd.jx.base.BaseBindBarActivity;
  * 评价工人
  * 单独评价
  */
+@Deprecated
 public class SingleCommentActivity extends BaseBindBarActivity {
 
     @Override
@@ -23,6 +24,5 @@ public class SingleCommentActivity extends BaseBindBarActivity {
     }
     private void initView() {
         tvTitle.setText("评价工人");
-
     }
 }

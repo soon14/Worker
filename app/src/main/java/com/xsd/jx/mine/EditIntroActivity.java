@@ -3,8 +3,6 @@ package com.xsd.jx.mine;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.hjq.permissions.OnPermission;
@@ -39,14 +37,12 @@ import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -145,24 +141,15 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
     }
 
     private void showDateDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mYear = year;
-                        mMonth = month;
-                        mDay = dayOfMonth;
-                        final String data = year+"年"+(month + 1) + "月" + dayOfMonth + "日";
-                        setBirthday(data);
-                    }
+        new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    mYear = year;
+                    mMonth = month;
+                    mDay = dayOfMonth;
+                    final String data = year+"年"+(month + 1) + "月" + dayOfMonth + "日";
+                    setBirthday(data);
                 },
-                mYear, mMonth, mDay);
-        Calendar ca = Calendar.getInstance();
-
-//        DatePicker datePicker = datePickerDialog.getDatePicker();
-//        datePicker.setMaxDate(ca.getTimeInMillis());
-//        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
-        datePickerDialog.show();
+                mYear, mMonth, mDay).show();
     }
 
 
@@ -182,16 +169,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        Calendar d = Calendar.getInstance();
-
-        //也可以用compareTo方法比较,返回一个int，之前-1，之后1，相等0
-        d.add(Calendar.YEAR,1);
-        L.e("c时间是否在d之前："+c.compareTo(d));
-
-        c.clear(Calendar.MONTH);//清除月份，并以最小月份代替
-        L.e("d时间是否在c之前："+new SimpleDateFormat("yyyy年MM月dd日").format(c.getTime()));
-
     }
 
 
@@ -256,24 +233,6 @@ public class EditIntroActivity extends BaseBindBarActivity<ActivityEditIntroBind
                 });
     }
 
-    @Deprecated
-    private void uploadAvatar() {
-        //TODO 上传头像，格式暂时不支持jpeg,调试中...
-        if (TextUtils.isEmpty(headFile)) return;
-        L.e("上传的图片路径==" + headFile);
-        File file = new File(headFile);
-        RequestBody fileRQ = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), fileRQ);
-        dataProvider.user.uploadAvatar(part)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        ToastUtil.showLong(baseResponse.getData().getMessage());
-                        DataBindingAdapter.avatar(db.ivHead, headFile);
-                        Apollo.emit(EventStr.UPDATE_USER_INFO);
-                    }
-                });
-    }
 
 
     private void setName(String name) {

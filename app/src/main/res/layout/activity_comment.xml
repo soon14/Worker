@@ -209,7 +209,6 @@
                 />
             <View style="@style/h_line" />
             <CheckBox
-                android:checked="true"
                 android:id="@+id/cb_is_anon"
                 android:layout_marginLeft="-7dp"
                 android:layout_marginTop="@dimen/dp_16"

@@ -245,7 +245,6 @@
             <View style="@style/h_line" />
 
             <CheckBox
-                android:checked="true"
                 android:id="@+id/cb_is_anon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

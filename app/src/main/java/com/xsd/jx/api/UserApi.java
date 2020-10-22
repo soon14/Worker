@@ -52,7 +52,8 @@ public interface UserApi {
     @GET("user/help-reg-record")
     Observable<BaseResponse<HelpRegResponse>> helpRegRecord(@Query("page") Integer page);
 
-    //上传头像
+    //上传头像，改用阿里云上传头像
+    @Deprecated
     @Multipart
     @POST("user/upload-avatar")
     Observable<BaseResponse<MessageBean>> uploadAvatar(@Part MultipartBody.Part body);
