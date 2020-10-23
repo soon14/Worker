@@ -59,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_type_work"
             android:layout_marginTop="12dp"
-            android:text="武汉先华匠心集团"
+            tools:text="武汉先华匠心集团"
+            android:text="@{item.publisher}"
             android:textColor="#ff343434"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tv_type_work"
@@ -85,6 +86,6 @@
             app:srb_starHeight="14dp"
             app:srb_starWidth="14dp"
             app:srb_starPadding="4dp"
-            app:srb_stepSize="0.5" />
+            app:srb_stepSize="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

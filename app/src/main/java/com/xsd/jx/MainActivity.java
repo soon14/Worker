@@ -91,7 +91,6 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         initViewPager();
 
         if (UserUtils.isLogin()){
-//            L.e("token=="+UserUtils.getToken());
             if (UserUtils.isCertification()){
                 if (UserUtils.isChooseWork())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
                 isInWork();//是否在工期中
@@ -101,12 +100,8 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         }
         PopShowUtils.showAppUpdate(this);
         CommonDataUtils.getPhone(this);
-
-
+//        PopShowUtils.showCustomYM(this);
     }
-
-
-
 
     private void openBall(int count, List<JobBean> data) {
         XXPermissions.with(this)

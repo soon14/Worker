@@ -41,49 +41,22 @@ public class CustomYearView extends YearView {
                 width/2 - mTextPadding,
                 height + mMonthTextBaseLine,
                 mMonthTextPaint);
-        if (month == 2 && isLeapYear(year)) {
-            float w = getTextWidth(mMonthTextPaint, text);
-
-            canvas.drawText("闰年",
-                    x + mItemWidth / 2 - mTextPadding + w + dipToPx(getContext(), 6),
-                    y + mMonthTextBaseLine,
-                    mLeapYearTextPaint);
-        }
     }
 
-    private float getTextWidth(Paint paint, String text) {
-        return paint.measureText(text);
-    }
 
-    /**
-     * 是否是闰年
-     *
-     * @param year year
-     * @return 是否是闰年
-     */
-    private static boolean isLeapYear(int year) {
-        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-    }
+
 
 
 
     @Override
     protected void onDrawWeek(Canvas canvas, int week, int x, int y, int width, int height) {
-        String text = getContext().getResources().getStringArray(com.haibin.calendarview.R.array.year_view_week_string_array)[week];
-//        canvas.drawText(text,
-//                x + width / 2,
-//                y + mWeekTextBaseLine,
-//                mWeekTextPaint);
+
     }
 
 
     @Override
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
-//        int cx = x + mItemWidth / 2;
-//        int cy = y + mItemHeight / 2;
-//        int radius = Math.min(mItemWidth, mItemHeight) / 8 * 5;
-//        canvas.drawCircle(cx, cy, radius, mSelectedPaint);
-        return true;
+        return false;
     }
 
     @Override
@@ -93,24 +66,6 @@ public class CustomYearView extends YearView {
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine + y;
-        int cx = x + mItemWidth / 2;
-
-//        if (isSelected) {
-//            canvas.drawText(String.valueOf(calendar.getDay()),
-//                    cx,
-//                    baselineY,
-//                    hasScheme ? mSchemeTextPaint : mSelectTextPaint);
-//        } else if (hasScheme) {
-//            canvas.drawText(String.valueOf(calendar.getDay()),
-//                    cx,
-//                    baselineY,
-//                    calendar.isCurrentDay() ? mCurDayTextPaint : mSchemeTextPaint);
-//
-//        } else {
-//            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
-//                    calendar.isCurrentDay() ? mCurDayTextPaint : mCurMonthTextPaint);
-//        }
     }
 
     /**
