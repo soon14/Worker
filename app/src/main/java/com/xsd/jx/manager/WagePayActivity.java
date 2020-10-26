@@ -314,14 +314,10 @@ public class WagePayActivity extends BaseBindBarActivity<ActivityWagePayBinding>
             case SDK_ALIPAY_FLAG: {
                 @SuppressWarnings("unchecked")
                 PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                String resultInfo = payResult.getResult();//同步返回需要验证的信息
                 String resultStatus = payResult.getResultStatus();
                 if (TextUtils.equals(resultStatus, "9000")) {
-                    // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                    ToastUtil.showLong("支付成功");
                     PopShowUtils.showLoad(WagePayActivity.this, "结算成功，结算统计中...", popupView -> loadData());
                 } else {
-                    // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                     ToastUtil.showLong("支付失败");
                 }
                 break;

@@ -94,6 +94,7 @@ public class PopShowUtils {
         if (TextUtils.isEmpty(url))return;
         new XPopup.Builder(iv.getContext())
                 .asImageViewer(iv,url,new MyXPopupImgLoader())
+                .isShowSaveButton(false)
                 .show();
     }
 

@@ -2,6 +2,7 @@ package com.xsd.jx.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
 import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.ToastUtil;
 
@@ -61,7 +63,6 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
     private int wtId;
     private int workId;
     private int status;//状态 1:未处理 2：已确认 3：已拒绝
-    private WorkerBean item;
 
     @Override
     protected int getLayoutId() {
@@ -103,6 +104,8 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
                         List<ExperienceResponse.ItemsBean> experience = data.getExperience();
                         initWorkTypes(workTypes);
                         setExpData(experience);
+                        String avatar = data.getAvatar();
+                        if (!TextUtils.isEmpty(avatar))db.ivHead.setOnClickListener(v -> PopShowUtils.showPic(db.ivHead,avatar));
                     }
                 });
     }
@@ -205,7 +208,6 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
             db.layoutWorks.addView(tv);
             return;
         }
-        if (items == null || items.size() == 0) return;
         for (int i = 0; i < items.size(); i++) {
             ExperienceResponse.ItemsBean item = items.get(i);
             View view = LayoutInflater.from(this).inflate(R.layout.item_work_history, null);

@@ -89,7 +89,7 @@ public class AliyunOSSUtils {
     public void sign(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
         String aliFolder =  SIGN+DateFormatUtils.getCurrentYmd()+"/";
         baseActivity.getDataProvider().user.aliSts()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>(baseActivity.getDialog()) {
                     @Override
                     protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
                         StsResponse data = baseResponse.getData();
@@ -120,7 +120,7 @@ public class AliyunOSSUtils {
     public void uploadVoice(BaseActivity baseActivity, String localPath, UploadImgListener listener) {
         String aliFolder =  FEEDBACK+DateFormatUtils.getCurrentYm()+"/";
         baseActivity.getDataProvider().user.aliSts()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>(baseActivity.getDialog()) {
                     @Override
                     protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
                         StsResponse data = baseResponse.getData();

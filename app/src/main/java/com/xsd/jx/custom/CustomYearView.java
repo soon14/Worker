@@ -37,10 +37,16 @@ public class CustomYearView extends YearView {
         String text = getContext()
                 .getResources()
                 .getStringArray(com.haibin.calendarview.R.array.month_string_array)[month - 1];
+
+
+        float w = getTextWidth(mMonthTextPaint, text);
         canvas.drawText(text,
-                width/2 - mTextPadding,
-                height + mMonthTextBaseLine,
+                getWidth()/2 - w/2,
+                getHeight()/2+mMonthTextBaseLine/2,
                 mMonthTextPaint);
+    }
+    private float getTextWidth(Paint paint, String text) {
+        return paint.measureText(text);
     }
 
 
@@ -66,7 +72,10 @@ public class CustomYearView extends YearView {
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
+
     }
+
+
 
     /**
      * dp转px
