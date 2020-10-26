@@ -16,9 +16,9 @@ public class CheckLogResponse implements Serializable {
      * items : [{"employer":"string","id":0,"listId":0,"signInDesc":"string","signInPic":"string","signInTime":"string","signOutDesc":"string","signOutPic":"string","signOutTime":"string","status":0,"userId":0,"workDate":"string"}]
      */
 
-    private String days;
-    private String earned;
-    private String hours;
+    private String days="";
+    private String earned="";
+    private String hours="";
     private List<DayCheckBean> items;
 
     public String getDays() {

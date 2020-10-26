@@ -181,7 +181,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
 
 
     }
-
+    //工种，目前改为单工种
     private void initWorkTypes(List<WorkTypeBean> workTypes) {
         if (workTypes == null || workTypes.size() == 0) return;
         for (int i = 0; i < workTypes.size(); i++) {
@@ -195,7 +195,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
         }
     }
 
-    //经验列表
+    //工作经历
     private void setExpData(List<ExperienceResponse.ItemsBean> items) {
         if (items==null||items.size()==0){
             TextView tv = new TextView(this);

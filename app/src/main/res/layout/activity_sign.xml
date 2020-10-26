@@ -15,6 +15,7 @@
     </data>
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -22,7 +23,7 @@
 
         <include layout="@layout/action_common_bar" android:id="@+id/view_top" />
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_below="@+id/view_top"
             android:id="@+id/layout_not_working"
             android:background="@color/white"
@@ -42,7 +43,7 @@
             <TextView style="@style/DefaultBtnStyle" android:id="@+id/tv_go_for_work" android:onClick="@{clicklistener}"  android:text="去找活儿"/>
         </LinearLayout>
         <ScrollView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/layout_scroll_view"
             android:layout_below="@+id/view_top"
             android:scrollbars="none"

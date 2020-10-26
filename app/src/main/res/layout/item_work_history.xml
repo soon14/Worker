@@ -49,22 +49,32 @@
             tools:text="木工"
             android:text="@{item.typeTitle}"
             android:textColor="@color/tv_black"
-            android:textSize="@dimen/h3"
+            android:textSize="@dimen/h4"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_time"
             app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <View
+            android:id="@+id/view6"
+            style="@style/v_line"
+            android:layout_height="@dimen/dp_16"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_type_work"
+            app:layout_constraintStart_toEndOf="@+id/tv_type_work"
+            app:layout_constraintTop_toTopOf="@+id/tv_type_work" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_type_work"
-            android:layout_marginTop="12dp"
-            tools:text="武汉先华匠心集团"
-            android:text="@{item.publisher}"
-            android:textColor="#ff343434"
+            android:layout_marginStart="10dp"
+            android:text="@{`雇主：`+item.publisher}"
+            android:textColor="@color/tv_gray"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_type_work"
-            app:layout_constraintTop_toBottomOf="@+id/tv_type_work" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_type_work"
+            app:layout_constraintStart_toEndOf="@+id/view6"
+            app:layout_constraintTop_toTopOf="@+id/tv_type_work"
+            tools:text="雇主：徐通" />
 
         <com.willy.ratingbar.ScaleRatingBar
             android:id="@+id/simpleRatingBar"

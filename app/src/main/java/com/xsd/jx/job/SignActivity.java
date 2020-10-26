@@ -90,7 +90,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
     private void loadData() {
         dataProvider.work.check()
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckResponse>>() {
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckResponse>>(dialog) {
                     @Override
                     protected void onSuccess(BaseResponse<CheckResponse> baseResponse) {
                         CheckResponse data = baseResponse.getData();
