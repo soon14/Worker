@@ -172,6 +172,7 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
     public void tackPhoto() {
         compressPath = FileNameUtils.getFileName();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra("android.intent.extras.CAMERA_FACING", 1); // 调用前置摄像头
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", new File(compressPath));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);

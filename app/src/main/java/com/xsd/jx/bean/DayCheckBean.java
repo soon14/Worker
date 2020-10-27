@@ -16,7 +16,7 @@ public class DayCheckBean {
      signOutDesc	string签退说明
      signOutPic	    string签退图片
      signOutTime	string签退时间
-     status	        integer确认状态 0:未确认 1:已确认
+     status	        integer确认状态 1:未确认 2:已确认
      userId	        integer用户ID
      workDate	    string 上工日期
      */

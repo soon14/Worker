@@ -104,7 +104,7 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                     }
                 });
     }
-
+    //显示查询的月份是否上工和未上
     private void initItems() {
         if (items == null || items.size() == 0) return;
         Map<String, Calendar> calendars = new HashMap();
@@ -130,54 +130,31 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         calendar.setScheme(text);
         return calendar;
     }
-
-    /**
-     * 选中后更新底部签到信息
-     */
-//    private void selectItem() {
-//        if (items == null || items.size() == 0) {
-//            db.setItem(null);
-//        }
-//        DayCheckBean select = findSelect(selectTime);
-//        db.setItem(select);
-//        db.tvEditLog.setVisibility(select == null ? View.INVISIBLE : View.VISIBLE);
-//        SpannableStringUtils.Builder builder = SpannableStringUtils.getBuilder(userName);
-//        if (select == null){
-//            builder.append("\n\n该工人当天没有考勤记录")
-//                    .setProportion(0.83F)
-//                    .setForegroundColor(ContextCompat.getColor(this, R.color.tv_gray));
-//        }
-//        db.tvWorkerName.setText(builder.create());
-//    }
     /**
      * 选中后更新底部签到信息
      */
     private void selectItem() {
+        db.layoutSignDesc.removeAllViews();
+        db.tvEditLog.setVisibility(View.INVISIBLE);
+        db.tvContact.setVisibility(View.INVISIBLE);
         if (items==null||items.size()==0){
             return;
         }
         List<DayCheckBean> selectDatas = findSelect(selectTime);
-        db.layoutSignDesc.removeAllViews();
         if (selectDatas.size()==0){
             return;
         }
+        db.tvContact.setVisibility(View.VISIBLE);
         for (int i = 0; i <selectDatas.size() ; i++) {
             DayCheckBean item = selectDatas.get(i);
+            int status = item.getStatus();//确认状态 1:未确认 2:已确认
+            db.tvEditLog.setVisibility(status==2?View.INVISIBLE:View.VISIBLE);
             View view = LayoutInflater.from(this).inflate(R.layout.item_sign_desc, null);
             ItemSignDescBinding bind = DataBindingUtil.bind(view);
             bind.setItem(item);
-            bind.ivInPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopShowUtils.showPic(bind.ivInPic,item.getSignInPic());
-                }
-            });
-            bind.ivOutPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic());
-                }
-            });
+            bind.tvEmployer.setVisibility(View.GONE);
+            bind.ivInPic.setOnClickListener(v -> PopShowUtils.showPic(bind.ivInPic,item.getSignInPic()));
+            bind.ivOutPic.setOnClickListener(v -> PopShowUtils.showPic(bind.ivOutPic,item.getSignOutPic()));
             db.layoutSignDesc.addView(view);
         }
     }
@@ -224,6 +201,7 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
                 mYear = year;
                 mMonth = month;
                 db.tvMonth.setText("("+month+"月)");
+                yearMonth = DateFormatUtils.ym(mYear,mMonth);
                 loadData();
             }
         });
