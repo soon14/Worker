@@ -431,6 +431,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                     PopShowUtils.showLoad(GetWorkersInfoActivity.this, "结算成功，结算统计中...", popupView -> {
                         finish();
                         Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                        Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
                     });
                 } else {
                     ToastUtil.showLong("支付失败");

@@ -96,7 +96,7 @@
                     app:srb_scrollable="true"
                     app:srb_starHeight="19dp"
                     app:srb_starWidth="19dp"
-                    app:srb_starPadding="4dp"
+                    app:srb_starPadding="2dp"
                     app:srb_stepSize="1" />
             </LinearLayout>
             <LinearLayout
@@ -131,7 +131,7 @@
                     app:srb_scrollable="true"
                     app:srb_starHeight="19dp"
                     app:srb_starWidth="19dp"
-                    app:srb_starPadding="4dp"
+                    app:srb_starPadding="2dp"
                     app:srb_stepSize="1" />
             </LinearLayout>
             <LinearLayout
@@ -166,7 +166,7 @@
                     app:srb_scrollable="true"
                     app:srb_starHeight="19dp"
                     app:srb_starWidth="19dp"
-                    app:srb_starPadding="4dp"
+                    app:srb_starPadding="2dp"
                     app:srb_stepSize="1" />
             </LinearLayout>
             <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16"/>

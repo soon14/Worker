@@ -19,6 +19,8 @@ import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.StsResponse;
 import com.xsd.utils.FormatUtils;
+import com.xsd.utils.L;
+import com.xsd.utils.TimeUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -92,6 +94,7 @@ public class AliyunOSSUtils {
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>(baseActivity.getDialog()) {
                     @Override
                     protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
+                        L.e("开始"+ TimeUtils.getMillisecondTime());
                         StsResponse data = baseResponse.getData();
                         String accessKeyId = data.getAccessKeyId();
                         String accessKeySecret = data.getAccessKeySecret();
@@ -99,13 +102,18 @@ public class AliyunOSSUtils {
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setHttpDnsEnable(true);
                         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
+                        L.e("结束"+ TimeUtils.getMillisecondTime());
+                        baseActivity.getDialog().show();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                //OSS客服端耗时大概10秒
                                 OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
                                 baseActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        baseActivity.getDialog().dismiss();
+                                        L.e("上传图片"+ TimeUtils.getMillisecondTime());
                                         uploadImg(oss,baseActivity, aliFolder, localPath, listener);
                                     }
                                 });
@@ -191,7 +199,7 @@ public class AliyunOSSUtils {
 
 
     /**
-     * 嵌套单张图片上传方法 {@link AliyunOSSUtils#uploadImg(BaseActivity, String, String, UploadImgListener)}
+     * 嵌套单张图片上传方法 {@link AliyunOSSUtils#uploadImg(OSS, BaseActivity, String, String, UploadImgListener)}}
      * 循环回调自己，从而实现多图队列上传。
      *
      * @param aliFolder      上传图片到阿里云的空间文件夹地址

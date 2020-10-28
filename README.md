@@ -74,17 +74,16 @@ addItemType(8, R.layout.item_worker_full);
 
 # 接口修改项：
 
-分享
-http://s.xhjxapp.com/html/share
+分享链接：接口返回
 分享到微信的文案：
 3亿工友为您推荐先华匠心
 建筑找工到匠心，免费担保更安心
 
 隐私协议
-http://s.xhjxapp.com/html/yszc
+https://s.xhjxapp.com/html/yszc
 
 用户协议
-http://s.xhjxapp.com/html/yhxy
+https://s.xhjxapp.com/html/yhxy
 
 阿里云身份证校验
 https://market.aliyun.com/products/57000002/cmapi025518.html#sku=yuncode19518000012

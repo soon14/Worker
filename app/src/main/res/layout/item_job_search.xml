@@ -28,15 +28,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:textSize="@dimen/h6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tv_price"
             android:layout_toLeftOf="@+id/tv_price"
             android:text="参考价："
             app:layout_constraintBottom_toBottomOf="@+id/tv_price"
-            app:layout_constraintEnd_toStartOf="@+id/tv_price" />
+            app:layout_constraintEnd_toStartOf="@+id/tv_price"
+            app:layout_constraintTop_toTopOf="@+id/tv_price" />
 
         <TextView
+            android:textSize="@dimen/h4"
             price="@{item.price}"
             android:id="@+id/tv_price"
             style="@style/TextPriceStyle"

@@ -93,12 +93,15 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
                     }
                 });
     }
+    boolean isShowWorkType;
     BottomListPopupView bottomWorkingList;
     private void initTopWorkingList(List<WorkCheckLogResponse.WorkingItem> workingList) {
+        if (isShowWorkType)return;
         if (workingList==null||workingList.size()==0){
             db.layoutTop.setVisibility(View.GONE);
             return;
         }
+        isShowWorkType = true;
         //默认设置第一项
         WorkCheckLogResponse.WorkingItem workingItem0 = workingList.get(0);
         workId = workingItem0.getId();
@@ -145,7 +148,6 @@ public class WorkerSignListActivity extends BaseBindBarActivity<ActivityWorkerSi
      * 全部记录
      * 未考勤 没有上工时间
      * 已考勤 2
-     * @param items 考勤工人
      */
     private void initData(WorkCheckLogResponse data) {
         String totalNum = data.getTotalNum();

@@ -135,8 +135,8 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
      */
     private void selectItem() {
         db.layoutSignDesc.removeAllViews();
-        db.tvEditLog.setVisibility(View.INVISIBLE);
-        db.tvContact.setVisibility(View.INVISIBLE);
+        db.tvEditLog.setVisibility(View.GONE);
+        db.tvContact.setVisibility(View.GONE);
         if (items==null||items.size()==0){
             return;
         }
@@ -144,11 +144,17 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         if (selectDatas.size()==0){
             return;
         }
+        db.tvEditLog.setVisibility(View.VISIBLE);
         db.tvContact.setVisibility(View.VISIBLE);
         for (int i = 0; i <selectDatas.size() ; i++) {
             DayCheckBean item = selectDatas.get(i);
             int status = item.getStatus();//确认状态 1:未确认 2:已确认
-            db.tvEditLog.setVisibility(status==2?View.INVISIBLE:View.VISIBLE);
+
+            db.tvEditLog.setText(status==2?"已确认考勤":"修改记录");
+            db.tvEditLog.setTextColor(ContextCompat.getColor(this,status==2?R.color.tv_gray:R.color.tv_blue));
+            db.tvEditLog.setBackgroundResource(status==2?R.drawable.round6_gray_bg:R.drawable.round6_bluerim_bg);
+            db.tvEditLog.setEnabled(status!=2);
+
             View view = LayoutInflater.from(this).inflate(R.layout.item_sign_desc, null);
             ItemSignDescBinding bind = DataBindingUtil.bind(view);
             bind.setItem(item);
@@ -186,7 +192,6 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
         db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showSelectYearMonth();
                 PopShowUtils.showYM(WorkerSignInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -223,27 +228,6 @@ public class WorkerSignInfoActivity extends BaseBindBarActivity<ActivityWorkerSi
             }
         });
 
-    }
-
-    private BottomDatePickerPop bottomDatePickerPop;
-
-    private void showSelectYearMonth() {
-        if (bottomDatePickerPop == null) {
-            bottomDatePickerPop = new BottomDatePickerPop(this);
-            bottomDatePickerPop.setListener((year, month) -> {
-                mYear = year;
-                mMonth = month;
-                db.tvMonth.setText("(" + month + "月)");
-                db.calendarView.scrollToCalendar(year, month, 1, true);
-                yearMonth = DateFormatUtils.ym(mYear, mMonth);
-                loadData();
-
-            });
-            new XPopup.Builder(this)
-                    .asCustom(bottomDatePickerPop).show();
-        } else {
-            bottomDatePickerPop.show();
-        }
     }
 
 

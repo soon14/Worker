@@ -14,6 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -27,10 +32,12 @@ import com.lzf.easyfloat.interfaces.OnInvokeView;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindActivity;
 import com.xsd.jx.base.EventStr;
+import com.xsd.jx.base.MyOSSConfig;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.InviteListResponse;
 import com.xsd.jx.bean.IsInWorkResponse;
 import com.xsd.jx.bean.JobBean;
+import com.xsd.jx.bean.StsResponse;
 import com.xsd.jx.databinding.ActivityMainBinding;
 import com.xsd.jx.fragment.JobFragment;
 import com.xsd.jx.fragment.MineFragment;
@@ -101,6 +108,28 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         PopShowUtils.showAppUpdate(this);
         CommonDataUtils.getPhone(this);
 //        PopShowUtils.showCustomYM(this);
+        //初始化一个OSSClient客户端，方便打卡操作更快捷
+        initOssClient();
+    }
+
+    private void initOssClient() {
+        dataProvider.user.aliSts()
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
+                        StsResponse data = baseResponse.getData();
+                        String accessKeyId = data.getAccessKeyId();
+                        String accessKeySecret = data.getAccessKeySecret();
+                        String securityToken = data.getSecurityToken();
+                        ClientConfiguration conf = new ClientConfiguration();
+                        conf.setHttpDnsEnable(true);
+                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
+                        new Thread(() -> {
+                            new OSSClient(MainActivity.this, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                        }).start();
+
+                    }
+                });
     }
 
     private void openBall(int count, List<JobBean> data) {
@@ -211,7 +240,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         PopShowUtils.showRealNameAuth(this);
     }
 
-    @Receive({EventStr.SHOW_PUSH_JOB,EventStr.LOGIN_SUCCESS})
+    @Receive(EventStr.SHOW_PUSH_JOB)
     public void showPushJob(){
         if (UserUtils.isLogin()&&UserUtils.isCertification()){
             PopShowUtils.showPushJob(this);
@@ -220,7 +249,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
 
     }
     //被邀请上工信息列表
-    @Receive({EventStr.UPDATE_INVITE_LIST,EventStr.LOGIN_SUCCESS})
+    @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
         dataProvider.work.inviteList()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<InviteListResponse>>() {
@@ -236,6 +265,11 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                         }
                     }
                 });
+    }
+    @Receive(EventStr.LOGIN_SUCCESS)
+    public void loginSuccess(){
+        showPushJob();
+        getInviteList();
     }
 
     private long firstTime = 0;

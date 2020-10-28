@@ -99,11 +99,11 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                         WorkerResponse data = baseResponse.getData();
                         List<WorkerBean> items = data.getItems();
                         if (items != null && items.size() > 0) {
-                            if (page == 1) mAdapter.setList(items);
+                            if (page == 1) mAdapter.setNewInstance(items);
                             else mAdapter.addData(items);
                             mAdapter.getLoadMoreModule().loadMoreComplete();
                         } else {
-                            if (page == 1) mAdapter.setList(items);
+                            if (page == 1) mAdapter.setNewInstance(items);
                             else mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
                         if (page == 1) {
@@ -115,16 +115,17 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
     /**
      * 动态设置顶部工种选项Tabs
+     * 1.首次进入工种ID:wtId=0,如果有tabs，就会默认选中第一项，触发选中事件后，会进行loadData()请求数据
      *
-     * @param newWorkTypes
      */
     private void setTabs(List<WorkTypeBean> newWorkTypes) {
-        L.e("setTabs==" + newWorkTypes.size());
+        //如果没有工种类型，就说明没有发布招工，隐藏tab项，显示去发布空布局，
         if (newWorkTypes.size() == 0) {
             db.layoutTabAll.setVisibility(View.GONE);
             AdapterUtils.setNoPushView(mAdapter,this);
             return;
         }
+        //有工种，显示tab项，设置无数据空布局
         db.layoutTabAll.setVisibility(View.VISIBLE);
         AdapterUtils.setEmptyDataView(mAdapter);
 

@@ -95,7 +95,7 @@
             app:srb_scrollable="false"
             app:srb_starHeight="14dp"
             app:srb_starWidth="14dp"
-            app:srb_starPadding="4dp"
+            app:srb_starPadding="2dp"
             app:srb_stepSize="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
