@@ -34,7 +34,6 @@
         <activity android:name=".manager.WorkerSignListActivity" />
         <activity android:name=".manager.WorkerSignActivity" />
         <activity android:name=".manager.TogetherCommentActivity" />
-        <activity android:name=".manager.SingleCommentActivity" />
         <activity
             android:name=".manager.PushGetWorkersActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />

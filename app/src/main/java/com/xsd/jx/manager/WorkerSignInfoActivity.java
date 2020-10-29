@@ -21,7 +21,6 @@ import com.xsd.jx.bean.DayCheckBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
-import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignInfoBinding;
 import com.xsd.jx.databinding.ItemSignDescBinding;
 import com.xsd.jx.utils.DateFormatUtils;

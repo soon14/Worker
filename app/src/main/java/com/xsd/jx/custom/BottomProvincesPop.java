@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,17 +34,25 @@ import java.util.List;
  * 从底部弹出的省市区选择器
  */
 public class BottomProvincesPop extends BottomPopupView {
+
+    private TextView tvProvince;
+    private TextView tvCity;
+    private TextView tvDistrict;
+    private View viewProvince;
+    private View viewCity;
+    private View viewDistrict;
+
+    private AddrBean selectProvince;//省
     private AddrBean selectCity;//市
     private AddrBean selectDistrict;//区
 
     private List<AddrBean> allAddrBeans;
-    private TextView tvCity;
-    private TextView tvDistrict;
+
     private OnAddrListener listener;
     private AddrSelectAdapter mAdapter =new AddrSelectAdapter();
 
-    private View viewCity;
-    private View viewDistrict;
+
+    private List<String> openProvinces = new ArrayList<>();
     @Override
     protected int getMaxHeight() {
         return (int) (super.getMaxHeight()*0.86f);
@@ -73,8 +82,14 @@ public class BottomProvincesPop extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         findViewById(R.id.tv_title).setOnClickListener(view -> dismiss());
+        openProvinces.add("湖北省");
+        openProvinces.add("重庆市");
+
+        tvProvince = findViewById(R.id.tv_province);
         tvCity = findViewById(R.id.tv_city);
         tvDistrict = findViewById(R.id.tv_district);
+
+        viewProvince = findViewById(R.id.view_province);
         viewCity = findViewById(R.id.view_city);
         viewDistrict = findViewById(R.id.view_district);
         LinearLayout layoutDistrict = findViewById(R.id.layout_district);
@@ -85,90 +100,120 @@ public class BottomProvincesPop extends BottomPopupView {
 
         String jsonAddr = getJson(getContext(), "area.json");
         allAddrBeans = GsonUtils.jsonToList(jsonAddr, AddrBean.class);
-        List<AddrBean> datas = new ArrayList<>();//湖北下面所有的市
+
+        //从所有的数据中找出已经开放的省份数据
+        List<AddrBean> provinceDatas = new ArrayList<>();//湖北下面所有的市
         for (int i = 0; i < allAddrBeans.size(); i++) {
             AddrBean addrBean = allAddrBeans.get(i);
-            //湖北（1681）下面的市
-            if (addrBean.getParent_id()==1681){
-                if (selectCity==null){
-                    selectCity=addrBean;
-                    tvCity.setText(addrBean.getName());
-                    List<AddrBean> datas3 = getAddrBeans(selectCity.getId());
-                    selectDistrict = datas3.get(0);//默认选中该市对应的第一个区
-                    if (selectDistrict!=null)tvDistrict.setText(selectDistrict.getName());
-                }
-                datas.add(addrBean);
+            if (isHave(addrBean.getName())){
+                provinceDatas.add(addrBean);
             }
+            if (openProvinces.size()==0)break;
         }
-        mAdapter.setList(datas);
-        tvCity.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCityPop(datas);
+        selectProvince = provinceDatas.get(0);
+        mAdapter.setList(provinceDatas);
+        tvProvince.setOnClickListener(view -> {
+            tvCity.setVisibility(INVISIBLE);
+            tvDistrict.setVisibility(INVISIBLE);
+            showProvinceData(provinceDatas);
+        });
+        tvCity.setOnClickListener(view -> {
+            if (selectProvince!=null){
+                tvDistrict.setVisibility(INVISIBLE);
+                List<AddrBean> datas2 = getAddrBeans(selectProvince.getId());
+                showCityData(datas2);
             }
         });
-        tvDistrict.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (selectCity!=null){
-                    L.e(selectCity.getId()+"===="+selectCity.getName());
-                    List<AddrBean> datas3 = getAddrBeans(selectCity.getId());
-                    L.e("datas3===="+datas3.size());
-                    showDistrictPop(datas3);
-                }
+        tvDistrict.setOnClickListener(view -> {
+            if (selectCity!=null){
+                List<AddrBean> datas3 = getAddrBeans(selectCity.getId());
+                showDistrictData(datas3);
             }
         });
 
-        findViewById(R.id.tv_confirm).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-                if (listener!=null)listener.onAddrSelect(selectCity,selectDistrict);
-            }
-        });
         //市区选择事件
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                AddrBean item = (AddrBean) adapter.getItem(position);
-                if (item.getLevel()==2){//选择的是市，查询出对应的区,默认选中第一个，如果没有就隐藏区
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            AddrBean item = (AddrBean) adapter.getItem(position);
+            int level = item.getLevel();
+            switch (level){
+                case 1:
+                    selectProvince = item;
+                    tvProvince.setText(item.getName());
+                    //根据选中的省查出对应的市
+                    List<AddrBean> addrCitys = getAddrBeans(item.getId());
+                    selectCity = addrCitys.get(0);//默认选中该市对应的第一个区
+                    tvCity.setText(selectCity.getName());
+                    showCityData(addrCitys);
+                    break;
+                case 2://选择的是市，查询出对应的区,默认选中第一个，如果没有就隐藏区
                     selectCity=item;
                     tvCity.setText(item.getName());
+                    //根据选中的市查出对应的区，没有就直接关闭弹框
                     List<AddrBean> addrBeans = getAddrBeans(item.getId());
-                    if (addrBeans==null||addrBeans.size()==0){
+                    if (addrBeans.size()==0){
                         layoutDistrict.setVisibility(INVISIBLE);
                         selectDistrict=null;
                         dismiss();
-                        listener.onAddrSelect(selectCity,selectDistrict);
+                        listener.onAddrSelect(selectProvince,selectCity,selectDistrict);
                     }else {
                         layoutDistrict.setVisibility(VISIBLE);
                         selectDistrict = addrBeans.get(0);//默认选中该市对应的第一个区
                         tvDistrict.setText(selectDistrict.getName());
-                        showDistrictPop(addrBeans);
+                        showDistrictData(addrBeans);
                     }
-
-
-                }else if (item.getLevel()==3){
+                    break;
+                case 3:
                     selectDistrict=item;
                     tvDistrict.setText(item.getName());
                     dismiss();
-                    listener.onAddrSelect(selectCity,selectDistrict);
-                }
-
+                    listener.onAddrSelect(selectProvince,selectCity,selectDistrict);
+                    break;
             }
+
+
         });
 
 
     }
+    private boolean isHave(String name){
+        for (int i = 0; i < openProvinces.size(); i++) {
+            String openProvince = openProvinces.get(i);
+            if (name.equals(openProvince)){
+                openProvinces.remove(openProvince);
+                return true;
+            }
+        }
+        return false;
+    }
 
-    private void showCityPop(List<AddrBean> datas) {
+    //显示省的信息
+    private void showProvinceData(List<AddrBean> datas) {
+
+        tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));
+        viewProvince.setVisibility(VISIBLE);
+        tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
+        viewCity.setVisibility(INVISIBLE);
+        tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
+        viewDistrict.setVisibility(INVISIBLE);
+        mAdapter.setList(datas);
+    }
+    //显示市的信息
+    private void showCityData(List<AddrBean> datas) {
+        tvCity.setVisibility(VISIBLE);
+        tvDistrict.setVisibility(VISIBLE);
+        tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
+        viewProvince.setVisibility(INVISIBLE);
         tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));
         viewCity.setVisibility(VISIBLE);
         tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
         viewDistrict.setVisibility(INVISIBLE);
         mAdapter.setList(datas);
     }
-    private void showDistrictPop(List<AddrBean> datas) {
+    //显示区的信息
+    private void showDistrictData(List<AddrBean> datas) {
+        tvDistrict.setVisibility(VISIBLE);
+        tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
+        viewProvince.setVisibility(INVISIBLE);
         tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
         viewCity.setVisibility(INVISIBLE);
         tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));

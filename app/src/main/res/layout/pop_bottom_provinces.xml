@@ -12,7 +12,7 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@mipmap/ic_black_close"
+        android:drawableRight="@mipmap/ic_gray_nocircle_close"
         android:gravity="center"
         android:padding="@dimen/dp_16"
         android:text="省市区选择"
@@ -30,15 +30,31 @@
         android:paddingTop="@dimen/dp_16"
         android:paddingRight="@dimen/dp_8"
         android:paddingBottom="@dimen/dp_16">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/layout_province"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="湖北省"
-            android:textColor="@color/tv_gray"
-            android:textSize="@dimen/h4" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_province"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56"
+                android:gravity="center"
+                android:text="湖北省"
+                android:textColor="@color/tv_blue"
+                android:textSize="@dimen/h4" />
+
+            <View
+                android:id="@+id/view_province"
+                android:layout_width="32dp"
+                android:layout_height="@dimen/dp_3"
+                android:background="@color/tv_blue" />
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:id="@+id/layout_city"
@@ -53,11 +69,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_56"
                 android:gravity="center"
-                android:textColor="@color/tv_blue"
+                android:textColor="@color/tv_gray"
                 android:textSize="@dimen/h4"
                 tools:text="武汉市" />
 
             <View
+                android:visibility="invisible"
                 android:id="@+id/view_city"
                 android:layout_width="32dp"
                 android:layout_height="@dimen/dp_3"
@@ -98,11 +115,4 @@
         android:layout_weight="1"
         android:layout_height="0dp" />
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/tv_confirm"
-        style="@style/DefaultBtnStyle"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_32"
-        android:text="确定" />
 </LinearLayout>

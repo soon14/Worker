@@ -7,5 +7,5 @@ import com.xsd.jx.bean.AddrBean;
  * author: SmallCake
  */
 public interface OnAddrListener  {
-    void onAddrSelect(AddrBean city,AddrBean district);
+    void onAddrSelect(AddrBean province,AddrBean city,AddrBean district);
 }

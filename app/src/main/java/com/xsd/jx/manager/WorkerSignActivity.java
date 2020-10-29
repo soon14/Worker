@@ -10,13 +10,11 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
-import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
-import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivityWorkerSignBinding;
 import com.xsd.jx.utils.DateFormatUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
@@ -121,22 +119,6 @@ public class WorkerSignActivity extends BaseBindBarActivity<ActivityWorkerSignBi
         db.tvContactUs.setOnClickListener(v -> PopShowUtils.callUs(WorkerSignActivity.this));
     }
 
-    private BottomDatePickerPop bottomDatePickerPop;
-    private void showSelectYearMonth() {
-        if (bottomDatePickerPop==null){
-            bottomDatePickerPop = new BottomDatePickerPop(this);
-            bottomDatePickerPop.setListener((year, month) ->{
-                db.tvMonth.setText("("+month+"月)");
-                db.calendarView.scrollToCalendar(year,month,1,true);
-               loadBottomData();
-
-            });
-            new XPopup.Builder(this)
-                    .asCustom(bottomDatePickerPop).show();
-        }else {
-            bottomDatePickerPop.show();
-        }
-    }
 
 
 }

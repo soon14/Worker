@@ -72,7 +72,11 @@ public interface ServerApi {
      * @param advanceType   结算方式 预付款类型 1:两成 2:全款 3:不预付
      * @param safeAmount    保险费用
      * @param advanceAmount 预付款金额
-     * @param payment 预付款金额
+     * @param payment       付款方式 1.微信2.支付宝
+     *
+     * @param provinceId    省ID
+     * @param cityId        市ID
+     * @param areaId        区ID
      */
     @FormUrlEncoded
     @POST("server/publish-work")
@@ -90,6 +94,9 @@ public interface ServerApi {
             , @Field("safeAmount")String safeAmount
             , @Field("advanceAmount")Integer advanceAmount
             , @Field("payment")Integer payment
+            , @Field("provinceId")Integer provinceId
+            , @Field("cityId")Integer cityId
+            , @Field("areaId")Integer areaId
     );
 
     //取消招聘:在还没有人报名的情况下，发布者可以取消招聘

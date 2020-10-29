@@ -1,24 +1,21 @@
 package com.xsd.jx.job;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
-import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.CheckLogResponse;
 import com.xsd.jx.bean.DayCheckBean;
-import com.xsd.jx.custom.BottomDatePickerPop;
 import com.xsd.jx.databinding.ActivitySignListBinding;
 import com.xsd.jx.databinding.ItemSignDescBinding;
 import com.xsd.jx.utils.DateFormatUtils;
@@ -69,11 +66,10 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         db.tvMonth.setText("("+mMonth+"月)");
         //范围控制，不能大于当前日期月份
         db.calendarView.setRange(mYear-1,mMonth,1,mYear,mMonth,mDay);
-
     }
 
     private void loadData() {
-        String ym = mYear+"-"+(mMonth<10?"0"+mMonth:mMonth);
+        String ym = DateFormatUtils.ym(mYear, mMonth);
         dataProvider.work.checkLog(ym)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<CheckLogResponse>>() {
                     @Override
@@ -98,7 +94,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
 
     /**
      * 有记录的信息，以标签形式写入
-     * @param items
      */
     private void initItems() {
         if (items==null||items.size()==0)return;
@@ -109,7 +104,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
             String workDate = itemsBean.getWorkDate();
             String[] split = workDate.split("-");
             int day = Integer.parseInt(split[2]);
-            L.e(mYear+"-"+mMonth+"-"+day);
             Calendar calendar = getSchemeCalendar(mYear, mMonth, day, status==2?0xFF3B77FF:0xFF999999, status==2?"上工":"未上");
             calendars.put(calendar.toString(), calendar);
         }
@@ -162,12 +156,7 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
     }
 
     private void onEvent() {
-        db.tvContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MobileUtils.callPhone(SignListActivity.this,mobile);
-            }
-        });
+        db.tvContact.setOnClickListener(v -> MobileUtils.callPhone(SignListActivity.this,mobile));
         //日历月份改变监听
         db.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
@@ -188,28 +177,18 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                 }
             }
         });
-        db.calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
-            @Override
-            public void onMonthChange(int year, int month) {
-                mYear = year;
-                mMonth = month;
-                db.tvMonth.setText("("+month+"月)");
-                loadData();
-            }
+        db.calendarView.setOnMonthChangeListener((year, month) -> {
+            mYear = year;
+            mMonth = month;
+            db.tvMonth.setText("("+month+"月)");
+            db.layoutSignDesc.removeAllViews();
+            db.tvContact.setVisibility(View.GONE);
+            loadData();
         });
 
         //月份选择
-        db.tvLookOtherMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                showSelectYearMonth();
-                PopShowUtils.showYM(SignListActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        db.calendarView.scrollToCalendar(year,month+1,1,true);
-                    }
-                });
-            }
+        db.tvLookOtherMonth.setOnClickListener(v -> {
+            PopShowUtils.showYM(SignListActivity.this, (view, year, month, dayOfMonth) -> db.calendarView.scrollToCalendar(year,month+1,1,true));
         });
 
         //设置日期拦截事件
@@ -237,24 +216,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
         calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
         calendar.setScheme(text);
         return calendar;
-    }
-    private BottomDatePickerPop bottomDatePickerPop;
-    private void showSelectYearMonth() {
-        if (bottomDatePickerPop==null){
-            bottomDatePickerPop = new BottomDatePickerPop(this);
-            bottomDatePickerPop.setListener((year, month) ->{
-                mYear = year;
-                mMonth = month;
-                db.tvMonth.setText("("+month+"月)");
-                db.calendarView.scrollToCalendar(year,month,1,true);
-                loadData();
-
-            });
-           new XPopup.Builder(this)
-                    .asCustom(bottomDatePickerPop).show();
-        }else {
-            bottomDatePickerPop.show();
-        }
     }
 
 

@@ -54,7 +54,9 @@ import java.util.Map;
  */
 public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetWorkersBinding> {
     private int typeId;//工种ID
-    private int areaId;//地区ID,用于查询工价
+    private int provinceId;//省ID,
+    private int cityId;//市ID,用于查询工价
+    private int areaId;//区ID
     private String address;//用户选择的省市区
     private String startDate;
     private String endDate;
@@ -146,7 +148,8 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
         String addressInfo = db.etAddrInfo.getText().toString();
 
         //接口提交
-        dataProvider.server.publishWork(typeId,address+addressInfo,startDate,endDate,price,desc,num,isSafe,settleType,advanceType,safeAmount+"",advanceAmount,payment)
+        dataProvider.server.publishWork(typeId,address+addressInfo,startDate,endDate,price,desc,num,
+                isSafe,settleType,advanceType,safeAmount+"",advanceAmount,payment,provinceId,cityId,areaId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PushGetWorkersResponse>>() {
                     @Override
                     protected void onSuccess(BaseResponse<PushGetWorkersResponse> baseResponse) {
@@ -173,20 +176,18 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         db.tvWorkType.setText(workTypeBean.getTitle());
                         ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).statusBarDarkFont(true).init();
                         //如果地址已经选择了，就查询推荐的工种价格
-                        if (!TextUtils.isEmpty(address)){
-                            searchWorkPrice();
-                        }
+                        if (!TextUtils.isEmpty(address))searchWorkPrice();
                     });
                     break;
                 case R.id.layout_addr:
-                    PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (city, district) -> {
-                        address = "湖北省" + city.getName() + (district == null ? "" : district.getName());
+                    PopShowUtils.showBottomAddrSelect(PushGetWorkersActivity.this, (province,city, district) -> {
+                        address = province.getName() + city.getName() + (district == null ? "" : district.getName());
                         db.tvAddr.setText(address);
-                        areaId = city.getId();
+                        provinceId = province.getId();
+                        cityId = city.getId();
+                        areaId = district == null ?0:district.getId();
                         //如果已经选择了工种，就查询推荐的工种价格
-                        if (typeId>0){
-                            searchWorkPrice();
-                        }
+                        if (typeId>0) searchWorkPrice();
                     });
                     break;
                 case R.id.tv_start_time:
@@ -293,7 +294,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
      */
 
     private void searchWorkPrice() {
-        dataProvider.server.recommendPrice(areaId,typeId)
+        dataProvider.server.recommendPrice(cityId,typeId)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<PriceBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<PriceBean> baseResponse) {

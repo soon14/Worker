@@ -10,14 +10,16 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.OrderBean;
 import com.xsd.jx.databinding.ActivityCommentBinding;
+import com.xsd.jx.order.OrderInfoActivity;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.EditTextUtils;
 import com.xsd.utils.ToastUtil;
 
 /**
  * 评价
  *
- * @param data {
+ * data {
  *             "allRate": 0,
  *             "content": "string",
  *             "id": 0,
@@ -30,8 +32,7 @@ import com.xsd.utils.ToastUtil;
  *             "workId": 0
  *             }
 Intent intent = new Intent(activity, CommentActivity.class);
-intent.putExtra("workId",item.getListId());
-intent.putExtra("toUserId",item.getEmployerId());
+intent.putExtra("item",item);
 activity.startActivity(intent);
  */
 public class CommentActivity extends BaseBindBarActivity<ActivityCommentBinding> {
@@ -79,6 +80,7 @@ public class CommentActivity extends BaseBindBarActivity<ActivityCommentBinding>
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
                         Apollo.emit(EventStr.UPDATE_ORDER_LIST);
+                        ActivityCollector.finishActivity(OrderInfoActivity.class);
                     }
                 });
     }

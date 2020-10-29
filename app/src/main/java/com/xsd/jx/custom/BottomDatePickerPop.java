@@ -5,6 +5,7 @@ package com.xsd.jx.custom;
  * author: SmallCake
  */
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.L;
 
@@ -24,7 +26,9 @@ import java.util.List;
 
 /**
  * 底部年月时间选择弹出窗
+ * 请使用{@link com.xsd.jx.utils.PopShowUtils#showYM(BaseActivity, DatePickerDialog.OnDateSetListener)}
  */
+@Deprecated
 public class BottomDatePickerPop extends BottomPopupView {
     private WheelPicker wheelYear;
     private WheelPicker wheelMonth;
