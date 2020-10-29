@@ -62,7 +62,7 @@ public interface WorkApi {
     Observable<BaseResponse<MessageBean>> acceptInvite(@Query("workId")Integer workId);
     //报名上工 workId 招工信息ID
     @GET("work/join")
-    Observable<BaseResponse<MessageBean>> join(@Query("workId")Integer workId);
+    Observable<BaseResponse<MessageBean>> join(@Query("workId")Integer workId,@Query("num")Integer num);
     //收藏用工信息
     @GET("work/fav")
     Observable<BaseResponse<MessageBean>> fav(@Query("workId")Integer workId);
@@ -87,6 +87,29 @@ public interface WorkApi {
     //用户查看自己整月的考勤记录
     @GET("work/check-log")
     Observable<BaseResponse<CheckLogResponse>> checkLog(@Query("month")String month);
+
+    /**
+     * 我要找活
+     * @param wtId            工种ID
+     * @param provinceId      省份ID
+     * @param cityId          城市ID
+     * @param districtId      区县ID
+     * @param startDate       开始日期
+     * @param endDate         结束时间
+     * @param num             空闲人数
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("work/publish")
+    Observable<BaseResponse<MessageBean>> publish(
+             @Field("wtId")Integer wtId
+            ,@Field("provinceId")Integer provinceId
+            ,@Field("cityId")Integer cityId
+            ,@Field("districtId")Integer districtId
+            ,@Field("startDate")String startDate
+            ,@Field("endDate")String endDate
+            ,@Field("num")Integer num
+    );
 
 
 }

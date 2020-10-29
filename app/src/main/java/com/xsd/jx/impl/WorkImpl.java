@@ -72,8 +72,8 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> join(Integer workId) {
-        return bindIoUI(api.join(workId));
+    public Observable<BaseResponse<MessageBean>> join(Integer workId,Integer num) {
+        return bindIoUI(api.join(workId,num));
     }
 
     @Override
@@ -99,5 +99,10 @@ public class WorkImpl implements WorkApi {
     @Override
     public Observable<BaseResponse<CheckLogResponse>> checkLog(String month) {
         return bindIoUI(api.checkLog(month));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> publish(Integer wtId, Integer provinceId, Integer cityId, Integer districtId, String startDate, String endDate, Integer num) {
+        return bindIoUI(api.publish(wtId,provinceId,cityId,districtId,startDate,endDate,num));
     }
 }

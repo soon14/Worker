@@ -11,45 +11,41 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.lxj.xpopup.core.AttachPopupView;
 import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.impl.PartShadowPopupView;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.AddrSelectAdapter;
 import com.xsd.jx.bean.AddrBean;
+import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.utils.GsonUtils;
-import com.xsd.utils.L;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Date: 2020/9/3
  * author: SmallCake
- * 三级选择器
+ * 二级选择器，只选省市
  * 从底部弹出的省市区选择器
  */
-public class BottomProvincesPop extends BottomPopupView {
+public class AttViewAddrSelectPop extends PartShadowPopupView {
 
     private TextView tvProvince;
     private TextView tvCity;
-    private TextView tvDistrict;
     private View viewProvince;
     private View viewCity;
-    private View viewDistrict;
 
     private AddrBean selectProvince;//省
     private AddrBean selectCity;//市
-    private AddrBean selectDistrict;//区
 
     private List<AddrBean> allAddrBeans;
 
-    private OnAddrListener listener;
+    private OnAddr2Listener listener;
     private AddrSelectAdapter mAdapter =new AddrSelectAdapter();
 
 
@@ -66,34 +62,30 @@ public class BottomProvincesPop extends BottomPopupView {
         return (int) (super.getPopupHeight()*0.86f);
     }
 
-    public void setListener(OnAddrListener listener) {
+    public void setListener(OnAddr2Listener listener) {
         this.listener = listener;
     }
 
-    public BottomProvincesPop(@NonNull Context context) {
+    public AttViewAddrSelectPop(@NonNull Context context) {
         super(context);
     }
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.pop_bottom_provinces;
+        return R.layout.pop_att_addr_selector;
     }
 
     @Override
     protected void onCreate() {
         super.onCreate();
-        findViewById(R.id.tv_title).setOnClickListener(view -> dismiss());
         openProvinces.add("湖北省");
         openProvinces.add("重庆市");
 
         tvProvince = findViewById(R.id.tv_province);
         tvCity = findViewById(R.id.tv_city);
-        tvDistrict = findViewById(R.id.tv_district);
 
         viewProvince = findViewById(R.id.view_province);
         viewCity = findViewById(R.id.view_city);
-        viewDistrict = findViewById(R.id.view_district);
-        LinearLayout layoutDistrict = findViewById(R.id.layout_district);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(),3));
@@ -115,20 +107,12 @@ public class BottomProvincesPop extends BottomPopupView {
         mAdapter.setList(provinceDatas);
         tvProvince.setOnClickListener(view -> {
             tvCity.setVisibility(INVISIBLE);
-            tvDistrict.setVisibility(INVISIBLE);
             showProvinceData(provinceDatas);
         });
         tvCity.setOnClickListener(view -> {
             if (selectProvince!=null){
-                tvDistrict.setVisibility(INVISIBLE);
                 List<AddrBean> datas2 = getAddrBeans(selectProvince.getId());
                 showCityData(datas2);
-            }
-        });
-        tvDistrict.setOnClickListener(view -> {
-            if (selectCity!=null){
-                List<AddrBean> datas3 = getAddrBeans(selectCity.getId());
-                showDistrictData(datas3);
             }
         });
 
@@ -149,25 +133,8 @@ public class BottomProvincesPop extends BottomPopupView {
                 case 2://选择的是市，查询出对应的区,默认选中第一个，如果没有就隐藏区
                     selectCity=item;
                     tvCity.setText(item.getName());
-                    //根据选中的市查出对应的区，没有就直接关闭弹框
-                    List<AddrBean> addrBeans = getAddrBeans(item.getId());
-                    if (addrBeans.size()==0){
-                        layoutDistrict.setVisibility(INVISIBLE);
-                        selectDistrict=null;
-                        dismiss();
-                        listener.onAddrSelect(selectProvince,selectCity,selectDistrict);
-                    }else {
-                        layoutDistrict.setVisibility(VISIBLE);
-                        selectDistrict = addrBeans.get(0);//默认选中该市对应的第一个区
-                        tvDistrict.setText(selectDistrict.getName());
-                        showDistrictData(addrBeans);
-                    }
-                    break;
-                case 3:
-                    selectDistrict=item;
-                    tvDistrict.setText(item.getName());
+                    listener.onAddrSelect(selectProvince,selectCity);
                     dismiss();
-                    listener.onAddrSelect(selectProvince,selectCity,selectDistrict);
                     break;
             }
 
@@ -189,36 +156,19 @@ public class BottomProvincesPop extends BottomPopupView {
 
     //显示省的信息
     private void showProvinceData(List<AddrBean> datas) {
-
         tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));
         viewProvince.setVisibility(VISIBLE);
         tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
         viewCity.setVisibility(INVISIBLE);
-        tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
-        viewDistrict.setVisibility(INVISIBLE);
         mAdapter.setList(datas);
     }
     //显示市的信息
     private void showCityData(List<AddrBean> datas) {
         tvCity.setVisibility(VISIBLE);
-        tvDistrict.setVisibility(VISIBLE);
         tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
         viewProvince.setVisibility(INVISIBLE);
         tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));
         viewCity.setVisibility(VISIBLE);
-        tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
-        viewDistrict.setVisibility(INVISIBLE);
-        mAdapter.setList(datas);
-    }
-    //显示区的信息
-    private void showDistrictData(List<AddrBean> datas) {
-        tvDistrict.setVisibility(VISIBLE);
-        tvProvince.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
-        viewProvince.setVisibility(INVISIBLE);
-        tvCity.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_gray));
-        viewCity.setVisibility(INVISIBLE);
-        tvDistrict.setTextColor(ContextCompat.getColor(this.getContext(),R.color.tv_blue));
-        viewDistrict.setVisibility(VISIBLE);
         mAdapter.setList(datas);
     }
 

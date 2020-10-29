@@ -76,7 +76,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
         tvTitle.setText("考勤签到");
         tvRight.setText("考勤记录");
         //姓名
-        UserInfo user = UserUtils.getUser();
+        UserInfo user = UserUtils.getUserInfo();
         db.tvName.setText(user.getName());
         //今天日期
         String todayDate = TimeUtils.getTodayDate();

@@ -59,7 +59,7 @@ public class RealNameAuthActivity extends BaseBindBarActivity<ActivityRealNameAu
 
     private void initView() {
         tvTitle.setText("实名认证");
-        int isCertification = UserUtils.getUser().getIsCertification();//是否实名认证 0否 1是
+        int isCertification = UserUtils.getUserInfo().getIsCertification();//是否实名认证 0否 1是
         if (isCertification==1){
             db.layoutInfos.setVisibility(View.GONE);
             db.layoutIsAuth.setVisibility(View.VISIBLE);

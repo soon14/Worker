@@ -11,6 +11,7 @@ import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.custom.ConfirmNumPop;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
@@ -100,15 +101,21 @@ public class FavWorksActivity extends BaseBindBarActivity<ActivityRecyclerviewBi
     }
 
     private void join(int id,int position) {
-        dataProvider.work.join(id)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        mAdapter.getData().get(position).setIsJoin(true);
-                        mAdapter.notifyItemChanged(position);
-                        PopShowUtils.showTips(FavWorksActivity.this);
-                    }
-                });
+        PopShowUtils.showJoinNum(this, new ConfirmNumPop.ConfirmListener() {
+            @Override
+            public void onConfirmNum(int num) {
+                dataProvider.work.join(id,num)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                mAdapter.getData().get(position).setIsJoin(true);
+                                mAdapter.notifyItemChanged(position);
+                                PopShowUtils.showTips(FavWorksActivity.this);
+                            }
+                        });
+            }
+        });
+
     }
     /**
      * 已过期，点击删除

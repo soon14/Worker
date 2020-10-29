@@ -3,6 +3,7 @@ package com.xsd.jx;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -96,20 +97,25 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         if (!Apollo.isBind(this)) Apollo.bind(this);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
-
-        if (UserUtils.isLogin()){
-            if (UserUtils.isCertification()){
-                if (UserUtils.isChooseWork())PopShowUtils.showPushJob(this);//登录后弹框显示：推荐的工作
-                isInWork();//是否在工期中
-                getInviteList();//邀请工作
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (UserUtils.isLogin()){
+                    if (UserUtils.isCertification()){
+                        if (UserUtils.isChooseWork())PopShowUtils.showPushJob(MainActivity.this);//登录后弹框显示：推荐的工作
+                        isInWork();//是否在工期中
+                        getInviteList();//邀请工作
+                    }
+                    if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
+                }
+                PopShowUtils.showAppUpdate(MainActivity.this);
+                CommonDataUtils.getPhone(MainActivity.this);
+                //初始化一个OSSClient客户端，方便打卡操作更快捷
+                initOssClient();
             }
-            if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
-        }
-        PopShowUtils.showAppUpdate(this);
-        CommonDataUtils.getPhone(this);
-//        PopShowUtils.showCustomYM(this);
-        //初始化一个OSSClient客户端，方便打卡操作更快捷
-        initOssClient();
+        },1000);
+
+
     }
 
     private void initOssClient() {

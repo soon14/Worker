@@ -80,17 +80,14 @@ public class WalletActivity extends BaseBindBarActivity<ActivityWalletBinding> {
                     @Override
                     protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
                         UserInfoResponse data = baseResponse.getData();
-                        UserInfo info = data.getInfo();
-                        UserUtils.saveUser(info);
-//                        info.setLiveBalance(1000000);
-                        db.setItem(info);
+                        UserUtils.saveUser(data);
+                        db.setItem(data.getInfo());
                     }
                 });
     }
 
     /**
      * 设置支付方式的数据
-     * @param data
      */
     private void initPayData() {
         WithdrawInfoResponse.WxBean wx = payData.getWx();

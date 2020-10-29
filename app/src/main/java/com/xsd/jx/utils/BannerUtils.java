@@ -42,7 +42,7 @@ public class BannerUtils {
         }else if (layoutParams instanceof CollapsingToolbarLayout.LayoutParams){
             CollapsingToolbarLayout.LayoutParams layoutMain = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, bannerHeight);
             int dp8 = DpPxUtils.dp2px(8);
-            layoutMain.setMargins(dp8,dp8*4,dp8,dp8);
+            layoutMain.setMargins(dp8,dp8*10,dp8,dp8);
             banner.setLayoutParams(layoutMain);
         }
         banner.setIndicatorGravity(BannerConfig.RIGHT);

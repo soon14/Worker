@@ -27,13 +27,16 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.VersionResponse;
+import com.xsd.jx.custom.AttViewAddrSelectPop;
 import com.xsd.jx.custom.BottomNationSelecterPop;
 import com.xsd.jx.custom.BottomProvincesPop;
 import com.xsd.jx.custom.BottomSharePop;
 import com.xsd.jx.custom.BottomSingleWorkTypePop;
+import com.xsd.jx.custom.ConfirmNumPop;
 import com.xsd.jx.custom.InviteJobPop;
 import com.xsd.jx.custom.PushJobPop;
 import com.xsd.jx.custom.YearMonthSelecterPop;
+import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
 import com.xsd.jx.listener.OnWorkTypeSelectListener;
@@ -460,8 +463,14 @@ public class PopShowUtils {
         new XPopup.Builder(baseActivity)
                 .asCustom(bottomProvincesPop)
                 .show();
-
-
+    }
+    public static void showAddrSelect(BaseActivity baseActivity,View atView, OnAddr2Listener listener) {
+        AttViewAddrSelectPop attViewAddrSelectPop = new AttViewAddrSelectPop(baseActivity);
+        attViewAddrSelectPop.setListener(listener);
+        new XPopup.Builder(baseActivity)
+                .atView(atView)
+                .asCustom(attViewAddrSelectPop)
+                .show();
     }
 
     /***
@@ -471,5 +480,19 @@ public class PopShowUtils {
     public static void callUs(Activity actiivty) {
         String platPhone = (String) SPUtils.get("platPhone", "");
         MobileUtils.callPhone(actiivty, platPhone);
+    }
+    //工人端-确认报名人数弹框
+    public static void showJoinNum(BaseActivity baseActivity,  ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认报名工人数","确认报名",listener);
+        new XPopup.Builder(baseActivity)
+                .asCustom(confirmNumPop)
+                .show();
+    }
+    //企业端-确认邀请用工弹框
+    public static void showInviteNum(BaseActivity baseActivity, ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认邀请上工人数","确认邀请",listener);
+        new XPopup.Builder(baseActivity)
+                .asCustom(confirmNumPop)
+                .show();
     }
 }

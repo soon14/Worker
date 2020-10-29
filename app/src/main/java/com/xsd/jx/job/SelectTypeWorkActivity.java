@@ -82,9 +82,9 @@ public class SelectTypeWorkActivity extends BaseBindBarActivity<ActivitySelectTy
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
-                        UserInfo user = UserUtils.getUser();
+                        UserInfo user = UserUtils.getUserInfo();
                         user.setChooseWork(true);
-                        UserUtils.saveUser(user);
+                        UserUtils.saveUserInfo(user);
                         //由于登录已经推荐了工种，选择工种后不再推荐
                         Apollo.emit(EventStr.SHOW_PUSH_JOB);
                     }

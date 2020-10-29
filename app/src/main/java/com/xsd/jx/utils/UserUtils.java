@@ -4,7 +4,11 @@ import android.text.TextUtils;
 
 import com.xsd.jx.bean.LoginUserResponse;
 import com.xsd.jx.bean.UserInfo;
+import com.xsd.jx.bean.UserInfoResponse;
+import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.utils.SPUtils;
+
+import java.util.List;
 
 
 /**
@@ -23,12 +27,20 @@ public class UserUtils {
         SPUtils.remove("user");
         SPUtils.remove("token");
         SPUtils.remove("is_first");
+        SPUtils.remove("workTypes");
     }
 
-    public static UserInfo getUser() {
+    public static UserInfo getUserInfo() {
         return SPUtils.readObject("user");
     }
-    public static void saveUser(UserInfo user) {
+    public static List<WorkTypeBean> getWorkTypes() {
+        return SPUtils.readObject("workTypes");
+    }
+    public static void saveUser(UserInfoResponse user) {
+         SPUtils.saveObject("user",user.getInfo());
+         SPUtils.saveObject("workTypes",user.getWorkTypes());
+    }
+    public static void saveUserInfo(UserInfo user) {
          SPUtils.saveObject("user",user);
     }
 
@@ -46,7 +58,7 @@ public class UserUtils {
 
     public static boolean isChooseWork() {
         try {
-            return getUser().isChooseWork();
+            return getUserInfo().isChooseWork();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,7 +70,7 @@ public class UserUtils {
      */
     public static boolean isCertification() {
         try {
-            return getUser().getIsCertification()==1;
+            return getUserInfo().getIsCertification()==1;
         } catch (Exception e) {
             e.printStackTrace();
         }

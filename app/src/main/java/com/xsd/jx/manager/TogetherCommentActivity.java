@@ -117,7 +117,7 @@ public class TogetherCommentActivity extends BaseBindBarActivity<ActivityTogethe
         tvTitle.setText("评价工人");
         workId = getIntent().getIntExtra("workId",0);
         workers = (List<WorkerBean>) getIntent().getSerializableExtra("workers");
-        userId = UserUtils.getUser().getId();
+        userId = UserUtils.getUserInfo().getId();
         if (workers==null)return;
         for (int i = 0; i <workers.size(); i++) {
             View viewWorkers = LayoutInflater.from(this).inflate(R.layout.item_wait_comment_workers, null);

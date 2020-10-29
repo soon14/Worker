@@ -16,6 +16,14 @@ public class WorkTypeBean implements Serializable {
     private int id;
     private String title;
 
+    @Override
+    public String toString() {
+        return "WorkTypeBean{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

@@ -91,9 +91,8 @@ public class MineFragment extends BaseBindFragment<FragmentMineBinding> {
                     @Override
                     protected void onSuccess(BaseResponse<UserInfoResponse> baseResponse) {
                         UserInfoResponse data = baseResponse.getData();
-                        UserInfo info = data.getInfo();
-                        UserUtils.saveUser(info);
-                        db.setItem(info);
+                        UserUtils.saveUser(data);
+                        db.setItem(data.getInfo());
                     }
                 });
     }

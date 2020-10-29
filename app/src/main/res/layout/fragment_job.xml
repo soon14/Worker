@@ -6,6 +6,10 @@
     <data>
 
     </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -23,21 +27,21 @@
                     app:layout_scrollFlags="exitUntilCollapsed|scroll"
                     app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
                     app:toolbarId="@+id/toolbar">
-
                     <com.youth.banner.Banner
-                        android:layout_marginTop="24dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginLeft="8dp"
                         android:id="@+id/banner"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/dp_160" />
-
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:background="@color/transparent"
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/dp_28" />
+                        android:layout_height="@dimen/dp_80" />
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
 
                 <LinearLayout
                     android:id="@+id/layout_tab"
@@ -123,6 +127,7 @@
                             android:layout_centerHorizontal="true" />
                     </RelativeLayout>
                 </LinearLayout>
+                </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -137,4 +142,46 @@
                     android:layout_height="match_parent" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_24"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_56">
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:padding="@dimen/dp_8"
+                android:drawablePadding="@dimen/dp_6"
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/ic_darkgray_loca"
+                android:drawableRight="@mipmap/ic_gray_triangle_down"
+                android:text="湖北省"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4" />
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/tv_publish"
+                android:layout_marginRight="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_8"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/round20_blue_bg"
+                android:text="我要找活"
+                android:textSize="@dimen/h4" />
+        </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

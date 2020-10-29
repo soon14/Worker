@@ -87,14 +87,20 @@ public class PushJobPop extends CenterPopupView {
 
     private void join() {
         if (jobBean==null)return;
-        activity.getDataProvider().work.join(jobBean.getId())
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        PopShowUtils.showTips(activity);
-                        DataBindingAdapter.isJoin(db.tvJoin,true);
-                    }
-                });
+        PopShowUtils.showJoinNum(activity, new ConfirmNumPop.ConfirmListener() {
+            @Override
+            public void onConfirmNum(int num) {
+                activity.getDataProvider().work.join(jobBean.getId(),num)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                PopShowUtils.showTips(activity);
+                                DataBindingAdapter.isJoin(db.tvJoin,true);
+                            }
+                        });
+            }
+        });
+
     }
 
     public void fav(){

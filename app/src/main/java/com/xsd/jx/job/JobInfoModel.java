@@ -3,8 +3,10 @@ package com.xsd.jx.job;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.custom.ConfirmNumPop;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.ToastUtil;
 
 /**
@@ -43,12 +45,13 @@ public class JobInfoModel {
 
     }
      void join() {
-         dataProvider.work.join(workId)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        callback.joinCallBack(baseResponse.getData());
-                    }
-                });
+         PopShowUtils.showJoinNum(callback.getBaseActivity(), num -> dataProvider.work.join(workId,num)
+                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                     @Override
+                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                         callback.joinCallBack(baseResponse.getData());
+                     }
+                 }));
+
     }
 }

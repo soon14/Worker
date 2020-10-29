@@ -1,6 +1,7 @@
 package com.xsd.jx.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Date: 2020/9/8
@@ -86,6 +87,7 @@ public class UserInfo implements Serializable {
     private String idCard;
     private int isCertification;//是否实名认证 0否 1是
     private String workYears;
+
     private String balance;
     private int liveBalance;
     private int frozenBalance;
@@ -96,6 +98,7 @@ public class UserInfo implements Serializable {
     private int inviteCode;
     private boolean isChooseWork;
     private String shareUrl;//邀请链接
+
 
     public void setNation(String nation) {
         this.nation = nation;

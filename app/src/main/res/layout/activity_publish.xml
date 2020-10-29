@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clicklistener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.xsd.jx.job.PublishActivity">
+        <include layout="@layout/action_common_bar"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:onClick="@{clicklistener}"
+            android:id="@+id/layout_work_type"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_96"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:text="工种"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView1" />
+
+            <TextView
+                android:id="@+id/tv_work_type"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="请选择所需工种"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h3"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView1"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:padding="@dimen/dp_16"
+                android:src="@mipmap/ic_gray_arrow_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view1"
+                style="@style/h_line"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:onClick="@{clicklistener}"
+            android:id="@+id/layout_addr"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_96"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:text="上工区域"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+            <TextView
+                android:id="@+id/tv_addr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:hint="请选择在哪儿上工"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h3"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:padding="@dimen/dp_16"
+                android:src="@mipmap/ic_gray_arrow_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view2"
+                style="@style/h_line"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_96"
+            android:background="@color/white">
+            <TextView
+                android:id="@+id/tv_time_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:text="空闲时间"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+            <View
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_height="@dimen/dp_32"
+                style="@style/v_line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                app:layout_constraintTop_toBottomOf="@+id/tv_time_"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <TextView
+                    android:gravity="center"
+                    android:onClick="@{clicklistener}"
+                    android:id="@+id/tv_start_time"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:hint="请选择开始时间"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h3"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:gravity="center"
+                    android:onClick="@{clicklistener}"
+                    android:id="@+id/tv_end_time"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:hint="请选择结束时间"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h3"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+
+
+
+
+            <ImageView
+                android:visibility="invisible"
+                android:id="@+id/imageView3"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:padding="@dimen/dp_16"
+                android:src="@mipmap/ic_gray_arrow_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view3"
+                style="@style/h_line"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_96"
+            android:background="@color/white">
+            <LinearLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="空闲工人数量 "
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/h5"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="(点击可修改)"
+                    android:textColor="@color/tv_black"
+                    android:textSize="@dimen/h5"
+                    />
+            </LinearLayout>
+
+
+            <com.xsd.jx.custom.CompanyEdittext
+                app:ce_text="人"
+                app:ce_text_color="@color/tv_black"
+                android:id="@+id/et_num"
+                android:maxLength="3"
+                android:inputType="number"
+                android:padding="@dimen/dp_16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text=""
+                android:hint="请输入工人数量"
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h3"
+                app:layout_constraintBottom_toTopOf="@+id/view5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/view5"
+                style="@style/h_line"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:background="@color/white"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:onClick="@{clicklistener}"
+                android:id="@+id/tv_push"
+                android:layout_margin="@dimen/dp_10"
+                style="@style/DefaultBtnStyle"
+                android:text="发布"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

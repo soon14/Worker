@@ -16,19 +16,24 @@ import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
+import com.xsd.jx.bean.AddrBean;
 import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
+import com.xsd.jx.custom.ConfirmNumPop;
 import com.xsd.jx.databinding.FragmentJobBinding;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
+import com.xsd.jx.job.PublishActivity;
 import com.xsd.jx.job.SignActivity;
 import com.xsd.jx.listener.OnAdapterListener;
+import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.BannerUtils;
+import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
@@ -115,6 +120,19 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
 
     private void onEvent() {
+        db.tvLocation.setOnClickListener(v -> PopShowUtils.showAddrSelect((BaseActivity) JobFragment.this.getActivity(), db.tvLocation,(province, city) -> {
+            String address = province.getName() +"-"+ city.getName();
+            db.tvLocation.setText(address);
+            int cityId = city.getId();
+        }));
+        db.tvPublish.setOnClickListener(v -> {
+            if (!UserUtils.isLogin()){
+                ToastUtil.showLong("请先登录！");
+                goActivity(LoginActivity.class);
+                return;
+            }
+            goActivity(PublishActivity.class);
+        });
         int childCount = db.layoutTab.getChildCount();
         for (int i = 0; i < childCount; i++) {
             int finalI = i;
@@ -188,22 +206,28 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
     }
 
     private void join(int id,int position) {
-        dataProvider.work.join(id)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
-                        mAdapter.getData().get(position).setIsJoin(true);
-                        mAdapter.notifyItemChanged(position+1);
-                        PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
-                        //报名成功，刷新订单
-                        Apollo.emit(EventStr.UPDATE_ORDER_LIST);
-                    }
+        PopShowUtils.showJoinNum((BaseActivity) this.getActivity(), new ConfirmNumPop.ConfirmListener() {
+            @Override
+            public void onConfirmNum(int num) {
+                dataProvider.work.join(id,1)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                                mAdapter.getData().get(position).setIsJoin(true);
+                                mAdapter.notifyItemChanged(position+1);
+                                PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
+                                //报名成功，刷新订单
+                                Apollo.emit(EventStr.UPDATE_ORDER_LIST);
+                            }
 
-                    @Override
-                    protected void onErr(String err) {
-                        PopShowUtils.showMsg((BaseActivity) JobFragment.this.getActivity(),err);
-                    }
-                });
+                            @Override
+                            protected void onErr(String err) {
+                                PopShowUtils.showMsg((BaseActivity) JobFragment.this.getActivity(),err);
+                            }
+                        });
+            }
+        });
+
     }
 
 
