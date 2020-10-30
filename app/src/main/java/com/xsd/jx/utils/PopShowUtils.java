@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.SpannableStringBuilder;
@@ -27,15 +28,17 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.VersionResponse;
-import com.xsd.jx.custom.AttViewAddrSelectPop;
-import com.xsd.jx.custom.BottomNationSelecterPop;
-import com.xsd.jx.custom.BottomProvincesPop;
-import com.xsd.jx.custom.BottomSharePop;
-import com.xsd.jx.custom.BottomSingleWorkTypePop;
-import com.xsd.jx.custom.ConfirmNumPop;
-import com.xsd.jx.custom.InviteJobPop;
-import com.xsd.jx.custom.PushJobPop;
-import com.xsd.jx.custom.YearMonthSelecterPop;
+import com.xsd.jx.pop.AttViewAddrSelectPop;
+import com.xsd.jx.pop.BottomDayPersionPop;
+import com.xsd.jx.pop.BottomNationSelecterPop;
+import com.xsd.jx.pop.BottomProvincesPop;
+import com.xsd.jx.pop.BottomSharePop;
+import com.xsd.jx.pop.BottomSingleWorkTypePop;
+import com.xsd.jx.pop.ConfirmEmployNumPop;
+import com.xsd.jx.pop.ConfirmNumPop;
+import com.xsd.jx.pop.InviteJobPop;
+import com.xsd.jx.pop.PushJobPop;
+import com.xsd.jx.pop.YearMonthSelecterPop;
 import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.listener.OnAddrListener;
 import com.xsd.jx.listener.OnNationSelectListener;
@@ -452,10 +455,7 @@ public class PopShowUtils {
 
     /**
      * 省市区地址选择器
-     * 目前为湖北省下的市和区的选择
-     *
-     * @param baseActivity
-     * @param listener
+     * 目前为重庆和湖北省下的市和区的选择
      */
     public static void showBottomAddrSelect(BaseActivity baseActivity, OnAddrListener listener) {
         BottomProvincesPop bottomProvincesPop = new BottomProvincesPop(baseActivity);
@@ -464,6 +464,10 @@ public class PopShowUtils {
                 .asCustom(bottomProvincesPop)
                 .show();
     }
+
+    /**
+     * 省市地址选择器
+     */
     public static void showAddrSelect(BaseActivity baseActivity,View atView, OnAddr2Listener listener) {
         AttViewAddrSelectPop attViewAddrSelectPop = new AttViewAddrSelectPop(baseActivity);
         attViewAddrSelectPop.setListener(listener);
@@ -473,25 +477,44 @@ public class PopShowUtils {
                 .show();
     }
 
-    /***
-     * 联系平台
-     * @param actiivty
-     */
+    //联系平台
     public static void callUs(Activity actiivty) {
         String platPhone = (String) SPUtils.get("platPhone", "");
         MobileUtils.callPhone(actiivty, platPhone);
     }
     //工人端-确认报名人数弹框
     public static void showJoinNum(BaseActivity baseActivity,  ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认报名工人数","确认报名",listener);
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认报名工人数","确认报名",1,true,listener);
         new XPopup.Builder(baseActivity)
                 .asCustom(confirmNumPop)
                 .show();
     }
     //企业端-确认邀请用工弹框
     public static void showInviteNum(BaseActivity baseActivity, ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认邀请上工人数","确认邀请",listener);
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认邀请上工人数","确认邀请",1,true,listener);
         new XPopup.Builder(baseActivity)
+                .asCustom(confirmNumPop)
+                .show();
+    }
+    //修改上工人数
+    public static void showEditNum(Context context, int num, ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(context,"修改上工人数","确认修改",num,false,listener);
+        new XPopup.Builder(context)
+                .asCustom(confirmNumPop)
+                .show();
+    }
+    //企业端-确认修改报名的包工头每天的人数弹框
+    public static void showDayPersion(BaseActivity baseActivity) {
+        BottomDayPersionPop pop = new BottomDayPersionPop(baseActivity);
+        new XPopup.Builder(baseActivity)
+                .moveUpToKeyboard(false)
+                .asCustom(pop)
+                .show();
+    }
+    //确认雇佣人数
+    public static void showConfirmEmployNum(Context context) {
+        ConfirmEmployNumPop confirmNumPop = new ConfirmEmployNumPop(context);
+        new XPopup.Builder(context)
                 .asCustom(confirmNumPop)
                 .show();
     }

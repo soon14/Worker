@@ -11,7 +11,7 @@ import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.custom.ConfirmNumPop;
+import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;

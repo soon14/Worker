@@ -22,7 +22,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
-import com.xsd.jx.custom.InviteJobsPop;
+import com.xsd.jx.pop.InviteJobsPop;
 import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
 import com.xsd.jx.utils.DataBindingAdapter;

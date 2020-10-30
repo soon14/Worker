@@ -155,7 +155,6 @@
             android:layout_height="@dimen/dp_56">
             <TextView
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_16"
                 android:padding="@dimen/dp_8"
                 android:drawablePadding="@dimen/dp_6"
                 android:id="@+id/tv_location"
@@ -163,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/ic_darkgray_loca"
                 android:drawableRight="@mipmap/ic_gray_triangle_down"
-                android:text="湖北省"
+                android:text="湖北省-武汉市"
                 android:textColor="@color/tv_black"
                 android:textSize="@dimen/h4" />
             <TextView

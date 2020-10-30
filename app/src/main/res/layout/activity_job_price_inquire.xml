@@ -25,17 +25,22 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44">
             <TextView
+                android:maxEms="10"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:id="@+id/tv_addr"
                 android:textSize="@dimen/h5"
+                android:drawablePadding="@dimen/dp_2"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:drawablePadding="@dimen/dp_4"
                 android:drawableRight="@mipmap/ic_black_arrow_down"
                 android:textColor="@color/black"
-                android:text="武汉市"
+                tools:text="湖北省-武汉市湖北省-武汉市"
+                android:text="湖北省-武汉市"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <View style="@style/v_line" android:layout_margin="@dimen/dp_8"/>
             <EditText
+                android:layout_marginLeft="@dimen/dp_8"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:maxLength="18"

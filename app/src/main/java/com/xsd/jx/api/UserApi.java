@@ -148,6 +148,15 @@ public interface UserApi {
     @GET("user/ali-sts")
     Observable<BaseResponse<StsResponse>> aliSts();
 
+    /**
+     * 用户修改自己的默认找活地方
+     * @param provinceId  省份ID
+     * @param cityId      城市ID
+     */
+    @FormUrlEncoded
+    @POST("user/change-address")
+    Observable<BaseResponse<MessageBean>> changeAddress(@Field("provinceId")Integer provinceId,@Field("cityId")Integer cityId);
+
 
 
 }

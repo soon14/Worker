@@ -19,7 +19,7 @@ import com.xsd.jx.adapter.RecommendAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.RecommendResponse;
-import com.xsd.jx.custom.BottomSharePop;
+import com.xsd.jx.pop.BottomSharePop;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;

@@ -1,5 +1,6 @@
 package com.xsd.jx.utils;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.math.MathUtils;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.JobListResponse;
@@ -23,10 +25,12 @@ import com.xsd.jx.bean.UserInfo;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.utils.DpPxUtils;
+import com.xsd.utils.RandomUtils;
 import com.xsd.utils.SmallUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Date: 2020/1/15
@@ -270,7 +274,6 @@ public class DataBindingAdapter {
     /**
      *  我的招工适配器，底部状态信息{@link R.layout.item_mygetworkers_geting}
      */
-
     @BindingAdapter("layoutWorkers")
     public static void layoutWorkers(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
         if (itemsBean==null)return;
@@ -325,6 +328,22 @@ public class DataBindingAdapter {
         tv.setClickable(!isInvite);
         tv.setEnabled(!isInvite);
         tv.setBackgroundResource(isInvite?R.drawable.round6_gray_bg:R.drawable.round6_blue_bg);
+    }
+    //需要人数：已招0人/共需20人
+    @BindingAdapter("needNum")
+    public static void needNum(TextView tv, JobBean item){
+        int joinedNum = item.getJoinedNum();
+        int num = item.getNum();
+        tv.setText("需要人数：已招"+joinedNum+"人/共需"+num+"人");
+    }
+    //空闲工人：18人（团队）\n空闲时间：2020-10-29至2020-11-29（共30天）
+    @BindingAdapter("freeTimePersion")
+    public static void freeTimePersion(TextView tv, WorkerBean item){
+        int freePersionNum = RandomUtils.getInt(1,20);
+        String startTime = "2020-10-29";
+        String endTime = "2020-11-29";
+        int day = RandomUtils.getInt(1,30);
+        tv.setText(String.format(Locale.CHINA,"空闲工人：%d人（%s）\n空闲时间：%s至%s（共%d天）", freePersionNum, freePersionNum > 1 ? "团队" : "个人", startTime, endTime, day));
     }
 
     /**

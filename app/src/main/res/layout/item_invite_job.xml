@@ -84,6 +84,17 @@
             android:textSize="@dimen/h4" />
 
         <TextView
+            android:id="@+id/tv_invite_num"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="邀请人数：5人"
+            android:textColor="@color/dimgray"
+            android:textSize="@dimen/h4" />
+
+        <TextView
             android:ellipsize="end"
             android:maxLines="2"
             android:id="@+id/tv_addr"

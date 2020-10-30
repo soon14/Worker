@@ -1,4 +1,4 @@
-package com.xsd.jx.custom;
+package com.xsd.jx.pop;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Date: 2020/8/21
  * author: SmallCake
- * 邀请得工作
+ * 邀请得工作弹框
  */
 public class InviteJobPop extends CenterPopupView {
     private List<JobBean> data;
@@ -60,6 +60,8 @@ public class InviteJobPop extends CenterPopupView {
             ItemInviteJobBinding bind = DataBindingUtil.bind(viewChild);
             bind.tvJoin.setBackgroundResource(isJoin ? R.drawable.round6_gray_bg : R.drawable.round6_blue_bg);
             bind.setItem(jobBean);
+            //TODO 邀请人数
+            bind.tvInviteNum.setText("邀请人数："+jobBean.getNum()+"人");
             layoutContent.addView(viewChild);
             //点击事件
             bind.tvJoin.setOnClickListener(view -> activity.getDataProvider().work.acceptInvite(jobBean.getId())

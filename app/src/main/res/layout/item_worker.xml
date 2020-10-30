@@ -10,38 +10,38 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_10"
         android:background="@color/white"
-        android:padding="@dimen/dp_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/dp_16">
 
 
         <ImageView
-            avatar="@{item.avatar}"
-            android:src="@mipmap/ic_worker_head"
             android:id="@+id/iv_head"
+            avatar="@{item.avatar}"
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
+            android:src="@mipmap/ic_worker_head"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/tv_black"
-            android:textSize="@dimen/h3"
-            android:textStyle="bold"
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            tools:text="张智尧"
             android:text="@{item.name}"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h3"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head" />
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:text="张智尧" />
 
         <TextView
-            workerListDesc="@{item}"
             android:id="@+id/tv_desc"
+            workerListDesc="@{item}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,6 +52,27 @@
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
+        <View
+            android:id="@+id/view_line"
+            style="@style/h_line"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+        <TextView
+            freeTimePersion="@{item}"
+            android:lineSpacingExtra="@dimen/dp_8"
+            android:id="@+id/tv_free_time_persion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            tools:text="空闲工人：18人（团队）\n空闲时间：2020-10-29至2020-11-29（共30天）"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_line" />
 
         <TextView
             android:id="@+id/tv_look"
@@ -62,18 +83,20 @@
             android:text="查看工人简历"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h5"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_head" />
 
         <TextView
-            isInvite="@{item.invited}"
             android:id="@+id/tv_invite"
             style="@style/DefaultBtnStyle"
+            isInvite="@{item.invited}"
+            android:layout_marginTop="24dp"
             android:text="邀请上工"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_look" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_free_time_persion" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

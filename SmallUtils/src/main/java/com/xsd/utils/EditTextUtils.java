@@ -1,11 +1,14 @@
 package com.xsd.utils;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.util.regex.Matcher;
@@ -243,5 +246,6 @@ public class EditTextUtils {
             }
         });
     }
+
 
 }

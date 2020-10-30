@@ -11,7 +11,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
-import com.xsd.jx.custom.ConfirmNumPop;
+import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.databinding.ActivityRecyclerviewBinding;
 import com.xsd.jx.listener.OnAdapterListener;
 import com.xsd.jx.utils.AdapterUtils;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PermanentWorkerActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
     private JobAdapter mAdapter = new JobAdapter();
     private int page;
-    private int type;
+    private int type;//0:不限 1:短期工 2：长期工
     @Override
     protected int getLayoutId() {
         return R.layout.activity_recyclerview;

@@ -22,7 +22,7 @@ import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.custom.BottomNationSelecterPop;
+import com.xsd.jx.pop.BottomNationSelecterPop;
 import com.xsd.jx.databinding.ActivityRealNameAuthBinding;
 import com.xsd.jx.utils.AliyunOSSUtils;
 import com.xsd.jx.utils.DataBindingAdapter;

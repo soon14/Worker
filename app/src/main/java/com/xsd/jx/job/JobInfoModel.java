@@ -3,7 +3,6 @@ package com.xsd.jx.job;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
-import com.xsd.jx.custom.ConfirmNumPop;
 import com.xsd.jx.inject.DataProvider;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;

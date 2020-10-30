@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
-import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
@@ -113,9 +112,8 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                 //初始化一个OSSClient客户端，方便打卡操作更快捷
                 initOssClient();
             }
-        },1000);
-
-
+        },2000);
+        PopShowUtils.showConfirmEmployNum(this);
     }
 
     private void initOssClient() {

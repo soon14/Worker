@@ -1,4 +1,4 @@
-package com.xsd.jx.custom;
+package com.xsd.jx.pop;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
+import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.MessageBean;
@@ -97,19 +99,9 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
                     goActivity(EditIntroActivity.class);
                     break;
                 case R.id.tv_add_work_type:
-//                    new XPopup.Builder(this)
-//                            .asCustom(new BottomAddWorkTypePop(this, workTypes, new BottomAddWorkTypePop.OnAddWorkTypesListener() {
-//                                @Override
-//                                public void addWorkTypes(Set<WorkTypeBean> types) {
-//                                    workTypes.addAll(types);
-//                                    setWorkTypes();
-//                                }
-//                            }))
-//                            .show();
                     PopShowUtils.showWorkTypeSelect(this, new OnWorkTypeSelectListener() {
                         @Override
                         public void onSelect(WorkTypeBean workTypeBean) {
-//                            workTypeId = workTypeBean.getId();
                             submit(workTypeBean);
                         }
                     });
@@ -135,7 +127,7 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
             ivDel.setOnClickListener(v -> showDelPop(workTypesBean,viewType));
         }
     }
-
+    //修改工种
     private void submit(WorkTypeBean workTypeBean) {
         StringBuilder builder = new StringBuilder();
         for (WorkTypeBean tag : workTypes) {
@@ -157,6 +149,7 @@ public class ResumeActivity extends BaseBindBarActivity<ActivityResumeBinding> {
                         tvName.setText(workTypeBean.getTitle());
                         ivDel.setVisibility(View.GONE);
                         db.layoutTypesWork.addView(viewType);
+                        Apollo.emit(EventStr.UPDATE_USER_INFO);
                     }
                 });
     }

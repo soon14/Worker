@@ -52,6 +52,16 @@ public class JobBean implements Serializable {
     private String divisionAddr;
     private String typeTitle;
 
+    private int joinedNum;//已报名人数
+
+    public int getJoinedNum() {
+        return joinedNum;
+    }
+
+    public void setJoinedNum(int joinedNum) {
+        this.joinedNum = joinedNum;
+    }
+
     public boolean isFav() {
         return isFav;
     }

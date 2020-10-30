@@ -26,7 +26,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.CheckResponse;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.UserInfo;
-import com.xsd.jx.custom.SignPop;
+import com.xsd.jx.pop.SignPop;
 import com.xsd.jx.databinding.ActivitySignBinding;
 import com.xsd.jx.listener.OnSignTackPicListener;
 import com.xsd.jx.utils.AliyunOSSUtils;

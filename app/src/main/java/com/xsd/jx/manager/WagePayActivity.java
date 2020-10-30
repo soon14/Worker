@@ -21,7 +21,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PayResult;
 import com.xsd.jx.bean.ToSettleResponse;
-import com.xsd.jx.custom.PayTypePop;
+import com.xsd.jx.pop.PayTypePop;
 import com.xsd.jx.databinding.ActivityWagePayBinding;
 import com.xsd.jx.databinding.ItemWagePayBinding;
 import com.xsd.jx.databinding.ItemWagepayWorkerBinding;

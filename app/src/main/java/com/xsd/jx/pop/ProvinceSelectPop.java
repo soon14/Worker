@@ -1,7 +1,8 @@
-package com.xsd.jx.custom;
+package com.xsd.jx.pop;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lxj.xpopup.impl.PartShadowPopupView;
 import com.xsd.jx.R;
 import com.xsd.jx.adapter.AddrSelectAdapter;
+import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.AddrBean;
+import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.utils.GsonUtils;
 
 import java.io.BufferedReader;
@@ -26,10 +29,12 @@ import java.util.List;
  * 查工价地区选择
  * 默认市湖北省
  * 查此下的市区id对应的价格
+ * 目前只能查对应的单个省下面的市区
+ * 查多个省，使用{@link com.xsd.jx.utils.PopShowUtils#showAddrSelect(BaseActivity, View, OnAddr2Listener)}
  */
+@Deprecated
 public class ProvinceSelectPop extends PartShadowPopupView {
-    OnCityListener listener;
-
+    private OnCityListener listener;
     private AddrSelectAdapter mAdapter =new AddrSelectAdapter();
     private List<AddrBean> allAddrBeans;
     private AddrBean selectCity;//市

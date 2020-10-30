@@ -1,4 +1,4 @@
-package com.xsd.jx.custom;
+package com.xsd.jx.pop;
 
 import android.view.Gravity;
 import android.widget.CheckBox;

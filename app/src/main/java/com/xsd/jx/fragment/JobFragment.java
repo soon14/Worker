@@ -16,27 +16,25 @@ import com.xsd.jx.adapter.JobAdapter;
 import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.base.BaseBindFragment;
 import com.xsd.jx.base.EventStr;
-import com.xsd.jx.bean.AddrBean;
 import com.xsd.jx.bean.BannerBean;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkListResponse;
-import com.xsd.jx.custom.ConfirmNumPop;
+import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.databinding.FragmentJobBinding;
 import com.xsd.jx.job.JobPriceInquireActivity;
 import com.xsd.jx.job.PermanentWorkerActivity;
 import com.xsd.jx.job.PublishActivity;
 import com.xsd.jx.job.SignActivity;
 import com.xsd.jx.listener.OnAdapterListener;
-import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.BannerUtils;
-import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.UserUtils;
+import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
 
 import java.util.List;
@@ -94,7 +92,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
         mAdapter.addHeaderView(tvNotice);
     }
-    //首页-推荐的工作列表
+    //首页-推荐的工作列表， type:0:不限 1:短期工 2：长期工
     private void loadData() {
         dataProvider.work.list(page,0)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkListResponse>>(db.refreshLayout) {
@@ -121,9 +119,24 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
 
     private void onEvent() {
         db.tvLocation.setOnClickListener(v -> PopShowUtils.showAddrSelect((BaseActivity) JobFragment.this.getActivity(), db.tvLocation,(province, city) -> {
+            if (!UserUtils.isLogin()){
+                ToastUtil.showLong("请先登录！");
+                goActivity(LoginActivity.class);
+                return;
+            }
             String address = province.getName() +"-"+ city.getName();
             db.tvLocation.setText(address);
+            int provinceId = province.getId();
             int cityId = city.getId();
+            dataProvider.user.changeAddress(provinceId,cityId)
+                    .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                        @Override
+                        protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                            L.e(baseResponse.getData().getMessage());
+                            page=1;
+                            loadData();
+                        }
+                    });
         }));
         db.tvPublish.setOnClickListener(v -> {
             if (!UserUtils.isLogin()){
@@ -209,7 +222,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         PopShowUtils.showJoinNum((BaseActivity) this.getActivity(), new ConfirmNumPop.ConfirmListener() {
             @Override
             public void onConfirmNum(int num) {
-                dataProvider.work.join(id,1)
+                dataProvider.work.join(id,num)
                         .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                             @Override
                             protected void onSuccess(BaseResponse<MessageBean> baseResponse) {

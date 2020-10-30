@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.xsd.jx.bean.WorkerBean" />
+    </data>
+
+    <LinearLayout
+        android:background="@drawable/round16_whitetop_bg"
+        android:layout_marginTop="@dimen/dp_80"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/round16_whitetop_bg"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_74">
+
+            <ImageView
+                avatar="@{item.avatar}"
+                android:src="@mipmap/ic_worker_head"
+                android:id="@+id/iv_head"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:textColor="@color/tv_black"
+                android:textSize="@dimen/h4"
+                android:drawablePadding="@dimen/dp_8"
+                android:drawableRight="@mipmap/ic_green_callphone"
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                tools:text="徐大友"
+                android:text="@{item.name}"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+                app:layout_constraintStart_toEndOf="@+id/iv_head"
+                app:layout_constraintTop_toTopOf="@+id/iv_head" />
+
+            <TextView
+                android:id="@+id/tv_price_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="工价: 300/天 考勤: 3天"
+                android:textColor="@color/tv_gray"
+                android:textSize="@dimen/h5"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="合计 900元"
+                android:text="@{`合计 `+item.totalWage+`元`}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/h4"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_head" />
+
+            <View
+                android:id="@+id/view4"
+                style="@style/h_line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:background="#F8F8F8"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="32dp">
+            <TextView
+                android:gravity="center"
+                android:text="上工日期"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:gravity="center"
+                android:text="是否结算"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:gravity="center"
+                android:text="上工人数"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_margin="@dimen/dp_8"
+            android:layout_gravity="center"
+            style="@style/DefaultBtnStyle"
+            android:text="确认"/>
+    </LinearLayout>
+</layout>
