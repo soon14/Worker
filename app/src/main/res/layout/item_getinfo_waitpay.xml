@@ -14,15 +14,15 @@
         android:paddingRight="@dimen/dp_16"
         android:paddingLeft="@dimen/dp_16"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_74">
+        android:layout_height="@dimen/dp_108">
 
         <ImageView
-            avatar="@{item.avatar}"
-            android:src="@mipmap/ic_worker_head"
             android:id="@+id/iv_head"
+            avatar="@{item.avatar}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/ic_worker_head"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,7 +45,7 @@
             android:id="@+id/tv_price_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="工价: 300/天 考勤: 3天"
+            tools:text="人数: 5人  天数: 1天"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
@@ -58,8 +58,8 @@
             android:layout_height="wrap_content"
             tools:text="合计 900元"
             android:text="@{`合计 `+item.totalWage+`元`}"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/h4"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h5"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,5 +71,38 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:paddingBottom="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_8"
+            android:id="@+id/layout_look_persion_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head">
+
+            <View
+                style="@style/h_line"
+                android:layout_width="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_margin="@dimen/dp_8"
+                android:drawablePadding="@dimen/dp_8"
+                android:drawableRight="@mipmap/ic_gray_arrow_down_big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看工时"
+                android:textColor="#ff999999"
+                android:textSize="@dimen/h5" />
+
+            <View
+                style="@style/h_line"
+                android:layout_width="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

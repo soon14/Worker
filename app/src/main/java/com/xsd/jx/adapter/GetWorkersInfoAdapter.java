@@ -61,12 +61,12 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
                 ItemGetinfoFullBinding dataBinding2 = (ItemGetinfoFullBinding) helper.getDataBinding();
                 dataBinding2.setItem(item);
                 break;
-
             case 3:
             case 4:
                 ItemGetinfoWaitpayBinding dataBinding4 = (ItemGetinfoWaitpayBinding) helper.getDataBinding();
                 dataBinding4.setItem(item);
-                dataBinding4.tvPriceDay.setText("工价"+price+"元/天  考勤"+item.getCheckDay()+"天");
+                //TODO 人数: 5人  天数: 1天
+                dataBinding4.tvPriceDay.setText("人数: "+item.getAge()+"人  天数: "+item.getCheckDay()+"天");
                 break;
             case 5:
                 ItemGetinfoWaitcommentBinding dataBinding5 = (ItemGetinfoWaitcommentBinding) helper.getDataBinding();

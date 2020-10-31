@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round10_white_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_16">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/dp_16"
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现验证"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h3" />
+        <ImageView
+            android:id="@+id/iv_close"
+            android:padding="@dimen/dp_8"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_gray_nocircle_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+        <TextView
+            android:layout_marginTop="@dimen/dp_16"
+            android:lineSpacingExtra="@dimen/dp_8"
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="本次交易需要短信确认，验证码已发送至您的手机"
+            android:textColor="#ff999999"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+    <EditText
+        android:letterSpacing="0.5"
+        android:lineSpacingMultiplier="3"
+        android:id="@+id/et_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_32"
+        android:layout_marginBottom="@dimen/dp_32"
+        android:background="@drawable/rect_white_bg"
+        android:gravity="center"
+        android:hint="请输入验证码"
+        android:inputType="number"
+        android:maxLength="6"
+        android:padding="@dimen/dp_8"
+        android:singleLine="true"
+        tools:text="995746"
+        android:textColor="@color/tv_black"
+        android:textSize="@dimen/h1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="@dimen/dp_46"
+            android:id="@+id/tv_confirm"
+            style="@style/DefaultBtnStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="确认" />
+    </LinearLayout>
+
+
+</LinearLayout>

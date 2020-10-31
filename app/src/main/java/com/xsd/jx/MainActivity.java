@@ -62,29 +62,29 @@ import java.util.List;
  * 1.找活 {@link JobFragment}
  * 2.订单 {@link OrderFragment}
  * 3.我的 {@link MineFragment}
-
- 列表数据处理：
- if (items!=null&&items.size()>0){
- if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
- mAdapter.getLoadMoreModule().loadMoreComplete();
- }else {
- mAdapter.getLoadMoreModule().loadMoreEnd();
- }
-
- 如果需要刷新清空数据：
- if (items!=null&&items.size()>0){
- if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
- mAdapter.getLoadMoreModule().loadMoreComplete();
- }else {
- if (page==1)mAdapter.setList(items);else
- mAdapter.getLoadMoreModule().loadMoreEnd();
- }
-
+ * <p>
+ * 列表数据处理：
+ * if (items!=null&&items.size()>0){
+ * if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+ * mAdapter.getLoadMoreModule().loadMoreComplete();
+ * }else {
+ * mAdapter.getLoadMoreModule().loadMoreEnd();
+ * }
+ * <p>
+ * 如果需要刷新清空数据：
+ * if (items!=null&&items.size()>0){
+ * if (page==1)mAdapter.setList(items);else mAdapter.addData(items);
+ * mAdapter.getLoadMoreModule().loadMoreComplete();
+ * }else {
+ * if (page==1)mAdapter.setList(items);else
+ * mAdapter.getLoadMoreModule().loadMoreEnd();
+ * }
  */
 
 public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
     private static final String TAG = "MainActivity";
-    private String[] tabNames = new String[]{"找活","订单","我的"};
+    private String[] tabNames = new String[]{"找活", "订单", "我的"};
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -96,26 +96,29 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         if (!Apollo.isBind(this)) Apollo.bind(this);
         ImmersionBar.with(this).statusBarDarkFont(true).autoDarkModeEnable(true).init();
         initViewPager();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (UserUtils.isLogin()){
-                    if (UserUtils.isCertification()){
-                        if (UserUtils.isChooseWork())PopShowUtils.showPushJob(MainActivity.this);//登录后弹框显示：推荐的工作
-                        isInWork();//是否在工期中
-                        getInviteList();//邀请工作
-                    }
-                    if (!UserUtils.isChooseWork())goActivity(SelectTypeWorkActivity.class);//如果没有选择工种，则每次都进入工种选择页面
-                }
-                PopShowUtils.showAppUpdate(MainActivity.this);
-                CommonDataUtils.getPhone(MainActivity.this);
-                //初始化一个OSSClient客户端，方便打卡操作更快捷
-                initOssClient();
+
+        //不延迟请求项：1.版本更新2.是否再工期中3.是否选择了工种
+        PopShowUtils.showAppUpdate(MainActivity.this);
+        if (UserUtils.isLogin() && UserUtils.isCertification()) {//是否登录，实名
+            if (UserUtils.isChooseWork()) {
+                isInWork();
+            } else {
+                goActivity(SelectTypeWorkActivity.class);//进入工种选择
             }
-        },2000);
-        PopShowUtils.showConfirmEmployNum(this);
+        }
+
+        //延迟请求项：1.推荐工作2.邀请工作3.联系平台电话4.OSS初始化
+        new Handler().postDelayed(() -> {
+            if (UserUtils.isLogin() && UserUtils.isCertification() && UserUtils.isChooseWork()) {//已登录，已实名，已选工种
+                PopShowUtils.showPushJob(MainActivity.this);//推荐的工作
+                getInviteList();//邀请工作
+            }
+            CommonDataUtils.getPhone(MainActivity.this);
+            initOssClient();
+        }, 3000);
     }
 
+    //初始化一个OSSClient客户端，方便打卡操作更快捷
     private void initOssClient() {
         dataProvider.user.aliSts()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>() {
@@ -129,7 +132,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                         conf.setHttpDnsEnable(true);
                         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
                         new Thread(() -> {
-                            new OSSClient(MainActivity.this, MyOSSConfig.ENDPOINT, credentialProvider,conf);
+                            new OSSClient(MainActivity.this, MyOSSConfig.ENDPOINT, credentialProvider, conf);
                         }).start();
 
                     }
@@ -142,17 +145,17 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                 .request(new OnPermission() {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
-                        if (all){
+                        if (all) {
                             EasyFloat.dismissAppFloat();
                             EasyFloat.with(MainActivity.this)
                                     .setShowPattern(ShowPattern.FOREGROUND)
-                                    .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT,0, ScreenUtils.getRealHeight()/2- DpPxUtils.dp2px(88))
+                                    .setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT, 0, ScreenUtils.getRealHeight() / 2 - DpPxUtils.dp2px(88))
                                     .setSidePattern(SidePattern.RESULT_HORIZONTAL)
                                     .setLayout(R.layout.layout_ball, new OnInvokeView() {
                                         @Override
                                         public void invoke(View view) {
                                             TextView tv = view.findViewById(R.id.tv_invite);
-                                            tv.setText(count+"个\n邀请");
+                                            tv.setText(count + "个\n邀请");
                                             view.setOnClickListener(v -> {
                                                 Activity currentActivity = ActivityCollector.getInstance().getCurrentActivity();
                                                 PopShowUtils.showInviteJob(data, (BaseActivity) currentActivity);
@@ -162,6 +165,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                                     .show();
                         }
                     }
+
                     @Override
                     public void noPermission(List<String> denied, boolean quick) {
                         if (quick) {
@@ -175,9 +179,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                 });
     }
 
-    /**
-     * 是否在工种中...
-     */
+    //是否在工期中
     private void isInWork() {
         dataProvider.user.isInWork()
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<IsInWorkResponse>>() {
@@ -185,7 +187,7 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                     protected void onSuccess(BaseResponse<IsInWorkResponse> baseResponse) {
                         IsInWorkResponse data = baseResponse.getData();
                         boolean inWork = data.isInWork();
-                        if (inWork){
+                        if (inWork) {
                             goActivity(SignActivity.class);
                         }
                     }
@@ -200,7 +202,6 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         EasyFloat.dismissAppFloat();
     }
 
-
     private void initViewPager() {
         Fragment[] fragments = new Fragment[]{new JobFragment(), new OrderFragment(), new MineFragment()};
         final FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager(), 0) {
@@ -208,11 +209,13 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             public int getCount() {
                 return fragments.length;
             }
+
             @NonNull
             @Override
             public Fragment getItem(int i) {
                 return fragments[i];
             }
+
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
@@ -221,37 +224,35 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         };
         db.viewPager.setAdapter(fragmentPagerAdapter);
         db.viewPager.setOffscreenPageLimit(tabNames.length);
-        BottomNavUtils.initTabBindViewPager(db.tabLayout,db.viewPager,null);
+        BottomNavUtils.initTabBindViewPager(db.tabLayout, db.viewPager, null);
 
     }
 
-
-
     @Receive(EventStr.LOGIN_OUT)
-    public void loginOut(){
-        L.e(TAG,"loginOut()===");
-        BottomNavUtils.toDefaultTab(0,db.tabLayout,db.viewPager);
+    public void loginOut() {
+        BottomNavUtils.toDefaultTab(0, db.tabLayout, db.viewPager);
         goActivity(LoginActivity.class);
         EasyFloat.dismissAppFloat();
     }
+
     @Receive(EventStr.GO_LOGIN)
-    public void goLoginActivity(){
+    public void goLoginActivity() {
         goActivity(LoginActivity.class);
     }
 
     @Receive(EventStr.GO_AUTH)
-    public void goAuthActivity(){
+    public void goAuthActivity() {
         PopShowUtils.showRealNameAuth(this);
     }
 
     @Receive(EventStr.SHOW_PUSH_JOB)
-    public void showPushJob(){
-        if (UserUtils.isLogin()&&UserUtils.isCertification()){
+    public void showPushJob() {
+        if (UserUtils.isLogin() && UserUtils.isCertification()) {
             PopShowUtils.showPushJob(this);
-            isInWork();//是否在工期中
         }
 
     }
+
     //被邀请上工信息列表
     @Receive(EventStr.UPDATE_INVITE_LIST)
     public void getInviteList() {
@@ -262,16 +263,17 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
                         InviteListResponse response = baseResponse.getData();
                         List<JobBean> data = response.getItems();
                         int count = response.getCount();
-                        if (data!=null&&data.size()>0){
-                            openBall(count,data);
-                        }else {
-                           EasyFloat.dismissAppFloat();
+                        if (data != null && data.size() > 0) {
+                            openBall(count, data);
+                        } else {
+                            EasyFloat.dismissAppFloat();
                         }
                     }
                 });
     }
+
     @Receive(EventStr.LOGIN_SUCCESS)
-    public void loginSuccess(){
+    public void loginSuccess() {
         showPushJob();
         getInviteList();
     }
@@ -295,6 +297,5 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
         }
         return super.onKeyUp(keyCode, event);
     }
-
 
 }

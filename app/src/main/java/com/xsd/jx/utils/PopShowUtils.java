@@ -28,6 +28,7 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.VersionResponse;
+import com.xsd.jx.bean.WorkRecommendResponse;
 import com.xsd.jx.pop.AttViewAddrSelectPop;
 import com.xsd.jx.pop.BottomDayPersionPop;
 import com.xsd.jx.pop.BottomNationSelecterPop;
@@ -38,6 +39,7 @@ import com.xsd.jx.pop.ConfirmEmployNumPop;
 import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.pop.InviteJobPop;
 import com.xsd.jx.pop.PushJobPop;
+import com.xsd.jx.pop.WithdrawCheckPop;
 import com.xsd.jx.pop.YearMonthSelecterPop;
 import com.xsd.jx.listener.OnAddr2Listener;
 import com.xsd.jx.listener.OnAddrListener;
@@ -71,7 +73,7 @@ public class PopShowUtils {
      * 系统 DatePickerDialog
      * 年月选择器
      */
-    public static void showYM(BaseActivity activity,DatePickerDialog.OnDateSetListener listener) {
+    public static void showYM(BaseActivity activity, DatePickerDialog.OnDateSetListener listener) {
         Calendar ca = Calendar.getInstance();
         Calendar caMin = Calendar.getInstance();
         int mYear = ca.get(Calendar.YEAR);
@@ -82,24 +84,26 @@ public class PopShowUtils {
                 mYear, mMonth, mDay);
         DatePicker datePicker = datePickerDialog.getDatePicker();
         //范围控制,最大能选两年前的月份
-        caMin.add(Calendar.YEAR,-1);
+        caMin.add(Calendar.YEAR, -1);
         datePicker.setMinDate(caMin.getTimeInMillis());//最小为2年前
         datePicker.setMaxDate(ca.getTimeInMillis());//最大时间为当前年月
         ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
         //范围控制
         datePickerDialog.show();
     }
+
     //显示自定的年月选择器
     public static void showCustomYM(BaseActivity activity) {
         new XPopup.Builder(activity)
                 .asCustom(new YearMonthSelecterPop(activity))
                 .show();
     }
+
     //显示单张图片
-    public static void showPic(ImageView iv,String url) {
-        if (TextUtils.isEmpty(url))return;
+    public static void showPic(ImageView iv, String url) {
+        if (TextUtils.isEmpty(url)) return;
         new XPopup.Builder(iv.getContext())
-                .asImageViewer(iv,url,new MyXPopupImgLoader())
+                .asImageViewer(iv, url, new MyXPopupImgLoader())
                 .isShowSaveButton(false)
                 .show();
     }
@@ -108,9 +112,9 @@ public class PopShowUtils {
     /**
      * 首页显示推荐的工作弹框
      */
-    public static void showLoad(BaseActivity activity,String title,onDismissListener listener) {
+    public static void showLoad(BaseActivity activity, String title, onDismissListener listener) {
         new XPopup.Builder(activity)
-                .setPopupCallback(new SimpleCallback(){
+                .setPopupCallback(new SimpleCallback() {
                     @Override
                     public void onShow(BasePopupView popupView) {
                         super.onShow(popupView);
@@ -119,7 +123,7 @@ public class PopShowUtils {
                             public void run() {
                                 popupView.dismiss();
                             }
-                        },3000);
+                        }, 3000);
                     }
 
                     @Override
@@ -132,16 +136,34 @@ public class PopShowUtils {
                 .asLoading(title)
                 .show();
     }
+
     public interface onDismissListener {
-         void onDismiss(BasePopupView popupView);
-    };
+        void onDismiss(BasePopupView popupView);
+    }
+
+    ;
+
     /**
      * 首页显示推荐的工作弹框
      */
     public static void showPushJob(BaseActivity activity) {
-        new XPopup.Builder(activity)
-                .asCustom(new PushJobPop(activity))
-                .show();
+        activity.getDataProvider().work.recommend(1)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkRecommendResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkRecommendResponse> baseResponse) {
+                        WorkRecommendResponse data = baseResponse.getData();
+                        List<JobBean> dataItems = data.getItems();
+                        //如果有数据，弹框显示推荐的工作
+                        if (dataItems != null && dataItems.size() > 0) {
+                            new XPopup.Builder(activity)
+                                    .asCustom(new PushJobPop(activity, dataItems))
+                                    .show();
+                        }
+                    }
+                    @Override
+                    protected void onErr(String err) {}
+                });
+
     }
 
     /**
@@ -468,7 +490,7 @@ public class PopShowUtils {
     /**
      * 省市地址选择器
      */
-    public static void showAddrSelect(BaseActivity baseActivity,View atView, OnAddr2Listener listener) {
+    public static void showAddrSelect(BaseActivity baseActivity, View atView, OnAddr2Listener listener) {
         AttViewAddrSelectPop attViewAddrSelectPop = new AttViewAddrSelectPop(baseActivity);
         attViewAddrSelectPop.setListener(listener);
         new XPopup.Builder(baseActivity)
@@ -482,27 +504,31 @@ public class PopShowUtils {
         String platPhone = (String) SPUtils.get("platPhone", "");
         MobileUtils.callPhone(actiivty, platPhone);
     }
+
     //工人端-确认报名人数弹框
-    public static void showJoinNum(BaseActivity baseActivity,  ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认报名工人数","确认报名",1,true,listener);
+    public static void showJoinNum(BaseActivity baseActivity, ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity, "确认报名工人数", "确认报名", 1, true, listener);
         new XPopup.Builder(baseActivity)
                 .asCustom(confirmNumPop)
                 .show();
     }
+
     //企业端-确认邀请用工弹框
     public static void showInviteNum(BaseActivity baseActivity, ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity,"确认邀请上工人数","确认邀请",1,true,listener);
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity, "确认邀请上工人数", "确认邀请", 1, true, listener);
         new XPopup.Builder(baseActivity)
                 .asCustom(confirmNumPop)
                 .show();
     }
+
     //修改上工人数
     public static void showEditNum(Context context, int num, ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(context,"修改上工人数","确认修改",num,false,listener);
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(context, "修改上工人数", "确认修改", num, false, listener);
         new XPopup.Builder(context)
                 .asCustom(confirmNumPop)
                 .show();
     }
+
     //企业端-确认修改报名的包工头每天的人数弹框
     public static void showDayPersion(BaseActivity baseActivity) {
         BottomDayPersionPop pop = new BottomDayPersionPop(baseActivity);
@@ -511,11 +537,20 @@ public class PopShowUtils {
                 .asCustom(pop)
                 .show();
     }
+
     //确认雇佣人数
     public static void showConfirmEmployNum(Context context) {
         ConfirmEmployNumPop confirmNumPop = new ConfirmEmployNumPop(context);
         new XPopup.Builder(context)
                 .asCustom(confirmNumPop)
+                .show();
+    }
+
+    //提现验证
+    public static void showWithdrawCheck(Context context) {
+        WithdrawCheckPop pop = new WithdrawCheckPop(context);
+        new XPopup.Builder(context)
+                .asCustom(pop)
                 .show();
     }
 }

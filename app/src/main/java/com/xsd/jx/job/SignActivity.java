@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.SimpleAdapter;
 
 import androidx.core.content.FileProvider;
 
@@ -43,7 +45,11 @@ import com.xsd.utils.TimeUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -75,17 +81,33 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
     private void initView() {
         tvTitle.setText("考勤签到");
         tvRight.setText("考勤记录");
-        //姓名
-        UserInfo user = UserUtils.getUserInfo();
-        db.tvName.setText(user.getName());
-        //今天日期
-        String todayDate = TimeUtils.getTodayDate();
-        db.tvToday.setText(todayDate);
         AnimUtils.potView(db.ivPot);
         AnimUtils.potView(db.ivPot2);
 
         db.radarViewUp.setVisibility(View.GONE);
         db.radarViewDown.setVisibility(View.GONE);
+
+        List<Map<String, String>> data = new ArrayList<Map<String,String>>();
+        Map<String, String> map1 = new HashMap<String, String>();
+        map1.put("name", "重庆市渝中区石油路102号协信阿卡迪亚");
+        Map<String, String> map2 = new  HashMap<String, String>();
+        map2.put("name", "湖北省武汉市江岸区岸边边");
+        data.add(map1);
+        data.add(map2);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data,R.layout.item_site,new String[]{"name"}, new int[]{R.id.tv_name} );
+        db.spinnerAddress.setAdapter(simpleAdapter);
+        db.spinnerAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Map<String, String> map = (HashMap<String, String>) parent.getItemAtPosition(position);
+                ToastUtil.showLong("选中了地址=="+map.get("name"));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void loadData() {
@@ -97,7 +119,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                         db.setItem(data);
                         mobile = data.getMobile();
                         workId = data.getWorkId();
-                        db.tvAddress.setText("上工地点：" + data.getAddress());
+                        //TODO 选择工地
 
                         String signInTime = data.getSignInTime();
                         String signOutTime = data.getSignOutTime();

@@ -51,6 +51,7 @@ import java.util.Map;
  状态 -1:不展示(有预付款项未付不显示给用户) )
  itemType
  1:正在招
+ 报名工人数 ，所需工人数 ,已雇佣人数
  2:已招满/待开工(所有用户已确认)
  3:工期中
  4:待结算
@@ -59,7 +60,10 @@ import java.util.Map;
  7:已取消
  8:已过期
 
- 我的招工{@link MyGetWorkersActivity} >> 【招工详情】
+ - 顶部描述：
+ 待结算状态为：确认上工人数 ，所需工人数 ,工价/天
+
+ 招工人{@link GetWorkersActivity} >> 我的招工{@link MyGetWorkersActivity} >> 【招工详情】
 
  */
 public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorkersInfoBinding> {

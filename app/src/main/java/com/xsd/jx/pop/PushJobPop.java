@@ -38,27 +38,30 @@ public class PushJobPop extends CenterPopupView {
     private List<JobBean> items;
     private int index;//获取数据位置
     private PopPushJobBinding db;
-    private int page=1;
-    public PushJobPop(@NonNull BaseActivity context) {
+    private int page = 1;
+
+    public PushJobPop(@NonNull BaseActivity context, List<JobBean> items) {
         super(context);
         this.activity = context;
+        this.items = items;
     }
 
     @Override
     protected int getImplLayoutId() {
         return R.layout.pop_push_job;
     }
+
     @Override
     protected void onCreate() {
         super.onCreate();
         db = DataBindingUtil.bind(getPopupImplView());
-        getRecommend();
         onEvent();
+        setData();
     }
 
     private void onEvent() {
         db.setClicklistener(view -> {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.tv_close:
                     dismiss();
                     break;
@@ -86,16 +89,16 @@ public class PushJobPop extends CenterPopupView {
     }
 
     private void join() {
-        if (jobBean==null)return;
+        if (jobBean == null) return;
         PopShowUtils.showJoinNum(activity, new ConfirmNumPop.ConfirmListener() {
             @Override
             public void onConfirmNum(int num) {
-                activity.getDataProvider().work.join(jobBean.getId(),num)
+                activity.getDataProvider().work.join(jobBean.getId(), num)
                         .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                             @Override
                             protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                                 PopShowUtils.showTips(activity);
-                                DataBindingAdapter.isJoin(db.tvJoin,true);
+                                DataBindingAdapter.isJoin(db.tvJoin, true);
                             }
                         });
             }
@@ -103,14 +106,14 @@ public class PushJobPop extends CenterPopupView {
 
     }
 
-    public void fav(){
-        if (jobBean==null)return;
+    public void fav() {
+        if (jobBean == null) return;
         activity.getDataProvider().work.fav(jobBean.getId())
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
-                        DataBindingAdapter.isFav(db.tvFav,true);
+                        DataBindingAdapter.isFav(db.tvFav, true);
                     }
                 });
 
@@ -118,6 +121,7 @@ public class PushJobPop extends CenterPopupView {
 
 
     //登录用户推荐工作
+    boolean noMoreData;//没有更多数据了
     private void getRecommend() {
         activity.getDataProvider().work.recommend(page)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkRecommendResponse>>() {
@@ -126,17 +130,13 @@ public class PushJobPop extends CenterPopupView {
                         WorkRecommendResponse data = baseResponse.getData();
                         List<JobBean> dataItems = data.getItems();
                         //如果有数据，弹框显示推荐的工作
-                        if (dataItems!=null&&dataItems.size()>0){
-                            items = dataItems;
-                            index=0;
+                        if (dataItems != null && dataItems.size() > 0) {
+                            items.addAll(dataItems);
                             setData();
-                        }else {
-                            if (page==1){
-                                dismiss();
-                            }else {
-                                index=0;
-                                setData();
-                            }
+                        } else {
+                            noMoreData = true;
+                            index = 0;
+                            setData();
                         }
                     }
 
@@ -147,14 +147,18 @@ public class PushJobPop extends CenterPopupView {
                     }
                 });
     }
-    private JobBean jobBean;
+
+    private JobBean jobBean;//当前工作项
     private void setData() {
-        if (items!=null&&items.size()>0){
-            if (index<items.size()){
-                 jobBean = items.get(index);
-                db.setItem(jobBean);
-                index++;
-            }else {
+        if (index < items.size()) {
+            jobBean = items.get(index);
+            db.setItem(jobBean);
+            index++;
+        } else {
+            if (noMoreData) {
+                index = 0;
+                setData();
+            } else {
                 //加载更多
                 page++;
                 getRecommend();
@@ -163,56 +167,16 @@ public class PushJobPop extends CenterPopupView {
 
     }
 
-
-    /**
-     * 中心放大效果
-     */
-    private void animRota(View view){
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f,0f,1f);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f,0f,1f);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 1f,0f,1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, alpha, scaleX,scaleY);
-        animator.setRepeatMode(ObjectAnimator.RESTART);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(600);
-        animator.start();
-        new Handler().postDelayed(() -> setData(),300);
-    }
-    private void animTransX(View view){
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(view,"translationX",0, ScreenUtils.getRealWidth());
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(view,"translationX",0f);
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(view,"alpha",0f,1f);
-        objectAnimator1.setDuration(300);
-        objectAnimator2.setDuration(0);
-        objectAnimator3.setDuration(300);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playSequentially(objectAnimator1,objectAnimator2,objectAnimator3);
-        animatorSet.start();
-        new Handler().postDelayed(() -> setData(),300);
-    }
-    private void animTransY(View view){
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(view,"translationY",0, ScreenUtils.getRealHeight());
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(view,"translationY",-ScreenUtils.getRealHeight(),0f);
+    private void animTransY(View view) {
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(view, "translationY", 0, ScreenUtils.getRealHeight());
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(view, "translationY", -ScreenUtils.getRealHeight(), 0f);
         objectAnimator1.setDuration(500);
         objectAnimator2.setDuration(800);
         objectAnimator2.setInterpolator(new OvershootInterpolator());
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playSequentially(objectAnimator1,objectAnimator2);
+        animatorSet.playSequentially(objectAnimator1, objectAnimator2);
         animatorSet.start();
-        new Handler().postDelayed(() -> setData(),300);
-    }
-
-    /**
-     * 卡片翻转效果
-     */
-    private ObjectAnimator rotateAnim(View view) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotationY",0,360f);
-        animator.setRepeatMode(ObjectAnimator.RESTART);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(300);
-        animator.start();
-        new Handler().postDelayed(() -> setData(),300);
-        return animator;
+        new Handler().postDelayed(() -> setData(), 300);
     }
 
     @Override
@@ -223,6 +187,6 @@ public class PushJobPop extends CenterPopupView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.activity=null;
+        this.activity = null;
     }
 }
