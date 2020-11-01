@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 2020/8/28
  * author: SmallCake
  */
-public class WorkerResponse implements Serializable, MultiItemEntity {
+public class WorkerResponse implements Serializable {
 
     /**
      * page : 1
@@ -17,17 +17,6 @@ public class WorkerResponse implements Serializable, MultiItemEntity {
      * items : [{"userId":1,"name":"张三","birthday":"1975-05-18","sex":1,"avatar":"","isCertification":1,"workYears":"10-15","age":0},{"userId":1,"name":"李四","birthday":"1975-05-18","sex":1,"avatar":"","isCertification":1,"workYears":"10-15","age":0}]
      * workTypes : [{"id":1,"title":"工长"},{"id":2,"title":"电工"}]
      */
-
-    private int itemType;
-
-    public WorkerResponse(int itemType) {
-        this.itemType = itemType;
-    }
-
-    @Override
-    public int getItemType() {
-        return itemType;
-    }
 
     private int page;
     private int totalPage;
