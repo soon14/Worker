@@ -21,6 +21,9 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.animator.PopupAnimator;
+import com.lxj.xpopup.enums.PopupAnimation;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.xsd.jx.R;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
@@ -86,28 +89,26 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
 
         db.radarViewUp.setVisibility(View.GONE);
         db.radarViewDown.setVisibility(View.GONE);
-
-        List<Map<String, String>> data = new ArrayList<Map<String,String>>();
-        Map<String, String> map1 = new HashMap<String, String>();
-        map1.put("name", "重庆市渝中区石油路102号协信阿卡迪亚");
-        Map<String, String> map2 = new  HashMap<String, String>();
-        map2.put("name", "湖北省武汉市江岸区岸边边");
-        data.add(map1);
-        data.add(map2);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data,R.layout.item_site,new String[]{"name"}, new int[]{R.id.tv_name} );
-        db.spinnerAddress.setAdapter(simpleAdapter);
-        db.spinnerAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //TODO 选择工地
+        db.tvAddr.setText("重庆市渝中区石油路102号协信阿卡迪亚");
+        db.layoutAddr.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Map<String, String> map = (HashMap<String, String>) parent.getItemAtPosition(position);
-                ToastUtil.showLong("选中了地址=="+map.get("name"));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                String[] addrs= new String[]{"重庆市渝中区石油路102号协信阿卡迪亚","湖北省武汉市江岸区岸边边"};
+                new XPopup.Builder(SignActivity.this)
+                        .atView(db.layoutAddr)
+                        .hasShadowBg(false)
+                        .offsetY(-3)
+                        .popupAnimation(PopupAnimation.ScrollAlphaFromTop)
+                        .asAttachList(addrs, null, new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                db.tvAddr.setText(text);
+                            }
+                        },R.layout.pop_site_selector,0).show();
             }
         });
+
     }
 
     private void loadData() {

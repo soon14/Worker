@@ -53,13 +53,14 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
 
                 <LinearLayout
+                    android:padding="@dimen/dp_16"
+                    android:id="@+id/layout_addr"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -67,31 +68,34 @@
                     android:layout_margin="@dimen/dp_16"
                     android:background="@drawable/round6_white_bg"
                     >
-                    <TextView
-                        android:layout_margin="@dimen/dp_16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="选择工地"
-                        android:textColor="@color/tv_black"
-                        android:textSize="@dimen/h4"
-                        />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/dp_8"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_gray_arrow_down_big"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:background="@color/transparent"
-                            android:id="@+id/spinner_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
 
-                    </RelativeLayout>
+
+                        <TextView
+                            android:layout_marginRight="@dimen/dp_8"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="选择工地"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            />
+
+                        <TextView
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4"
+                            android:gravity="center"
+                            tools:text="重庆市渝中区石油路协信阿卡迪亚重庆市渝中区石油路协信阿卡迪亚"
+                            android:background="@color/transparent"
+                            android:id="@+id/tv_addr"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:src="@mipmap/ic_gray_arrow_down_big"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
 
                 </LinearLayout>
 
