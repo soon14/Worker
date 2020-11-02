@@ -130,7 +130,7 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                 mAdapter.setEmptyView(emptyView);
                 break;
             case 2:
-                db.tvTitle.setText("已招满");
+                db.tvTitle.setText("待开工");
                 db.layoutBtns.setVisibility(View.GONE);
                 break;
             case 3:
@@ -204,25 +204,6 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
         }
         mAdapter.setList(workers);
         if (hasConfirmWorker)db.tvCancel.setVisibility(View.GONE);
-
-
-
-//        //只有正在招状态下的工人，需要屏蔽掉拒绝和确认的工人
-//        if (itemType ==1){
-//            List<WorkerBean> showWorkers = new ArrayList<>();
-//            for (int i = 0; i < workers.size(); i++){
-//                WorkerBean workerBean = workers.get(i);
-//                int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
-//                if (status==1){
-//                    workerBean.setType(itemType);
-//                    showWorkers.add(workerBean);
-//                }
-//            }
-//            mAdapter.setList(showWorkers);
-//        }else {
-//            for (int i = 0; i < workers.size(); i++) workers.get(i).setType(itemType);
-//            mAdapter.setList(workers);
-//        }
         onEvent();
     }
 
@@ -257,7 +238,8 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    break;
            }
        });
-       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment,R.id.tv_activ_get);
+       //企业端-招工人详情页，工人列表子项点击事件
+       mAdapter.addChildClickViewIds(R.id.tv_cancel,R.id.tv_confirm,R.id.tv_look,R.id.tv_name,R.id.tv_single_comment,R.id.tv_activ_get,R.id.layout_look_persion_day);
        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
            WorkerBean item = (WorkerBean) adapter.getItem(position);
            int userId = item.getUserId();
@@ -287,6 +269,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                case R.id.tv_activ_get://主动招人
                    ActivityCollector.finishActivity(MyGetWorkersActivity.class);
                    finish();
+                   break;
+               case R.id.layout_look_persion_day://查看工时
+                   PopShowUtils.showDayPersion(this);
                    break;
            }
        });

@@ -73,6 +73,15 @@
         <TextView
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="需要人数：已招0人/共需20人"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
             android:id="@+id/tv_addr"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"

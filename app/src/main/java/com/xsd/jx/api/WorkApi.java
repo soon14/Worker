@@ -109,6 +109,7 @@ public interface WorkApi {
             ,@Field("startDate")String startDate
             ,@Field("endDate")String endDate
             ,@Field("num")Integer num
+            ,@Field("address")String address
     );
 
 

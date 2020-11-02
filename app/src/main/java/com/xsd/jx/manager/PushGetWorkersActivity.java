@@ -157,7 +157,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                         if (advanceAmount==0){
                             ToastUtil.showLong(data.getMessage());
                             finish();
-                            Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                            Apollo.emit(EventStr.UPDATE_GET_WORKERS_TABS);
                         }else {
                             String orderString = data.getOrderString();
                             aliPay(orderString);
@@ -424,7 +424,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                 if (TextUtils.equals(resultStatus, "9000")) {
                     PopShowUtils.showLoad(PushGetWorkersActivity.this, "结算成功，结算统计中...", popupView -> {
                         finish();
-                        Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                        Apollo.emit(EventStr.UPDATE_GET_WORKERS_TABS);
                     });
                 } else {
                     ToastUtil.showLong("支付失败");

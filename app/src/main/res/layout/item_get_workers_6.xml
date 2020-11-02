@@ -29,19 +29,20 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="木工"
                 android:text="@{item.typeTitle}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/h3"
-                android:textStyle="bold" />
+                android:textSize="@dimen/h3" />
 
             <TextView
                 price="@{item.price}"
+                android:textColor="@color/tv_gray"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
-                tools:text="350元/天" />
+                android:text="350元/天" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="@dimen/dp_16"
@@ -50,12 +51,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:textColor="@color/tv_gray"
+                android:background="@drawable/round3_gray_bg"
                 style="@style/TextWelfareTagStyle"
                 tools:text="已付1000元"
                 advanceAmount="@{item.advanceAmount}"
                 />
             <TextView
                 android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
+                android:textColor="@color/tv_gray"
+                android:background="@drawable/round3_gray_bg"
                 android:layout_marginLeft="@dimen/dp_6"
                 style="@style/TextWelfareTagStyle"
                 android:text="购买保险" />
@@ -73,15 +78,23 @@
         <TextView
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="需要人数：已招0人/共需20人"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
             android:id="@+id/tv_addr"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
             android:text="@{`上工地点：`+item.address}"
+            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
-
         <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>
 
         <LinearLayout
@@ -96,7 +109,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/dp_34"
-                android:text="已招满"
+                android:text="已完成"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5"
                 />

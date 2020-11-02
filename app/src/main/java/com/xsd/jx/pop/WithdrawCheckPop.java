@@ -90,7 +90,7 @@ public class WithdrawCheckPop extends CenterPopupView {
             }
             SpannableStringBuilder span = SpannableStringUtils.getBuilder(desc)
                     .append("\t\t")
-                    .append(millisUntilFinished/1000+"s").setForegroundColor(ContextCompat.getColor(getContext(), R.color.tv_blue))
+                    .append(millisUntilFinished/1000+"s后重新验证").setForegroundColor(ContextCompat.getColor(getContext(), R.color.tv_blue))
                     .create();
             textView.setText(span);
             textView.setEnabled(false);

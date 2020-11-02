@@ -102,7 +102,7 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> publish(Integer wtId, Integer provinceId, Integer cityId, Integer districtId, String startDate, String endDate, Integer num) {
-        return bindIoUI(api.publish(wtId,provinceId,cityId,districtId,startDate,endDate,num));
+    public Observable<BaseResponse<MessageBean>> publish(Integer wtId, Integer provinceId, Integer cityId, Integer districtId, String startDate, String endDate, Integer num,String address) {
+        return bindIoUI(api.publish(wtId,provinceId,cityId,districtId,startDate,endDate,num,address));
     }
 }

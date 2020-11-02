@@ -78,21 +78,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/tv_type_work" />
-
-        <TextView
-            android:id="@+id/tv_look"
-            android:padding="@dimen/dp_16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableRight="@mipmap/ic_orange_arrow_right"
-            android:text="查看工人简历"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/h5"
+        <View
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:id="@+id/view_line"
+            style="@style/h_line"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_addr" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+        <TextView
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            freeTimePersion="@{item}"
+            android:lineSpacingExtra="@dimen/dp_8"
+            android:id="@+id/tv_free_time_persion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            tools:text="空闲工人：18人（团队）\n空闲时间：2020-10-29至2020-11-29（共30天）"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_line" />
+
 
         <LinearLayout
+            android:layout_marginTop="@dimen/dp_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -101,7 +114,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_look">
+            app:layout_constraintTop_toBottomOf="@+id/tv_free_time_persion">
             <TextView
                 android:visibility="@{item.status==3?View.VISIBLE:View.GONE}"
                 android:id="@+id/tv_refuse"

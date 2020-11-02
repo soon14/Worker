@@ -63,6 +63,7 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
                             case 1:
                                 db.tvStatus.setText("报名中");
                                 db.tvDesc.setText("请耐心等待雇主确认，确认通过后即可上工");
+                                db.tvPersionNum.setText("报名人数：15人");
                                 db.tvCancelJoin.setVisibility(View.VISIBLE);
                                 db.tvContactEmployer.setVisibility(View.GONE);
                                 db.layoutCenter.setVisibility(View.GONE);
@@ -81,6 +82,7 @@ public class OrderInfoActivity extends BaseBindActivity<ActivityOrderInfoBinding
                             case 6:
                                 db.tvStatus.setText("待结算");
                                 db.tvDesc.setText("您已完成工作，雇主正在为您打款，您辛苦了");
+                                db.tvPersionNum.setText("待结算人数：15人");
                                 db.tvConfirmTime.setVisibility(View.GONE);
                                 break;
                             case 7:

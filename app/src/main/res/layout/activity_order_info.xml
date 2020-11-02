@@ -157,6 +157,15 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_persion_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            tools:text="待结算/报名人数：15人"
+                            android:textColor="@color/tv_black"
+                            android:textSize="@dimen/h4" />
+
+                        <TextView
                             android:id="@+id/tv_addr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -234,6 +243,31 @@
                                 android:layout_alignParentRight="true"
                                 tools:text="2天"
                                 android:text="@{item.workDays+`天`}"
+                                android:textColor="@color/tv_darkgray"
+                                android:textSize="@dimen/h4" />
+                        </RelativeLayout>
+                        <View
+                            style="@style/h_line"
+                            android:layout_marginTop="@dimen/dp_16" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已上工人数"
+                                android:textColor="@color/tv_black"
+                                android:textSize="@dimen/h4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                tools:text="5天"
+                                android:text="@{item.workDays+`人`}"
                                 android:textColor="@color/tv_darkgray"
                                 android:textSize="@dimen/h4" />
                         </RelativeLayout>

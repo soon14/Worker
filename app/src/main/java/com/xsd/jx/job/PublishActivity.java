@@ -39,6 +39,7 @@ public class PublishActivity extends BaseBindBarActivity<ActivityPublishBinding>
 
     private int wtId;//工种ID
     private int provinceId,cityId,districtId;//省ID,市ID,区ID
+    private String address;//增加一个参数 address  由省份名+城市名 构成
     private String startDate,endDate;//开始和结束时间
     @Override
     protected int getLayoutId() {
@@ -64,6 +65,7 @@ public class PublishActivity extends BaseBindBarActivity<ActivityPublishBinding>
                     break;
                 case R.id.layout_addr:
                     PopShowUtils.showBottomAddrSelect(this, (province,city, district) -> {
+                        address = province.getName() + city.getName();
                         String address = province.getName() + city.getName() + (district == null ? "" : district.getName());
                         db.tvAddr.setText(address);
                         provinceId = province.getId();
@@ -111,7 +113,7 @@ public class PublishActivity extends BaseBindBarActivity<ActivityPublishBinding>
             ToastUtil.showLong("空闲人数需大于0！");
             return;
         }
-        dataProvider.work.publish(wtId,provinceId,cityId,districtId,startDate,endDate,num)
+        dataProvider.work.publish(wtId,provinceId,cityId,districtId,startDate,endDate,num,address)
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(dialog) {
                     @Override
                     protected void onSuccess(BaseResponse<MessageBean> baseResponse) {

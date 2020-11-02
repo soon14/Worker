@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.lsxiao.apollo.core.Apollo;
 import com.lsxiao.apollo.core.annotations.Receive;
 import com.xsd.jx.R;
-import com.xsd.jx.adapter.MyWorkersAdapter;
+import com.xsd.jx.adapter.GetWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.base.EventStr;
 import com.xsd.jx.bean.BaseResponse;
@@ -27,7 +27,7 @@ import java.util.List;
  * 【我的招工】 >> 招工详情{@link GetWorkersInfoActivity}
  */
 public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorkersBinding> {
-    private MyWorkersAdapter mAdapter = new MyWorkersAdapter();
+    private GetWorkersAdapter mAdapter = new GetWorkersAdapter();
     private int page=1;
     private int type=1;//类型 0:全部 1:正在招 2:已招满 3:工期内 4:待结算 5:待评价 6:已完成
     @Override
@@ -78,7 +78,7 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
 
     private void initView() {
         //类型 0:全部 1:正在招 2:已招满 3:工期内 4:待结算 5:待评价 6:已完成
-        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList("正在招","已招满","工期内","待结算"), new OnTabClickListener() {
+        TabUtils.setDefaultTab(this, db.tabLayout, Arrays.asList("正在招","待开工","工期内","待结算"), new OnTabClickListener() {
             @Override
             public void onTabClick(int position) {
                 type = position+1;

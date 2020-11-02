@@ -5,61 +5,48 @@
     <data>
         <variable
             name="item"
-            type="com.xsd.jx.bean.MyGetWorkersResponse.ItemsBean" />
-        <import type="android.view.View"/>
+            type="com.xsd.jx.bean.OrderBean" />
     </data>
 
     <LinearLayout
-        android:layout_marginBottom="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
         android:background="@drawable/round6_white_bg"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="待结算，您已完成工作，对方正在为您打款，您辛苦了"
+            android:textColor="@color/tv_gray"
+            android:textSize="@dimen/h5"
+            />
+        <View style="@style/h_line" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>
 
         <LinearLayout
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="木工"
                 android:text="@{item.typeTitle}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/h3"
-                android:textStyle="bold" />
+                android:textSize="@dimen/h3" />
 
             <TextView
                 price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
                 tools:text="350元/天" />
-        </LinearLayout>
-        <LinearLayout
-            android:paddingLeft="@dimen/dp_16"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/TextWelfareTagStyle"
-                advanceAmount="@{item.advanceAmount}"
-                tools:text="已付1000元" />
-
-            <TextView
-                android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
-                android:layout_marginLeft="@dimen/dp_6"
-                style="@style/TextWelfareTagStyle"
-                android:text="购买保险" />
         </LinearLayout>
         <TextView
             workDay="@{item}"
@@ -68,9 +55,19 @@
             android:layout_marginTop="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="工期：2020-07-29至2020-08-29(共30天)"
+            tools:text="工期：2020-07-29至2020-08-29(共30天)"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4"
+            android:text="上工人数：10人"
+            tools:text="上工人数：10人" />
         <TextView
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
@@ -91,25 +88,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_contact_us"
                 android:layout_marginRight="@dimen/dp_16"
-                android:gravity="center|left"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/round20_grayrim_bg"
+                android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
-                android:text="待评价"
+                android:text="联系平台"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5"
                 />
             <TextView
-                android:id="@+id/tv_comment_all"
-                android:gravity="center"
-                android:background="@drawable/round_blue_bg"
+                android:id="@+id/tv_contact_employer"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
-                android:text="评价"
+                android:background="@drawable/round20_blue_bg"
+                android:gravity="center"
+                android:text="联系雇主"
                 android:textColor="@color/white"
-                android:textSize="@dimen/h5"
-                />
+                android:textSize="@dimen/h5" />
         </LinearLayout>
 
 

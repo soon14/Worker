@@ -49,11 +49,12 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 style="@style/TextWelfareTagStyle"
-                tools:text="已付1000元"
                 advanceAmount="@{item.advanceAmount}"
-                />
+                tools:text="已付1000元" />
+
             <TextView
                 android:visibility="@{item.isSafe==1?View.VISIBLE:View.GONE}"
                 android:layout_marginLeft="@dimen/dp_6"
@@ -68,6 +69,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="工期：2020-07-29至2020-08-29(共30天)"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="需要人数：已招0人/共需20人"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
         <TextView
@@ -95,16 +105,17 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="@dimen/dp_34"
-                android:text="工期内"
+                android:text="待评价"
                 android:textColor="@color/tv_darkgray"
                 android:textSize="@dimen/h5"
                 />
             <TextView
+                android:id="@+id/tv_comment_all"
                 android:gravity="center"
                 android:background="@drawable/round_blue_bg"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_34"
-                android:text="结算工资"
+                android:text="评价"
                 android:textColor="@color/white"
                 android:textSize="@dimen/h5"
                 />

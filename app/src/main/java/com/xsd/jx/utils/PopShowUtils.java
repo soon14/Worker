@@ -110,7 +110,7 @@ public class PopShowUtils {
 
 
     /**
-     * 首页显示推荐的工作弹框
+     * 3秒后自动关闭的加载圈
      */
     public static void showLoad(BaseActivity activity, String title, onDismissListener listener) {
         new XPopup.Builder(activity)
@@ -153,7 +153,6 @@ public class PopShowUtils {
                     protected void onSuccess(BaseResponse<WorkRecommendResponse> baseResponse) {
                         WorkRecommendResponse data = baseResponse.getData();
                         List<JobBean> dataItems = data.getItems();
-                        //如果有数据，弹框显示推荐的工作
                         if (dataItems != null && dataItems.size() > 0) {
                             new XPopup.Builder(activity)
                                     .asCustom(new PushJobPop(activity, dataItems))

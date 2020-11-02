@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xsd.jx.R;
-import com.xsd.jx.adapter.MyWorkersAdapter;
+import com.xsd.jx.adapter.GetWorkersAdapter;
 import com.xsd.jx.base.BaseBindBarActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.MyGetWorkersResponse;
@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GetWorkersAllActivity extends BaseBindBarActivity<ActivityRecyclerviewBinding> {
-    private MyWorkersAdapter mAdapter = new MyWorkersAdapter();
+    private GetWorkersAdapter mAdapter = new GetWorkersAdapter();
     private int page=1;
     private int type=0;//类型 0:全部 1:正在招 2:已招满 3:工期内 4:待结算 5:待评价 6:已完成
     @Override

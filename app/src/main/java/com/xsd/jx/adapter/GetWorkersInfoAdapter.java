@@ -4,10 +4,10 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder;
 import com.xsd.jx.R;
 import com.xsd.jx.bean.WorkerBean;
-import com.xsd.jx.databinding.ItemGetinfoApplyWorkersBinding;
-import com.xsd.jx.databinding.ItemGetinfoFullBinding;
-import com.xsd.jx.databinding.ItemGetinfoWaitcommentBinding;
-import com.xsd.jx.databinding.ItemGetinfoWaitpayBinding;
+import com.xsd.jx.databinding.ItemGetWorkersInfo1Binding;
+import com.xsd.jx.databinding.ItemGetWorkersInfo2Binding;
+import com.xsd.jx.databinding.ItemGetWorkersInfo3Binding;
+import com.xsd.jx.databinding.ItemGetWorkersInfo5Binding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,17 +32,14 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
         super();
         this.price = price;
         // 绑定 layout 对应的 type
-        addItemType(1, R.layout.item_getinfo_apply_workers);
-
-        addItemType(2, R.layout.item_getinfo_full);
-
-        addItemType(3, R.layout.item_getinfo_waitpay);//工期中
-        addItemType(4, R.layout.item_getinfo_waitpay);//待结算
-        addItemType(5, R.layout.item_getinfo_waitcomment);//待评价
-
-        addItemType(6, R.layout.item_getinfo_full);
-        addItemType(7, R.layout.item_getinfo_full);
-        addItemType(8, R.layout.item_getinfo_full);
+        addItemType(1, R.layout.item_get_workers_info_1);
+        addItemType(2, R.layout.item_get_workers_info_2);//待开工
+        addItemType(3, R.layout.item_get_workers_info_3);//工期中
+        addItemType(4, R.layout.item_get_workers_info_3);//待结算
+        addItemType(5, R.layout.item_get_workers_info_5);//待评价
+        addItemType(6, R.layout.item_get_workers_info_2);
+        addItemType(7, R.layout.item_get_workers_info_2);
+        addItemType(8, R.layout.item_get_workers_info_2);
     }
 
 
@@ -51,26 +48,23 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
         // 根据返回的 type 分别设置数据
         switch (item.getItemType()) {
             case 1:
-                ItemGetinfoApplyWorkersBinding dataBinding1 = (ItemGetinfoApplyWorkersBinding) helper.getDataBinding();
-                dataBinding1.setItem(item);
+                ((ItemGetWorkersInfo1Binding) helper.getDataBinding()).setItem(item);
                 break;
             case 2:
             case 6:
             case 7:
             case 8:
-                ItemGetinfoFullBinding dataBinding2 = (ItemGetinfoFullBinding) helper.getDataBinding();
-                dataBinding2.setItem(item);
+                ((ItemGetWorkersInfo2Binding) helper.getDataBinding()).setItem(item);
                 break;
             case 3:
             case 4:
-                ItemGetinfoWaitpayBinding dataBinding4 = (ItemGetinfoWaitpayBinding) helper.getDataBinding();
-                dataBinding4.setItem(item);
+                ItemGetWorkersInfo3Binding dataBinding3 = (ItemGetWorkersInfo3Binding) helper.getDataBinding();
+                dataBinding3.setItem(item);
                 //TODO 人数: 5人  天数: 1天
-                dataBinding4.tvPriceDay.setText("人数: "+item.getAge()+"人  天数: "+item.getCheckDay()+"天");
+                dataBinding3.tvPriceDay.setText("人数: "+item.getAge()+"人  天数: "+item.getCheckDay()+"天");
                 break;
             case 5:
-                ItemGetinfoWaitcommentBinding dataBinding5 = (ItemGetinfoWaitcommentBinding) helper.getDataBinding();
-                dataBinding5.setItem(item);
+                ((ItemGetWorkersInfo5Binding) helper.getDataBinding()).setItem(item);
                 break;
         }
     }

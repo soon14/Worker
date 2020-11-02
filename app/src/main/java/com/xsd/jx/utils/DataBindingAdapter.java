@@ -126,6 +126,11 @@ public class DataBindingAdapter {
     }
     //工期：2020-07-29至2020-08-29(共30天)
     @BindingAdapter("workDay")
+    public static void workDay(TextView tv, WorkerBean item){
+        if (item==null)return;
+//        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+    }
+    @BindingAdapter("workDay")
     public static void workDay(TextView tv, JobBean item){
         if (item==null)return;
         tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
@@ -275,21 +280,11 @@ public class DataBindingAdapter {
      *  我的招工适配器，底部状态信息{@link R.layout.item_mygetworkers_geting}
      */
     @BindingAdapter("layoutWorkers")
-    public static void layoutWorkers(LinearLayout layout, MyGetWorkersResponse.ItemsBean itemsBean){
-        if (itemsBean==null)return;
-        List<WorkerBean> workers = itemsBean.getWorkers();
+    public static void layoutWorkers(LinearLayout layout, int tobeConfirmNum){
         TextView tv0 = (TextView) layout.getChildAt(0);//左侧描述
         TextView tv1 = (TextView) layout.getChildAt(1);//右侧按钮
-        List<WorkerBean> showWorkers = new ArrayList<>();
-        for (int i = 0; i < workers.size(); i++){
-            WorkerBean workerBean = workers.get(i);
-            int status = workerBean.getStatus();//状态 1:未处理 2：已确认 3：已拒绝:拒绝和确认都不再显示
-            if (status==1){
-                showWorkers.add(workerBean);
-            }
-        }
-        if (showWorkers!=null&&showWorkers.size()>0){
-            tv0.setText("有"+showWorkers.size()+"位报名待确认工人");
+        if (tobeConfirmNum>0){
+            tv0.setText("有"+tobeConfirmNum+"位报名待确认工人");
             tv1.setText("查看工人");
         }else{
             tv0.setText("还没有工人报名，您可以主动招工人");

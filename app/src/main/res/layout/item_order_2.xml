@@ -55,12 +55,21 @@
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="工期：2020-07-29至2020-08-29(共30天)"
-            android:textColor="@color/black"
+            android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4"
+            android:text="上工人数：10人"
+            tools:text="上工人数：10人" />
 
         <TextView
             android:paddingRight="@dimen/dp_16"

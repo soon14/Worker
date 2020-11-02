@@ -6,7 +6,8 @@ package com.xsd.jx.base;
  */
 public interface EventStr {
     String UPDATE_INVITE_LIST = "update_invite_list";
-    String UPDATE_GET_WORKERS = "update_get_workers";
+    String UPDATE_GET_WORKERS = "update_get_workers";//刷新招工人页面列表数据
+    String UPDATE_GET_WORKERS_TABS = "update_get_workers_tabs";//刷新招工人页面tabs
     String UPDATE_MY_GET_WORKERS = "update_my_get_workers";
     String UPDATE_USER_INFO = "update_user_info";
     String UPDATE_ORDER_LIST = "update_order_list";

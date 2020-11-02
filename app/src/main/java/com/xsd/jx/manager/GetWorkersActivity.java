@@ -73,8 +73,20 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         Apollo.bind(this);
         initView();
         onEvent();
-        loadData();
+        loadTabs();//动态加载Tabs
         EasyFloat.hideAppFloat();
+    }
+
+    private void loadTabs() {
+        dataProvider.server.index(1, 0, sortBy)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<WorkerResponse>>(db.refreshLayout) {
+                    @Override
+                    protected void onSuccess(BaseResponse<WorkerResponse> baseResponse) {
+                        WorkerResponse data = baseResponse.getData();
+                        setTabs(data.getWorkTypes());
+                    }
+                });
+
     }
 
     @Override
@@ -89,6 +101,12 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         L.e("刷新招工人列表");
         page = 1;
         loadData();
+    }
+    @Receive(EventStr.UPDATE_GET_WORKERS_TABS)
+    public void updateGetWorkersTabs() {
+        L.e("刷新招工人Tabs");
+        page = 1;
+        loadTabs();//动态加载Tabs
     }
 
     private void loadData() {
@@ -105,9 +123,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                         } else {
                             if (page == 1) mAdapter.setNewInstance(items);
                             else mAdapter.getLoadMoreModule().loadMoreEnd();
-                        }
-                        if (page == 1) {
-                            setTabs(data.getWorkTypes());
                         }
                     }
                 });
@@ -137,7 +152,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
         }
         //2.如果已经有tabs了，而且条目和新的tabs条目数相同，就不改变
         if (workTypes.size() == newWorkTypes.size()) return;
-        //3.如果有新增的tabs
+        //3.如果有新增的tabs,更新顶部tabs
         workTypes = newWorkTypes;
         updateTopTabs();
     }
@@ -181,15 +196,6 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
                     .atView(db.tvAll)
                     .asCustom(filterPop);
         }
-
-        //如果重新设置Tabs需要刷新列表除去重复数据
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                page = 1;
-                loadData();
-            }
-        }, 800);
     }
 
     private void onEvent() {

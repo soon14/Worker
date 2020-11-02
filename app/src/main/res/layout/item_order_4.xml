@@ -18,7 +18,7 @@
             android:padding="@dimen/dp_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="报名中，请耐心等待对方确认，确认通过后即可上工"
+            android:text="已取消，更好的工作在等您"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             />
@@ -43,26 +43,34 @@
                 android:textSize="@dimen/h3" />
 
             <TextView
+                android:textColor="@color/tv_gray"
                 price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
                 tools:text="350元/天" />
         </LinearLayout>
-
-
         <TextView
             workDay="@{item}"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="工期：2020-07-29至2020-08-29(共30天)"
-            android:textColor="@color/black"
+            android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
-
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4"
+            android:text="上工人数：10人"
+            tools:text="上工人数：10人" />
+        <TextView
+            android:paddingBottom="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:id="@+id/tv_addr"
@@ -73,37 +81,6 @@
             android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
-        <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>
-
-        <LinearLayout
-            android:padding="@dimen/dp_13"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_contact_us"
-                android:layout_marginRight="@dimen/dp_16"
-                android:gravity="center"
-                android:background="@drawable/round20_grayrim_bg"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_34"
-                android:text="联系平台"
-                android:textColor="@color/tv_darkgray"
-                android:textSize="@dimen/h5"
-                />
-            <TextView
-                android:id="@+id/tv_cancel"
-                android:gravity="center"
-                android:background="@drawable/round20_grayrim_bg"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_34"
-                android:text="取消报名"
-                android:textColor="@color/tv_darkgray"
-                android:textSize="@dimen/h5"
-                />
-        </LinearLayout>
-
 
     </LinearLayout>
 </layout>

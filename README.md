@@ -41,17 +41,7 @@
 
 适配器`MyWorkersAdapter` ,适配对象`MyGetWorkersResponse.ItemsBean`点击进入GetWorkersInfoActivity
 
-​    状态：-1:不展示(有预付款项未付不显示给用户) ) 1:正在招 2:已招满/待开工(所有用户已确认) 3:工期中 4:待结算 5:待评价 6:已完成 7.已取消
-
-```xml
-addItemType(1, R.layout.item_mygetworkers_geting);
-addItemType(2, R.layout.item_mygetworkers_full);
-addItemType(3, R.layout.item_mygetworkers_working);
-addItemType(4, R.layout.item_mygetworkers_waitpay);
-addItemType(5, R.layout.item_mygetworkers_waitcomment);
-addItemType(6, R.layout.item_mygetworkers_completion);
-addItemType(7, R.layout.item_mygetworkers_cancel);
-```
+状态：-1:不展示(有预付款项未付不显示给用户) ) 1:正在招 2:已招满/待开工(所有用户已确认) 3:工期中 4:待结算 5:待评价 6:已完成 7.已取消
 
 
 
@@ -61,16 +51,7 @@ addItemType(7, R.layout.item_mygetworkers_cancel);
 
 状态：-1:不展示(有预付款项未付不显示给用户) ) 1:正在招 2:已招满/待开工(所有用户已确认) 3:工期中 4:待结算 5:待评价 6:已完成 7.已取消
 
-```xml
-addItemType(1, R.layout.item_getinfo_apply_workers);
-addItemType(2, R.layout.item_getinfo_full);
-addItemType(3, R.layout.item_getinfo_full);
-addItemType(4, R.layout.item_getinfo_waitpay);
-addItemType(5, R.layout.item_getinfo_waitcomment);
-addItemType(6, R.layout.item_order_completion);
-addItemType(7, R.layout.item_order_cancel);
-addItemType(8, R.layout.item_worker_full);
-```
+
 
 # 接口修改项：
 

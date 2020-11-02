@@ -4,8 +4,8 @@
 
     <data>
         <variable
-        name="item"
-        type="com.xsd.jx.bean.OrderBean" />
+            name="item"
+            type="com.xsd.jx.bean.OrderBean" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:padding="@dimen/dp_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="已完成，您的工资已到账，感谢您的付出"
+            android:text="待评价，您的工资已到账，快评价下对方吧"
             android:textColor="@color/tv_gray"
             android:textSize="@dimen/h5"
             />
@@ -43,7 +43,6 @@
                 android:textSize="@dimen/h3" />
 
             <TextView
-                android:textColor="@color/tv_gray"
                 price="@{item.price}"
                 style="@style/TextPriceStyle"
                 android:gravity="right"
@@ -54,25 +53,62 @@
             android:paddingRight="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="工期：2020-07-29至2020-08-29(共30天)"
-            android:textColor="@color/black"
+            android:textColor="@color/tv_black"
             android:textSize="@dimen/h4" />
-
         <TextView
-            android:paddingBottom="@dimen/dp_16"
-            android:id="@+id/tv_addr"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="18dp"
             android:layout_marginTop="@dimen/dp_16"
             android:paddingLeft="@dimen/dp_16"
             android:paddingRight="@dimen/dp_16"
-            android:text="@{`上工地点：`+item.address}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4"
-            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座" />
+            android:text="上工人数：10人"
+            tools:text="上工人数：10人" />
+        <TextView
+            android:paddingRight="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_16"
+            android:id="@+id/tv_addr"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="上工地点：武汉市青山区建设一路31号武汉宝业中心A座"
+            android:text="@{`上工地点：`+item.address}"
+            android:textColor="@color/tv_black"
+            android:textSize="@dimen/h4" />
+        <View style="@style/h_line" android:layout_marginTop="@dimen/dp_16" android:layout_marginLeft="@dimen/dp_10" android:layout_marginRight="@dimen/dp_10"/>
+
+        <LinearLayout
+            android:padding="@dimen/dp_13"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_contact_us"
+                android:layout_marginRight="@dimen/dp_16"
+                android:gravity="center"
+                android:background="@drawable/round20_grayrim_bg"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:text="联系平台"
+                android:textColor="@color/tv_darkgray"
+                android:textSize="@dimen/h5"
+                />
+            <TextView
+                android:id="@+id/tv_order_comment"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_34"
+                android:background="@drawable/round20_blue_bg"
+                android:gravity="center"
+                android:text="评价雇主"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h5" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </layout>
