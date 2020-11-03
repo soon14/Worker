@@ -41,7 +41,7 @@ public class JobBean implements Serializable {
     private String price;
     private int settleType;
     private int advanceType;
-    private int num;
+    private int num;   //api/v1/work/invited-list被邀请上工信息列表:邀请人数
     private String desc;
     private int isSafe;
     private int status;

@@ -513,20 +513,14 @@ public class PopShowUtils {
     }
 
     //企业端-确认邀请用工弹框
-    public static void showInviteNum(BaseActivity baseActivity, ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity, "确认邀请上工人数", "确认邀请", 1, true, listener);
+    public static void showInviteNum(BaseActivity baseActivity,int defaultNum, ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(baseActivity, "确认邀请上工人数", "确认邀请", defaultNum, true, listener);
         new XPopup.Builder(baseActivity)
                 .asCustom(confirmNumPop)
                 .show();
     }
 
-    //修改上工人数
-    public static void showEditNum(Context context, int num, ConfirmNumPop.ConfirmListener listener) {
-        ConfirmNumPop confirmNumPop = new ConfirmNumPop(context, "修改上工人数", "确认修改", num, false, listener);
-        new XPopup.Builder(context)
-                .asCustom(confirmNumPop)
-                .show();
-    }
+
 
     //企业端-确认修改报名的包工头每天的人数弹框
     public static void showDayPersion(BaseActivity baseActivity) {
@@ -536,8 +530,25 @@ public class PopShowUtils {
                 .asCustom(pop)
                 .show();
     }
+    /**
+     *  修改上工人数,用于结算时的弹框统计{@link PopShowUtils#showDayPersion(BaseActivity baseActivity)}修改
+     */
+    public static void showEditNum(Context context, int num, ConfirmNumPop.ConfirmListener listener) {
+        ConfirmNumPop confirmNumPop = new ConfirmNumPop(context, "修改上工人数", "确认修改", num, false, listener);
+        new XPopup.Builder(context)
+                .asCustom(confirmNumPop)
+                .show();
+    }
 
-    //确认雇佣人数
+    /**
+     * 确认雇佣人数
+     * 对方人数大于自己还需要的人数时进行修改的弹框
+     * 需要选中我已联系对方并取得同意后方可确认雇佣
+     * 1.用于正在招详情页{@link com.xsd.jx.manager.GetWorkersInfoActivity}，对方报了名，但他的空闲人数大于当前你还需要的人数
+     * 2.招工人{@link com.xsd.jx.manager.GetWorkersActivity}，邀请上工的对方空闲人数大于你需要的人数
+     *
+     */
+
     public static void showConfirmEmployNum(Context context) {
         ConfirmEmployNumPop confirmNumPop = new ConfirmEmployNumPop(context);
         new XPopup.Builder(context)

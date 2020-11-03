@@ -68,7 +68,7 @@
             android:paddingRight="@dimen/dp_16"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h4"
-            android:text="报名人数：15人"
+            android:text="@{`报名人数：`+item.num+`人`}"
             tools:text="报名人数：15人" />
 
         <TextView

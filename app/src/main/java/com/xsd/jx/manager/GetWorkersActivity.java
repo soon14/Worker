@@ -28,6 +28,7 @@ import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerResponse;
+import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.pop.FilterPop;
 import com.xsd.jx.pop.InviteJobsPop;
 import com.xsd.jx.pop.SortPop;
@@ -38,6 +39,7 @@ import com.xsd.jx.utils.AdapterUtils;
 import com.xsd.jx.utils.AnimUtils;
 import com.xsd.jx.utils.AppBarUtils;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
+import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.jx.utils.TextViewUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ToastUtil;
@@ -59,7 +61,7 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
     private int page = 1;
     private int wtId;//工种ID
     private int sortBy = 1;//排序ID
-    private int workId;//工作ID
+    private int workId;//工作ID,如果有多个此工作类型的工作，会选择传入
     private List<WorkTypeBean> workTypes;//工种筛选数据
 
     @Override
@@ -247,15 +249,14 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
 
             }
         });
+        //进入工人简历页面
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 WorkerBean item = (WorkerBean) adapter.getItem(position);
                 Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
                 intent.putExtra("type", 0);
-                intent.putExtra("userId", item.getUserId());
                 intent.putExtra("wtId", wtId);
-                intent.putExtra("workId", workId);
                 intent.putExtra("item", item);
                 startActivity(intent);
 
@@ -292,38 +293,44 @@ public class GetWorkersActivity extends BaseBindBarActivity<ActivityGetWorkersBi
      * 邀请上工
      * 查询当前发布者同工种有几条招工信息，
      * 如果有多条，弹出框选择上工地点
+     * TODO 新增num,fid
      */
     private void showInviteJobs(WorkerBean item, int position) {
-        int userId = item.getUserId();
-        dataProvider.server.invite(userId, wtId, workId)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
-                        JobListResponse data = baseResponse.getData();
-                        List<JobListResponse.ItemsBean> items = data.getItems();
-                        if (items != null && items.size() > 0) {
-                            //如果有多条，弹出框选择上工地点
-                            InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
-                            inviteJobsPop.setListener(itemsBean -> {
-                                workId = itemsBean.getWorkId();
-                                showInviteJobs(item, position);
-                            });
-                            new XPopup.Builder(GetWorkersActivity.this)
-                                    .asCustom(inviteJobsPop)
-                                    .show();
+        PopShowUtils.showInviteNum(this,item.getNum(), new ConfirmNumPop.ConfirmListener() {
+            @Override
+            public void onConfirmNum(int num) {
+                dataProvider.server.invite(item.getUserId(), wtId, workId,num,item.getFid())
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
+                                JobListResponse data = baseResponse.getData();
+                                List<JobListResponse.ItemsBean> items = data.getItems();
+                                if (items != null && items.size() > 0) {
+                                    //如果有多条，弹出框选择上工地点
+                                    InviteJobsPop inviteJobsPop = new InviteJobsPop(GetWorkersActivity.this, items);
+                                    inviteJobsPop.setListener(itemsBean -> {
+                                        workId = itemsBean.getWorkId();
+                                        showInviteJobs(item, position);
+                                    });
+                                    new XPopup.Builder(GetWorkersActivity.this)
+                                            .asCustom(inviteJobsPop)
+                                            .show();
 
-                        } else {
-                            try {
-                                ToastUtil.showLong(baseResponse.getData().getMessage());
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } else {
+                                    try {
+                                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    item.setInvited(true);
+                                    mAdapter.notifyItemChanged(position);
+
+                                }
                             }
-                            item.setInvited(true);
-                            mAdapter.notifyItemChanged(position);
+                        });
+            }
+        });
 
-                        }
-                    }
-                });
     }
 
     private SortPop sortPop;

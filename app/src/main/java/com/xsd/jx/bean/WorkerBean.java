@@ -38,7 +38,54 @@ public class WorkerBean implements Serializable, MultiItemEntity {
 
     private boolean isInvited;
 
-     /** type 状态 -1:不展示(有预付款项未付不显示给用户) )
+    //新增项空闲时间
+    private int fid;//空闲列表id
+    private int day;
+    private String startDate;
+    private String endDate;
+    private int num;//空闲人数
+
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    /** type 状态 -1:不展示(有预付款项未付不显示给用户) )
  *  1:正在招
  *  2:已招满/待开工(所有用户已确认)
  *  3:工期中
@@ -48,6 +95,7 @@ public class WorkerBean implements Serializable, MultiItemEntity {
  *  7:已取消
  *  8:已过期
  */
+
     private int type=1;//用于我的招工 - 招工详情的工人列表
 
     public int getType() {

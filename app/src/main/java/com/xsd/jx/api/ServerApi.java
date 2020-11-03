@@ -38,9 +38,11 @@ public interface ServerApi {
      * @param userId 邀请用户ID
      * @param wtId 工种ID
      * @param workId 可选 工作ID，针对发布了多个相同工种的需求
+     * @param num  邀请人数
+     * @param fid  free list ID
      */
     @GET("server/invite")
-    Observable<BaseResponse<JobListResponse>> invite(@Query("userId")Integer userId, @Query("wtId")Integer wtId, @Query("workId")Integer workId);
+    Observable<BaseResponse<JobListResponse>> invite(@Query("userId")Integer userId,@Query("wtId")Integer wtId,@Query("workId")Integer workId,@Query("num")Integer num,@Query("fid")Integer fid);
     /**
      * 我的招工
      * @param page 页码

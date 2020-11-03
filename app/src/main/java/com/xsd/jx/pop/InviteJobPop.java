@@ -54,14 +54,14 @@ public class InviteJobPop extends CenterPopupView {
         LinearLayout layoutContent = findViewById(R.id.layout_content);
         for (int i = 0; i < data.size(); i++) {
             JobBean jobBean = data.get(i);
-            L.e("被邀请的ID=="+jobBean.getId());
             boolean isJoin = jobBean.isIsJoin();//是否已经报名
             View viewChild = LayoutInflater.from(this.getContext()).inflate(R.layout.item_invite_job, null);
             ItemInviteJobBinding bind = DataBindingUtil.bind(viewChild);
             bind.tvJoin.setBackgroundResource(isJoin ? R.drawable.round6_gray_bg : R.drawable.round6_blue_bg);
             bind.setItem(jobBean);
-            //TODO 邀请人数
-            bind.tvInviteNum.setText("邀请人数："+jobBean.getNum()+"人");
+            int num = jobBean.getNum();
+            bind.tvInviteNum.setText("邀请人数："+num+"人");
+            bind.tvJoin.setText("接受邀请("+num+"人)");
             layoutContent.addView(viewChild);
             //点击事件
             bind.tvJoin.setOnClickListener(view -> activity.getDataProvider().work.acceptInvite(jobBean.getId())
@@ -69,7 +69,7 @@ public class InviteJobPop extends CenterPopupView {
                         @Override
                         protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                             ToastUtil.showLong(baseResponse.getData().getMessage());
-                            bind.tvJoin.setText("已接受邀请");
+                            bind.tvJoin.setText("已接受邀请("+num+"人)");
                             bind.tvJoin.setBackgroundResource(R.drawable.round6_gray_bg);
                             Apollo.emit(EventStr.UPDATE_INVITE_LIST);
                             delayDismiss(800);

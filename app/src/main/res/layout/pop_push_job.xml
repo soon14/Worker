@@ -130,6 +130,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4" />
                 <TextView
+                    needAndAll="@{item}"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:layout_marginTop="@dimen/dp_16"

@@ -18,6 +18,7 @@ import com.xsd.jx.bean.WorkerResponse;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import retrofit2.http.Query;
 
 import static com.xsd.okhttp.retrofit2.RetrofitComposeUtils.bindIoUI;
 
@@ -43,8 +44,8 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse<JobListResponse>> invite(Integer userId, Integer wtId, Integer workId) {
-        return bindIoUI(api.invite( userId,  wtId,  workId));
+    public Observable<BaseResponse<JobListResponse>> invite(Integer userId, Integer wtId, Integer workId,Integer num,Integer fid) {
+        return bindIoUI(api.invite(userId,wtId,workId,num,fid));
     }
 
     @Override

@@ -98,8 +98,6 @@
                     <TextView
                         android:onClick="@{clicklistener}"
                         android:id="@+id/tv_add_work_type"
-                        android:paddingLeft="@dimen/dp_6"
-                        android:drawableLeft="@mipmap/ic_orange_add"
                         android:gravity="center"
                         android:background="@drawable/round3_lightorange_bg"
                         android:layout_centerVertical="true"

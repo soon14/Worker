@@ -331,13 +331,19 @@ public class DataBindingAdapter {
         int num = item.getNum();
         tv.setText("需要人数：已招"+joinedNum+"人/共需"+num+"人");
     }
+    @BindingAdapter("needAndAll")
+    public static void needAndAll(TextView tv, JobBean item){
+        int joinedNum = item.getJoinedNum();
+        int num = item.getNum();
+        tv.setText("已招"+joinedNum+"人/共需"+num+"人");
+    }
     //空闲工人：18人（团队）\n空闲时间：2020-10-29至2020-11-29（共30天）
     @BindingAdapter("freeTimePersion")
     public static void freeTimePersion(TextView tv, WorkerBean item){
-        int freePersionNum = RandomUtils.getInt(1,20);
-        String startTime = "2020-10-29";
-        String endTime = "2020-11-29";
-        int day = RandomUtils.getInt(1,30);
+        int freePersionNum = item.getNum();
+        String startTime = item.getStartDate();
+        String endTime = item.getEndDate();
+        int day = item.getDay();
         tv.setText(String.format(Locale.CHINA,"空闲工人：%d人（%s）\n空闲时间：%s至%s（共%d天）", freePersionNum, freePersionNum > 1 ? "团队" : "个人", startTime, endTime, day));
     }
 

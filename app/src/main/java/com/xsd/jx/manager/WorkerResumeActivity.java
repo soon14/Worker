@@ -22,6 +22,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
+import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.pop.InviteJobsPop;
 import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
 import com.xsd.jx.databinding.ItemWorkHistoryBinding;
@@ -35,33 +36,19 @@ import java.util.List;
 
 /**
  * 工人简历
- * type
- * 0如果是从推荐的工人列表进来的就显示【邀请上工】，
- * 1如果是从报名工人列表进来的就显示【婉拒和雇佣】，这两个按钮表现形式参考报名工人列表
-
- 情况：0如果是从推荐的工人列表进来的就显示【邀请上工】
  WorkerBean item = (WorkerBean) adapter.getItem(position);
  Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
- intent.putExtra("userId",item.getUserId());
- intent.putExtra("wtId",wtId);
- intent.putExtra("workId",workId);
- intent.putExtra("status",item.getStatus());
+ intent.putExtra("type", 0);//【0邀请上工】【1婉拒和雇佣】
+ intent.putExtra("wtId", wtId);
+ intent.putExtra("item", item);
  startActivity(intent);
-
- 情况：1如果是从报名工人列表进来的就显示【婉拒和雇佣】，这两个按钮表现形式参考报名工人列表
- WorkerBean item = (WorkerBean) adapter.getItem(position);
- Intent intent = new Intent(GetWorkersActivity.this, WorkerResumeActivity.class);
- intent.putExtra("type",1);
- intent.putExtra("userId",item.getUserId());
- intent.putExtra("workId",workId);
- intent.putExtra("status",item.getStatus());
- startActivity(intent);
-
  */
 public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResumeBinding> {
     private int userId;
     private int wtId;
     private int workId;
+    private int fid;
+    private int defaultNum;
     private int status;//状态 1:未处理 2：已确认 3：已拒绝
 
     @Override
@@ -114,37 +101,42 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
      * 查询当前发布者同工种有几条招工信息，如果有多条，弹出框选择上工地点
      */
     private void showInviteJobs() {
-        dataProvider.server.invite(userId, wtId, workId)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
-                    @Override
-                    protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
-                        JobListResponse data = baseResponse.getData();
-                        List<JobListResponse.ItemsBean> items = data.getItems();
-                        if (items != null) {
-                            InviteJobsPop inviteJobsPop = new InviteJobsPop(WorkerResumeActivity.this, items);
-                            inviteJobsPop.setListener(itemsBean -> {
-                                workId = itemsBean.getWorkId();
-                                showInviteJobs();
-                            });
-                            new XPopup.Builder(WorkerResumeActivity.this)
-                                    .asCustom(inviteJobsPop)
-                                    .show();
+        PopShowUtils.showInviteNum(this,defaultNum, new ConfirmNumPop.ConfirmListener() {
+            @Override
+            public void onConfirmNum(int num) {
+                dataProvider.server.invite(userId, wtId, workId,num,fid)
+                        .subscribe(new OnSuccessAndFailListener<BaseResponse<JobListResponse>>() {
+                            @Override
+                            protected void onSuccess(BaseResponse<JobListResponse> baseResponse) {
+                                JobListResponse data = baseResponse.getData();
+                                List<JobListResponse.ItemsBean> items = data.getItems();
+                                if (items != null) {
+                                    InviteJobsPop inviteJobsPop = new InviteJobsPop(WorkerResumeActivity.this, items);
+                                    inviteJobsPop.setListener(itemsBean -> {
+                                        workId = itemsBean.getWorkId();
+                                        showInviteJobs();
+                                    });
+                                    new XPopup.Builder(WorkerResumeActivity.this)
+                                            .asCustom(inviteJobsPop)
+                                            .show();
 
-                        } else {
-                            try {
-                                ToastUtil.showLong(baseResponse.getData().getMessage());
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } else {
+                                    try {
+                                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                                }
                             }
-                            Apollo.emit(EventStr.UPDATE_GET_WORKERS);
-                        }
-                    }
-                });
+                        });
+            }
+        });
+
     }
 
     /**
      * 拒绝/雇佣报名用户
-     * @param userId 报名用户ID
      * @param type 类型 1:拒绝 2:雇佣
      */
     private void doJoinWork(int type){
@@ -164,13 +156,15 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
     private void initView() {
         tvTitle.setText("工人简历");
         Intent intent = getIntent();
-        int type = intent.getIntExtra("type", 0);
+        int type = intent.getIntExtra("type", 0);//0邀请上工1.报名工人列表进入，显示拒绝和邀请
         WorkerBean item = (WorkerBean) intent.getSerializableExtra("item");
         userId = item.getUserId();
+        fid = item.getFid();
+        defaultNum = item.getNum();
         status = item.getStatus();
         boolean invited = item.isInvited();
         DataBindingAdapter.isInvite(db.tvInvite,invited);
-        if (type == 0) {//邀请上工
+        if (type == 0) {//显示邀请上工
             db.tvInvite.setVisibility(View.VISIBLE);
             wtId = intent.getIntExtra("wtId", 0);
         } else if (type == 1) {
