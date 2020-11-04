@@ -9,6 +9,7 @@ import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.PushGetWorkersResponse;
 import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.UnmatchedResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
@@ -69,8 +70,8 @@ public class ServerImpl implements ServerApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> doJoinWorker(Integer workId, Integer userId, Integer type) {
-        return bindIoUI(api.doJoinWorker(workId,userId,type));
+    public Observable<BaseResponse<UnmatchedResponse>> doJoinWorker(Integer joinId, Integer type, boolean isConfirmed) {
+        return bindIoUI(api.doJoinWorker(joinId,type,isConfirmed));
     }
 
     @Override
@@ -116,6 +117,11 @@ public class ServerImpl implements ServerApi {
     @Override
     public Observable<BaseResponse<MessageBean>> helpCheck(Integer workId, Integer userId, String date) {
         return bindIoUI(api.helpCheck(workId,userId,date));
+    }
+
+    @Override
+    public Observable<BaseResponse<MessageBean>> confirmWork(Integer workId) {
+        return bindIoUI(api.confirmWork(workId));
     }
 
 

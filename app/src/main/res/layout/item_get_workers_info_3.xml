@@ -7,14 +7,17 @@
         <variable
             name="item"
             type="com.xsd.jx.bean.WorkerBean" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
+        android:layout_margin="@dimen/dp_8"
+        android:background="@drawable/round6_white_bg"
         android:paddingRight="@dimen/dp_16"
         android:paddingLeft="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_108">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_head"
@@ -56,25 +59,18 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="合计 900元"
-            android:text="@{`合计 `+item.totalWage+`元`}"
-            android:textColor="@color/tv_black"
+            tools:text="待结算 6000元"
+            android:text="@{`待结算 `+item.totalWage+`元`}"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/h5"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
-        <View
-            android:id="@+id/view4"
-            style="@style/h_line"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <LinearLayout
-            android:paddingBottom="@dimen/dp_8"
-            android:paddingTop="@dimen/dp_8"
+            tools:visibility="visible"
+            android:visibility="@{item.settleList==null||item.settleList.size()==0?View.GONE:View.VISIBLE}"
+            android:paddingTop="@dimen/dp_16"
             android:id="@+id/layout_look_persion_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

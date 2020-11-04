@@ -141,7 +141,7 @@ public class PushJobPop extends CenterPopupView {
                     }
 
                     @Override
-                    protected void onErr(String err) {
+                    protected void onErr(BaseResponse err) {
                         super.onErr(err);
                         dismiss();
                     }

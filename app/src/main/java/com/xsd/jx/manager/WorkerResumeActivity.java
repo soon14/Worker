@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.google.gson.JsonObject;
 import com.lsxiao.apollo.core.Apollo;
 import com.lxj.xpopup.XPopup;
 import com.xsd.jx.R;
@@ -19,9 +20,11 @@ import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.ExperienceResponse;
 import com.xsd.jx.bean.JobListResponse;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.UnmatchedResponse;
 import com.xsd.jx.bean.WorkTypeBean;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.bean.WorkerInfoResponse;
+import com.xsd.jx.listener.OnConfirmEditEmployNumListener;
 import com.xsd.jx.pop.ConfirmNumPop;
 import com.xsd.jx.pop.InviteJobsPop;
 import com.xsd.jx.databinding.ActivityWorkerResumeBinding;
@@ -30,7 +33,11 @@ import com.xsd.jx.utils.DataBindingAdapter;
 import com.xsd.jx.utils.OnSuccessAndFailListener;
 import com.xsd.jx.utils.PopShowUtils;
 import com.xsd.utils.DpPxUtils;
+import com.xsd.utils.GsonUtils;
 import com.xsd.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -49,6 +56,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
     private int workId;
     private int fid;
     private int defaultNum;
+    private int joinId;//报名id
     private int status;//状态 1:未处理 2：已确认 3：已拒绝
 
     @Override
@@ -71,10 +79,10 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
                     showInviteJobs();
                     break;
                 case R.id.tv_refuse://婉拒
-                    doJoinWork(1);
+                    doJoinWork(1,false);
                     break;
                 case R.id.tv_hire://雇佣
-                    doJoinWork(2);
+                    doJoinWork(2,false);
                     break;
             }
         });
@@ -139,15 +147,22 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
      * 拒绝/雇佣报名用户
      * @param type 类型 1:拒绝 2:雇佣
      */
-    private void doJoinWork(int type){
-        dataProvider.server.doJoinWorker(workId,userId,type)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+    private void doJoinWork(int type,boolean isConfirmed){
+        dataProvider.server.doJoinWorker(joinId,type,isConfirmed)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<UnmatchedResponse>>() {
                     @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                    protected void onSuccess(BaseResponse<UnmatchedResponse> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         finish();
                         Apollo.emit(EventStr.CLOSE_GET_WORKERSINFO_ACTIVITY);
                         Apollo.emit(EventStr.UPDATE_GET_WORKERS);
+                    }
+
+                    @Override
+                    protected void onErr(BaseResponse baseResponse) {
+                        super.onErr(baseResponse);
+                        UnmatchedResponse unmatchedResponse = (UnmatchedResponse) baseResponse.getData();
+                        PopShowUtils.showConfirmEmployNum(WorkerResumeActivity.this, unmatchedResponse, () -> doJoinWork(type,true));
                     }
                 });
     }
@@ -162,6 +177,7 @@ public class WorkerResumeActivity extends BaseBindBarActivity<ActivityWorkerResu
         fid = item.getFid();
         defaultNum = item.getNum();
         status = item.getStatus();
+        joinId = item.getJoinId();
         boolean invited = item.isInvited();
         DataBindingAdapter.isInvite(db.tvInvite,invited);
         if (type == 0) {//显示邀请上工

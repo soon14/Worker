@@ -53,9 +53,15 @@ import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.ScreenUtils;
+import com.xsd.utils.TimeUtils;
 import com.xsd.utils.ToastUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
 
 /**
  * 主要包含：
@@ -116,6 +122,18 @@ public class MainActivity extends BaseBindActivity<ActivityMainBinding> {
             CommonDataUtils.getPhone(MainActivity.this);
             initOssClient();
         }, 3000);
+
+
+
+
+
+
+    }
+
+
+    private String dateToStr(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        return  sdf.format(date);
     }
 
     //初始化一个OSSClient客户端，方便打卡操作更快捷

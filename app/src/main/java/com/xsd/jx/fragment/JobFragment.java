@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,10 +88,6 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
         //轮播图片
         db.recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         db.recyclerView.setAdapter(mAdapter);
-        //1142*380
-        //添加头部提示
-        TextView tvNotice = (TextView) LayoutInflater.from(this.getActivity()).inflate(R.layout.tv_notice, null);
-        mAdapter.addHeaderView(tvNotice);
     }
     //首页-推荐的工作列表， type:0:不限 1:短期工 2：长期工
     private void loadData() {
@@ -128,7 +125,7 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             db.tvLocation.setText(address);
             int provinceId = province.getId();
             int cityId = city.getId();
-            dataProvider.user.changeAddress(provinceId,cityId)
+            dataProvider.user.changeAddress(provinceId,cityId,province.getName() + city.getName())
                     .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
                         @Override
                         protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
@@ -142,6 +139,10 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
             if (!UserUtils.isLogin()){
                 ToastUtil.showLong("请先登录！");
                 goActivity(LoginActivity.class);
+                return;
+            }
+            if (!UserUtils.isCertification()){
+                PopShowUtils.showRealNameAuth((BaseActivity) this.getActivity());
                 return;
             }
             goActivity(PublishActivity.class);
@@ -227,15 +228,15 @@ public class JobFragment extends BaseBindFragment<FragmentJobBinding> {
                             @Override
                             protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
                                 mAdapter.getData().get(position).setIsJoin(true);
-                                mAdapter.notifyItemChanged(position+1);
+                                mAdapter.notifyItemChanged(position);
                                 PopShowUtils.showTips((BaseActivity) JobFragment.this.getActivity());
                                 //报名成功，刷新订单
                                 Apollo.emit(EventStr.UPDATE_ORDER_LIST);
                             }
 
                             @Override
-                            protected void onErr(String err) {
-                                PopShowUtils.showMsg((BaseActivity) JobFragment.this.getActivity(),err);
+                            protected void onErr(BaseResponse err) {
+                                PopShowUtils.showMsg((BaseActivity) JobFragment.this.getActivity(), err.getMessage());
                             }
                         });
             }

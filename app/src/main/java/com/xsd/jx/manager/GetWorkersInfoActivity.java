@@ -24,6 +24,7 @@ import com.xsd.jx.bean.MessageBean;
 import com.xsd.jx.bean.MyGetWorkersResponse;
 import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PayResult;
+import com.xsd.jx.bean.UnmatchedResponse;
 import com.xsd.jx.bean.WorkerBean;
 import com.xsd.jx.pop.PayTypePop;
 import com.xsd.jx.pop.WaitPayBillPop;
@@ -39,10 +40,12 @@ import com.xsd.utils.ActivityCollector;
 import com.xsd.utils.ClipboardUtils;
 import com.xsd.utils.L;
 import com.xsd.utils.MobileUtils;
+import com.xsd.utils.TimeUtils;
 import com.xsd.utils.ToastUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +65,7 @@ import java.util.Map;
 
  - 顶部描述：
  待结算状态为：确认上工人数 ，所需工人数 ,工价/天
+ 状态为待开工，且startDate <=今天，显示确认开工按钮
 
  招工人{@link GetWorkersActivity} >> 我的招工{@link MyGetWorkersActivity} >> 【招工详情】
 
@@ -92,8 +96,14 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                     @Override
                     protected void onSuccess(BaseResponse<MyGetWorkersResponse.ItemsBean> baseResponse) {
                         item = baseResponse.getData();
-                        itemType = item.getItemType();
+                        itemType = item.getItemType();//就是status
                         initData();
+                        //状态为待开工，且startDate <=今天，显示确认开工按钮
+                        Date startDate = TimeUtils.strToDate(item.getStartDate());
+                        Date currentDate = TimeUtils.strToDate(TimeUtils.getTodayDate());
+                        if (itemType==2&&startDate.getTime()<=currentDate.getTime()){
+                            db.tvConfirmStart.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
     }
@@ -236,6 +246,9 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
 //                   showPayType();
                    submitPay();
                    break;
+               case R.id.tv_confirm_start://确认开工
+                   confirmStart();
+                   break;
            }
        });
        //企业端-招工人详情页，工人列表子项点击事件
@@ -252,10 +265,10 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    startActivity(intent);
                    break;
                case R.id.tv_cancel://婉拒
-                   doJoinWork(userId,1,position);
+                   doJoinWork(item.getJoinId(),1,position,false);
                    break;
                case R.id.tv_confirm://雇佣
-                   doJoinWork(userId,2,position);
+                   doJoinWork(item.getJoinId(),2,position,false);
                    break;
                case R.id.tv_name://打电话
                    MobileUtils.callPhone(GetWorkersInfoActivity.this,item.getMobile());
@@ -271,11 +284,23 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                    finish();
                    break;
                case R.id.layout_look_persion_day://查看工时
-                   PopShowUtils.showDayPersion(this);
+                   PopShowUtils.showDayPersion(this,item);
                    break;
            }
        });
 
+    }
+
+    private void confirmStart() {
+        dataProvider.server.confirmWork(workId)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+                    @Override
+                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                        ToastUtil.showLong(baseResponse.getData().getMessage());
+                        finish();
+                        Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
+                    }
+                });
     }
 
     private void cancelInvite() {
@@ -296,14 +321,14 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
 
     /**
      * 拒绝/雇佣报名用户
-     * @param userId 报名用户ID
+     * @param joinId 报名ID
      * @param type 类型 1:拒绝 2:雇佣
      */
-    private void doJoinWork(int userId,int type,int position){
-        dataProvider.server.doJoinWorker(workId,userId,type)
-                .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>() {
+    private void doJoinWork(int joinId,int type,int position,boolean isConfirmed){
+        dataProvider.server.doJoinWorker(joinId,type,isConfirmed)
+                .subscribe(new OnSuccessAndFailListener<BaseResponse<UnmatchedResponse>>() {
                     @Override
-                    protected void onSuccess(BaseResponse<MessageBean> baseResponse) {
+                    protected void onSuccess(BaseResponse<UnmatchedResponse> baseResponse) {
                         ToastUtil.showLong(baseResponse.getData().getMessage());
                         mAdapter.removeAt(position);
                         if (mAdapter.getData().size()==0){
@@ -328,6 +353,15 @@ public class GetWorkersInfoActivity extends BaseBindBarActivity<ActivityGetWorke
                         Apollo.emit(EventStr.UPDATE_MY_GET_WORKERS);
                         loadData();
 
+                    }
+
+                    @Override
+                    protected void onErr(BaseResponse baseResponse) {
+                        super.onErr(baseResponse);
+                        UnmatchedResponse unmatchedResponse = (UnmatchedResponse) baseResponse.getData();
+                        L.e("unmatchedResponse=="+unmatchedResponse);
+//                        UnmatchedResponse unmatchedResponse = GsonUtils.jsonToObj(dataStr, UnmatchedResponse.class);
+                        PopShowUtils.showConfirmEmployNum(GetWorkersInfoActivity.this, unmatchedResponse, () -> doJoinWork(joinId,type,position,true));
                     }
                 });
     }

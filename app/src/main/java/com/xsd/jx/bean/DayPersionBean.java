@@ -9,17 +9,47 @@ import java.io.Serializable;
  * author: SmallCake
  */
 public class DayPersionBean implements Serializable {
-    int num;
+    /**
+     * id : 1
+     * workDate : 2020-11-04
+     * workNum : 6
+     * isSettle : 1
+     */
 
-    public DayPersionBean(int num) {
-        this.num = num;
+    private Integer id;
+    private String workDate;
+    private Integer workNum;
+    private Integer isSettle;
+
+    public Integer getId() {
+        return id;
     }
 
-    public int getNum() {
-        return num;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public String getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(String workDate) {
+        this.workDate = workDate;
+    }
+
+    public Integer getWorkNum() {
+        return workNum;
+    }
+
+    public void setWorkNum(Integer workNum) {
+        this.workNum = workNum;
+    }
+
+    public Integer getIsSettle() {
+        return isSettle;
+    }
+
+    public void setIsSettle(Integer isSettle) {
+        this.isSettle = isSettle;
     }
 }

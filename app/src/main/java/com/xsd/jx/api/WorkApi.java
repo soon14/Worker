@@ -59,7 +59,7 @@ public interface WorkApi {
     Observable<BaseResponse<MessageBean>> workTypeRem(@Query("id")Integer id);
     //接受上工邀请
     @GET("work/accept-invite")
-    Observable<BaseResponse<MessageBean>> acceptInvite(@Query("workId")Integer workId);
+    Observable<BaseResponse<MessageBean>> acceptInvite(@Query("inviteId")Integer inviteId);
     //报名上工 workId 招工信息ID
     @GET("work/join")
     Observable<BaseResponse<MessageBean>> join(@Query("workId")Integer workId,@Query("num")Integer num);

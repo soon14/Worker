@@ -128,7 +128,7 @@ public class DataBindingAdapter {
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, WorkerBean item){
         if (item==null)return;
-//        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
+        tv.setText("工期："+item.getStartDate()+"至"+item.getEndDate()+"(共"+item.getDay()+"天)");
     }
     @BindingAdapter("workDay")
     public static void workDay(TextView tv, JobBean item){
@@ -284,7 +284,8 @@ public class DataBindingAdapter {
         TextView tv0 = (TextView) layout.getChildAt(0);//左侧描述
         TextView tv1 = (TextView) layout.getChildAt(1);//右侧按钮
         if (tobeConfirmNum>0){
-            tv0.setText("有"+tobeConfirmNum+"位报名待确认工人");
+//            tv0.setText("有"+tobeConfirmNum+"位报名待确认工人");
+            tv0.setText("有待确认的工人");
             tv1.setText("查看工人");
         }else{
             tv0.setText("还没有工人报名，您可以主动招工人");
@@ -327,13 +328,19 @@ public class DataBindingAdapter {
     //需要人数：已招0人/共需20人
     @BindingAdapter("needNum")
     public static void needNum(TextView tv, JobBean item){
-        int joinedNum = item.getJoinedNum();
+        int joinedNum = item.getConfirmedNum();
         int num = item.getNum();
         tv.setText("需要人数：已招"+joinedNum+"人/共需"+num+"人");
     }
+    @BindingAdapter("needNum")
+    public static void needNum(TextView tv, MyGetWorkersResponse.ItemsBean item){
+        int confirmedNum = item.getConfirmedNum();
+        int num = item.getNum();
+        tv.setText("需要人数：已招"+confirmedNum+"人/共需"+num+"人");
+    }
     @BindingAdapter("needAndAll")
     public static void needAndAll(TextView tv, JobBean item){
-        int joinedNum = item.getJoinedNum();
+        int joinedNum = item.getConfirmedNum();
         int num = item.getNum();
         tv.setText("已招"+joinedNum+"人/共需"+num+"人");
     }

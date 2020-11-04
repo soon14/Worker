@@ -52,14 +52,33 @@ public class JobBean implements Serializable {
     private String divisionAddr;
     private String typeTitle;
 
-    private int joinedNum;//已报名人数
+    //接口修改后参数新增
+    private int confirmedNum;//已报名人数
+    private int workId;//工作ID
+    private int inviteId;//邀请ID
 
-    public int getJoinedNum() {
-        return joinedNum;
+    public int getWorkId() {
+        return workId;
     }
 
-    public void setJoinedNum(int joinedNum) {
-        this.joinedNum = joinedNum;
+    public void setWorkId(int workId) {
+        this.workId = workId;
+    }
+
+    public int getInviteId() {
+        return inviteId;
+    }
+
+    public void setInviteId(int inviteId) {
+        this.inviteId = inviteId;
+    }
+
+    public int getConfirmedNum() {
+        return confirmedNum;
+    }
+
+    public void setConfirmedNum(int confirmedNum) {
+        this.confirmedNum = confirmedNum;
     }
 
     public boolean isFav() {

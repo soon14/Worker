@@ -77,10 +77,14 @@ public class AliyunOSSUtils {
                         String securityToken = data.getSecurityToken();
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setHttpDnsEnable(true);
+                        baseActivity.getDialog().show();
                         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
                         new Thread(() -> {
                             OSS  oss = new OSSClient(baseActivity, MyOSSConfig.ENDPOINT, credentialProvider,conf);
-                            baseActivity.runOnUiThread(() -> uploadImg(oss,baseActivity, aliFolder, localPath, listener));
+                            baseActivity.runOnUiThread(() ->{
+                                baseActivity.getDialog().dismiss();
+                                uploadImg(oss,baseActivity, aliFolder, localPath, listener);
+                            });
 
                         }).start();
 
@@ -94,7 +98,6 @@ public class AliyunOSSUtils {
                 .subscribe(new OnSuccessAndFailListener<BaseResponse<StsResponse>>(baseActivity.getDialog()) {
                     @Override
                     protected void onSuccess(BaseResponse<StsResponse> baseResponse) {
-                        L.e("开始"+ TimeUtils.getMillisecondTime());
                         StsResponse data = baseResponse.getData();
                         String accessKeyId = data.getAccessKeyId();
                         String accessKeySecret = data.getAccessKeySecret();
@@ -102,7 +105,6 @@ public class AliyunOSSUtils {
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setHttpDnsEnable(true);
                         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
-                        L.e("结束"+ TimeUtils.getMillisecondTime());
                         baseActivity.getDialog().show();
                         new Thread(new Runnable() {
                             @Override
@@ -113,7 +115,6 @@ public class AliyunOSSUtils {
                                     @Override
                                     public void run() {
                                         baseActivity.getDialog().dismiss();
-                                        L.e("上传图片"+ TimeUtils.getMillisecondTime());
                                         uploadImg(oss,baseActivity, aliFolder, localPath, listener);
                                     }
                                 });
@@ -246,10 +247,14 @@ public class AliyunOSSUtils {
      * @param listener    监听上传进度
      */
     private void uploadImg(OSS oss,BaseActivity activity, String aliFolder, String locaImgPath, UploadImgListener listener) {
-        ProgressDialog progressDialog = new ProgressDialog(activity);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setMessage("上传中");
-        progressDialog.show();
+        ProgressDialog progressDialog =new ProgressDialog(activity);
+        try {
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMessage("上传中");
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String objectKey = aliFolder + getUpFileName(locaImgPath);
         // 构造上传请求。
         PutObjectRequest put = new PutObjectRequest(BUCKET_NAME, objectKey, locaImgPath);

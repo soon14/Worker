@@ -94,10 +94,11 @@ public class MyGetWorkersResponse implements Serializable {
         private int status;
         private String createdAt;
         private String typeTitle;
-        private int tobeConfirmNum;
+        private int tobeConfirmNum;//报名工人数
         private int confirmedNum;
         private int tobeSettledWage;
         private String totalAmount;//工资合计
+
 
         private List<WorkerBean> workers;
 

@@ -152,10 +152,11 @@ public interface UserApi {
      * 用户修改自己的默认找活地方
      * @param provinceId  省份ID
      * @param cityId      城市ID
+     * @param workAddress 省份名+市级名
      */
     @FormUrlEncoded
     @POST("user/change-address")
-    Observable<BaseResponse<MessageBean>> changeAddress(@Field("provinceId")Integer provinceId,@Field("cityId")Integer cityId);
+    Observable<BaseResponse<MessageBean>> changeAddress(@Field("provinceId")Integer provinceId,@Field("cityId")Integer cityId,@Field("workAddress")String workAddress);
 
 
 

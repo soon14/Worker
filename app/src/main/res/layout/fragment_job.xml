@@ -127,6 +127,7 @@
                             android:layout_centerHorizontal="true" />
                     </RelativeLayout>
                 </LinearLayout>
+                    <View style="@style/h_line"/>
                 </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>
 

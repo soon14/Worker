@@ -136,8 +136,8 @@ public class UserImpl implements UserApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> changeAddress(Integer provinceId, Integer cityId) {
-        return bindIoUI(api.changeAddress(provinceId,cityId));
+    public Observable<BaseResponse<MessageBean>> changeAddress(Integer provinceId, Integer cityId,String workAddress) {
+        return bindIoUI(api.changeAddress(provinceId,cityId,workAddress));
     }
 
 

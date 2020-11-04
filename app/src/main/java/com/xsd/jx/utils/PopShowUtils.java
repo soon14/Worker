@@ -27,8 +27,11 @@ import com.xsd.jx.base.BaseActivity;
 import com.xsd.jx.bean.BaseResponse;
 import com.xsd.jx.bean.JobBean;
 import com.xsd.jx.bean.MessageBean;
+import com.xsd.jx.bean.UnmatchedResponse;
 import com.xsd.jx.bean.VersionResponse;
 import com.xsd.jx.bean.WorkRecommendResponse;
+import com.xsd.jx.bean.WorkerBean;
+import com.xsd.jx.listener.OnConfirmEditEmployNumListener;
 import com.xsd.jx.pop.AttViewAddrSelectPop;
 import com.xsd.jx.pop.BottomDayPersionPop;
 import com.xsd.jx.pop.BottomNationSelecterPop;
@@ -160,7 +163,7 @@ public class PopShowUtils {
                         }
                     }
                     @Override
-                    protected void onErr(String err) {}
+                    protected void onErr(BaseResponse err) {}
                 });
 
     }
@@ -285,7 +288,7 @@ public class PopShowUtils {
                     }
 
                     @Override
-                    protected void onErr(String err) {
+                    protected void onErr(BaseResponse err) {
                     }
                 });
 
@@ -523,8 +526,8 @@ public class PopShowUtils {
 
 
     //企业端-确认修改报名的包工头每天的人数弹框
-    public static void showDayPersion(BaseActivity baseActivity) {
-        BottomDayPersionPop pop = new BottomDayPersionPop(baseActivity);
+    public static void showDayPersion(BaseActivity baseActivity, WorkerBean item) {
+        BottomDayPersionPop pop = new BottomDayPersionPop(baseActivity,item);
         new XPopup.Builder(baseActivity)
                 .moveUpToKeyboard(false)
                 .asCustom(pop)
@@ -548,9 +551,8 @@ public class PopShowUtils {
      * 2.招工人{@link com.xsd.jx.manager.GetWorkersActivity}，邀请上工的对方空闲人数大于你需要的人数
      *
      */
-
-    public static void showConfirmEmployNum(Context context) {
-        ConfirmEmployNumPop confirmNumPop = new ConfirmEmployNumPop(context);
+    public static void showConfirmEmployNum(BaseActivity context, UnmatchedResponse unmatchedResponse, OnConfirmEditEmployNumListener listener) {
+        ConfirmEmployNumPop confirmNumPop = new ConfirmEmployNumPop(context,unmatchedResponse,listener);
         new XPopup.Builder(context)
                 .asCustom(confirmNumPop)
                 .show();

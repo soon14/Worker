@@ -8,6 +8,7 @@ import com.xsd.jx.bean.PaidResponse;
 import com.xsd.jx.bean.PriceBean;
 import com.xsd.jx.bean.PushGetWorkersResponse;
 import com.xsd.jx.bean.ToSettleResponse;
+import com.xsd.jx.bean.UnmatchedResponse;
 import com.xsd.jx.bean.UserMonthLogResponse;
 import com.xsd.jx.bean.WorkCheckLogResponse;
 import com.xsd.jx.bean.WorkCheckResponse;
@@ -107,14 +108,17 @@ public interface ServerApi {
 
     /**
      * 拒绝/雇佣报名用户
-     * @param workId 用工ID
-     * @param userId 报名用户ID
+     * @param joinId 用工ID
      * @param type 类型 1:拒绝 2:雇佣
-     * @return
+     * @param isConfirmed boolean雇佣的时候，是否确认同意修改人数
+     *
+     * \n使用到的页面
+     * 工人简介{@link com.xsd.jx.manager.WorkerResumeActivity#doJoinWork(int)}
+     * 招工详情{@link com.xsd.jx.manager.GetWorkersInfoActivity#doJoinWork(int, int, int)}
      */
     @FormUrlEncoded
     @POST("server/do-join-worker")
-    Observable<BaseResponse<MessageBean>> doJoinWorker(@Field("workId")Integer workId,@Field("userId")Integer userId,@Field("type")Integer type);
+    Observable<BaseResponse<UnmatchedResponse>> doJoinWorker(@Field("joinId")Integer joinId, @Field("type")Integer type, @Field("isConfirmed")boolean isConfirmed);
 
 
     /**
@@ -199,6 +203,10 @@ public interface ServerApi {
     //补考勤：发布者帮助用户完善考勤
     @GET("server/help-check")
     Observable<BaseResponse<MessageBean>> helpCheck(@Query("workId")Integer workId,@Query("userId")Integer userId,@Query("date")String date);
+
+    //确认开工
+    @GET("server/confirm-work")
+    Observable<BaseResponse<MessageBean>> confirmWork(@Query("workId")Integer workId);
 
 
 }

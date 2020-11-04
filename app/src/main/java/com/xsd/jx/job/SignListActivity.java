@@ -83,11 +83,6 @@ public class SignListActivity extends BaseBindBarActivity<ActivitySignListBindin
                         selectItem(selectTime);
                     }
 
-                    @Override
-                    protected void onErr(String err) {
-                        super.onErr(err);
-
-                    }
                 });
 
     }

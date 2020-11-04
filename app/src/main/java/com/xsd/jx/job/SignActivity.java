@@ -145,7 +145,7 @@ public class SignActivity extends BaseBindBarActivity<ActivitySignBinding> {
                     }
 
                     @Override
-                    protected void onErr(String err) {
+                    protected void onErr(BaseResponse err) {
 //                        super.onErr(err);
                         db.layoutNotWorking.setVisibility(View.VISIBLE);
                         db.layoutScrollView.setVisibility(View.GONE);

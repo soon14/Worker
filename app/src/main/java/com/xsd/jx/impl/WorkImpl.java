@@ -67,8 +67,8 @@ public class WorkImpl implements WorkApi {
     }
 
     @Override
-    public Observable<BaseResponse<MessageBean>> acceptInvite(Integer workId) {
-        return bindIoUI(api.acceptInvite(workId));
+    public Observable<BaseResponse<MessageBean>> acceptInvite(Integer inviteId) {
+        return bindIoUI(api.acceptInvite(inviteId));
     }
 
     @Override

@@ -70,8 +70,6 @@ public class MyGetWorkersActivity extends BaseBindBarActivity<ActivityMyGetWorke
                             if (page==1)mAdapter.setList(items);else
                                 mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
-
-
                     }
                 });
     }

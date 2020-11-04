@@ -3,6 +3,7 @@ package com.xsd.jx.bean;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Date: 2020/9/21
@@ -44,6 +45,36 @@ public class WorkerBean implements Serializable, MultiItemEntity {
     private String startDate;
     private String endDate;
     private int num;//空闲人数
+    private int joinId;//报名id
+
+    private int employNum;//实际确认上工人数
+
+    //工头工时弹窗列表数据
+    private List<DayPersionBean> settleList;
+
+    public List<DayPersionBean> getSettleList() {
+        return settleList;
+    }
+
+    public void setSettleList(List<DayPersionBean> settleList) {
+        this.settleList = settleList;
+    }
+
+    public int getEmployNum() {
+        return employNum;
+    }
+
+    public void setEmployNum(int employNum) {
+        this.employNum = employNum;
+    }
+
+    public int getJoinId() {
+        return joinId;
+    }
+
+    public void setJoinId(int joinId) {
+        this.joinId = joinId;
+    }
 
     public int getFid() {
         return fid;

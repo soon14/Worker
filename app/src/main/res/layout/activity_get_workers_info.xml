@@ -60,7 +60,7 @@
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
                                 tools:text="0"
-                                android:text="@{(item.confirmedNum)+``}"
+                                android:text="@{(item.tobeConfirmNum)+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
@@ -104,7 +104,7 @@
                                 android:textStyle="bold"
                                 android:textSize="@dimen/h3"
                                 tools:text="0"
-                                android:text="@{item.tobeConfirmNum+``}"
+                                android:text="@{item.confirmedNum+``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
@@ -137,7 +137,6 @@
             </com.google.android.material.appbar.AppBarLayout>
             <!-- 工人列表-->
             <androidx.recyclerview.widget.RecyclerView
-                android:background="@color/white"
                 android:paddingBottom="@dimen/dp_56"
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
@@ -559,6 +558,16 @@
             android:padding="@dimen/dp_16"
             android:src="@mipmap/ic_back_white" />
 
+
+        <TextView
+            android:onClick="@{clicklistener}"
+            android:visibility="gone"
+            android:layout_margin="@dimen/dp_8"
+            android:id="@+id/tv_confirm_start"
+            style="@style/DefaultBtnStyle"
+            android:text="确认开工"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 </layout>

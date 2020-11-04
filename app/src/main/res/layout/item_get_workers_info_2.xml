@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="人数：5"
+            android:text="@{`人数：`+item.employNum}"
             android:textColor="@color/tv_black"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toBottomOf="parent"

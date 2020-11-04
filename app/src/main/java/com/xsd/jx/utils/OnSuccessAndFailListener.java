@@ -76,7 +76,7 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
                     ToastUtil.showLong("请先实名认证！");
                     Apollo.emit(EventStr.GO_AUTH);
                 }else {
-                    onErr(baseResponse.getMessage());
+                    onErr(baseResponse);
                 }
 
             }
@@ -111,9 +111,10 @@ public abstract class OnSuccessAndFailListener<T> extends DisposableObserver<T> 
 
     protected abstract void onSuccess(T t);
 
-    protected void onErr(String err) {
-        ToastUtil.showLong(err);
-        L.e(TAG,"网络数据异常：" + err.toString());
+    protected void onErr(BaseResponse baseResponse) {
+        String errMsg = baseResponse.getMessage();
+        ToastUtil.showLong(errMsg);
+        L.e(TAG,"网络数据异常：" + errMsg);
     }
 }
 

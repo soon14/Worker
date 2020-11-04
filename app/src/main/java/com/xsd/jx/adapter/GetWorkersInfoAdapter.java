@@ -32,7 +32,7 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
         super();
         this.price = price;
         // 绑定 layout 对应的 type
-        addItemType(1, R.layout.item_get_workers_info_1);
+        addItemType(1, R.layout.item_get_workers_info_1);//正在招
         addItemType(2, R.layout.item_get_workers_info_2);//待开工
         addItemType(3, R.layout.item_get_workers_info_3);//工期中
         addItemType(4, R.layout.item_get_workers_info_3);//待结算
@@ -61,7 +61,7 @@ public class GetWorkersInfoAdapter extends BaseMultiItemQuickAdapter<WorkerBean,
                 ItemGetWorkersInfo3Binding dataBinding3 = (ItemGetWorkersInfo3Binding) helper.getDataBinding();
                 dataBinding3.setItem(item);
                 //TODO 人数: 5人  天数: 1天
-                dataBinding3.tvPriceDay.setText("人数: "+item.getAge()+"人  天数: "+item.getCheckDay()+"天");
+                dataBinding3.tvPriceDay.setText("人数: "+item.getEmployNum()+"人  天数: "+item.getCheckDay()+"天");
                 break;
             case 5:
                 ((ItemGetWorkersInfo5Binding) helper.getDataBinding()).setItem(item);

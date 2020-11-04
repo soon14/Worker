@@ -64,7 +64,7 @@ public class InviteJobPop extends CenterPopupView {
             bind.tvJoin.setText("接受邀请("+num+"人)");
             layoutContent.addView(viewChild);
             //点击事件
-            bind.tvJoin.setOnClickListener(view -> activity.getDataProvider().work.acceptInvite(jobBean.getId())
+            bind.tvJoin.setOnClickListener(view -> activity.getDataProvider().work.acceptInvite(jobBean.getInviteId())
                     .subscribe(new OnSuccessAndFailListener<BaseResponse<MessageBean>>(activity.getDialog()) {
                         @Override
                         protected void onSuccess(BaseResponse<MessageBean> baseResponse) {

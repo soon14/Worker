@@ -305,7 +305,7 @@ public class PushGetWorkersActivity extends BaseBindBarActivity<ActivityPushGetW
                     }
 
                     @Override
-                    protected void onErr(String err) {
+                    protected void onErr(BaseResponse err) {
                         super.onErr(err);
                         db.etPrice.setHint("请填写合理的价格");
                     }

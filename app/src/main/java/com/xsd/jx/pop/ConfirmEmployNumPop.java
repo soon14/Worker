@@ -11,6 +11,10 @@ import androidx.core.content.ContextCompat;
 
 import com.lxj.xpopup.core.CenterPopupView;
 import com.xsd.jx.R;
+import com.xsd.jx.base.BaseActivity;
+import com.xsd.jx.bean.UnmatchedResponse;
+import com.xsd.jx.listener.OnConfirmEditEmployNumListener;
+import com.xsd.utils.MobileUtils;
 import com.xsd.utils.ToastUtil;
 
 /**
@@ -18,8 +22,14 @@ import com.xsd.utils.ToastUtil;
  * author: SmallCake
  */
 public class ConfirmEmployNumPop extends CenterPopupView {
-    public ConfirmEmployNumPop(@NonNull Context context) {
+    private UnmatchedResponse item;
+    private BaseActivity activity;
+    private OnConfirmEditEmployNumListener listener;
+    public ConfirmEmployNumPop(@NonNull BaseActivity context, UnmatchedResponse unmatchedResponse,OnConfirmEditEmployNumListener listener) {
         super(context);
+        this.activity = context;
+        this.item=unmatchedResponse;
+        this.listener = listener;
     }
 
     @Override
@@ -32,6 +42,15 @@ public class ConfirmEmployNumPop extends CenterPopupView {
         super.onCreate();
         CheckBox cbAgreement = findViewById(R.id.cb_agreement);
         TextView tvConfirm = findViewById(R.id.tv_confirm);
+        TextView tvDesc = findViewById(R.id.tv_desc);
+        TextView tvIscalledDesc = findViewById(R.id.tv_iscalled_desc);
+        Integer num = item.getNum();
+        String phone = item.getPhone();
+        Integer surplusNum = item.getSurplusNum();
+        tvDesc.setText("对方有"+num+"人，您还差"+surplusNum+"人");
+        tvIscalledDesc.setText("已拨打电话 确认雇佣"+surplusNum+"人");
+        findViewById(R.id.layout_call).setOnClickListener(v -> MobileUtils.callPhone(activity,phone));
+
         cbAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -51,6 +70,7 @@ public class ConfirmEmployNumPop extends CenterPopupView {
             public void onClick(View v) {
                 ToastUtil.showLong("确认雇佣");
                 dismiss();
+                listener.onConfirm();
             }
         });
         findViewById(R.id.tv_cancel).setOnClickListener(v->dismiss());
