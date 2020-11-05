@@ -41,6 +41,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_50"/>
                     <LinearLayout
+                        android:gravity="center_vertical"
+                        getWorkersInfoTop="@{item}"
                         android:layout_marginTop="@dimen/dp_90"
                         android:layout_marginRight="@dimen/dp_10"
                         android:layout_marginLeft="@dimen/dp_10"
@@ -48,74 +50,34 @@
                         android:layout_height="@dimen/dp_100"
                         android:background="@drawable/round10_white_bg"
                         android:orientation="horizontal"
-                        android:padding="@dimen/dp_16">
-                        <LinearLayout
+                        >
+                        <TextView
+                            android:lineSpacingExtra="@dimen/dp_8"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:textColor="@color/tv_gray"
+                            android:textSize="@dimen/h5"
+                            android:text="0\n报名工人数"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:textColor="@color/tv_black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/h3"
-                                tools:text="0"
-                                android:text="@{(item.tobeConfirmNum)+``}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:textColor="@color/tv_gray"
-                                android:textSize="@dimen/h5"
-                                android:text="报名工人数"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                        </LinearLayout>
-                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:lineSpacingExtra="@dimen/dp_8"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:textColor="@color/tv_gray"
+                            android:textSize="@dimen/h5"
+                            android:text="0\n所需工人数"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:textColor="@color/tv_black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/h3"
-                                tools:text="0"
-                                android:text="@{item.num+``}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:textColor="@color/tv_gray"
-                                android:textSize="@dimen/h5"
-                                android:text="所需工人数"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                        </LinearLayout>
-                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:lineSpacingExtra="@dimen/dp_8"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:textColor="@color/tv_gray"
+                            android:textSize="@dimen/h5"
+                            android:text="0\n已雇佣人数"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:textColor="@color/tv_black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/h3"
-                                tools:text="0"
-                                android:text="@{item.confirmedNum+``}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:textColor="@color/tv_gray"
-                                android:textSize="@dimen/h5"
-                                android:text="已雇佣人数"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                        </LinearLayout>
-
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     </RelativeLayout>

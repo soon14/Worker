@@ -64,7 +64,8 @@ import java.util.Map;
  8:已过期
 
  - 顶部描述：
- 待结算状态为：确认上工人数 ，所需工人数 ,工价/天
+ 工期中，待结算状态为：确认上工人数confirmedNum ，所需工人数num ,工价/天price
+ 其他状态：报名工人数tobeConfirmNum，所需工人数num，已雇佣人数confirmedNum
  状态为待开工，且startDate <=今天，显示确认开工按钮
 
  招工人{@link GetWorkersActivity} >> 我的招工{@link MyGetWorkersActivity} >> 【招工详情】

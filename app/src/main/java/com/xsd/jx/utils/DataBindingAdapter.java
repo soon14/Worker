@@ -1,6 +1,8 @@
 package com.xsd.jx.utils;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import com.xsd.jx.bean.WorkerInfoResponse;
 import com.xsd.utils.DpPxUtils;
 import com.xsd.utils.RandomUtils;
 import com.xsd.utils.SmallUtils;
+import com.xsd.utils.SpannableStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -344,6 +347,47 @@ public class DataBindingAdapter {
         int num = item.getNum();
         tv.setText("已招"+joinedNum+"人/共需"+num+"人");
     }
+
+    /**
+     * 工期中3，待结算4状态为：确认上工人数confirmedNum ，所需工人数num ,工价/天price
+     *  其他状态：报名工人数tobeConfirmNum，所需工人数num，已雇佣人数confirmedNum
+     */
+    @BindingAdapter("getWorkersInfoTop")
+    public static void getWorkersInfoTop(LinearLayout layout, MyGetWorkersResponse.ItemsBean item){
+        if (item==null)return;
+        SpannableStringBuilder str0,str1,str2;
+        TextView tv0 = (TextView) layout.getChildAt(0);
+        TextView tv1 = (TextView) layout.getChildAt(1);
+        TextView tv2 = (TextView) layout.getChildAt(2);
+        int itemType = item.getItemType();
+        if (itemType==3||itemType==4){
+            int confirmedNum = item.getConfirmedNum();
+            int num = item.getNum();
+            String price = item.getPrice();
+            str0 = createSpan(confirmedNum+"","确认上工人数");
+            str1 = createSpan(num+"","所需工人数");
+            str2 = createSpan("￥"+price,"工价/天");
+        }else {
+
+            int tobeConfirmNum = item.getTobeConfirmNum();
+            int num = item.getNum();
+            int confirmedNum = item.getConfirmedNum();
+            str0 = createSpan(tobeConfirmNum+"","报名工人数");
+            str1 = createSpan(num+"","所需工人数");
+            str2 = createSpan(confirmedNum+"","已雇佣人数");
+        }
+        tv0.setText(str0);
+        tv1.setText(str1);
+        tv2.setText(str2);
+
+
+    }
+    private static SpannableStringBuilder createSpan(String s1,String s2){
+        return SpannableStringUtils.getBuilder( s1+ "\n").setBold().setProportion(1.3f).setForegroundColor(Color.BLACK)
+                .append(s2)
+                .create();
+    }
+
     //空闲工人：18人（团队）\n空闲时间：2020-10-29至2020-11-29（共30天）
     @BindingAdapter("freeTimePersion")
     public static void freeTimePersion(TextView tv, WorkerBean item){

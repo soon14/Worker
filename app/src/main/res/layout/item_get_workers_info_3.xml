@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="待结算 6000元"
-            android:text="@{`待结算 `+item.totalWage+`元`}"
+            android:text="@{`待结算`+item.totalWage+`元`}"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h5"
             app:layout_constraintBottom_toTopOf="@+id/tv_name"
